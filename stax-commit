@@ -1,2 +1,8 @@
 
-git checkout -b "$1" && git commit -a -m "$1" && git push
+git add . &&
+	(
+		git checkout -b "$1" ||
+		git checkout "$1"
+	) &&
+	git commit -a -m "$1" &&
+	git push
