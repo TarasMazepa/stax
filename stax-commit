@@ -3,5 +3,5 @@
 	git checkout -b "$1" ||
 	git checkout "$1"
 ) &&
-	git commit -a -m "$1" &&
+	git commit -m "$1" &&
 	git push
