@@ -1,5 +1,9 @@
 # Stax
 
+Stax is a tool that will help you a bit with day to day stax-like git workflow.
+
+Currently tool is still in early incubation period.
+
 ## stax-commit
 Creates branch, commits current changes with the same name as a branch and pushes.
 ```
