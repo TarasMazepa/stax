@@ -1,1 +1,5 @@
-dart run cli/bin/cli.dart "$@"
+#!/usr/bin/env bash
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+dart run "$SCRIPT_DIR/cli/bin/cli.dart" "$@"
