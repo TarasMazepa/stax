@@ -1,5 +1,8 @@
-import 'command.dart';
 import 'dart:io';
+
+import 'package:stax/process_result_print.dart';
+
+import 'command.dart';
 
 class TerminalCommand extends Command {
   const TerminalCommand()
@@ -12,10 +15,7 @@ class TerminalCommand extends Command {
       case []:
         print("No arguments provided");
       case [final executable, ...final arguments]:
-        final result = Process.runSync(executable, arguments, runInShell: true);
-        print("ExitCode: ${result.exitCode}");
-        print("Stdout:   ${result.stdout}".trim());
-        print("Stderr:   ${result.stderr}".trim());
+        Process.runSync(executable, arguments, runInShell: true).print();
     }
   }
 }

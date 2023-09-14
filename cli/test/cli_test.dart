@@ -1,4 +1,4 @@
-import 'package:cli/cli.dart';
+import 'package:stax/cli.dart';
 import 'package:test/test.dart';
 
 void main() {
