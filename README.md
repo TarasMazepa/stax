@@ -33,3 +33,6 @@ Amends to the current commit and force pushes
 ```
 stax-amend
 ```
+
+### stax-delete-local-only-branches
+Deletes all local-only branches. Useful when you are using `stax-commit` which pushes all the branches. So once they are merged and deleted from the remote you can clean up local branches.
