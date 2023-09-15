@@ -1,1 +1,5 @@
-git fetch -p ; git branch -vv -a &> ~/temp.txt ; grep ": gone]" ~/temp.txt | sed -r 's/ +([a-zA-Z0-9\-]+) .*/\1/' | xargs git branch -D
+#!/usr/bin/env bash
+
+git fetch -p
+git branch -vv -a &>~/temp.txt
+grep ": gone]" ~/temp.txt | sed -r 's/ +([a-zA-Z0-9\-]+) .*/\1/' | xargs git branch -D
