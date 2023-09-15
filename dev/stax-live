@@ -2,4 +2,4 @@
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
-dart run "$SCRIPT_DIR/cli/bin/cli.dart" "$@"
+dart run "$SCRIPT_DIR/../cli/bin/cli.dart" "$@"
