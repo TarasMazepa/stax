@@ -7,7 +7,7 @@ class AvailableCommands extends Command {
   @override
   void run(List<String> args) {
     print("Here are available commands:");
-    for (var element in commands) {
+    for (final element in commands) {
       print(" * ${element.name}");
       print("      ${element.description}");
     }
