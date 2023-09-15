@@ -15,7 +15,7 @@ class TerminalCommand extends Command {
       case []:
         print("No arguments provided");
       case [final executable, ...final arguments]:
-        Process.runSync(executable, arguments, runInShell: true).print();
+        Process.runSync(executable, arguments, runInShell: true).printAll();
     }
   }
 }

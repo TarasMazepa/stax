@@ -5,10 +5,10 @@ import 'command.dart';
 class DeleteGoneBranchesCommand extends Command {
   const DeleteGoneBranchesCommand()
       : super("delete-gone-branches",
-      "deletes local branches that are tracking remote branches that are gone");
+            "deletes local branches that are tracking remote branches that are gone");
 
   @override
   void run(List<String> args) {
-    final branches = Process.runSync("git", ["fetch", "-p"]);
+    Process.runSync("git", ["fetch", "-p"]);
   }
 }
