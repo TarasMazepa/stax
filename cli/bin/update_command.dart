@@ -11,7 +11,6 @@ class UpdateCommand extends Command {
   @override
   void run(List<String> args) {
     var executablePath = dirname(Platform.script.toFilePath());
-    print(executablePath);
     Process.runSync("git", ["pull"],
             runInShell: true, workingDirectory: executablePath)
         .print();
