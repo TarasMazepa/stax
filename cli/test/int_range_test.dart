@@ -78,4 +78,14 @@ void main() {
   test('(0,10) contains 11', () {
     expect(IntRange.open(0, 10).contains(11), false);
   });
+  // Singleton
+  test('[0] contains 0', () {
+    expect(IntRange.singleton(0).contains(0), true);
+  });
+  test('[0] contains -1', () {
+    expect(IntRange.singleton(0).contains(-1), false);
+  });
+  test('[0] contains 1', () {
+    expect(IntRange.singleton(0).contains(1), false);
+  });
 }

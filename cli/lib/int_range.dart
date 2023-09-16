@@ -24,6 +24,8 @@ class IntRange {
       : startCondition = RangeEdgeCondition.open,
         endCondition = RangeEdgeCondition.closed;
 
+  IntRange.singleton(int number) : this.closed(number, number);
+
   bool contains(num number) {
     return switch (startCondition) {
           RangeEdgeCondition.open => start < number,
