@@ -12,6 +12,10 @@ class ExternalCommand {
 
   List<String> get arguments => parts.sublist(1);
 
+  ExternalCommand withExtraArguments(List<String> extra) {
+    return ExternalCommand(parts.followedBy(extra).toList());
+  }
+
   ExternalCommand announce() {
     print("> ${toString()}");
     return this;

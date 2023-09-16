@@ -32,7 +32,10 @@ class DeleteGoneBranchesCommand extends Command {
     stdout.write("Do you want to delete them all y/N? ");
     final answer = stdin.readLineSync();
     if (answer == 'y') {
-      Process.runSync("git", ["branch", "-D", ...branchesToDelete])
+      Git.branchDelete
+          .withExtraArguments(branchesToDelete)
+          .announce()
+          .runSync()
           .printNotEmptyResultFields();
     }
   }
