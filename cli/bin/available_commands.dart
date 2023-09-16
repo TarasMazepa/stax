@@ -2,7 +2,7 @@ import 'command.dart';
 import 'commands.dart';
 
 class AvailableCommands extends Command {
-  const AvailableCommands() : super("help", "list of available commands");
+  AvailableCommands() : super("help", "list of available commands");
 
   @override
   void run(List<String> args) {

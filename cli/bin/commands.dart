@@ -4,7 +4,7 @@ import 'delete_gone_branches_command.dart';
 import 'terminal_command.dart';
 import 'update_command.dart';
 
-const List<Command> commands = [
+final List<Command> commands = [
   AvailableCommands(),
   TerminalCommand(),
   UpdateCommand(),

@@ -5,7 +5,7 @@ import 'package:stax/process_result_print.dart';
 import 'command.dart';
 
 class TerminalCommand extends Command {
-  const TerminalCommand()
+  TerminalCommand()
       : super("terminal",
             "command to test how dart executes commands in terminal");
 

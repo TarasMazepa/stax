@@ -5,7 +5,7 @@ import 'package:stax/process_result_print.dart';
 import 'command.dart';
 
 class DeleteGoneBranchesCommand extends Command {
-  const DeleteGoneBranchesCommand()
+  DeleteGoneBranchesCommand()
       : super("delete-gone-branches",
             "deletes local branches that are tracking remote branches that are gone");
 
