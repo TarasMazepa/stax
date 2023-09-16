@@ -20,14 +20,14 @@ extension PrintForProcessResult on ProcessResult {
     (String stderr) => stderr.trim().isNotEmpty,
   );
 
-  ProcessResult printAll() {
+  ProcessResult printAllResultFields() {
     _exitCodeInfo.printFieldOf(this);
     _stdoutInfo.printFieldOf(this);
     _stderrInfo.printFieldOf(this);
     return this;
   }
 
-  ProcessResult printNotEmpty() {
+  ProcessResult printNotEmptyResultFields() {
     _exitCodeInfo.printFieldOfIfChecked(this);
     _stdoutInfo.printFieldOfIfChecked(this);
     _stderrInfo.printFieldOfIfChecked(this);

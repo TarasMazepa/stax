@@ -12,13 +12,13 @@ class UpdateCommand extends Command {
   @override
   void run(List<String> args) {
     final executablePath = dirname(Platform.script.toFilePath());
-    Git.currentBranch
+    Git.branchCurrent
         .announce()
         .runSync(workingDirectory: executablePath)
-        .printNotEmpty();
+        .printNotEmptyResultFields();
     Git.pull
         .announce()
         .runSync(workingDirectory: executablePath)
-        .printNotEmpty();
+        .printNotEmptyResultFields();
   }
 }
