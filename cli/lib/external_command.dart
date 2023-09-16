@@ -16,6 +16,11 @@ class ExternalCommand {
     return ExternalCommand(parts.followedBy(extra).toList());
   }
 
+  ExternalCommand? askContinueQuestion(String context) {
+    stdout.write("$context Continue y/N? ");
+    return stdin.readLineSync() == 'y' ? this : null;
+  }
+
   ExternalCommand announce() {
     print("> ${toString()}");
     return this;

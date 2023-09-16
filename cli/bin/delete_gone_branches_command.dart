@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:stax/git.dart';
 import 'package:stax/process_result_print.dart';
 
@@ -28,15 +26,12 @@ class DeleteGoneBranchesCommand extends Command {
       print("No local branches with gone remotes.");
       return;
     }
-    print("Local branches with gone remotes: ${branchesToDelete.join(", ")}.");
-    stdout.write("Do you want to delete them all y/N? ");
-    final answer = stdin.readLineSync();
-    if (answer == 'y') {
-      Git.branchDelete
-          .withExtraArguments(branchesToDelete)
-          .announce()
-          .runSync()
-          .printNotEmptyResultFields();
-    }
+    Git.branchDelete
+        .askContinueQuestion(
+            "Local branches with gone remotes that would be deleted: ${branchesToDelete.join(", ")}.")
+        ?.withExtraArguments(branchesToDelete)
+        .announce()
+        .runSync()
+        .printNotEmptyResultFields();
   }
 }
