@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:path/path.dart';
+import 'package:stax/git.dart';
+import 'package:stax/process_result_print.dart';
 
 import 'command.dart';
-import 'package:stax/process_result_print.dart';
 
 class UpdateCommand extends Command {
   UpdateCommand() : super("update", "updates to the latest version");
@@ -11,7 +12,13 @@ class UpdateCommand extends Command {
   @override
   void run(List<String> args) {
     final executablePath = dirname(Platform.script.toFilePath());
-    Process.runSync("git", ["pull"], workingDirectory: executablePath)
+    Git.currentBranch
+        .announce()
+        .runSync(workingDirectory: executablePath)
+        .printNotEmpty();
+    Git.pull
+        .announce()
+        .runSync(workingDirectory: executablePath)
         .printNotEmpty();
   }
 }
