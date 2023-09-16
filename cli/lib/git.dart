@@ -6,6 +6,7 @@ class Git {
   static final branchDelete = ExternalCommand.split("git branch -D");
   static final branches = ExternalCommand.split("git branch -vv");
   static final checkout = ExternalCommand.split("git checkout");
+  static final commit = ExternalCommand.split("git commit");
   static final fetch = ExternalCommand.split("git fetch -p");
   static final pull = ExternalCommand.split("git pull");
 }

@@ -12,12 +12,12 @@ class ExternalCommand {
 
   List<String> get arguments => parts.sublist(1);
 
-  ExternalCommand withExtraArguments(List<String> extra) {
+  ExternalCommand withArguments(List<String> extra) {
     return ExternalCommand(parts.followedBy(extra).toList());
   }
 
-  ExternalCommand withExtraArgument(String extra) {
-    return withExtraArguments([extra]);
+  ExternalCommand withArgument(String extra) {
+    return withArguments([extra]);
   }
 
   ExternalCommand? askContinueQuestion(String context) {

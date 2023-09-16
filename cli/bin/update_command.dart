@@ -22,7 +22,7 @@ class UpdateCommand extends Command {
     final mainBranch = "main";
     if (currentBranch != mainBranch) {
       final result = Git.checkout
-          .withExtraArgument(mainBranch)
+          .withArgument(mainBranch)
           .askContinueQuestion(
               "Switching from $currentBranch to $mainBranch branch.")
           ?.announce()
