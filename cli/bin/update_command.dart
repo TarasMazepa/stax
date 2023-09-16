@@ -13,6 +13,6 @@ class UpdateCommand extends Command {
     final executablePath = dirname(Platform.script.toFilePath());
     Process.runSync("git", ["pull"],
             runInShell: true, workingDirectory: executablePath)
-        .printAll();
+        .printNotEmpty();
   }
 }

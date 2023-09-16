@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:stax/process_result_print.dart';
+
 import 'command.dart';
 
 class DeleteGoneBranchesCommand extends Command {
@@ -9,6 +11,8 @@ class DeleteGoneBranchesCommand extends Command {
 
   @override
   void run(List<String> args) {
-    Process.runSync("git", ["fetch", "-p"]);
+    Process.runSync("git", ["fetch", "-p"]).printNotEmpty();
+    final branches = Process.runSync("git", ["branch", "-vv"]);
+    branches.printNotEmpty();
   }
 }
