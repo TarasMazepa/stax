@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-git fetch -p
-TEMP="$(mktemp "$TMPDIR$(uuidgen)".txt)"
-git branch -vv -a &>"$TEMP"
-grep ": gone]" "$TEMP" | sed -r 's/ +([a-zA-Z0-9\-]+) .*/\1/' | xargs git branch -D
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+
+"$SCRIPT_DIR/stax" delete-gone-branches
