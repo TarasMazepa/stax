@@ -12,10 +12,24 @@ class UpdateCommand extends Command {
   @override
   void run(List<String> args) {
     final executablePath = dirname(Platform.script.toFilePath());
-    Git.branchCurrent
+    final currentBranch = Git.branchCurrent
         .announce()
         .runSync(workingDirectory: executablePath)
-        .printNotEmptyResultFields();
+        .printNotEmptyResultFields()
+        .stdout
+        .toString()
+        .trim();
+    final mainBranch = "main";
+    if (currentBranch != mainBranch) {
+      final result = Git.checkout
+          .withExtraArgument(mainBranch)
+          .askContinueQuestion(
+              "Switching from $currentBranch to $mainBranch branch.")
+          ?.announce()
+          .runSync(workingDirectory: executablePath)
+          .printNotEmptyResultFields();
+      if (result == null) return;
+    }
     Git.pull
         .announce()
         .runSync(workingDirectory: executablePath)

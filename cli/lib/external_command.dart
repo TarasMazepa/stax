@@ -16,6 +16,10 @@ class ExternalCommand {
     return ExternalCommand(parts.followedBy(extra).toList());
   }
 
+  ExternalCommand withExtraArgument(String extra) {
+    return withExtraArguments([extra]);
+  }
+
   ExternalCommand? askContinueQuestion(String context) {
     stdout.write("$context Continue y/N? ");
     return stdin.readLineSync() == 'y' ? this : null;

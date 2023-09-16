@@ -27,10 +27,10 @@ class DeleteGoneBranchesCommand extends Command {
       return;
     }
     Git.branchDelete
+        .withExtraArguments(branchesToDelete)
         .askContinueQuestion(
             "Local branches with gone remotes that would be deleted: ${branchesToDelete.join(", ")}.")
-        ?.withExtraArguments(branchesToDelete)
-        .announce()
+        ?.announce()
         .runSync()
         .printNotEmptyResultFields();
   }
