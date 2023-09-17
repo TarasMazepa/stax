@@ -18,4 +18,6 @@ class Git {
   static final revList = ExternalCommand.split("git rev-list");
   static final revListCount = revList.withArgument("--count");
   static final remote = ExternalCommand.split("git remote");
+  static final revParse = ExternalCommand.split("git rev-parse");
+  static final revParseAbbrevRef = revParse.withArgument("--abbrev-ref");
 }
