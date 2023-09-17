@@ -1,3 +1,4 @@
+import 'package:stax/external_command.dart';
 import 'package:stax/git.dart';
 import 'package:stax/process_result_print.dart';
 
@@ -34,17 +35,19 @@ class CommitCommand extends Command {
       originalBranchName = args[1];
     }
     final resultingBranchName = sanitizeBranchName(originalBranchName);
-    final checkout = Git.checkoutNewBranch.withArgument(resultingBranchName);
     if (originalBranchName != resultingBranchName) {
-      if (checkout.askContinueQuestion(
-              "Branch name was sanitized to '$resultingBranchName'.") ==
-          null) return;
+      if (!commandLineContinueQuestion(
+          "Branch name was sanitized to '$resultingBranchName'.")) return;
     }
     print("Commit  message: '$commitMessage'");
     print("New branch name: '$resultingBranchName'");
-    final exitCode =
-        checkout.announce().runSync().printNotEmptyResultFields().exitCode;
-    if (exitCode != 0) {
+    final newBranchCheckoutExitCode = Git.checkoutNewBranch
+        .withArgument(resultingBranchName)
+        .announce()
+        .runSync()
+        .printNotEmptyResultFields()
+        .exitCode;
+    if (newBranchCheckoutExitCode != 0) {
       print("Looks like we can't create new branch with '$resultingBranchName' "
           "name. Please pick a different name.");
       return;
