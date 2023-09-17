@@ -4,7 +4,7 @@ class Git {
   static final branch = ExternalCommand.split("git branch");
   static final branchCurrent = branch.withArgument("--show-current");
   static final branchDelete = branch.withArgument("-D");
-  static final branches = branch.withArgument("-vv");
+  static final branchVv = branch.withArgument("-vv");
   static final checkout = ExternalCommand.split("git checkout");
   static final checkoutNewBranch = checkout.withArgument("-b");
   static final commit = ExternalCommand.split("git commit");

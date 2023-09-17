@@ -11,15 +11,15 @@ class DeleteGoneBranchesCommand extends Command {
   @override
   void run(List<String> args) {
     Git.fetchWithPrune.announce().runSync().printNotEmptyResultFields();
-    final gitBranches =
-        Git.branches.announce().runSync().printNotEmptyResultFields();
-    final branchesToDelete = gitBranches.stdout
+    final branchesToDelete = Git.branchVv
+        .announce()
+        .runSync()
+        .printNotEmptyResultFields()
+        .stdout
         .toString()
         .split("\n")
-        .where((element) =>
-            element.isNotEmpty &&
-            element[0] != "*" &&
-            element.contains(": gone] "))
+        .where((element) => element.length > 2)
+        .where((element) => element[0] != "*" && element.contains(": gone] "))
         .map((e) => e.substring(2, e.indexOf(" ", 2)))
         .toList();
     if (branchesToDelete.isEmpty) {
