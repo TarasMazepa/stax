@@ -15,7 +15,7 @@ class TerminalCommand extends Command {
   void run(List<String> args) {
     switch (args) {
       case []:
-        print("No arguments provided");
+        print("No arguments provided.");
       case [final executable, ...final arguments]:
         Process.runSync(executable, arguments).printAllResultFields();
     }
