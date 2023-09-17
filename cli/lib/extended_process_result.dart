@@ -6,7 +6,11 @@ import 'field_info.dart';
 
 extension ExtendedProcessResultCoverter on ProcessResult {
   ExtendedProcessResult extend(ExternalCommand externalCommand) {
-    return ExtendedProcessResult(this, externalCommand);
+    return ExtendedProcessResult(this, externalCommand.silent);
+  }
+
+  ExtendedProcessResult extendWithSilence(bool silence) {
+    return ExtendedProcessResult(this, silence);
   }
 }
 
@@ -30,8 +34,7 @@ class ExtendedProcessResult {
   final ProcessResult processResult;
   final bool silent;
 
-  ExtendedProcessResult(this.processResult, ExternalCommand externalCommand)
-      : silent = externalCommand.silent;
+  ExtendedProcessResult(this.processResult, this.silent);
 
   int get exitCode => processResult.exitCode;
 

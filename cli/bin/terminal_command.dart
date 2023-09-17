@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:stax/extended_process_result.dart';
 import 'package:stax/process_result_print.dart';
 
 import 'command.dart';
@@ -17,7 +18,9 @@ class TerminalCommand extends Command {
       case []:
         print("No arguments provided.");
       case [final executable, ...final arguments]:
-        Process.runSync(executable, arguments).printAllResultFields();
+        Process.runSync(executable, arguments)
+            .extendWithSilence(false)
+            .printAllResultFields();
     }
   }
 }
