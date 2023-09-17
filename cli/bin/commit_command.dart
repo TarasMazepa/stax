@@ -34,7 +34,9 @@ class CommitCommand extends Command {
               "Branch name was sanitized to '$resultingBranchName'.") ==
           null) return;
     }
-    checkout.announce().runSync().printNotEmptyResultFields();
+    final exitCode =
+        checkout.announce().runSync().printNotEmptyResultFields().exitCode;
+    if (exitCode != 0) return;
     Git.commit
         .withArguments(["-m", commitMessage])
         .announce()
