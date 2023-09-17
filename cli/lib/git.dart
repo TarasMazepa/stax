@@ -15,4 +15,6 @@ class Git {
   static final fetchWithPrune = fetch.withArgument("-p");
   static final pull = ExternalCommand.split("git pull");
   static final push = ExternalCommand.split("git push");
+  static final revList = ExternalCommand.split("git rev-list");
+  static final revListCount = revList.withArgument("--count");
 }
