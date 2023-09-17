@@ -14,5 +14,4 @@ void main() {
   test('may items', () {
     expect([1, 2, 3, 4, 5, 6, 7, 8, 9, 1].count(1), 2);
   });
-  [].where((element) => false).length;
 }
