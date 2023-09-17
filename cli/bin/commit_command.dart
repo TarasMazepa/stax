@@ -1,10 +1,11 @@
 import 'package:stax/git.dart';
 
 import 'command.dart';
+import 'sanitize_branch_name.dart';
 
 class CommitCommand extends Command {
   CommitCommand()
-      : super("commit", "creates a branch, commits, and pushes it to remote");
+      : super("commit", "Creates a branch, commits, and pushes it to remote.");
 
   @override
   void run(List<String> args) {
@@ -13,21 +14,12 @@ class CommitCommand extends Command {
       return;
     }
     final commitMessage = args[0];
-    String originalBranchName = args[0];
-    String resultingBranchName = "";
-    if (args.length > 1) {
-      originalBranchName = args[1];
-    }
-    for (int i = 0; i < originalBranchName.length; i++) {
-      if (resultingBranchName.isEmpty) {
-
-      } else {
-
-      }
-    }
+    String originalBranchName = args.length > 1 ? args[1] : args[0];
+    String resultingBranchName = sanitizeBranchName(originalBranchName);
     if (originalBranchName != resultingBranchName) {
-
+      // ask user if it is ok to name branch like that.
     }
     Git.checkout.withArguments(["-b", resultingBranchName]);
+    Git.commit.withArguments(["-m", commitMessage]);
   }
 }
