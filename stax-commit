@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-(
-  git checkout -b "$1" ||
-    git checkout "$1"
-) &&
-  git commit -m "$1" &&
-  git push
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+
+"$SCRIPT_DIR/stax" commit "$@"
