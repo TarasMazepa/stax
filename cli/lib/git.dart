@@ -1,12 +1,13 @@
 import 'external_command.dart';
 
 class Git {
-  static final branchCurrent =
-      ExternalCommand.split("git branch --show-current");
-  static final branchDelete = ExternalCommand.split("git branch -D");
-  static final branches = ExternalCommand.split("git branch -vv");
+  static final branch = ExternalCommand.split("git branch");
+  static final branchCurrent = branch.withArgument("--show-current");
+  static final branchDelete = branch.withArgument("-D");
+  static final branches = branch.withArgument("-vv");
   static final checkout = ExternalCommand.split("git checkout");
   static final commit = ExternalCommand.split("git commit");
-  static final fetch = ExternalCommand.split("git fetch -p");
+  static final fetch = ExternalCommand.split("git fetch");
+  static final fetchWithPrune = fetch.withArgument("-p");
   static final pull = ExternalCommand.split("git pull");
 }

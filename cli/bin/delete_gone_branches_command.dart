@@ -10,7 +10,7 @@ class DeleteGoneBranchesCommand extends Command {
 
   @override
   void run(List<String> args) {
-    Git.fetch.announce().runSync().printNotEmptyResultFields();
+    Git.fetchWithPrune.announce().runSync().printNotEmptyResultFields();
     final gitBranches =
         Git.branches.announce().runSync().printNotEmptyResultFields();
     final branchesToDelete = gitBranches.stdout
