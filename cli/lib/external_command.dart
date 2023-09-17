@@ -29,8 +29,8 @@ class ExternalCommand {
     return commandLineContinueQuestion(context) ? this : null;
   }
 
-  ExternalCommand announce() {
-    print("> ${toString()}");
+  ExternalCommand announce([String? context]) {
+    print("> ${toString()}${context == null ? "" : " # $context"}");
     return this;
   }
 

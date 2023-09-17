@@ -17,4 +17,5 @@ class Git {
   static final push = ExternalCommand.split("git push");
   static final revList = ExternalCommand.split("git rev-list");
   static final revListCount = revList.withArgument("--count");
+  static final remote = ExternalCommand.split("git remote");
 }

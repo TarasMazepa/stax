@@ -1,5 +1,4 @@
 import 'package:stax/git.dart';
-import 'package:stax/nullable_index_of.dart';
 import 'package:stax/process_result_print.dart';
 
 import 'command.dart';
@@ -10,21 +9,25 @@ class MainBranchCommand extends Command {
 
   @override
   void run(List<String> args) {
-    var a = Git.branch
-        .announce()
+    final remotes = Git.remote
+        .announce("Checking name of your remote.")
         .runSync()
         .printNotEmptyResultFields()
         .stdout
         .toString()
         .split("\n")
-        .where((element) => element.length > 2)
-        .map((e) => e.substring(2, e.indexOf(" ", 2).toNullableIndexOfResult()))
-        .toList()
-        .map((e) => Git.revListCount
-            .withArgument(e)
-            .announce()
-            .runSync()
-            .printNotEmptyResultFields())
-        .toList();
+        .map((e) => e.trim());
+    final String remote;
+    switch (remotes.length) {
+      case 0:
+        print("You have no remotes. Can't figure out default branch.");
+        return;
+      case 1:
+        remote = remotes.first;
+      default:
+        print("You have many remotes. I will just pick the first one.");
+        remote = remotes.first;
+    }
+
   }
 }
