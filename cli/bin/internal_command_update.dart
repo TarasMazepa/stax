@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:stax/git.dart';
 
-import 'command.dart';
+import 'internal_command.dart';
 
-class UpdateCommand extends Command {
-  UpdateCommand() : super("update", "Updates to the latest version.");
+class InternalCommandUpdate extends InternalCommand {
+  InternalCommandUpdate() : super("update", "Updates to the latest version.");
 
   @override
   void run(List<String> args) {

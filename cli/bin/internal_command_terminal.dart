@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:stax/extended_process_result.dart';
 
-import 'command.dart';
+import 'internal_command.dart';
 
-class TerminalCommand extends Command {
-  TerminalCommand()
+class InternalCommandTerminal extends InternalCommand {
+  InternalCommandTerminal()
       : super(
             "terminal",
             "Command to test how dart executes commands in terminal. "

@@ -1,9 +1,9 @@
 import 'package:stax/git.dart';
 
-import 'command.dart';
+import 'internal_command.dart';
 
-class MainBranchCommand extends Command {
-  MainBranchCommand()
+class InternalCommandMainBranch extends InternalCommand {
+  InternalCommandMainBranch()
       : super("main-branch", "Shows which branch stax considers to be main.");
 
   @override

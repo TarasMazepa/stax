@@ -1,11 +1,11 @@
 import 'package:stax/external_command.dart';
 import 'package:stax/git.dart';
 
-import 'command.dart';
+import 'internal_command.dart';
 import 'sanitize_branch_name.dart';
 
-class CommitCommand extends Command {
-  CommitCommand()
+class InternalCommandCommit extends InternalCommand {
+  InternalCommandCommit()
       : super(
             "commit",
             "Creates a branch, commits, and pushes it to remote. "

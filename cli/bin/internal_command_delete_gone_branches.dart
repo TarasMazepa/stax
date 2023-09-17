@@ -1,10 +1,10 @@
 import 'package:stax/git.dart';
 import 'package:stax/nullable_index_of.dart';
 
-import 'command.dart';
+import 'internal_command.dart';
 
-class DeleteGoneBranchesCommand extends Command {
-  DeleteGoneBranchesCommand()
+class InternalCommandDeleteGoneBranches extends InternalCommand {
+  InternalCommandDeleteGoneBranches()
       : super("delete-gone-branches",
             "Deletes local branches with gone remotes.");
 

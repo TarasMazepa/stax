@@ -1,12 +1,12 @@
-import 'available_commands.dart';
-import 'commands.dart';
+import 'internal_command_available_commands.dart';
+import 'internal_commands.dart';
 
 void main(List<String> arguments) {
   switch (arguments) {
     case []:
-      AvailableCommands().run([]);
+      InternalCommandAvailableCommands().run([]);
     case [final commandName, ...final args]:
-      final command = commandRegistry[commandName];
+      final command = internalCommandRegistry[commandName];
       if (command == null) {
         print("unknown command '$commandName'");
         return;

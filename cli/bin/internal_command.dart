@@ -1,8 +1,8 @@
-abstract class Command {
+abstract class InternalCommand {
   final String name;
   final String description;
 
-  const Command(this.name, this.description);
+  const InternalCommand(this.name, this.description);
 
   void run(final List<String> args);
 }
