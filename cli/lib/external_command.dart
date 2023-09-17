@@ -50,6 +50,22 @@ class ExternalCommand {
         stderrEncoding: stderrEncoding);
   }
 
+  Future<ProcessResult> run(
+      {String? workingDirectory,
+      Map<String, String>? environment,
+      bool includeParentEnvironment = true,
+      bool runInShell = false,
+      Encoding? stdoutEncoding = systemEncoding,
+      Encoding? stderrEncoding = systemEncoding}) {
+    return Process.run(executable, arguments,
+        workingDirectory: workingDirectory,
+        environment: environment,
+        includeParentEnvironment: includeParentEnvironment,
+        runInShell: runInShell,
+        stdoutEncoding: stdoutEncoding,
+        stderrEncoding: stderrEncoding);
+  }
+
   @override
   String toString() {
     return parts.join(" ");
