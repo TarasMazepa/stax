@@ -7,7 +7,10 @@ class Git {
   static final branches = branch.withArgument("-vv");
   static final checkout = ExternalCommand.split("git checkout");
   static final commit = ExternalCommand.split("git commit");
+  static final diff = ExternalCommand.split("git diff");
+  static final diffCachedQuiet = diff.withArguments(["--cached", "--quiet"]);
   static final fetch = ExternalCommand.split("git fetch");
   static final fetchWithPrune = fetch.withArgument("-p");
   static final pull = ExternalCommand.split("git pull");
+  static final push = ExternalCommand.split("git push");
 }
