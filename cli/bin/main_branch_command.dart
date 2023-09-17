@@ -10,7 +10,7 @@ class MainBranchCommand extends Command {
 
   @override
   void run(List<String> args) {
-    final branches = Git.branch
+    var a = Git.branch
         .announce()
         .runSync()
         .printNotEmptyResultFields()
@@ -19,7 +19,12 @@ class MainBranchCommand extends Command {
         .split("\n")
         .where((element) => element.length > 2)
         .map((e) => e.substring(2, e.indexOf(" ", 2).toNullableIndexOfResult()))
+        .toList()
+        .map((e) => Git.revListCount
+            .withArgument(e)
+            .announce()
+            .runSync()
+            .printNotEmptyResultFields())
         .toList();
-    print("All your local branches: ${branches.join(", ")}.");
   }
 }
