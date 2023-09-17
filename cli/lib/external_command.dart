@@ -30,7 +30,8 @@ class ExternalCommand {
   }
 
   ExternalCommand announce([String? context]) {
-    print("> ${toString()}${context == null ? "" : " # $context"}");
+    if (context != null) print("# $context");
+    print("> ${toString()}");
     return this;
   }
 
