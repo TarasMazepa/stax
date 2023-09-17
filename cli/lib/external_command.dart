@@ -1,6 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+bool commandLineContinueQuestion(String context) {
+  stdout.write("$context Continue y/N? ");
+  return stdin.readLineSync() == 'y';
+}
+
 class ExternalCommand {
   final List<String> parts;
 
@@ -21,8 +26,7 @@ class ExternalCommand {
   }
 
   ExternalCommand? askContinueQuestion(String context) {
-    stdout.write("$context Continue y/N? ");
-    return stdin.readLineSync() == 'y' ? this : null;
+    return commandLineContinueQuestion(context) ? this : null;
   }
 
   ExternalCommand announce() {
