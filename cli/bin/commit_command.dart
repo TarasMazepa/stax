@@ -25,7 +25,14 @@ class CommitCommand extends Command {
       return;
     }
     final commitMessage = args[0];
-    String originalBranchName = args.length > 1 ? args[1] : args[0];
+    final String originalBranchName;
+    if (args.length == 1) {
+      originalBranchName = args[0];
+      print("Second parameter wasn't provided. Will convert commit message to "
+          "new branch name.");
+    } else {
+      originalBranchName = args[1];
+    }
     String resultingBranchName = sanitizeBranchName(originalBranchName);
     final checkout = Git.checkoutNewBranch.withArgument(resultingBranchName);
     if (originalBranchName != resultingBranchName) {
@@ -33,9 +40,15 @@ class CommitCommand extends Command {
               "Branch name was sanitized to '$resultingBranchName'.") ==
           null) return;
     }
+    print("Commit  message: '$commitMessage'");
+    print("New branch name: '$resultingBranchName'");
     final exitCode =
         checkout.announce().runSync().printNotEmptyResultFields().exitCode;
-    if (exitCode != 0) return;
+    if (exitCode != 0) {
+      print("Looks like we can't create new branch with '$resultingBranchName' "
+          "name. Please pick a different name.");
+      return;
+    }
     Git.commitWithMessage
         .withArgument(commitMessage)
         .announce()
