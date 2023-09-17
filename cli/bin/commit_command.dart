@@ -28,8 +28,7 @@ class CommitCommand extends Command {
     final commitMessage = args[0];
     String originalBranchName = args.length > 1 ? args[1] : args[0];
     String resultingBranchName = sanitizeBranchName(originalBranchName);
-    ExternalCommand checkout =
-        Git.checkout.withArguments(["-b", resultingBranchName]);
+    final checkout = Git.checkoutNewBranch.withArgument(resultingBranchName);
     if (originalBranchName != resultingBranchName) {
       if (checkout.askContinueQuestion(
               "Branch name was sanitized to '$resultingBranchName'.") ==
@@ -41,6 +40,6 @@ class CommitCommand extends Command {
         .announce()
         .runSync()
         .printNotEmptyResultFields();
-    Git.pull.announce().runSync().printNotEmptyResultFields();
+    Git.push.announce().runSync().printNotEmptyResultFields();
   }
 }

@@ -6,6 +6,7 @@ class Git {
   static final branchDelete = branch.withArgument("-D");
   static final branches = branch.withArgument("-vv");
   static final checkout = ExternalCommand.split("git checkout");
+  static final checkoutNewBranch = checkout.withArgument("-b");
   static final commit = ExternalCommand.split("git commit");
   static final diff = ExternalCommand.split("git diff");
   static final diffCachedQuiet = diff.withArguments(["--cached", "--quiet"]);
