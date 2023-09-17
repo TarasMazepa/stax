@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:stax/extended_process_result.dart';
+
 bool commandLineContinueQuestion(String context) {
   stdout.write("$context Continue y/N? ");
   return stdin.readLineSync() == 'y';
@@ -44,7 +46,7 @@ class ExternalCommand {
     return this;
   }
 
-  ProcessResult runSync(
+  ExtendedProcessResult runSync(
       {String? workingDirectory,
       Map<String, String>? environment,
       bool includeParentEnvironment = true,
@@ -52,15 +54,16 @@ class ExternalCommand {
       Encoding? stdoutEncoding = systemEncoding,
       Encoding? stderrEncoding = systemEncoding}) {
     return Process.runSync(executable, arguments,
-        workingDirectory: workingDirectory,
-        environment: environment,
-        includeParentEnvironment: includeParentEnvironment,
-        runInShell: runInShell,
-        stdoutEncoding: stdoutEncoding,
-        stderrEncoding: stderrEncoding);
+            workingDirectory: workingDirectory,
+            environment: environment,
+            includeParentEnvironment: includeParentEnvironment,
+            runInShell: runInShell,
+            stdoutEncoding: stdoutEncoding,
+            stderrEncoding: stderrEncoding)
+        .extend(this);
   }
 
-  Future<ProcessResult> run(
+  Future<ExtendedProcessResult> run(
       {String? workingDirectory,
       Map<String, String>? environment,
       bool includeParentEnvironment = true,
@@ -68,12 +71,13 @@ class ExternalCommand {
       Encoding? stdoutEncoding = systemEncoding,
       Encoding? stderrEncoding = systemEncoding}) {
     return Process.run(executable, arguments,
-        workingDirectory: workingDirectory,
-        environment: environment,
-        includeParentEnvironment: includeParentEnvironment,
-        runInShell: runInShell,
-        stdoutEncoding: stdoutEncoding,
-        stderrEncoding: stderrEncoding);
+            workingDirectory: workingDirectory,
+            environment: environment,
+            includeParentEnvironment: includeParentEnvironment,
+            runInShell: runInShell,
+            stdoutEncoding: stdoutEncoding,
+            stderrEncoding: stderrEncoding)
+        .then((value) => value.extend(this));
   }
 
   @override
