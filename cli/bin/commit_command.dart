@@ -1,6 +1,5 @@
 import 'package:stax/external_command.dart';
 import 'package:stax/git.dart';
-import 'package:stax/process_result_print.dart';
 
 import 'command.dart';
 import 'sanitize_branch_name.dart';

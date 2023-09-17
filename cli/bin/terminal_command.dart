@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:stax/extended_process_result.dart';
-import 'package:stax/process_result_print.dart';
 
 import 'command.dart';
 

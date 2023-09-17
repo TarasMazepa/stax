@@ -1,4 +1,3 @@
-import 'package:stax/count_on_list.dart';
 import 'package:test/test.dart';
 
 import '../bin/sanitize_branch_name.dart';

@@ -1,6 +1,5 @@
 import 'package:stax/git.dart';
 import 'package:stax/nullable_index_of.dart';
-import 'package:stax/process_result_print.dart';
 
 import 'command.dart';
 

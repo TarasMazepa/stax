@@ -1,5 +1,4 @@
 import 'package:stax/git.dart';
-import 'package:stax/process_result_print.dart';
 
 import 'command.dart';
 
