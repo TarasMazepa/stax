@@ -8,17 +8,25 @@ bool commandLineContinueQuestion(String context) {
 
 class ExternalCommand {
   final List<String> parts;
+  final bool silent;
 
-  ExternalCommand(this.parts);
+  ExternalCommand(this.parts, this.silent);
 
-  ExternalCommand.split(String command) : parts = command.split(" ");
+  ExternalCommand.split(String command)
+      : parts = command.split(" "),
+        silent = false;
 
   String get executable => parts[0];
 
   List<String> get arguments => parts.sublist(1);
 
+  ExternalCommand silence(bool targetSilence) {
+    if (targetSilence == silent) return this;
+    return ExternalCommand(parts, targetSilence);
+  }
+
   ExternalCommand withArguments(List<String> extra) {
-    return ExternalCommand(parts.followedBy(extra).toList());
+    return ExternalCommand(parts.followedBy(extra).toList(), silent);
   }
 
   ExternalCommand withArgument(String extra) {
@@ -30,6 +38,7 @@ class ExternalCommand {
   }
 
   ExternalCommand announce([String? context]) {
+    if (silent) return this;
     if (context != null) print("# $context");
     print("> ${toString()}");
     return this;
