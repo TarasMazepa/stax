@@ -1,4 +1,3 @@
-import 'package:stax/external_command.dart';
 import 'package:stax/git.dart';
 import 'package:stax/process_result_print.dart';
 
@@ -37,8 +36,8 @@ class CommitCommand extends Command {
     final exitCode =
         checkout.announce().runSync().printNotEmptyResultFields().exitCode;
     if (exitCode != 0) return;
-    Git.commit
-        .withArguments(["-m", commitMessage])
+    Git.commitWithMessage
+        .withArgument(commitMessage)
         .announce()
         .runSync()
         .printNotEmptyResultFields();

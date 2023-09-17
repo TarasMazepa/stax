@@ -8,6 +8,7 @@ class Git {
   static final checkout = ExternalCommand.split("git checkout");
   static final checkoutNewBranch = checkout.withArgument("-b");
   static final commit = ExternalCommand.split("git commit");
+  static final commitWithMessage = commit.withArgument("-m");
   static final diff = ExternalCommand.split("git diff");
   static final diffCachedQuiet = diff.withArguments(["--cached", "--quiet"]);
   static final fetch = ExternalCommand.split("git fetch");
