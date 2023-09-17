@@ -5,8 +5,8 @@ import 'command.dart';
 
 class DeleteGoneBranchesCommand extends Command {
   DeleteGoneBranchesCommand()
-      : super(
-            "delete-gone-branches", "deletes local branches with gone remotes");
+      : super("delete-gone-branches",
+            "Deletes local branches with gone remotes.");
 
   @override
   void run(List<String> args) {

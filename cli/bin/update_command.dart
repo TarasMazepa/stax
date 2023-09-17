@@ -7,7 +7,7 @@ import 'package:stax/process_result_print.dart';
 import 'command.dart';
 
 class UpdateCommand extends Command {
-  UpdateCommand() : super("update", "updates to the latest version");
+  UpdateCommand() : super("update", "Updates to the latest version.");
 
   @override
   void run(List<String> args) {
