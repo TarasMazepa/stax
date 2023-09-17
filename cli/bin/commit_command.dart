@@ -33,7 +33,7 @@ class CommitCommand extends Command {
     } else {
       originalBranchName = args[1];
     }
-    String resultingBranchName = sanitizeBranchName(originalBranchName);
+    final resultingBranchName = sanitizeBranchName(originalBranchName);
     final checkout = Git.checkoutNewBranch.withArgument(resultingBranchName);
     if (originalBranchName != resultingBranchName) {
       if (checkout.askContinueQuestion(
