@@ -4,6 +4,7 @@ import 'package:path/path.dart';
 
 import 'context_for_internal_command.dart';
 import 'internal_command.dart';
+import 'shortcut_get_current_branch.dart';
 
 class InternalCommandUpdate extends InternalCommand {
   InternalCommandUpdate() : super("update", "Updates to the latest version.");
@@ -11,13 +12,7 @@ class InternalCommandUpdate extends InternalCommand {
   @override
   void run(final ContextForInternalCommand context) {
     final executablePath = dirname(Platform.script.toFilePath());
-    final currentBranch = context.git.branchCurrent
-        .announce("Checking current branch.")
-        .runSync(workingDirectory: executablePath)
-        .printNotEmptyResultFields()
-        .stdout
-        .toString()
-        .trim();
+    final currentBranch = context.getCurrentBranch();
     final mainBranch = "main";
     if (currentBranch != mainBranch) {
       final result = context.git.checkout
