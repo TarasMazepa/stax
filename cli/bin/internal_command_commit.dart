@@ -28,8 +28,8 @@ class InternalCommandCommit extends InternalCommand {
     final String originalBranchName;
     if (context.args.length == 1) {
       originalBranchName = context.args[0];
-      context.printToConsole("Second parameter wasn't provided. Will convert commit message to "
-          "new branch name.");
+      context.printToConsole(
+          "Second parameter wasn't provided. Will convert commit message to new branch name.");
     } else {
       originalBranchName = context.args[1];
     }
@@ -47,8 +47,8 @@ class InternalCommandCommit extends InternalCommand {
         .printNotEmptyResultFields()
         .exitCode;
     if (newBranchCheckoutExitCode != 0) {
-      context.printToConsole("Looks like we can't create new branch with '$resultingBranchName' "
-          "name. Please pick a different name.");
+      context.printToConsole(
+          "Looks like we can't create new branch with '$resultingBranchName' name. Please pick a different name.");
       return;
     }
     context.git.commitWithMessage
