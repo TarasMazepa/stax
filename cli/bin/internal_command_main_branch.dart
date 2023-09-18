@@ -1,5 +1,3 @@
-import 'package:stax/git.dart';
-
 import 'context_for_internal_command.dart';
 import 'internal_command.dart';
 
@@ -9,7 +7,7 @@ class InternalCommandMainBranch extends InternalCommand {
 
   @override
   void run(final ContextForInternalCommand context) {
-    final remotes = Git.remote
+    final remotes = context.git.remote
         .announce("Checking name of your remote.")
         .runSync()
         .printNotEmptyResultFields()
@@ -29,7 +27,7 @@ class InternalCommandMainBranch extends InternalCommand {
         print("You have many remotes. I will just pick the first one.");
         remote = remotes.first;
     }
-    final defaultBranch = Git.revParseAbbrevRef
+    final defaultBranch = context.git.revParseAbbrevRef
         .withArgument("$remote/HEAD")
         .announce("Checking default branch on remote")
         .runSync()

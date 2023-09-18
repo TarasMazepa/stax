@@ -1,5 +1,4 @@
 import 'package:stax/external_command.dart';
-import 'package:stax/git.dart';
 
 import 'context_for_internal_command.dart';
 import 'internal_command.dart';
@@ -20,7 +19,7 @@ class InternalCommandCommit extends InternalCommand {
       print("You need to provide commit message.");
       return;
     }
-    if (Git.diffCachedQuiet.runSync().exitCode == 0) {
+    if (context.git.diffCachedQuiet.runSync().exitCode == 0) {
       print("Can't commit - there is nothing staged. "
           "Run 'git add .' to add all the changes.");
       return;
@@ -41,7 +40,7 @@ class InternalCommandCommit extends InternalCommand {
     }
     print("Commit  message: '$commitMessage'");
     print("New branch name: '$resultingBranchName'");
-    final newBranchCheckoutExitCode = Git.checkoutNewBranch
+    final newBranchCheckoutExitCode = context.git.checkoutNewBranch
         .withArgument(resultingBranchName)
         .announce()
         .runSync()
@@ -52,11 +51,11 @@ class InternalCommandCommit extends InternalCommand {
           "name. Please pick a different name.");
       return;
     }
-    Git.commitWithMessage
+    context.git.commitWithMessage
         .withArgument(commitMessage)
         .announce()
         .runSync()
         .printNotEmptyResultFields();
-    Git.push.announce().runSync().printNotEmptyResultFields();
+    context.git.push.announce().runSync().printNotEmptyResultFields();
   }
 }

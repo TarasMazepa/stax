@@ -1,5 +1,5 @@
-import 'internal_command_available_commands.dart';
 import 'internal_command.dart';
+import 'internal_command_available_commands.dart';
 import 'internal_command_commit.dart';
 import 'internal_command_delete_gone_branches.dart';
 import 'internal_command_main_branch.dart';

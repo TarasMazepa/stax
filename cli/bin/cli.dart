@@ -5,8 +5,7 @@ import 'internal_commands.dart';
 void main(List<String> arguments) {
   switch (arguments) {
     case []:
-      InternalCommandAvailableCommands()
-          .run(ContextForInternalCommand.empty());
+      InternalCommandAvailableCommands().run(ContextForInternalCommand.empty());
     case [final commandName, ...final args]:
       final command = internalCommandRegistry[commandName];
       if (command == null) {

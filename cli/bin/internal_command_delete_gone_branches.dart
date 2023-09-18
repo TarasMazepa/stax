@@ -1,4 +1,3 @@
-import 'package:stax/git.dart';
 import 'package:stax/nullable_index_of.dart';
 
 import 'context_for_internal_command.dart';
@@ -11,8 +10,8 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
 
   @override
   void run(final ContextForInternalCommand context) {
-    Git.fetchWithPrune.announce().runSync().printNotEmptyResultFields();
-    final branchesToDelete = Git.branchVv
+    context.git.fetchWithPrune.announce().runSync().printNotEmptyResultFields();
+    final branchesToDelete = context.git.branchVv
         .announce()
         .runSync()
         .printNotEmptyResultFields()
@@ -27,7 +26,7 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
       print("No local branches with gone remotes.");
       return;
     }
-    Git.branchDelete
+    context.git.branchDelete
         .withArguments(branchesToDelete)
         .askContinueQuestion(
             "Local branches with gone remotes that would be deleted: ${branchesToDelete.join(", ")}.")

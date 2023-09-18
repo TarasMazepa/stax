@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:path/path.dart';
-import 'package:stax/git.dart';
 
 import 'context_for_internal_command.dart';
 import 'internal_command.dart';
@@ -12,7 +11,7 @@ class InternalCommandUpdate extends InternalCommand {
   @override
   void run(final ContextForInternalCommand context) {
     final executablePath = dirname(Platform.script.toFilePath());
-    final currentBranch = Git.branchCurrent
+    final currentBranch = context.git.branchCurrent
         .announce()
         .runSync(workingDirectory: executablePath)
         .printNotEmptyResultFields()
@@ -21,7 +20,7 @@ class InternalCommandUpdate extends InternalCommand {
         .trim();
     final mainBranch = "main";
     if (currentBranch != mainBranch) {
-      final result = Git.checkout
+      final result = context.git.checkout
           .withArgument(mainBranch)
           .askContinueQuestion(
               "Switching from $currentBranch to $mainBranch branch.")
@@ -30,7 +29,7 @@ class InternalCommandUpdate extends InternalCommand {
           .printNotEmptyResultFields();
       if (result == null) return;
     }
-    Git.pull
+    context.git.pull
         .announce()
         .runSync(workingDirectory: executablePath)
         .printNotEmptyResultFields();
