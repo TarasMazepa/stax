@@ -10,7 +10,7 @@ It is a way to reduce burden of creating commits, branches and PRs, so it doesn'
 
 ## Commands
 
-Here is the list of command currently awailable:
+Here is the list of command currently available:
 
 ### stax-commit
 Creates branch, commits current changes with the same name as a branch and pushes.
