@@ -1,6 +1,4 @@
-import 'dart:io';
-
-import 'package:stax/extended_process_result.dart';
+import 'package:stax/external_command.dart';
 
 import 'context_for_internal_command.dart';
 import 'internal_command.dart';
@@ -17,8 +15,8 @@ class InternalCommandTerminal extends InternalCommand {
     switch (context.args) {
       case []:
         context.printToConsole("No arguments provided.");
-      case [final executable, ...final arguments]:
-        Process.runSync(executable, arguments).extend().printAllResultFields();
+      default:
+        ExternalCommand(context.args).runSync().printAllResultFields();
     }
   }
 }

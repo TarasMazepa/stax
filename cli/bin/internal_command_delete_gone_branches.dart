@@ -10,9 +10,12 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
 
   @override
   void run(final ContextForInternalCommand context) {
-    context.git.fetchWithPrune.announce().runSync().printNotEmptyResultFields();
+    context.git.fetchWithPrune
+        .announce("Fetching latest changes from remote.")
+        .runSync()
+        .printNotEmptyResultFields();
     final branchesToDelete = context.git.branchVv
-        .announce()
+        .announce("Checking if any remote branches are gone.")
         .runSync()
         .printNotEmptyResultFields()
         .stdout
@@ -30,7 +33,7 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
         .args(branchesToDelete)
         .askContinueQuestion(
             "Local branches with gone remotes that would be deleted: ${branchesToDelete.join(", ")}.")
-        ?.announce()
+        ?.announce("Deleting branches.")
         .runSync()
         .printNotEmptyResultFields();
   }

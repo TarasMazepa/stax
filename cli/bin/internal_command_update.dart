@@ -12,7 +12,7 @@ class InternalCommandUpdate extends InternalCommand {
   void run(final ContextForInternalCommand context) {
     final executablePath = dirname(Platform.script.toFilePath());
     final currentBranch = context.git.branchCurrent
-        .announce()
+        .announce("Checking current branch.")
         .runSync(workingDirectory: executablePath)
         .printNotEmptyResultFields()
         .stdout
@@ -24,13 +24,13 @@ class InternalCommandUpdate extends InternalCommand {
           .arg(mainBranch)
           .askContinueQuestion(
               "Switching from $currentBranch to $mainBranch branch.")
-          ?.announce()
+          ?.announce("Switching to $mainBranch.")
           .runSync(workingDirectory: executablePath)
           .printNotEmptyResultFields();
       if (result == null) return;
     }
     context.git.pull
-        .announce()
+        .announce("Pulling new changes.")
         .runSync(workingDirectory: executablePath)
         .printNotEmptyResultFields();
   }

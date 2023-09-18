@@ -12,7 +12,7 @@ class ExternalCommand {
   final List<String> parts;
   final bool silent;
 
-  ExternalCommand(this.parts, this.silent);
+  ExternalCommand(this.parts, {this.silent = false});
 
   ExternalCommand.raw(String command, {this.silent = false})
       : parts = command.split(" ");
@@ -23,11 +23,11 @@ class ExternalCommand {
 
   ExternalCommand silence(bool targetSilence) {
     if (targetSilence == silent) return this;
-    return ExternalCommand(parts, targetSilence);
+    return ExternalCommand(parts, silent: targetSilence);
   }
 
   ExternalCommand args(List<String> extra) {
-    return ExternalCommand(parts.followedBy(extra).toList(), silent);
+    return ExternalCommand(parts + extra, silent: silent);
   }
 
   ExternalCommand arg(String extra) {

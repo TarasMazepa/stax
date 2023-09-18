@@ -1,6 +1,6 @@
 import 'context_for_internal_command.dart';
 import 'internal_command.dart';
-import 'internal_command_execution_interruption.dart';
+import 'internal_command_stopped_execution_exception.dart';
 
 class InternalCommandMainBranch extends InternalCommand {
   InternalCommandMainBranch()

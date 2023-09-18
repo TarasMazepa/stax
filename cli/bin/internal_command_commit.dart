@@ -19,7 +19,11 @@ class InternalCommandCommit extends InternalCommand {
       context.printToConsole("You need to provide commit message.");
       return;
     }
-    if (context.git.diffCachedQuiet.runSync().exitCode == 0) {
+    if (context.git.diffCachedQuiet
+            .announce("Checking if there staged changes to commit.")
+            .runSync()
+            .exitCode ==
+        0) {
       context.printToConsole("Can't commit - there is nothing staged. "
           "Run 'git add .' to add all the changes.");
       return;
@@ -42,7 +46,7 @@ class InternalCommandCommit extends InternalCommand {
     context.printToConsole("New branch name: '$resultingBranchName'");
     final newBranchCheckoutExitCode = context.git.checkoutNewBranch
         .arg(resultingBranchName)
-        .announce()
+        .announce("Creating new branch.")
         .runSync()
         .printNotEmptyResultFields()
         .exitCode;
@@ -53,9 +57,9 @@ class InternalCommandCommit extends InternalCommand {
     }
     context.git.commitWithMessage
         .arg(commitMessage)
-        .announce()
+        .announce("Committing")
         .runSync()
         .printNotEmptyResultFields();
-    context.git.push.announce().runSync().printNotEmptyResultFields();
+    context.git.push.announce("Pushing").runSync().printNotEmptyResultFields();
   }
 }
