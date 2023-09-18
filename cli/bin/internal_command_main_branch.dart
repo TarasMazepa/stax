@@ -1,12 +1,12 @@
 import 'context_for_internal_command.dart';
 import 'internal_command.dart';
+import 'internal_command_execution_interruption.dart';
 
 class InternalCommandMainBranch extends InternalCommand {
   InternalCommandMainBranch()
       : super("main-branch", "Shows which branch stax considers to be main.");
 
-  @override
-  void run(final ContextForInternalCommand context) {
+  String getDefaultBranchName(final ContextForInternalCommand context) {
     final remotes = context.git.remote
         .announce("Checking name of your remote.")
         .runSync()
@@ -21,7 +21,7 @@ class InternalCommandMainBranch extends InternalCommand {
       case 0:
         context.printToConsole(
             "You have no remotes. Can't figure out default branch.");
-        return;
+        throw InternalCommandStoppedExecutionException();
       case 1:
         remote = remotes.first;
       default:
@@ -39,5 +39,15 @@ class InternalCommandMainBranch extends InternalCommand {
         .trim()
         .split("/")[1];
     context.printToConsole("Your main branch is $defaultBranch.");
+    return defaultBranch;
+  }
+
+  @override
+  void run(final ContextForInternalCommand context) {
+    try {
+      getDefaultBranchName(context);
+    } on InternalCommandStoppedExecutionException {
+      return;
+    }
   }
 }
