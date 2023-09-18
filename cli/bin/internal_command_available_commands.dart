@@ -4,7 +4,7 @@ import 'internal_commands.dart';
 
 class InternalCommandAvailableCommands extends InternalCommand {
   InternalCommandAvailableCommands()
-      : super("help", "list of available commands");
+      : super("help", "List of available commands.");
 
   @override
   void run(final ContextForInternalCommand context) {
