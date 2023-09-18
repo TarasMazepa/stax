@@ -10,7 +10,7 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
             "Deletes local branches with gone remotes.");
 
   @override
-  void run(final ContextForInternalCommand arguments) {
+  void run(final ContextForInternalCommand context) {
     Git.fetchWithPrune.announce().runSync().printNotEmptyResultFields();
     final branchesToDelete = Git.branchVv
         .announce()

@@ -8,7 +8,7 @@ class InternalCommandMainBranch extends InternalCommand {
       : super("main-branch", "Shows which branch stax considers to be main.");
 
   @override
-  void run(final ContextForInternalCommand arguments) {
+  void run(final ContextForInternalCommand context) {
     final remotes = Git.remote
         .announce("Checking name of your remote.")
         .runSync()

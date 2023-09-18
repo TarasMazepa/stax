@@ -7,7 +7,7 @@ class InternalCommandAvailableCommands extends InternalCommand {
       : super("help", "list of available commands");
 
   @override
-  void run(final ContextForInternalCommand arguments) {
+  void run(final ContextForInternalCommand context) {
     print("Here are available commands:");
     for (final element in internalCommands) {
       print(" * ${element.name}");

@@ -15,8 +15,8 @@ class InternalCommandCommit extends InternalCommand {
                 "branch name would be generated from commit message.");
 
   @override
-  void run(final ContextForInternalCommand arguments) {
-    if (arguments.args.isEmpty) {
+  void run(final ContextForInternalCommand context) {
+    if (context.args.isEmpty) {
       print("You need to provide commit message.");
       return;
     }
@@ -25,14 +25,14 @@ class InternalCommandCommit extends InternalCommand {
           "Run 'git add .' to add all the changes.");
       return;
     }
-    final commitMessage = arguments.args[0];
+    final commitMessage = context.args[0];
     final String originalBranchName;
-    if (arguments.args.length == 1) {
-      originalBranchName = arguments.args[0];
+    if (context.args.length == 1) {
+      originalBranchName = context.args[0];
       print("Second parameter wasn't provided. Will convert commit message to "
           "new branch name.");
     } else {
-      originalBranchName = arguments.args[1];
+      originalBranchName = context.args[1];
     }
     final resultingBranchName = sanitizeBranchName(originalBranchName);
     if (originalBranchName != resultingBranchName) {

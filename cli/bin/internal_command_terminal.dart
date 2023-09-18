@@ -13,8 +13,8 @@ class InternalCommandTerminal extends InternalCommand {
                 "Executes any provided arguments as command in terminal.");
 
   @override
-  void run(final ContextForInternalCommand arguments) {
-    switch (arguments.args) {
+  void run(final ContextForInternalCommand context) {
+    switch (context.args) {
       case []:
         print("No arguments provided.");
       case [final executable, ...final arguments]:

@@ -10,7 +10,7 @@ class InternalCommandUpdate extends InternalCommand {
   InternalCommandUpdate() : super("update", "Updates to the latest version.");
 
   @override
-  void run(final ContextForInternalCommand arguments) {
+  void run(final ContextForInternalCommand context) {
     final executablePath = dirname(Platform.script.toFilePath());
     final currentBranch = Git.branchCurrent
         .announce()

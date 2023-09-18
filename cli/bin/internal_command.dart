@@ -6,7 +6,7 @@ abstract class InternalCommand implements Comparable<InternalCommand> {
 
   const InternalCommand(this.name, this.description);
 
-  void run(final ContextForInternalCommand arguments);
+  void run(final ContextForInternalCommand context);
 
   @override
   int compareTo(InternalCommand other) {
