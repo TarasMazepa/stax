@@ -20,4 +20,23 @@ class Git {
   static final remote = ExternalCommand.split("git remote");
   static final revParse = ExternalCommand.split("git rev-parse");
   static final revParseAbbrevRef = revParse.withArgument("--abbrev-ref");
+  final branch_ = branch;
+  final branchCurrent_ = branchCurrent;
+  final branchDelete_ = branchDelete;
+  final branchVv_ = branchVv;
+  final checkout_ = checkout;
+  final checkoutNewBranch_ = checkoutNewBranch;
+  final commit_ = commit;
+  final commitWithMessage_ = commitWithMessage;
+  final diff_ = diff;
+  final diffCachedQuiet_ = diffCachedQuiet;
+  final fetch_ = fetch;
+  final fetchWithPrune_ = fetchWithPrune;
+  final pull_ = pull;
+  final push_ = push;
+  final revList_ = revList;
+  final revListCount_ = revListCount;
+  final remote_ = remote;
+  final revParse_ = revParse;
+  final revParseAbbrevRef_ = revParseAbbrevRef;
 }
