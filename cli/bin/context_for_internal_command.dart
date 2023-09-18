@@ -2,9 +2,11 @@ import 'package:stax/git.dart';
 
 class ContextForInternalCommand {
   final List<String> args;
-  final git = Git();
+  final bool silent;
 
-  ContextForInternalCommand(this.args);
+  late final git = Git(silent: silent);
+
+  ContextForInternalCommand(this.args, {this.silent = false});
 
   ContextForInternalCommand.empty() : this([]);
 }

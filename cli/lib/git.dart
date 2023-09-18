@@ -21,7 +21,11 @@ class Git {
   late final revParse = rawEc("git rev-parse");
   late final revParseAbbrevRef = revParse.arg("--abbrev-ref");
 
+  final bool silent;
+
+  Git({this.silent = false});
+
   ExternalCommand rawEc(String raw) {
-    return ExternalCommand.raw(raw);
+    return ExternalCommand.raw(raw, silent: silent);
   }
 }

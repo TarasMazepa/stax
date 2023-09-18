@@ -14,9 +14,8 @@ class ExternalCommand {
 
   ExternalCommand(this.parts, this.silent);
 
-  ExternalCommand.raw(String command)
-      : parts = command.split(" "),
-        silent = false;
+  ExternalCommand.raw(String command, {this.silent = false})
+      : parts = command.split(" ");
 
   String get executable => parts[0];
 
