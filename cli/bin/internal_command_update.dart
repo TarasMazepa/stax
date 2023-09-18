@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:stax/git.dart';
 
+import 'arguments_for_internal_command.dart';
 import 'internal_command.dart';
 
 class InternalCommandUpdate extends InternalCommand {
   InternalCommandUpdate() : super("update", "Updates to the latest version.");
 
   @override
-  void run(List<String> args) {
+  void run(final ArgumentsForInternalCommand arguments) {
     final executablePath = dirname(Platform.script.toFilePath());
     final currentBranch = Git.branchCurrent
         .announce()

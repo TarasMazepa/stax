@@ -1,6 +1,7 @@
 import 'package:stax/external_command.dart';
 import 'package:stax/git.dart';
 
+import 'arguments_for_internal_command.dart';
 import 'internal_command.dart';
 import 'sanitize_branch_name.dart';
 
@@ -14,8 +15,8 @@ class InternalCommandCommit extends InternalCommand {
                 "branch name would be generated from commit message.");
 
   @override
-  void run(List<String> args) {
-    if (args.isEmpty) {
+  void run(final ArgumentsForInternalCommand arguments) {
+    if (arguments.args.isEmpty) {
       print("You need to provide commit message.");
       return;
     }
@@ -24,14 +25,14 @@ class InternalCommandCommit extends InternalCommand {
           "Run 'git add .' to add all the changes.");
       return;
     }
-    final commitMessage = args[0];
+    final commitMessage = arguments.args[0];
     final String originalBranchName;
-    if (args.length == 1) {
-      originalBranchName = args[0];
+    if (arguments.args.length == 1) {
+      originalBranchName = arguments.args[0];
       print("Second parameter wasn't provided. Will convert commit message to "
           "new branch name.");
     } else {
-      originalBranchName = args[1];
+      originalBranchName = arguments.args[1];
     }
     final resultingBranchName = sanitizeBranchName(originalBranchName);
     if (originalBranchName != resultingBranchName) {
