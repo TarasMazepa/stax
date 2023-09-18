@@ -13,7 +13,7 @@ final List<InternalCommand> internalCommands = [
   InternalCommandDeleteGoneBranches(),
   InternalCommandCommit(),
   InternalCommandMainBranch(),
-];
+]..sort();
 
 final Map<String, InternalCommand> internalCommandRegistry = {
   for (final entry in internalCommands) entry.name: entry
