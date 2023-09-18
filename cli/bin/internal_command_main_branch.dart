@@ -19,12 +19,12 @@ class InternalCommandMainBranch extends InternalCommand {
     final String remote;
     switch (remotes.length) {
       case 0:
-        print("You have no remotes. Can't figure out default branch.");
+        context.printToConsole("You have no remotes. Can't figure out default branch.");
         return;
       case 1:
         remote = remotes.first;
       default:
-        print("You have many remotes. I will just pick the first one.");
+        context.printToConsole("You have many remotes. I will just pick the first one.");
         remote = remotes.first;
     }
     final defaultBranch = context.git.revParseAbbrevRef
@@ -36,6 +36,6 @@ class InternalCommandMainBranch extends InternalCommand {
         .toString()
         .trim()
         .split("/")[1];
-    print("Your main branch is $defaultBranch.");
+    context.printToConsole("Your main branch is $defaultBranch.");
   }
 }

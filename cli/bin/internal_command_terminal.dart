@@ -16,11 +16,9 @@ class InternalCommandTerminal extends InternalCommand {
   void run(final ContextForInternalCommand context) {
     switch (context.args) {
       case []:
-        print("No arguments provided.");
+        context.printToConsole("No arguments provided.");
       case [final executable, ...final arguments]:
-        Process.runSync(executable, arguments)
-            .extendWithSilence(false)
-            .printAllResultFields();
+        Process.runSync(executable, arguments).extend().printAllResultFields();
     }
   }
 }

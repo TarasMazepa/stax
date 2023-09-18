@@ -23,7 +23,7 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
         .map((e) => e.substring(2, e.indexOf(" ", 2).toNullableIndexOfResult()))
         .toList();
     if (branchesToDelete.isEmpty) {
-      print("No local branches with gone remotes.");
+      context.printToConsole("No local branches with gone remotes.");
       return;
     }
     context.git.branchDelete

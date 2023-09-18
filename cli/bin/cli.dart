@@ -9,7 +9,7 @@ void main(List<String> arguments) {
     case [final commandName, ...final args]:
       final command = internalCommandRegistry[commandName];
       if (command == null) {
-        print("unknown command '$commandName'");
+        print("Unknown command '$commandName'.");
         return;
       }
       command.run(ContextForInternalCommand(args));

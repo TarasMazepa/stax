@@ -8,10 +8,10 @@ class InternalCommandAvailableCommands extends InternalCommand {
 
   @override
   void run(final ContextForInternalCommand context) {
-    print("Here are available commands:");
+    context.printToConsole("Here are available commands:");
     for (final element in internalCommands) {
-      print(" * ${element.name}");
-      print("      ${element.description}");
+      context.printToConsole(" * ${element.name}");
+      context.printToConsole("      ${element.description}");
     }
   }
 }

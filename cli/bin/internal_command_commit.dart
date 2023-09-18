@@ -16,11 +16,11 @@ class InternalCommandCommit extends InternalCommand {
   @override
   void run(final ContextForInternalCommand context) {
     if (context.args.isEmpty) {
-      print("You need to provide commit message.");
+      context.printToConsole("You need to provide commit message.");
       return;
     }
     if (context.git.diffCachedQuiet.runSync().exitCode == 0) {
-      print("Can't commit - there is nothing staged. "
+      context.printToConsole("Can't commit - there is nothing staged. "
           "Run 'git add .' to add all the changes.");
       return;
     }
@@ -28,7 +28,7 @@ class InternalCommandCommit extends InternalCommand {
     final String originalBranchName;
     if (context.args.length == 1) {
       originalBranchName = context.args[0];
-      print("Second parameter wasn't provided. Will convert commit message to "
+      context.printToConsole("Second parameter wasn't provided. Will convert commit message to "
           "new branch name.");
     } else {
       originalBranchName = context.args[1];
@@ -38,8 +38,8 @@ class InternalCommandCommit extends InternalCommand {
       if (!commandLineContinueQuestion(
           "Branch name was sanitized to '$resultingBranchName'.")) return;
     }
-    print("Commit  message: '$commitMessage'");
-    print("New branch name: '$resultingBranchName'");
+    context.printToConsole("Commit  message: '$commitMessage'");
+    context.printToConsole("New branch name: '$resultingBranchName'");
     final newBranchCheckoutExitCode = context.git.checkoutNewBranch
         .arg(resultingBranchName)
         .announce()
@@ -47,7 +47,7 @@ class InternalCommandCommit extends InternalCommand {
         .printNotEmptyResultFields()
         .exitCode;
     if (newBranchCheckoutExitCode != 0) {
-      print("Looks like we can't create new branch with '$resultingBranchName' "
+      context.printToConsole("Looks like we can't create new branch with '$resultingBranchName' "
           "name. Please pick a different name.");
       return;
     }

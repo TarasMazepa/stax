@@ -5,12 +5,8 @@ import 'package:stax/external_command.dart';
 import 'field_info.dart';
 
 extension ExtendedProcessResultCoverter on ProcessResult {
-  ExtendedProcessResult extend(ExternalCommand externalCommand) {
-    return ExtendedProcessResult(this, externalCommand.silent);
-  }
-
-  ExtendedProcessResult extendWithSilence(bool silence) {
-    return ExtendedProcessResult(this, silence);
+  ExtendedProcessResult extend([ExternalCommand? externalCommand]) {
+    return ExtendedProcessResult(this, externalCommand?.silent ?? false);
   }
 }
 
