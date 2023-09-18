@@ -2,6 +2,7 @@ import 'external_command.dart';
 
 class Git {
   late final branch = rawEc("git branch");
+  late final branchContains = branch.arg("--contains");
   late final branchCurrent = branch.arg("--show-current");
   late final branchDelete = branch.arg("-D");
   late final branchVv = branch.arg("-vv");
