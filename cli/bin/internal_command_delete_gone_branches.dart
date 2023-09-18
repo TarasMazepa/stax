@@ -1,4 +1,5 @@
-import 'package:stax/nullable_index_of.dart';
+import 'package:stax/extract_branch_names.dart';
+import 'package:stax/prepare_branch_names_for_extraction.dart';
 
 import 'context_for_internal_command.dart';
 import 'internal_command.dart';
@@ -18,12 +19,9 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
         .announce("Checking if any remote branches are gone.")
         .runSync()
         .printNotEmptyResultFields()
-        .stdout
-        .toString()
-        .split("\n")
-        .where((element) => element.length > 2)
+        .prepareBranchNameForExtraction()
         .where((element) => element[0] != "*" && element.contains(": gone] "))
-        .map((e) => e.substring(2, e.indexOf(" ", 2).toNullableIndexOfResult()))
+        .extractBranchNames()
         .toList();
     if (branchesToDelete.isEmpty) {
       context.printToConsole("No local branches with gone remotes.");
