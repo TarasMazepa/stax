@@ -1,4 +1,4 @@
-import 'arguments_for_internal_command.dart';
+import 'context_for_internal_command.dart';
 import 'internal_command.dart';
 import 'internal_commands.dart';
 
@@ -7,7 +7,7 @@ class InternalCommandAvailableCommands extends InternalCommand {
       : super("help", "list of available commands");
 
   @override
-  void run(final ArgumentsForInternalCommand arguments) {
+  void run(final ContextForInternalCommand arguments) {
     print("Here are available commands:");
     for (final element in internalCommands) {
       print(" * ${element.name}");

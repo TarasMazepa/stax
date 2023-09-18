@@ -1,6 +1,6 @@
 import 'package:stax/git.dart';
 
-import 'arguments_for_internal_command.dart';
+import 'context_for_internal_command.dart';
 import 'internal_command.dart';
 
 class InternalCommandMainBranch extends InternalCommand {
@@ -8,7 +8,7 @@ class InternalCommandMainBranch extends InternalCommand {
       : super("main-branch", "Shows which branch stax considers to be main.");
 
   @override
-  void run(final ArgumentsForInternalCommand arguments) {
+  void run(final ContextForInternalCommand arguments) {
     final remotes = Git.remote
         .announce("Checking name of your remote.")
         .runSync()

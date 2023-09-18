@@ -1,4 +1,4 @@
-import 'arguments_for_internal_command.dart';
+import 'context_for_internal_command.dart';
 
 abstract class InternalCommand implements Comparable<InternalCommand> {
   final String name;
@@ -6,7 +6,7 @@ abstract class InternalCommand implements Comparable<InternalCommand> {
 
   const InternalCommand(this.name, this.description);
 
-  void run(final ArgumentsForInternalCommand arguments);
+  void run(final ContextForInternalCommand arguments);
 
   @override
   int compareTo(InternalCommand other) {

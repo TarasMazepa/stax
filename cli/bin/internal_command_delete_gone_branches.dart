@@ -1,7 +1,7 @@
 import 'package:stax/git.dart';
 import 'package:stax/nullable_index_of.dart';
 
-import 'arguments_for_internal_command.dart';
+import 'context_for_internal_command.dart';
 import 'internal_command.dart';
 
 class InternalCommandDeleteGoneBranches extends InternalCommand {
@@ -10,7 +10,7 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
             "Deletes local branches with gone remotes.");
 
   @override
-  void run(final ArgumentsForInternalCommand arguments) {
+  void run(final ContextForInternalCommand arguments) {
     Git.fetchWithPrune.announce().runSync().printNotEmptyResultFields();
     final branchesToDelete = Git.branchVv
         .announce()

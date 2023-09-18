@@ -1,7 +1,7 @@
 import 'package:stax/external_command.dart';
 import 'package:stax/git.dart';
 
-import 'arguments_for_internal_command.dart';
+import 'context_for_internal_command.dart';
 import 'internal_command.dart';
 import 'sanitize_branch_name.dart';
 
@@ -15,7 +15,7 @@ class InternalCommandCommit extends InternalCommand {
                 "branch name would be generated from commit message.");
 
   @override
-  void run(final ArgumentsForInternalCommand arguments) {
+  void run(final ContextForInternalCommand arguments) {
     if (arguments.args.isEmpty) {
       print("You need to provide commit message.");
       return;
