@@ -27,7 +27,7 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
       return;
     }
     context.git.branchDelete
-        .withArguments(branchesToDelete)
+        .args(branchesToDelete)
         .askContinueQuestion(
             "Local branches with gone remotes that would be deleted: ${branchesToDelete.join(", ")}.")
         ?.announce()

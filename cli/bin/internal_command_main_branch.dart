@@ -28,7 +28,7 @@ class InternalCommandMainBranch extends InternalCommand {
         remote = remotes.first;
     }
     final defaultBranch = context.git.revParseAbbrevRef
-        .withArgument("$remote/HEAD")
+        .arg("$remote/HEAD")
         .announce("Checking default branch on remote")
         .runSync()
         .printNotEmptyResultFields()

@@ -41,7 +41,7 @@ class InternalCommandCommit extends InternalCommand {
     print("Commit  message: '$commitMessage'");
     print("New branch name: '$resultingBranchName'");
     final newBranchCheckoutExitCode = context.git.checkoutNewBranch
-        .withArgument(resultingBranchName)
+        .arg(resultingBranchName)
         .announce()
         .runSync()
         .printNotEmptyResultFields()
@@ -52,7 +52,7 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
     context.git.commitWithMessage
-        .withArgument(commitMessage)
+        .arg(commitMessage)
         .announce()
         .runSync()
         .printNotEmptyResultFields();

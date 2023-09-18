@@ -14,7 +14,7 @@ class ExternalCommand {
 
   ExternalCommand(this.parts, this.silent);
 
-  ExternalCommand.split(String command)
+  ExternalCommand.raw(String command)
       : parts = command.split(" "),
         silent = false;
 
@@ -27,12 +27,12 @@ class ExternalCommand {
     return ExternalCommand(parts, targetSilence);
   }
 
-  ExternalCommand withArguments(List<String> extra) {
+  ExternalCommand args(List<String> extra) {
     return ExternalCommand(parts.followedBy(extra).toList(), silent);
   }
 
-  ExternalCommand withArgument(String extra) {
-    return withArguments([extra]);
+  ExternalCommand arg(String extra) {
+    return args([extra]);
   }
 
   ExternalCommand? askContinueQuestion(String context) {
