@@ -1,5 +1,4 @@
 import 'package:stax/code_units.dart';
-import 'package:stax/count_on_list.dart';
 import 'package:stax/int_range.dart';
 
 extension ContainsOnListOfIntRanges on List<IntRange> {
@@ -33,10 +32,7 @@ bool isAcceptableSpecialSymbol(int codeUnit) {
 }
 
 String sanitizeBranchName(String branchNameCandidate) {
-  final dashes = branchNameCandidate.codeUnits.count(CodeUnits.dash);
-  final underscores = branchNameCandidate.codeUnits.count(CodeUnits.underscore);
-  final substituteCharacter = String.fromCharCode(
-      dashes >= underscores ? CodeUnits.dash : CodeUnits.underscore);
+  final substituteCharacter = String.fromCharCode(CodeUnits.dash);
 
   bool wasSpecialSymbol = false;
   String result = "";
