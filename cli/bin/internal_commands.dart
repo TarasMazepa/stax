@@ -6,6 +6,7 @@ import 'internal_command_delete_gone_branches.dart';
 import 'internal_command_main_branch.dart';
 import 'internal_command_terminal.dart';
 import 'internal_command_update.dart';
+import 'internal_command_update_prompt.dart';
 
 final List<InternalCommand> internalCommands = [
   InternalCommandAvailableCommands(),
@@ -15,6 +16,7 @@ final List<InternalCommand> internalCommands = [
   InternalCommandCommit(),
   InternalCommandMainBranch(),
   InternalCommandAmend(),
+  InternalCommandUpdatePrompt(),
 ]..sort();
 
 final Map<String, InternalCommand> internalCommandRegistry = {
