@@ -24,6 +24,7 @@ class Git {
   late final revParse = rawEc("git rev-parse");
   late final revParseAbbrevRef = revParse.arg("--abbrev-ref");
   late final revParseHead = revParse.arg("HEAD");
+  late final revParseShowTopLevel = revParse.arg("--show-toplevel");
 
   final bool silent;
 

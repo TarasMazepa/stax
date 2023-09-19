@@ -3,7 +3,7 @@ import 'package:stax/prepare_branch_names_for_extraction.dart';
 
 import 'context_for_internal_command.dart';
 import 'internal_command.dart';
-import 'shortcut_get_current_branch.dart';
+import 'shortcuts_for_internal_command_context.dart';
 
 class InternalCommandAmend extends InternalCommand {
   InternalCommandAmend() : super("amend", "Amends and pushes changes.");

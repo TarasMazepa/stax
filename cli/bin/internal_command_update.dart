@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 
 import 'context_for_internal_command.dart';
 import 'internal_command.dart';
-import 'shortcut_get_current_branch.dart';
+import 'shortcuts_for_internal_command_context.dart';
 
 class InternalCommandUpdate extends InternalCommand {
   InternalCommandUpdate() : super("update", "Updates to the latest version.");

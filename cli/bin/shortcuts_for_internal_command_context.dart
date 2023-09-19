@@ -13,4 +13,14 @@ extension ShortcutGetCurrentBranchOnContext on ContextForInternalCommand {
         .trim()
         .emptyToNull();
   }
+
+  String getRepositoryRoot() {
+    return git.revParseShowTopLevel
+        .announce("Getting top level location of repository.")
+        .runSync()
+        .printNotEmptyResultFields()
+        .stdout
+        .toString()
+        .trim();
+  }
 }
