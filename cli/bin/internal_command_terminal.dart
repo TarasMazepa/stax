@@ -1,8 +1,6 @@
-import 'dart:io';
-
+import 'package:stax/context_for_internal_command.dart';
 import 'package:stax/external_command.dart';
 
-import 'context_for_internal_command.dart';
 import 'internal_command.dart';
 import 'types_for_internal_command.dart';
 
@@ -16,7 +14,6 @@ class InternalCommandTerminal extends InternalCommand {
 
   @override
   void run(final ContextForInternalCommand context) {
-    context.printToConsole(Platform.script.toFilePath());
     switch (context.args) {
       case []:
         context.printToConsole("No arguments provided.");

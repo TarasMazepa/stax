@@ -1,5 +1,3 @@
 class Settings {
-  static void load() {
-
-  }
+  static void load() {}
 }

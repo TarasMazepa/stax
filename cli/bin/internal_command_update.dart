@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:path/path.dart';
+import 'package:stax/context_for_internal_command.dart';
+import 'package:stax/shortcuts_for_internal_command_context.dart';
 
-import 'context_for_internal_command.dart';
 import 'internal_command.dart';
-import 'shortcuts_for_internal_command_context.dart';
 
 class InternalCommandUpdate extends InternalCommand {
   InternalCommandUpdate() : super("update", "Updates to the latest version.");
