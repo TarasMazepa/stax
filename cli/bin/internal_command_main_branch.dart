@@ -1,10 +1,12 @@
 import 'context_for_internal_command.dart';
 import 'internal_command.dart';
 import 'internal_command_stopped_execution_exception.dart';
+import 'types_for_internal_command.dart';
 
 class InternalCommandMainBranch extends InternalCommand {
   InternalCommandMainBranch()
-      : super("main-branch", "Shows which branch stax considers to be main.");
+      : super("main-branch", "Shows which branch stax considers to be main.",
+            type: InternalCommandType.hidden);
 
   String getDefaultBranchName(final ContextForInternalCommand context) {
     final remotes = context.git.remote
