@@ -10,6 +10,8 @@ class ContextForInternalCommand {
 
   ContextForInternalCommand.empty() : this([]);
 
+  ContextForInternalCommand.silent() : this([], silent: true);
+
   void printToConsole(Object? object) {
     if (silent) return;
     print(object);

@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:path/path.dart';
 import 'package:stax/context_for_internal_command.dart';
+import 'package:stax/file_path_dir_on_uri.dart';
 import 'package:stax/shortcuts_for_internal_command_context.dart';
 
 import 'internal_command.dart';
@@ -11,7 +11,7 @@ class InternalCommandUpdate extends InternalCommand {
 
   @override
   void run(final ContextForInternalCommand context) {
-    final executablePath = dirname(Platform.script.toFilePath());
+    final executablePath = Platform.script.toFilePathDir();
     final currentBranch = context.getCurrentBranch();
     final mainBranch = "main";
     if (currentBranch != mainBranch) {
