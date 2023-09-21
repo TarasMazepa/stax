@@ -40,6 +40,10 @@ class ExtendedProcessResult {
 
   get stdout => processResult.stdout;
 
+  ExtendedProcessResult? assertSuccessfulExitCode() {
+    return exitCode == 0 ? this : null;
+  }
+
   ExtendedProcessResult printAllResultFields() {
     if (silent) return this;
     _exitCodeInfo.printFieldOf(this);
