@@ -3,10 +3,10 @@ import 'package:stax/string_empty_to_null.dart';
 import 'context_for_internal_command.dart';
 
 extension ShortcutGetCurrentBranchOnContext on ContextForInternalCommand {
-  String? getCurrentBranch() {
+  String? getCurrentBranch({String? workingDirectory}) {
     return git.branchCurrent
         .announce("Checking what is the current branch.")
-        .runSync()
+        .runSync(workingDirectory: workingDirectory)
         .printNotEmptyResultFields()
         .stdout
         .toString()

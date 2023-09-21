@@ -12,7 +12,8 @@ class InternalCommandUpdate extends InternalCommand {
   @override
   void run(final ContextForInternalCommand context) {
     final executablePath = Platform.script.toFilePathDir();
-    final currentBranch = context.getCurrentBranch();
+    final currentBranch =
+        context.getCurrentBranch(workingDirectory: executablePath);
     final mainBranch = "main";
     if (currentBranch != mainBranch) {
       final result = context.git.checkout
