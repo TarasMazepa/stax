@@ -35,6 +35,15 @@ class Settings {
 
   Settings(this.settings);
 
+  String? operator [](String key) {
+    final value = settings[key];
+    return value is String ? value : null;
+  }
+
+  void operator []=(String key, String? value) {
+    settings[key] = value;
+  }
+
   void save() {
     _file.writeAsStringSync(jsonEncode(settings), flush: true);
   }
