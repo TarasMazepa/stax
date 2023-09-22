@@ -18,7 +18,10 @@ class InternalCommandTerminal extends InternalCommand {
       case []:
         context.printToConsole("No arguments provided.");
       default:
-        ExternalCommand(context.args).runSync().printAllResultFields();
+        ExternalCommand(context.args)
+            .announce("Running your command")
+            .runSync()
+            .printNotEmptyResultFields();
     }
   }
 }
