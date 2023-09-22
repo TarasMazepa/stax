@@ -36,6 +36,6 @@ class Settings {
   Settings(this.settings);
 
   void save() {
-    _file.writeAsStringSync(jsonEncode(settings));
+    _file.writeAsStringSync(jsonEncode(settings), flush: true);
   }
 }
