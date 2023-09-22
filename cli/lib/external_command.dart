@@ -82,6 +82,6 @@ class ExternalCommand {
 
   @override
   String toString() {
-    return parts.join(" ");
+    return parts.map((e) => e.contains(" ") ? "\"$e\"" : e).join(" ");
   }
 }
