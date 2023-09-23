@@ -18,5 +18,6 @@ class Setting<T> {
 
   void set(T t) {
     _settings[_name] = _toStringConverter(t);
+    _settings.save();
   }
 }
