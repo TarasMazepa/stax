@@ -35,10 +35,9 @@ class ExternalCommand {
   }
 
   ExternalCommand announce([String? announcement]) {
-    if (context.silent) return this;
-    print("");
-    if (announcement != null) print("# $announcement");
-    print("> ${toString()}");
+    context.printToConsole("");
+    if (announcement != null) context.printToConsole("# $announcement");
+    context.printToConsole("> ${toString()}");
     return this;
   }
 
