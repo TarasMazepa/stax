@@ -16,7 +16,7 @@ class InternalCommandTerminal extends InternalCommand {
   void run(final ContextForInternalCommand context) {
     switch (context.args) {
       case []:
-        context.printToConsole("No arguments provided.");
+        context.context.printToConsole("No arguments provided.");
       default:
         ExternalCommand(context.args, context.context)
             .announce("Running your command")

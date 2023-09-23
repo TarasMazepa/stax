@@ -15,7 +15,7 @@ class InternalCommandAmend extends InternalCommand {
             .runSync()
             .exitCode ==
         0) {
-      context.printToConsole("Can't amend - there is nothing staged. "
+      context.context.printToConsole("Can't amend - there is nothing staged. "
           "Run 'git add .' to add all the changes.");
       return;
     }

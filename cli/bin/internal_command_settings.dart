@@ -12,7 +12,7 @@ class InternalCommandSettings extends InternalCommand {
   @override
   void run(ContextForInternalCommand context) {
     for (final entry in Settings.instance.settings.entries) {
-      context.printToConsole("${entry.key}: ${entry.value}");
+      context.context.printToConsole("${entry.key}: ${entry.value}");
     }
   }
 }

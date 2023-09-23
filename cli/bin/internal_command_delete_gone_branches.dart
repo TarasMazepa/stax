@@ -24,7 +24,7 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
         .extractBranchNames()
         .toList();
     if (branchesToDelete.isEmpty) {
-      context.printToConsole("No local branches with gone remotes.");
+      context.context.printToConsole("No local branches with gone remotes.");
       return;
     }
     context.git.branchDelete

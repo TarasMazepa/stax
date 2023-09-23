@@ -6,10 +6,9 @@ class Context {
   Context.silent() : this(silent: true);
 
   Context.loud() : this(silent: false);
-}
 
-extension ToContextOnBool on bool {
-  Context toContext() {
-    return Context(silent: this);
+  void printToConsole(Object? object) {
+    if (silent) return;
+    print(object);
   }
 }

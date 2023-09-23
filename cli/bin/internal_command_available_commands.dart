@@ -11,13 +11,13 @@ class InternalCommandAvailableCommands extends InternalCommand {
 
   @override
   void run(final ContextForInternalCommand context) {
-    context.printToConsole("Here are available commands:");
+    context.context.printToConsole("Here are available commands:");
     final showAll = context.args.contains("-a");
     final commandsToShow = internalCommands.where(
         (element) => showAll || element.type == InternalCommandType.public);
     for (final element in commandsToShow) {
-      context.printToConsole(" * ${element.name}");
-      context.printToConsole("      ${element.description}");
+      context.context.printToConsole(" * ${element.name}");
+      context.context.printToConsole("      ${element.description}");
     }
   }
 }

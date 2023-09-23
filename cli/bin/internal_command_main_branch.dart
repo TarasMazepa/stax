@@ -22,13 +22,13 @@ class InternalCommandMainBranch extends InternalCommand {
     final String remote;
     switch (remotes.length) {
       case 0:
-        context.printToConsole(
+        context.context.printToConsole(
             "You have no remotes. Can't figure out default branch.");
         throw InternalCommandStoppedExecutionException();
       case 1:
         remote = remotes.first;
       default:
-        context.printToConsole(
+        context.context.printToConsole(
             "You have many remotes. I will just pick the first one.");
         remote = remotes.first;
     }
@@ -41,7 +41,7 @@ class InternalCommandMainBranch extends InternalCommand {
         .toString()
         .trim()
         .split("/")[1];
-    context.printToConsole("Your main branch is $defaultBranch.");
+    context.context.printToConsole("Your main branch is $defaultBranch.");
     return defaultBranch;
   }
 
