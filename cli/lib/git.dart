@@ -30,11 +30,11 @@ class Git {
   late final status = rawEc("git status");
   late final statusSb = status.arg("-sb");
 
-  final bool silent;
+  final Context context;
 
-  Git({this.silent = false});
+  Git(this.context);
 
   ExternalCommand rawEc(String raw) {
-    return ExternalCommand.raw(raw, silent.toContext());
+    return ExternalCommand.raw(raw, context);
   }
 }
