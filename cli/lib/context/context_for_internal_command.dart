@@ -1,4 +1,4 @@
-import 'package:stax/context.dart';
+import 'package:stax/context/context.dart';
 import 'package:stax/git.dart';
 
 class ContextForInternalCommand {

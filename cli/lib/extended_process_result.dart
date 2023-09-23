@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:stax/context.dart';
+import 'package:stax/context/context.dart';
 import 'package:stax/external_command.dart';
 
 import 'field_info.dart';

@@ -1,7 +1,7 @@
-import 'package:stax/context_for_internal_command.dart';
+import 'package:stax/context/context_for_internal_command.dart';
+import 'package:stax/context/shortcuts_for_internal_command_context.dart';
 import 'package:stax/extract_branch_names.dart';
 import 'package:stax/prepare_branch_names_for_extraction.dart';
-import 'package:stax/shortcuts_for_internal_command_context.dart';
 
 import 'internal_command.dart';
 

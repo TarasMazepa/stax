@@ -1,4 +1,5 @@
-import 'package:stax/context_for_internal_command.dart';
+import 'package:stax/context/context.dart';
+import 'package:stax/context/context_for_internal_command.dart';
 
 import 'internal_command_available_commands.dart';
 import 'internal_commands.dart';
@@ -13,6 +14,6 @@ void main(List<String> arguments) {
         print("Unknown command '$commandName'.");
         return;
       }
-      command.run(ContextForInternalCommand(args));
+      command.run(ContextForInternalCommand(args, Context.loud()));
   }
 }

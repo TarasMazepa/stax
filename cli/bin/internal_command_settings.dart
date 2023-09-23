@@ -1,4 +1,4 @@
-import 'package:stax/context_for_internal_command.dart';
+import 'package:stax/context/context_for_internal_command.dart';
 import 'package:stax/settings/settings.dart';
 
 import 'internal_command.dart';
