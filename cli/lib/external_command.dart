@@ -13,24 +13,17 @@ class ExternalCommand {
   final List<String> parts;
   final Context context;
 
-  ExternalCommand(this.parts, {bool silent = false})
-      : context = Context(silent: silent);
+  ExternalCommand(this.parts, this.context);
 
-  ExternalCommand.raw(String command, {bool silent = false})
-      : parts = command.split(" "),
-        context = Context(silent: silent);
+  ExternalCommand.raw(String command, this.context)
+      : parts = command.split(" ");
 
   String get executable => parts[0];
 
   List<String> get arguments => parts.sublist(1);
 
-  ExternalCommand silence(bool targetSilence) {
-    if (targetSilence == context.silent) return this;
-    return ExternalCommand(parts, silent: targetSilence);
-  }
-
   ExternalCommand args(List<String> extra) {
-    return ExternalCommand(parts + extra, silent: context.silent);
+    return ExternalCommand(parts + extra, context);
   }
 
   ExternalCommand arg(String extra) {

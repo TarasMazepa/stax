@@ -1,3 +1,4 @@
+import 'package:stax/context.dart';
 import 'package:stax/context_for_internal_command.dart';
 import 'package:stax/external_command.dart';
 
@@ -18,7 +19,7 @@ class InternalCommandTerminal extends InternalCommand {
       case []:
         context.printToConsole("No arguments provided.");
       default:
-        ExternalCommand(context.args)
+        ExternalCommand(context.args, context.silent.toContext())
             .announce("Running your command")
             .runSync()
             .printNotEmptyResultFields();

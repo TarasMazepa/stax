@@ -1,3 +1,5 @@
+import 'package:stax/context.dart';
+
 import 'external_command.dart';
 
 class Git {
@@ -33,6 +35,6 @@ class Git {
   Git({this.silent = false});
 
   ExternalCommand rawEc(String raw) {
-    return ExternalCommand.raw(raw, silent: silent);
+    return ExternalCommand.raw(raw, silent.toContext());
   }
 }
