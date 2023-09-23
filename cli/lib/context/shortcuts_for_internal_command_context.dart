@@ -1,47 +1,23 @@
 import 'package:stax/ahead_or_behind.dart';
-import 'package:stax/string_empty_to_null.dart';
+import 'package:stax/context/git_shortcuts_on_context.dart';
 
 import 'context_for_internal_command.dart';
 
 extension ShortcutGetCurrentBranchOnContext on ContextForInternalCommand {
   String? getCurrentBranch({String? workingDirectory}) {
-    return git.branchCurrent
-        .announce("Checking what is the current branch.")
-        .runSync(workingDirectory: workingDirectory)
-        .printNotEmptyResultFields()
-        .stdout
-        .toString()
-        .trim()
-        .emptyToNull();
+    return context.getCurrentBranch(workingDirectory: workingDirectory);
   }
 
   String? getRepositoryRoot({String? workingDirectory}) {
-    return git.revParseShowTopLevel
-        .announce("Getting top level location of repository.")
-        .runSync(workingDirectory: workingDirectory)
-        .printNotEmptyResultFields()
-        .assertSuccessfulExitCode()
-        ?.stdout
-        .toString()
-        .trim();
+    return context.getRepositoryRoot(workingDirectory: workingDirectory);
   }
 
   AheadOrBehind? isCurrentBranchAheadOrBehind({String? workingDirectory}) {
-    final statusSb = git.statusSb
-        .announce("Checking if current branch is behind remote.")
-        .runSync(workingDirectory: workingDirectory)
-        .printNotEmptyResultFields()
-        .assertSuccessfulExitCode()
-        ?.stdout
-        .toString();
-    if (statusSb == null) return null;
-    if (statusSb.contains(" [behind ")) return AheadOrBehind.behind;
-    if (statusSb.contains(" [ahead ")) return AheadOrBehind.ahead;
-    return AheadOrBehind.none;
+    return context.isCurrentBranchAheadOrBehind(
+        workingDirectory: workingDirectory);
   }
 
   bool isCurrentBranchBehind({String? workingDirectory}) {
-    return isCurrentBranchAheadOrBehind(workingDirectory: workingDirectory) ==
-        AheadOrBehind.behind;
+    return context.isCurrentBranchBehind(workingDirectory: workingDirectory);
   }
 }
