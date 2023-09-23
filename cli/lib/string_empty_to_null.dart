@@ -1,6 +1,8 @@
-extension EmptyToNull on String {
+extension EmptyToNull on String? {
   String? emptyToNull() {
-    if (isEmpty) return null;
-    return this;
+    final self = this;
+    if (self == null) return null;
+    if (self.isEmpty) return null;
+    return self;
   }
 }
