@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:stax/context.dart';
 import 'package:stax/extended_process_result.dart';
 
 bool commandLineContinueQuestion(String context) {
@@ -10,24 +11,26 @@ bool commandLineContinueQuestion(String context) {
 
 class ExternalCommand {
   final List<String> parts;
-  final bool silent;
+  final Context context;
 
-  ExternalCommand(this.parts, {this.silent = false});
+  ExternalCommand(this.parts, {bool silent = false})
+      : context = Context(silent: silent);
 
-  ExternalCommand.raw(String command, {this.silent = false})
-      : parts = command.split(" ");
+  ExternalCommand.raw(String command, {bool silent = false})
+      : parts = command.split(" "),
+        context = Context(silent: silent);
 
   String get executable => parts[0];
 
   List<String> get arguments => parts.sublist(1);
 
   ExternalCommand silence(bool targetSilence) {
-    if (targetSilence == silent) return this;
+    if (targetSilence == context.silent) return this;
     return ExternalCommand(parts, silent: targetSilence);
   }
 
   ExternalCommand args(List<String> extra) {
-    return ExternalCommand(parts + extra, silent: silent);
+    return ExternalCommand(parts + extra, silent: context.silent);
   }
 
   ExternalCommand arg(String extra) {
@@ -38,10 +41,10 @@ class ExternalCommand {
     return commandLineContinueQuestion(context) ? this : null;
   }
 
-  ExternalCommand announce([String? context]) {
-    if (silent) return this;
+  ExternalCommand announce([String? announcement]) {
+    if (context.silent) return this;
     print("");
-    if (context != null) print("# $context");
+    if (announcement != null) print("# $announcement");
     print("> ${toString()}");
     return this;
   }

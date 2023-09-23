@@ -7,7 +7,7 @@ import 'field_info.dart';
 
 extension ExtendedProcessResultCoverter on ProcessResult {
   ExtendedProcessResult extend(ExternalCommand externalCommand) {
-    return ExtendedProcessResult(this, externalCommand.silent.toContext());
+    return ExtendedProcessResult(this, externalCommand.context);
   }
 }
 
