@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:stax/context/context.dart';
-import 'package:stax/context/git_shortcuts_on_context.dart';
+import 'package:stax/context/context_git_get_repository_root.dart';
 import 'package:stax/file_path_dir_on_uri.dart';
 import 'package:stax/settings/date_time_setting.dart';
 

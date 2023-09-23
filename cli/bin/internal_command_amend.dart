@@ -1,5 +1,5 @@
 import 'package:stax/context/context.dart';
-import 'package:stax/context/git_shortcuts_on_context.dart';
+import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/git/extract_branch_names.dart';
 import 'package:stax/git/prepare_branch_names_for_extraction.dart';
 

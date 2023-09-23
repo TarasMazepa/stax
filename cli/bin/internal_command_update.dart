@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:stax/context/context.dart';
-import 'package:stax/context/git_shortcuts_on_context.dart';
+import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/file_path_dir_on_uri.dart';
 
 import 'internal_command.dart';
