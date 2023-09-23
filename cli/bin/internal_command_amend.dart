@@ -1,5 +1,5 @@
-import 'package:stax/context/context_for_internal_command.dart';
-import 'package:stax/context/shortcuts_for_internal_command_context.dart';
+import 'package:stax/context/context.dart';
+import 'package:stax/context/git_shortcuts_on_context.dart';
 import 'package:stax/git/extract_branch_names.dart';
 import 'package:stax/git/prepare_branch_names_for_extraction.dart';
 
@@ -9,13 +9,13 @@ class InternalCommandAmend extends InternalCommand {
   InternalCommandAmend() : super("amend", "Amends and pushes changes.");
 
   @override
-  void run(ContextForInternalCommand context) {
+  void run(final List<String> args, final Context context) {
     if (context.git.diffCachedQuiet
             .announce("Checking if there staged changes.")
             .runSync()
             .exitCode ==
         0) {
-      context.context.printToConsole("Can't amend - there is nothing staged. "
+      context.printToConsole("Can't amend - there is nothing staged. "
           "Run 'git add .' to add all the changes.");
       return;
     }

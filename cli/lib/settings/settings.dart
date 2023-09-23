@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:stax/context/context_for_internal_command.dart';
-import 'package:stax/context/shortcuts_for_internal_command_context.dart';
+import 'package:stax/context/context.dart';
+import 'package:stax/context/git_shortcuts_on_context.dart';
 import 'package:stax/file_path_dir_on_uri.dart';
 import 'package:stax/settings/date_time_setting.dart';
 
@@ -25,7 +25,7 @@ class Settings {
     throw error;
   }
 
-  static final _rootPath = ContextForInternalCommand.silent()
+  static final _rootPath = Context.silent()
       .getRepositoryRoot(workingDirectory: Platform.script.toFilePathDir());
 
   static final _file = File("$_rootPath/.stax_settings");

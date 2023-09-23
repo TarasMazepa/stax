@@ -1,4 +1,4 @@
-import 'package:stax/context/context_for_internal_command.dart';
+import 'package:stax/context/context.dart';
 
 import 'internal_command.dart';
 import 'internal_command_stopped_execution_exception.dart';
@@ -9,7 +9,7 @@ class InternalCommandMainBranch extends InternalCommand {
       : super("main-branch", "Shows which branch stax considers to be main.",
             type: InternalCommandType.hidden);
 
-  String getDefaultBranchName(final ContextForInternalCommand context) {
+  String getDefaultBranchName(final List<String> args, final Context context) {
     final remotes = context.git.remote
         .announce("Checking name of your remote.")
         .runSync()
@@ -22,13 +22,13 @@ class InternalCommandMainBranch extends InternalCommand {
     final String remote;
     switch (remotes.length) {
       case 0:
-        context.context.printToConsole(
+        context.printToConsole(
             "You have no remotes. Can't figure out default branch.");
         throw InternalCommandStoppedExecutionException();
       case 1:
         remote = remotes.first;
       default:
-        context.context.printToConsole(
+        context.printToConsole(
             "You have many remotes. I will just pick the first one.");
         remote = remotes.first;
     }
@@ -41,14 +41,14 @@ class InternalCommandMainBranch extends InternalCommand {
         .toString()
         .trim()
         .split("/")[1];
-    context.context.printToConsole("Your main branch is $defaultBranch.");
+    context.printToConsole("Your main branch is $defaultBranch.");
     return defaultBranch;
   }
 
   @override
-  void run(final ContextForInternalCommand context) {
+  void run(final List<String> args, final Context context) {
     try {
-      getDefaultBranchName(context);
+      getDefaultBranchName(args, context);
     } on InternalCommandStoppedExecutionException {
       return;
     }
