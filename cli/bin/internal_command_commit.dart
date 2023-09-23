@@ -1,4 +1,5 @@
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/external_command/external_command.dart';
 
 import 'internal_command.dart';
@@ -19,11 +20,7 @@ class InternalCommandCommit extends InternalCommand {
       context.printToConsole("You need to provide commit message.");
       return;
     }
-    if (context.git.diffCachedQuiet
-            .announce("Checking if there staged changes to commit.")
-            .runSync()
-            .exitCode ==
-        0) {
+    if (context.isThereNoStagedChanges()) {
       context.printToConsole("Can't commit - there is nothing staged. "
           "Run 'git add .' to add all the changes.");
       return;

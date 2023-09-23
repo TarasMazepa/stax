@@ -1,4 +1,5 @@
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/git/extract_branch_names.dart';
 import 'package:stax/git/prepare_branch_names_for_extraction.dart';
@@ -10,11 +11,7 @@ class InternalCommandAmend extends InternalCommand {
 
   @override
   void run(final List<String> args, final Context context) {
-    if (context.git.diffCachedQuiet
-            .announce("Checking if there staged changes.")
-            .runSync()
-            .exitCode ==
-        0) {
+    if (context.isThereNoStagedChanges()) {
       context.printToConsole("Can't amend - there is nothing staged. "
           "Run 'git add .' to add all the changes.");
       return;
