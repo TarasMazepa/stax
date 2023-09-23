@@ -1,4 +1,4 @@
-import 'package:stax/git.dart';
+import 'package:stax/git/git.dart';
 
 class Context {
   final bool silent;

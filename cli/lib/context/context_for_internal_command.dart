@@ -1,5 +1,5 @@
 import 'package:stax/context/context.dart';
-import 'package:stax/git.dart';
+import 'package:stax/git/git.dart';
 
 class ContextForInternalCommand {
   final List<String> args;

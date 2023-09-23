@@ -1,6 +1,6 @@
 import 'package:stax/context/context_for_internal_command.dart';
-import 'package:stax/extract_branch_names.dart';
-import 'package:stax/prepare_branch_names_for_extraction.dart';
+import 'package:stax/git/extract_branch_names.dart';
+import 'package:stax/git/prepare_branch_names_for_extraction.dart';
 
 import 'internal_command.dart';
 

@@ -1,4 +1,4 @@
-import 'package:stax/ahead_or_behind.dart';
+import 'package:stax/context/ahead_or_behind.dart';
 import 'package:stax/context/git_shortcuts_on_context.dart';
 
 import 'context_for_internal_command.dart';
