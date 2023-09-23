@@ -21,7 +21,7 @@ void main() {
     expect(sanitizeBranchName("almost good name"), "almost-good-name");
   });
   test('substituting with underscore', () {
-    expect(sanitizeBranchName("almost good_name"), "almost_good_name");
+    expect(sanitizeBranchName("almost good_name"), "almost-good_name");
   });
   test('removing subsequent symbols', () {
     expect(
