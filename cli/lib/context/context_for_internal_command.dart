@@ -5,7 +5,7 @@ class ContextForInternalCommand {
   final List<String> args;
   final Context context;
 
-  late final git = Git(context);
+  Git get git => context.git;
 
   ContextForInternalCommand(this.args, this.context);
 

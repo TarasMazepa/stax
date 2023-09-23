@@ -1,5 +1,9 @@
+import 'package:stax/git.dart';
+
 class Context {
   final bool silent;
+
+  late final Git git = Git(this);
 
   Context({this.silent = false});
 
