@@ -1,4 +1,4 @@
-import 'package:stax/extended_process_result.dart';
+import 'package:stax/external_command/extended_process_result.dart';
 
 extension PrepareBranchNamesForExtraction on ExtendedProcessResult {
   Iterable<String> prepareBranchNameForExtraction() {

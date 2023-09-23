@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:stax/context/context.dart';
-import 'package:stax/extended_process_result.dart';
+import 'package:stax/external_command/extended_process_result.dart';
 
 bool commandLineContinueQuestion(String context) {
   stdout.write("$context Continue y/N? ");

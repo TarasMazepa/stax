@@ -1,6 +1,5 @@
 import 'package:stax/context/context.dart';
-
-import 'package:stax/external_command.dart';
+import 'package:stax/external_command/external_command.dart';
 
 class Git {
   late final branch = rawEc("git branch");
