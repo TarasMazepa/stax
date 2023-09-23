@@ -1,12 +1,13 @@
 import 'dart:io';
 
+import 'package:stax/context.dart';
 import 'package:stax/external_command.dart';
 
 import 'field_info.dart';
 
 extension ExtendedProcessResultCoverter on ProcessResult {
-  ExtendedProcessResult extend([ExternalCommand? externalCommand]) {
-    return ExtendedProcessResult(this, externalCommand?.silent ?? false);
+  ExtendedProcessResult extend(ExternalCommand externalCommand) {
+    return ExtendedProcessResult(this, externalCommand.silent.toContext());
   }
 }
 
@@ -28,9 +29,9 @@ class ExtendedProcessResult {
   );
 
   final ProcessResult processResult;
-  final bool silent;
+  final Context context;
 
-  ExtendedProcessResult(this.processResult, this.silent);
+  ExtendedProcessResult(this.processResult, this.context);
 
   int get exitCode => processResult.exitCode;
 
@@ -45,7 +46,7 @@ class ExtendedProcessResult {
   }
 
   ExtendedProcessResult printAllResultFields() {
-    if (silent) return this;
+    if (context.silent) return this;
     _exitCodeInfo.printFieldOf(this);
     _stdoutInfo.printFieldOf(this);
     _stderrInfo.printFieldOf(this);
@@ -53,7 +54,7 @@ class ExtendedProcessResult {
   }
 
   ExtendedProcessResult printNotEmptyResultFields() {
-    if (silent) return this;
+    if (context.silent) return this;
     _exitCodeInfo.printFieldOfIfChecked(this);
     _stdoutInfo.printFieldOfIfChecked(this);
     _stderrInfo.printFieldOfIfChecked(this);

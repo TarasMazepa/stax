@@ -7,3 +7,9 @@ class Context {
 
   Context.loud() : this(silent: false);
 }
+
+extension ToContextOnBool on bool {
+  Context toContext() {
+    return Context(silent: this);
+  }
+}
