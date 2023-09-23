@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:stax/context_for_internal_command.dart';
 import 'package:stax/file_path_dir_on_uri.dart';
+import 'package:stax/settings/date_time_setting.dart';
 import 'package:stax/shortcuts_for_internal_command_context.dart';
 
 class Settings {
@@ -32,6 +33,9 @@ class Settings {
   static final instance = _load();
 
   final Map<String, dynamic> settings;
+
+  late final DateTimeSetting lastUpdatePrompt =
+      DateTimeSetting("last_update_prompt", DateTime(2023), this);
 
   Settings(this.settings);
 
