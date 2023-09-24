@@ -8,7 +8,7 @@ class Context {
 
   late final Git git = Git(this);
 
-  Context.empty() : this(false, null);
+  Context.implicit() : this(false, null);
 
   Context(this.silent, this.workingDirectory);
 

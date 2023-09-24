@@ -4,7 +4,7 @@ import 'internal_command_available_commands.dart';
 import 'internal_commands.dart';
 
 void main(List<String> arguments) {
-  final context = Context.empty();
+  final context = Context.implicit();
   switch (arguments) {
     case []:
       InternalCommandAvailableCommands().run([], context);
