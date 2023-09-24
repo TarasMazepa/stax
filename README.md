@@ -10,6 +10,11 @@ It is a way to reduce the burden of creating commits, branches, and PRs, so it d
 
 ## Commands
 
+To see full list of commands, run:
+```
+stax help
+```
+
 Here is the list of commands currently available:
 
 ### stax-commit
