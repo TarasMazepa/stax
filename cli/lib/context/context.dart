@@ -11,7 +11,7 @@ class Context {
 
   Context.silent() : this(silent: true);
 
-  Context.loud() : this(silent: false);
+  Context.create() : this(silent: false);
 
   Context withSilence(bool targetSilent) {
     if (silent == targetSilent) return this;

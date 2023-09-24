@@ -6,13 +6,13 @@ import 'internal_commands.dart';
 void main(List<String> arguments) {
   switch (arguments) {
     case []:
-      InternalCommandAvailableCommands().run([], Context.loud());
+      InternalCommandAvailableCommands().run([], Context.create());
     case [final commandName, ...final args]:
       final command = internalCommandRegistry[commandName];
       if (command == null) {
         print("Unknown command '$commandName'.");
         return;
       }
-      command.run(args, Context.loud());
+      command.run(args, Context.create());
   }
 }
