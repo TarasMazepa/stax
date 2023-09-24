@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:stax/context/context.dart';
 import 'package:stax/external_command/external_command.dart';
 
-import 'field_info.dart';
-
 extension ExtendedProcessResultCoverter on ProcessResult {
   ExtendedProcessResult extend(ExternalCommand externalCommand) {
     return ExtendedProcessResult(this, externalCommand.context);
@@ -12,22 +10,6 @@ extension ExtendedProcessResultCoverter on ProcessResult {
 }
 
 class ExtendedProcessResult {
-  static final _exitCodeInfo = FieldInfo(
-    "ExitCode: ",
-    (ExtendedProcessResult processResult) => processResult.exitCode,
-    (int exitCode) => exitCode != 0,
-  );
-  static final _stdoutInfo = FieldInfo(
-    "Stdout:\n",
-    (ExtendedProcessResult processResult) => "${processResult.stdout}",
-    (String stdout) => stdout.trim().isNotEmpty,
-  );
-  static final _stderrInfo = FieldInfo(
-    "Stderr:\n",
-    (ExtendedProcessResult processResult) => "${processResult.stderr}",
-    (String stderr) => stderr.trim().isNotEmpty,
-  );
-
   final ProcessResult processResult;
   final Context context;
 
@@ -45,19 +27,14 @@ class ExtendedProcessResult {
     return exitCode == 0 ? this : null;
   }
 
-  ExtendedProcessResult printAllResultFields() {
-    if (context.silent) return this;
-    _exitCodeInfo.printFieldOf(this);
-    _stdoutInfo.printFieldOf(this);
-    _stderrInfo.printFieldOf(this);
-    return this;
-  }
-
   ExtendedProcessResult printNotEmptyResultFields() {
-    if (context.silent) return this;
-    _exitCodeInfo.printFieldOfIfChecked(this);
-    _stdoutInfo.printFieldOfIfChecked(this);
-    _stderrInfo.printFieldOfIfChecked(this);
+    if (exitCode != 0) context.printToConsole("ExitCode: $exitCode");
+    if (stdout.toString().trim().isNotEmpty) {
+      context.printToConsole("Stdout:\n$stdout");
+    }
+    if (stderr.toString().trim().isNotEmpty) {
+      context.printToConsole("Stderr:\n$stdout");
+    }
     return this;
   }
 }
