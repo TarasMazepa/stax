@@ -1,4 +1,5 @@
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_git_fetch_with_prune.dart';
 import 'package:stax/git/extract_branch_names.dart';
 import 'package:stax/git/prepare_branch_names_for_extraction.dart';
 
@@ -11,10 +12,7 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
 
   @override
   void run(final List<String> args, final Context context) {
-    context.git.fetchWithPrune
-        .announce("Fetching latest changes from remote.")
-        .runSync()
-        .printNotEmptyResultFields();
+    context.fetchWithPrune();
     final branchesToDelete = context.git.branchVv
         .announce("Checking if any remote branches are gone.")
         .runSync()

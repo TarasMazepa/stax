@@ -1,4 +1,5 @@
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_git_fetch_with_prune.dart';
 import 'package:stax/context/context_git_is_current_branch_ahead_or_behind.dart';
 import 'package:stax/settings/settings.dart';
 
@@ -22,7 +23,11 @@ class InternalCommandUpdatePrompt extends InternalCommand {
     if (lastUpdatePrompt.add(silenceDuration).isAfter(now)) return;
     Settings.instance.lastUpdatePrompt.set(now);
     if (!context.isCurrentBranchBehind()) {
-      // fetch
+      context.fetchWithPrune();
+      if (!context.isCurrentBranchBehind()) {
+        return;
+      }
     }
+    // suggest update
   }
 }
