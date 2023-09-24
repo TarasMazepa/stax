@@ -11,23 +11,37 @@ class InternalCommandUpdatePrompt extends InternalCommand {
       : super("update-prompt", "Asks about updating.",
             type: InternalCommandType.hidden);
 
-  @override
-  void run(final List<String> args, Context context) {
+  bool shouldAutoUpdateAfterExecutingCommand(
+      final List<String> args, Context context) {
+    final lastUpdatePrompt = Settings.instance.lastUpdatePrompt.get();
+    final now = DateTime.now();
+    final silenceDuration = Duration(days: 1);
+    if (lastUpdatePrompt.add(silenceDuration).isAfter(now)) return false;
+    Settings.instance.lastUpdatePrompt.set(now);
     context = context
         .withSilence(true)
         .withScriptPathAsWorkingDirectory()
         .withRepositoryRootAsWorkingDirectory();
-    final lastUpdatePrompt = Settings.instance.lastUpdatePrompt.get();
-    final now = DateTime.now();
-    final silenceDuration = Duration(days: 1);
-    if (lastUpdatePrompt.add(silenceDuration).isAfter(now)) return;
-    Settings.instance.lastUpdatePrompt.set(now);
     if (!context.isCurrentBranchBehind()) {
       context.fetchWithPrune();
       if (!context.isCurrentBranchBehind()) {
-        return;
+        return false;
       }
     }
-    // suggest update
+    context = context.withSilence(false);
+    bool answer = context.commandLineContinueQuestion(
+        "Stax will update after executing your command.");
+    if (answer) {
+      context.printToConsole(
+          "Thanks for supporting stax and updating it to latest version!");
+    } else {
+      context.printToConsole("Ok, will ask again in $silenceDuration.");
+    }
+    return answer;
+  }
+
+  @override
+  void run(final List<String> args, Context context) {
+    shouldAutoUpdateAfterExecutingCommand(args, context);
   }
 }
