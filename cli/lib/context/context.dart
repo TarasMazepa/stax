@@ -9,10 +9,6 @@ class Context {
 
   Context({this.silent = false});
 
-  Context.silent() : this(silent: true);
-
-  Context.create() : this(silent: false);
-
   Context withSilence(bool targetSilent) {
     if (silent == targetSilent) return this;
     return Context(silent: targetSilent);

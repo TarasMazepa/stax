@@ -25,7 +25,8 @@ class Settings {
     throw error;
   }
 
-  static final _rootPath = Context.silent()
+  static final _rootPath = Context()
+      .withSilence(true)
       .getRepositoryRoot(workingDirectory: Platform.script.toFilePathDir());
 
   static final _file = File("$_rootPath/.stax_settings");
