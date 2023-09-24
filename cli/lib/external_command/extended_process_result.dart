@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:stax/context/context.dart';
 import 'package:stax/external_command/external_command.dart';
 
-extension ExtendedProcessResultCoverter on ProcessResult {
+extension ExtendedProcessResultConverter on ProcessResult {
   ExtendedProcessResult extend(ExternalCommand externalCommand) {
     return ExtendedProcessResult(this, externalCommand.context);
   }
