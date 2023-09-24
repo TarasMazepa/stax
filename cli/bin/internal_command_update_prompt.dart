@@ -35,7 +35,8 @@ class InternalCommandUpdatePrompt extends InternalCommand {
       context.printToConsole(
           "Thanks for supporting stax and updating it to latest version!");
     } else {
-      context.printToConsole("Ok, will ask again in $silenceDuration.");
+      context.printToConsole(
+          "Ok, will ask again in ${silenceDuration.inDays} day(s).");
     }
     return answer;
   }
