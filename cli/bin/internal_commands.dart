@@ -10,15 +10,15 @@ import 'internal_command_update.dart';
 import 'internal_command_update_prompt.dart';
 
 final List<InternalCommand> internalCommands = [
+  InternalCommandAmend(),
   InternalCommandAvailableCommands(),
+  InternalCommandCommit(),
+  InternalCommandDeleteGoneBranches(),
+  InternalCommandMainBranch(),
+  InternalCommandSettings(),
   InternalCommandTerminal(),
   InternalCommandUpdate(),
-  InternalCommandDeleteGoneBranches(),
-  InternalCommandCommit(),
-  InternalCommandMainBranch(),
-  InternalCommandAmend(),
   InternalCommandUpdatePrompt(),
-  InternalCommandSettings(),
 ]..sort();
 
 final Map<String, InternalCommand> internalCommandRegistry = {
