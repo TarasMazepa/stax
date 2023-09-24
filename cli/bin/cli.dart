@@ -1,10 +1,14 @@
 import 'package:stax/context/context.dart';
 
 import 'internal_command_available_commands.dart';
+import 'internal_command_update.dart';
+import 'internal_command_update_prompt.dart';
 import 'internal_commands.dart';
 
 void main(List<String> arguments) {
   final context = Context.implicit();
+  bool shouldUpdate = InternalCommandUpdatePrompt()
+      .shouldAutoUpdateAfterExecutingCommand([], context);
   switch (arguments) {
     case []:
       InternalCommandAvailableCommands().run([], context);
@@ -15,5 +19,8 @@ void main(List<String> arguments) {
         return;
       }
       command.run(args, context);
+  }
+  if (shouldUpdate) {
+    InternalCommandUpdate().run([], context);
   }
 }
