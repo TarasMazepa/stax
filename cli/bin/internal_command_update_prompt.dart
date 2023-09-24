@@ -14,15 +14,15 @@ class InternalCommandUpdatePrompt extends InternalCommand {
             type: InternalCommandType.hidden);
 
   @override
-  void run(final List<String> args, final Context context) {
+  void run(final List<String> args, Context context) {
+    context = context.withSilence(true);
     final lastUpdatePrompt = Settings.instance.lastUpdatePrompt.get();
     final now = DateTime.now();
     final silenceDuration = Duration(days: 1);
     if (lastUpdatePrompt.add(silenceDuration).isAfter(now)) return;
     Settings.instance.lastUpdatePrompt.set(now);
-    final silentContext = Context.silent();
     final myDir = Platform.script.toFilePathDir();
-    if (!silentContext.isCurrentBranchBehind(workingDirectory: myDir)) {
+    if (!context.isCurrentBranchBehind(workingDirectory: myDir)) {
       // fetch
     }
   }

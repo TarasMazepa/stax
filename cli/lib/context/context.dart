@@ -13,6 +13,11 @@ class Context {
 
   Context.loud() : this(silent: false);
 
+  Context withSilence(bool targetSilent) {
+    if (silent == targetSilent) return this;
+    return Context(silent: targetSilent);
+  }
+
   void printToConsole(Object? object) {
     if (silent) return;
     print(object);
