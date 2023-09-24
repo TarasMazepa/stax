@@ -12,13 +12,15 @@ class InternalCommandUpdatePrompt extends InternalCommand {
 
   @override
   void run(final List<String> args, Context context) {
-    context = context.withSilence(true);
+    context = context
+        .withSilence(true)
+        .withScriptPathAsWorkingDirectory()
+        .withRepositoryRootAsWorkingDirectory();
     final lastUpdatePrompt = Settings.instance.lastUpdatePrompt.get();
     final now = DateTime.now();
     final silenceDuration = Duration(days: 1);
     if (lastUpdatePrompt.add(silenceDuration).isAfter(now)) return;
     Settings.instance.lastUpdatePrompt.set(now);
-    context = context.withScriptPathAsWorkingDirectory();
     if (!context.isCurrentBranchBehind()) {
       // fetch
     }

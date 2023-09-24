@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:stax/context/context_git_get_repository_root.dart';
 import 'package:stax/file_path_dir_on_uri.dart';
 import 'package:stax/git/git.dart';
 
@@ -25,6 +26,10 @@ class Context {
 
   Context withScriptPathAsWorkingDirectory() {
     return withWorkingDirectory(Platform.script.toFilePathDir());
+  }
+
+  Context withRepositoryRootAsWorkingDirectory() {
+    return withWorkingDirectory(getRepositoryRoot());
   }
 
   void printToConsole(Object? object) {

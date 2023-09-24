@@ -8,7 +8,9 @@ class InternalCommandUpdate extends InternalCommand {
 
   @override
   void run(final List<String> args, Context context) {
-    context = context.withScriptPathAsWorkingDirectory();
+    context = context
+        .withScriptPathAsWorkingDirectory()
+        .withRepositoryRootAsWorkingDirectory();
     final currentBranch = context.getCurrentBranch();
     final mainBranch = "main";
     if (currentBranch != mainBranch) {
