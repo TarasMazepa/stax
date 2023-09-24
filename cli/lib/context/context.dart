@@ -4,14 +4,22 @@ import 'package:stax/git/git.dart';
 
 class Context {
   final bool silent;
+  final String? workingDirectory;
 
   late final Git git = Git(this);
 
-  Context({this.silent = false});
+  Context.empty() : this(false, null);
 
-  Context withSilence(bool targetSilent) {
-    if (silent == targetSilent) return this;
-    return Context(silent: targetSilent);
+  Context(this.silent, this.workingDirectory);
+
+  Context withSilence(bool silent) {
+    if (this.silent == silent) return this;
+    return Context(silent, workingDirectory);
+  }
+
+  Context withWorkingDirectory(String? workingDirectory) {
+    if (this.workingDirectory == workingDirectory) return this;
+    return Context(silent, workingDirectory);
   }
 
   void printToConsole(Object? object) {

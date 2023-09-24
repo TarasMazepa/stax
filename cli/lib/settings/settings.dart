@@ -25,7 +25,7 @@ class Settings {
     throw error;
   }
 
-  static final _rootPath = Context()
+  static final _rootPath = Context.empty()
       .withSilence(true)
       .getRepositoryRoot(workingDirectory: Platform.script.toFilePathDir());
 
