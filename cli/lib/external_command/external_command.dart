@@ -37,14 +37,13 @@ class ExternalCommand {
   }
 
   ExtendedProcessResult runSync(
-      {String? workingDirectory,
-      Map<String, String>? environment,
+      {Map<String, String>? environment,
       bool includeParentEnvironment = true,
       bool runInShell = false,
       Encoding? stdoutEncoding = systemEncoding,
       Encoding? stderrEncoding = systemEncoding}) {
     return Process.runSync(executable, arguments,
-            workingDirectory: workingDirectory,
+            workingDirectory: context.workingDirectory,
             environment: environment,
             includeParentEnvironment: includeParentEnvironment,
             runInShell: runInShell,
@@ -54,14 +53,13 @@ class ExternalCommand {
   }
 
   Future<ExtendedProcessResult> run(
-      {String? workingDirectory,
-      Map<String, String>? environment,
+      {Map<String, String>? environment,
       bool includeParentEnvironment = true,
       bool runInShell = false,
       Encoding? stdoutEncoding = systemEncoding,
       Encoding? stderrEncoding = systemEncoding}) {
     return Process.run(executable, arguments,
-            workingDirectory: workingDirectory,
+            workingDirectory: context.workingDirectory,
             environment: environment,
             includeParentEnvironment: includeParentEnvironment,
             runInShell: runInShell,

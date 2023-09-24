@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_repository_root.dart';
-import 'package:stax/file_path_dir_on_uri.dart';
 import 'package:stax/settings/date_time_setting.dart';
 
 class Settings {
@@ -28,7 +27,7 @@ class Settings {
   static final _rootPath = Context.implicit()
       .withSilence(true)
       .withScriptPathAsWorkingDirectory()
-      .getRepositoryRoot(workingDirectory: Platform.script.toFilePathDir());
+      .getRepositoryRoot();
 
   static final _file = File("$_rootPath/.stax_settings");
 
