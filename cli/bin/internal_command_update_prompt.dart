@@ -21,6 +21,7 @@ class InternalCommandUpdatePrompt extends InternalCommand {
     final silenceDuration = Duration(days: 1);
     if (lastUpdatePrompt.add(silenceDuration).isAfter(now)) return;
     Settings.instance.lastUpdatePrompt.set(now);
+    context = context.withScriptPathAsWorkingDirectory();
     final myDir = Platform.script.toFilePathDir();
     if (!context.isCurrentBranchBehind(workingDirectory: myDir)) {
       // fetch

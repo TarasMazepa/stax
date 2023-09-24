@@ -10,7 +10,8 @@ class InternalCommandUpdate extends InternalCommand {
   InternalCommandUpdate() : super("update", "Updates to the latest version.");
 
   @override
-  void run(final List<String> args, final Context context) {
+  void run(final List<String> args, Context context) {
+    context = context.withScriptPathAsWorkingDirectory();
     final executablePath = Platform.script.toFilePathDir();
     final currentBranch =
         context.getCurrentBranch(workingDirectory: executablePath);

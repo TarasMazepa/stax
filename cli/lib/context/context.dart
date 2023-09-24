@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:stax/file_path_dir_on_uri.dart';
 import 'package:stax/git/git.dart';
 
 class Context {
@@ -20,6 +21,10 @@ class Context {
   Context withWorkingDirectory(String? workingDirectory) {
     if (this.workingDirectory == workingDirectory) return this;
     return Context(silent, workingDirectory);
+  }
+
+  Context withScriptPathAsWorkingDirectory() {
+    return withWorkingDirectory(Platform.script.toFilePathDir());
   }
 
   void printToConsole(Object? object) {
