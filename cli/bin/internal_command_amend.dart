@@ -1,8 +1,7 @@
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
+import 'package:stax/context/context_git_child_branches.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
-import 'package:stax/git/extract_branch_names.dart';
-import 'package:stax/git/prepare_branch_names_for_extraction.dart';
 
 import 'internal_command.dart';
 
@@ -16,13 +15,7 @@ class InternalCommandAmend extends InternalCommand {
           "Run 'git add .' to add all the changes.");
       return;
     }
-    final childBranches = context.git.branchContains
-        .announce("Noting child branches that might need to be rebased.")
-        .runSync()
-        .printNotEmptyResultFields()
-        .prepareBranchNameForExtraction()
-        .extractBranchNames()
-        .toList();
+    final childBranches = context.getChildBranches();
     context.git.commitAmendNoEdit
         .announce("Amending changes to a commit.")
         .runSync()
