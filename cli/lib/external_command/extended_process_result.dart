@@ -33,7 +33,7 @@ class ExtendedProcessResult {
       context.printToConsole("Stdout:\n$stdout");
     }
     if (stderr.toString().trim().isNotEmpty) {
-      context.printToConsole("Stderr:\n$stdout");
+      context.printToConsole("Stderr:\n$stderr");
     }
     return this;
   }
