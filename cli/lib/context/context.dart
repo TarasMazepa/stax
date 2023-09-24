@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:stax/git/git.dart';
 
 class Context {
@@ -14,5 +16,10 @@ class Context {
   void printToConsole(Object? object) {
     if (silent) return;
     print(object);
+  }
+
+  bool commandLineContinueQuestion(String questionContext) {
+    print("$questionContext Continue y/N? ");
+    return stdin.readLineSync() == 'y';
   }
 }

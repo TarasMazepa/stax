@@ -1,6 +1,5 @@
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
-import 'package:stax/external_command/external_command.dart';
 
 import 'internal_command.dart';
 import 'sanitize_branch_name.dart';
@@ -36,7 +35,7 @@ class InternalCommandCommit extends InternalCommand {
     }
     final resultingBranchName = sanitizeBranchName(originalBranchName);
     if (originalBranchName != resultingBranchName) {
-      if (!commandLineContinueQuestion(
+      if (!context.commandLineContinueQuestion(
           "Branch name was sanitized to '$resultingBranchName'.")) return;
     }
     context.printToConsole("Commit  message: '$commitMessage'");

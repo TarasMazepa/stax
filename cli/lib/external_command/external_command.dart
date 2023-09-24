@@ -4,11 +4,6 @@ import 'dart:io';
 import 'package:stax/context/context.dart';
 import 'package:stax/external_command/extended_process_result.dart';
 
-bool commandLineContinueQuestion(String context) {
-  stdout.write("$context Continue y/N? ");
-  return stdin.readLineSync() == 'y';
-}
-
 class ExternalCommand {
   final List<String> parts;
   final Context context;
@@ -30,8 +25,8 @@ class ExternalCommand {
     return args([extra]);
   }
 
-  ExternalCommand? askContinueQuestion(String context) {
-    return commandLineContinueQuestion(context) ? this : null;
+  ExternalCommand? askContinueQuestion(String questionContext) {
+    return context.commandLineContinueQuestion(questionContext) ? this : null;
   }
 
   ExternalCommand announce([String? announcement]) {
