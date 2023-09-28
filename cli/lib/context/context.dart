@@ -38,7 +38,10 @@ class Context {
   }
 
   bool commandLineContinueQuestion(String questionContext) {
-    print("$questionContext Continue y/N? ");
+    final includeSpace = questionContext.isNotEmpty &&
+        questionContext[questionContext.length - 1] != '\n';
+    if (includeSpace) questionContext += " ";
+    print("${questionContext}Continue y/N? ");
     return stdin.readLineSync() == 'y';
   }
 }
