@@ -7,6 +7,6 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
     git pull &&
     dart compile exe "$SCRIPT_DIR/../cli/bin/cli.dart" --output="$SCRIPT_DIR/../bin/stax-mac" &&
     git add bin &&
-    git commit -m "new release" &&
+    git commit -m "new release: $1" &&
     git push
 )
