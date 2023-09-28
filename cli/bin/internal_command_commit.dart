@@ -19,9 +19,16 @@ class InternalCommandCommit extends InternalCommand {
       context.printToConsole("You need to provide commit message.");
       return;
     }
+    if (args.remove("-a")) {
+      context.git.addAll
+          .announce("Adding all the changes, as per your request.")
+          .runSync()
+          .printNotEmptyResultFields();
+    }
     if (context.isThereNoStagedChanges()) {
       context.printToConsole("Can't commit - there is nothing staged. "
-          "Run 'git add .' to add all the changes.");
+          "Run 'git add .' to add all the changes. "
+          "If that haven't worked - try editing some files.");
       return;
     }
     final commitMessage = args[0];
