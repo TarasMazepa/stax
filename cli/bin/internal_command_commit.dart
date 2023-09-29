@@ -1,5 +1,6 @@
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
+import 'package:stax/context/context_handle_add_all_argument.dart';
 
 import 'internal_command.dart';
 import 'sanitize_branch_name.dart';
@@ -19,12 +20,7 @@ class InternalCommandCommit extends InternalCommand {
       context.printToConsole("You need to provide commit message.");
       return;
     }
-    if (args.remove("-a")) {
-      context.git.addAll
-          .announce("Adding all the changes, as per your request.")
-          .runSync()
-          .printNotEmptyResultFields();
-    }
+    context.handleAddAllArgument(args);
     if (context.isThereNoStagedChanges()) {
       context.printToConsole("Can't commit - there is nothing staged. "
           "Run 'git add .' to add all the changes. "
