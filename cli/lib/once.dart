@@ -6,4 +6,8 @@ class Once {
     executed = true;
     call();
   }
+
+  void Function() wrap(void Function() call) {
+    return () => attempt(call);
+  }
 }
