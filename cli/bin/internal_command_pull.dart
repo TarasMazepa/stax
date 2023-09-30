@@ -9,13 +9,13 @@ import 'internal_command_main_branch.dart';
 class InternalCommandPull extends InternalCommand {
   InternalCommandPull()
       : super("pull",
-      "Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.");
+            "Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.");
 
   @override
   void run(List<String> args, Context context) {
     final currentBranch = context.getCurrentBranch();
     final defaultBranch =
-    InternalCommandMainBranch().getDefaultBranch([], context);
+        InternalCommandMainBranch().getDefaultBranch([], context);
     if (defaultBranch == null) {
       context.printToConsole(
           "Can't do pull on default branch, as can't identify one.");
@@ -39,9 +39,9 @@ class InternalCommandPull extends InternalCommand {
         .assertSuccessfulExitCode();
     if (result == null) return;
     InternalCommandDeleteGoneBranches().run([], context);
-    if (needToSwitchBranches) {
+    if (needToSwitchBranches && currentBranch != null) {
       context.git.checkout
-          .arg(defaultBranch)
+          .arg(currentBranch)
           .announce("Switching back to original branch '$currentBranch'.")
           .runSync()
           .printNotEmptyResultFields();
