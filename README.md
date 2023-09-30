@@ -20,7 +20,7 @@ Here is the list of commands currently available:
 ### stax-commit
 Creates branch, commits current changes with the same name as a branch, and pushes.
 ```
-stax-commit "two-in-one-commit-name-and-branch-name"
+stax commit "two-in-one-commit-name-and-branch-name"
 ```
 Result:
 ```
@@ -36,7 +36,7 @@ You can see that a branch with `two-in-one-commit-name-and-branch-name` name was
 ### stax-amend
 Amends to the current commit and force pushes branch
 ```
-stax-amend
+stax amend
 ```
 
 ### stax-delete-local-only-branches
