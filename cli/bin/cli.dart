@@ -8,7 +8,7 @@ import 'internal_commands.dart';
 void main(List<String> arguments) {
   final context = Context.implicit();
   bool shouldUpdate = InternalCommandUpdatePrompt()
-      .shouldAutoUpdateAfterExecutingCommand([], context);
+      .shouldAutoUpdateAfterExecutingCommand([], context.withSilence(true));
   switch (arguments) {
     case []:
       InternalCommandAvailableCommands().run([], context);

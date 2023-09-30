@@ -19,7 +19,6 @@ class InternalCommandUpdatePrompt extends InternalCommand {
     if (lastUpdatePrompt.add(silenceDuration).isAfter(now)) return false;
     Settings.instance.lastUpdatePrompt.set(now);
     context = context
-        .withSilence(true)
         .withScriptPathAsWorkingDirectory()
         .withRepositoryRootAsWorkingDirectory();
     if (!context.isCurrentBranchBehind()) {
@@ -28,7 +27,6 @@ class InternalCommandUpdatePrompt extends InternalCommand {
         return false;
       }
     }
-    context = context.withSilence(false);
     bool answer = context.commandLineContinueQuestion(
         "Stax will update after executing your command.");
     if (answer) {
