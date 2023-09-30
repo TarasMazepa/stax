@@ -15,7 +15,7 @@ class InternalCommandUpdatePrompt extends InternalCommand {
       final List<String> args, Context context) {
     final lastUpdatePrompt = Settings.instance.lastUpdatePrompt.get();
     final now = DateTime.now();
-    final silenceDuration = Duration(days: 1);
+    final silenceDuration = Duration(days: 7);
     if (lastUpdatePrompt.add(silenceDuration).isAfter(now)) return false;
     Settings.instance.lastUpdatePrompt.set(now);
     context = context
