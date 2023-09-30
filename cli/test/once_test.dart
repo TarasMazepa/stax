@@ -2,7 +2,7 @@ import 'package:stax/once.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('once attempt', () {
+  test('Once attempt', () {
     final once = Once();
     int executions = 0;
     call() => executions++;
@@ -16,7 +16,7 @@ void main() {
     once.attempt(call);
     expect(executions, 2);
   });
-  test('once wrap', () {
+  test('Once wrap', () {
     final once = Once();
     int executions = 0;
     final call = once.wrap(() => executions++);
