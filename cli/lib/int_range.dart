@@ -6,23 +6,23 @@ class IntRange {
   final RangeEdgeCondition startCondition;
   final RangeEdgeCondition endCondition;
 
-  IntRange(this.start, this.end, this.startCondition, this.endCondition);
+  IntRange(this.start, this.end, this.startCondition, this.endCondition) {
+    if (start > end) {
+      throw Exception("start ($start) is bigger than end ($end)");
+    }
+  }
 
-  IntRange.closed(this.start, this.end)
-      : startCondition = RangeEdgeCondition.closed,
-        endCondition = RangeEdgeCondition.closed;
+  IntRange.closed(int start, int end)
+      : this(start, end, RangeEdgeCondition.closed, RangeEdgeCondition.closed);
 
-  IntRange.open(this.start, this.end)
-      : startCondition = RangeEdgeCondition.open,
-        endCondition = RangeEdgeCondition.open;
+  IntRange.open(int start, int end)
+      : this(start, end, RangeEdgeCondition.open, RangeEdgeCondition.open);
 
-  IntRange.closedOpen(this.start, this.end)
-      : startCondition = RangeEdgeCondition.closed,
-        endCondition = RangeEdgeCondition.open;
+  IntRange.closedOpen(int start, int end)
+      : this(start, end, RangeEdgeCondition.closed, RangeEdgeCondition.open);
 
-  IntRange.openClosed(this.start, this.end)
-      : startCondition = RangeEdgeCondition.open,
-        endCondition = RangeEdgeCondition.closed;
+  IntRange.openClosed(int start, int end)
+      : this(start, end, RangeEdgeCondition.open, RangeEdgeCondition.closed);
 
   IntRange.singleton(int number) : this.closed(number, number);
 

@@ -1,1 +1,0 @@
-class InternalCommandStoppedExecutionException implements Exception {}

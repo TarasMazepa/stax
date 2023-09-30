@@ -88,4 +88,23 @@ void main() {
   test('[0] contains 1', () {
     expect(IntRange.singleton(0).contains(1), false);
   });
+  // Illegal arguments
+  test('illegal arguments IntRange.closed(...)', () {
+    expect(() => IntRange.closed(1, 0), throwsA(isException));
+  });
+  test('illegal arguments IntRange.open(...)', () {
+    expect(() => IntRange.open(1, 0), throwsA(isException));
+  });
+  test('illegal arguments IntRange.closedOpen(...)', () {
+    expect(() => IntRange.closedOpen(1, 0), throwsA(isException));
+  });
+  test('illegal arguments IntRange.openClosed(...)', () {
+    expect(() => IntRange.openClosed(1, 0), throwsA(isException));
+  });
+  test('illegal arguments IntRange(...)', () {
+    expect(
+        () =>
+            IntRange(1, 0, RangeEdgeCondition.open, RangeEdgeCondition.closed),
+        throwsA(isException));
+  });
 }
