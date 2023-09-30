@@ -15,18 +15,18 @@ class OnEmptyIterable<T> extends Iterable<T> {
 }
 
 class OnEmptyIterator<T> implements Iterator<T> {
-  final Iterator<T> _iterator;
+  final Iterator<T> _source;
   final void Function() _onEmpty;
   bool _hadElement = false;
 
-  OnEmptyIterator(this._iterator, this._onEmpty);
+  OnEmptyIterator(this._source, this._onEmpty);
 
   @override
-  T get current => _iterator.current;
+  T get current => _source.current;
 
   @override
   bool moveNext() {
-    if (_iterator.moveNext()) {
+    if (_source.moveNext()) {
       _hadElement = true;
       return true;
     } else {
