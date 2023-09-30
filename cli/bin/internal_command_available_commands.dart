@@ -16,8 +16,17 @@ class InternalCommandAvailableCommands extends InternalCommand {
     final commandsToShow = internalCommands.where(
         (element) => showAll || element.type == InternalCommandType.public);
     for (final element in commandsToShow) {
-      context.printToConsole(" * ${element.name}");
-      context.printToConsole("      ${element.description}");
+      context.printToConsole(" • ${element.name} - ${element.description}");
+      printMap(String header, Map<String, String>? map) {
+        if (map == null || map.isEmpty) return;
+        context.printToConsole("      $header:");
+        map.forEach((key, value) {
+          context.printToConsole("         $key - $value");
+        });
+      }
+
+      printMap("Positional arguments", element.arguments);
+      printMap("Flags", element.flags);
     }
   }
 }

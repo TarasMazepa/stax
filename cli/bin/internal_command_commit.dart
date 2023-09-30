@@ -1,6 +1,6 @@
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
-import 'package:stax/context/context_handle_add_all_argument.dart';
+import 'package:stax/context/context_handle_add_all_flag.dart';
 
 import 'internal_command.dart';
 import 'sanitize_branch_name.dart';
@@ -12,7 +12,14 @@ class InternalCommandCommit extends InternalCommand {
             "Creates a branch, commits, and pushes it to remote. "
                 "First argument is mandatory commit message. "
                 "Second argument is optional branch name, if not provided "
-                "branch name would be generated from commit message.");
+                "branch name would be generated from commit message.",
+            flags: {}..addAll(ContextHandleAddAllFlag.description),
+            arguments: {
+              "arg1":
+                  "Required commit message, usually enclosed in double quotes like this: \"Sample commit message\".",
+              "opt2":
+                  "Optional branch name, if not provided commit message would be converted to branch name.",
+            });
 
   @override
   void run(final List<String> args, final Context context) {
@@ -20,7 +27,7 @@ class InternalCommandCommit extends InternalCommand {
       context.printToConsole("You need to provide commit message.");
       return;
     }
-    context.handleAddAllArgument(args);
+    context.handleAddAllFlag(args);
     if (context.isThereNoStagedChanges()) {
       context.printToConsole("Can't commit - there is nothing staged. "
           "Run 'git add .' to add all the changes. "

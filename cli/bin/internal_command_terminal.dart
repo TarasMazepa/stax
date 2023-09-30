@@ -10,7 +10,11 @@ class InternalCommandTerminal extends InternalCommand {
             "terminal",
             "Command to test how dart executes commands in terminal. "
                 "Executes any provided arguments as command in terminal.",
-            type: InternalCommandType.hidden);
+            type: InternalCommandType.hidden,
+            arguments: {
+              "arg1, [arg2, ...]":
+                  "Any number of positional arguments that would be executed in terminal for you. At least one required.",
+            });
 
   @override
   void run(final List<String> args, final Context context) {
@@ -19,7 +23,7 @@ class InternalCommandTerminal extends InternalCommand {
         context.printToConsole("No arguments provided.");
       default:
         ExternalCommand(args, context)
-            .announce("Running your command")
+            .announce("Running your command.")
             .runSync()
             .printNotEmptyResultFields();
     }
