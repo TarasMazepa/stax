@@ -1,10 +1,10 @@
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
+import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/external_command/extended_process_result.dart';
 
 import 'internal_command.dart';
 import 'internal_command_delete_gone_branches.dart';
-import 'internal_command_main_branch.dart';
 
 class InternalCommandPull extends InternalCommand {
   InternalCommandPull()
@@ -14,8 +14,7 @@ class InternalCommandPull extends InternalCommand {
   @override
   void run(List<String> args, Context context) {
     final currentBranch = context.getCurrentBranch();
-    final defaultBranch =
-        InternalCommandMainBranch().getDefaultBranch([], context);
+    final defaultBranch = context.getDefaultBranch();
     if (defaultBranch == null) {
       context.printToConsole(
           "Can't do pull on default branch, as can't identify one.");
