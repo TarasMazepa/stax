@@ -4,9 +4,9 @@ import 'package:stax/context/context_git_child_branches.dart';
 import 'internal_command.dart';
 import 'types_for_internal_command.dart';
 
-class InternalCommandChildBranches extends InternalCommand {
-  InternalCommandChildBranches()
-      : super("child-branches", "Builds a tree of all child branches.",
+class InternalCommandLog extends InternalCommand {
+  InternalCommandLog()
+      : super("log", "Builds a tree of all branches.",
             type: InternalCommandType.hidden);
 
   @override
