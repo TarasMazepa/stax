@@ -1,6 +1,6 @@
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
-import 'package:stax/context/context_git_child_branches.dart';
+import 'package:stax/context/context_git_get_child_branches.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
 
@@ -29,7 +29,7 @@ class InternalCommandAmend extends InternalCommand {
             .announce("Getting hash of a new commit.")
             .runSync()
             .printNotEmptyResultFields();
-    childBranches.remove(rebaseTarget);
+    childBranches.removeWhere((e) => e.name == rebaseTarget);
     if (childBranches.isNotEmpty) {
       // rebase
     }
