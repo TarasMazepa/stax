@@ -64,12 +64,12 @@ class Context {
   bool commandLineContinueQuestion(String questionContext) {
     if (declineAll) {
       printToConsole(
-          "Automatically declining '$questionContext' as per user request.`");
+          "Automatically declining '$questionContext' as per user request.");
       return false;
     }
     if (acceptAll) {
       printToConsole(
-          "Automatically accepting '$questionContext' as per user request.`");
+          "Automatically accepting '$questionContext' as per user request.");
       return true;
     }
     final includeSpace = questionContext.isNotEmpty &&
