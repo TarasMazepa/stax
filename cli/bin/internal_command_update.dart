@@ -17,8 +17,8 @@ class InternalCommandUpdate extends InternalCommand {
       final result = context.git.checkout
           .arg(mainBranch)
           .askContinueQuestion(
-              "Switching from $currentBranch to $mainBranch branch.")
-          ?.announce("Switching to $mainBranch.")
+              "Switching from '$currentBranch' to '$mainBranch' branch.")
+          ?.announce("Switching to '$mainBranch'.")
           .runSync()
           .printNotEmptyResultFields();
       if (result == null) return;
