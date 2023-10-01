@@ -17,7 +17,7 @@ stax help
 
 Here is the list of commands currently available:
 
-### stax-commit
+### stax commit
 Creates branch, commits current changes with the same name as a branch, and pushes.
 ```
 stax commit "two-in-one-commit-name-and-branch-name"
@@ -33,11 +33,11 @@ Date:   Fri Sep 8 14:58:04 2023 -0700
 ```
 You can see that a branch with `two-in-one-commit-name-and-branch-name` name was created as well as a commit with the same name `two-in-one-commit-name-and-branch-name`. 
 
-### stax-amend
+### stax amend
 Amends to the current commit and force pushes branch
 ```
 stax amend
 ```
 
-### stax-delete-local-only-branches
-Deletes all local-only branches. Useful when you are using `stax-commit` which pushes all the branches. So once they are merged and deleted from the remote you can clean up local branches.
+### stax delete-gone-branches
+Deletes local branches with gone remotes. Useful when you are using `stax-commit` which pushes all the branches. So once they are merged and deleted from the remote you can clean up local branches.
