@@ -7,7 +7,8 @@ import 'internal_command_update_prompt.dart';
 import 'internal_commands.dart';
 
 void main(List<String> arguments) {
-  final context = Context.implicit();
+  arguments = arguments.toList();
+  final context = Context.implicit().handleGlobalFlags(arguments);
   bool shouldUpdate = InternalCommandUpdatePrompt()
       .shouldAutoUpdateAfterExecutingCommand([], context.withSilence(true));
   switch (arguments) {
@@ -19,7 +20,7 @@ void main(List<String> arguments) {
         print("Unknown command '$commandName'.");
         return;
       }
-      command.run(args, context.handleGlobalFlags(args));
+      command.run(args, context);
   }
   if (shouldUpdate) {
     InternalCommandUpdate().run([], context);

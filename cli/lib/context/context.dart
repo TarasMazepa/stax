@@ -6,22 +6,28 @@ import 'package:stax/git/git.dart';
 
 class Context {
   final bool silent;
+  final bool forcedLoudness;
   final String? workingDirectory;
 
   late final Git git = Git(this);
 
-  Context.implicit() : this(false, null);
+  Context.implicit() : this(false, null, false);
 
-  Context(this.silent, this.workingDirectory);
+  Context(this.silent, this.workingDirectory, this.forcedLoudness);
 
   Context withSilence(bool silent) {
     if (this.silent == silent) return this;
-    return Context(silent, workingDirectory);
+    return Context(silent, workingDirectory, forcedLoudness);
+  }
+
+  Context withForcedLoudness(bool forcedLoudness) {
+    if (this.forcedLoudness == forcedLoudness) return this;
+    return Context(silent, workingDirectory, forcedLoudness);
   }
 
   Context withWorkingDirectory(String? workingDirectory) {
     if (this.workingDirectory == workingDirectory) return this;
-    return Context(silent, workingDirectory);
+    return Context(silent, workingDirectory, forcedLoudness);
   }
 
   Context withScriptPathAsWorkingDirectory() {
@@ -33,7 +39,7 @@ class Context {
   }
 
   void printToConsole(Object? object) {
-    if (silent) return;
+    if (!forcedLoudness && silent) return;
     print(object);
   }
 
