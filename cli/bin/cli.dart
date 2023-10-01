@@ -1,4 +1,5 @@
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_handle_global_flags.dart';
 
 import 'internal_command_available_commands.dart';
 import 'internal_command_update.dart';
@@ -18,7 +19,7 @@ void main(List<String> arguments) {
         print("Unknown command '$commandName'.");
         return;
       }
-      command.run(args, context);
+      command.run(args, context.handleGlobalFlags(args));
   }
   if (shouldUpdate) {
     InternalCommandUpdate().run([], context);
