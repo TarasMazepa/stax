@@ -12,8 +12,8 @@ class Git {
   late final checkout = rawEc("git checkout");
   late final checkoutNewBranch = checkout.arg("-b");
   late final commit = rawEc("git commit");
-  late final commitWithMessage = commit.arg("-m");
   late final commitAmendNoEdit = commit.args(["--amend", "--no-edit"]);
+  late final commitWithMessage = commit.arg("-m");
   late final diff = rawEc("git diff");
   late final diffCachedQuiet = diff.args(["--cached", "--quiet"]);
   late final fetch = rawEc("git fetch");
@@ -21,9 +21,9 @@ class Git {
   late final pull = rawEc("git pull");
   late final push = rawEc("git push");
   late final pushForce = push.arg("--force");
+  late final remote = rawEc("git remote");
   late final revList = rawEc("git rev-list");
   late final revListCount = revList.arg("--count");
-  late final remote = rawEc("git remote");
   late final revParse = rawEc("git rev-parse");
   late final revParseAbbrevRef = revParse.arg("--abbrev-ref");
   late final revParseHead = revParse.arg("HEAD");
