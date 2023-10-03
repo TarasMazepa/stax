@@ -31,6 +31,8 @@ class Git {
   late final revParseAbbrevRef = revParse.arg("--abbrev-ref");
   late final revParseHead = revParse.arg("HEAD");
   late final revParseShowTopLevel = revParse.arg("--show-toplevel");
+  late final showBranch = rawEc("git show-branch");
+  late final showBranchSha1Name = showBranch.arg("--sha1-name");
   late final status = rawEc("git status");
   late final statusSb = status.arg("-sb");
 

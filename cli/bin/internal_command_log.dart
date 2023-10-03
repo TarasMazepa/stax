@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_all_branches.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
-import 'package:stax/extension_on_dynamic.dart';
 
 import 'internal_command.dart';
 
@@ -29,15 +28,13 @@ class InternalCommandLog extends InternalCommand {
             .runSync()
             .stdout
             .toString()
-            .trim()).entries.sortedByCompare(
-        (e) => context.git.logTimestampOne
-            .arg(e.key)
-            .runSync()
-            .stdout
-            .toString()
-            .trim()
-            .map((e) => int.tryParse(e)),
-        (a, b) => b - a);
-    context.printToConsole(connectionPoints);
+            .trim());
+    for (final pair in connectionPoints.entries) {
+      context.git.showBranchSha1Name
+          .args(pair.value.map((e) => e.name).toList())
+          .announce()
+          .runSync()
+          .printNotEmptyResultFields();
+    }
   }
 }
