@@ -18,6 +18,8 @@ class Git {
   late final diffCachedQuiet = diff.args(["--cached", "--quiet"]);
   late final fetch = rawEc("git fetch");
   late final fetchWithPrune = fetch.arg("-p");
+  late final log = rawEc("git log");
+  late final logTimestampOne = log.args(["--format=format:%ct", "-1"]);
   late final mergeBase = rawEc("git merge-base");
   late final pull = rawEc("git pull");
   late final push = rawEc("git push");
