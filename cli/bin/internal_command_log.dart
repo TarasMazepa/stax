@@ -27,7 +27,6 @@ class InternalCommandLog extends InternalCommand {
         (branch) => context.git.mergeBase
             .args([defaultBranch.name, branch.name])
             .runSync()
-            .printNotEmptyResultFields()
             .stdout
             .toString()
             .trim()).entries.sortedByCompare(
