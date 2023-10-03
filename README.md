@@ -41,3 +41,6 @@ stax amend
 
 ### stax delete-gone-branches
 Deletes local branches with gone remotes. Useful when you are using `stax-commit` which pushes all the branches. So once they are merged and deleted from the remote you can clean up local branches.
+
+### stax pull
+Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
