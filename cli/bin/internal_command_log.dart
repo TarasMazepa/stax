@@ -36,5 +36,55 @@ class InternalCommandLog extends InternalCommand {
           .runSync()
           .printNotEmptyResultFields();
     }
+    /*
+
+! [a] a
+ ! [b] b
+  ! [c] c
+   ! [d] d
+    ! [e] e
+     ! [f] f
+      ! [g] ggg
+-------
+      + [g] ggg
+      + [g^] g
+     ++ [f] f
+    +++ [e] e
+   +    [d] d
+  +++++ [c] c
+ ++++++ [b] b
++++++++ [a] a
+
+*  main [2343637]: Some commit
+| *   g [2343637]: Commit g
+| *   f [2343637]: Commit f
+| *   e [2343637]: Commit e
+| | * d [2343637]: Commit d
+| *-┘ c [2343637]: Commit c
+| *   b [6344637]: Commit b
+| *   a [2354637]: Commit a
+*-┘     [363497b]: Commit message
+
+* main  [2343637]: Some commit
+| * g   [2343637]: Commit g
+| * f   [2343637]: Commit f
+| * e   [2343637]: Commit e
+| | * d [2343637]: Commit d
+| *-┘ c [2343637]: Commit c
+| * b   [6344637]: Commit b
+| * a   [2354637]: Commit a
+*-┘     [363497b]: Commit message
+
+* main [2343637]: Some commit
+| * g [2343637]: Commit g
+| * f [2343637]: Commit f
+| * e [2343637]: Commit e
+| | * d [2343637]: Commit d
+| *-┘ c [2343637]: Commit c
+| * b [6344637]: Commit b
+| * a [2354637]: Commit a
+*-┘ [363497b]: Commit message
+
+     */
   }
 }
