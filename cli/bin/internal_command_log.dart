@@ -46,44 +46,46 @@ class InternalCommandLog extends InternalCommand {
      ! [f] f
       ! [g] ggg
 -------
-      + [g] ggg
-      + [g^] g
-     ++ [f] f
-    +++ [e] e
-   +    [d] d
-  +++++ [c] c
- ++++++ [b] b
-+++++++ [a] a
+      + [c3b3d18] ggg
+      + [f59daac] g
+     ++ [7bc6c72] f
+    +++ [600b013] e
+   +    [7d220a8] d
+  +++++ [d0b4d6c] c
+ ++++++ [5681909] b
++++++++ [363497b] a
 
-*  main [2343637]: Some commit
-| *   g [2343637]: Commit g
-| *   f [2343637]: Commit f
-| *   e [2343637]: Commit e
-| | * d [2343637]: Commit d
-| *-┘ c [2343637]: Commit c
-| *   b [6344637]: Commit b
-| *   a [2354637]: Commit a
-*-┘     [363497b]: Commit message
+a [b [c [d e[f [g]]]]]
 
-* main  [2343637]: Some commit
-| * g   [2343637]: Commit g
-| * f   [2343637]: Commit f
-| * e   [2343637]: Commit e
-| | * d [2343637]: Commit d
-| *-┘ c [2343637]: Commit c
-| * b   [6344637]: Commit b
-| * a   [2354637]: Commit a
-*-┘     [363497b]: Commit message
+*  main [c3b3d18]: Some commit
+| *   g [f59daac]: Commit g
+| *   f [7bc6c72]: Commit f
+| *   e [600b013]: Commit e
+| | * d [7d220a8]: Commit d
+| *-┘ c [d0b4d6c]: Commit c
+| *   b [5681909]: Commit b
+| *   a [363497b]: Commit a
+*-┘     [c3b3d18]: Commit message
 
-* main [2343637]: Some commit
-| * g [2343637]: Commit g
-| * f [2343637]: Commit f
-| * e [2343637]: Commit e
-| | * d [2343637]: Commit d
-| *-┘ c [2343637]: Commit c
-| * b [6344637]: Commit b
-| * a [2354637]: Commit a
-*-┘ [363497b]: Commit message
+* main  [c3b3d18]: Some commit
+| * g   [f59daac]: Commit g
+| * f   [7bc6c72]: Commit f
+| * e   [600b013]: Commit e
+| | * d [7d220a8]: Commit d
+| *-┘ c [d0b4d6c]: Commit c
+| * b   [5681909]: Commit b
+| * a   [363497b]: Commit a
+*-┘     [c3b3d18]: Commit message
+
+* main [c3b3d18]: Some commit
+| * g [f59daac]: Commit g
+| * f [7bc6c72]: Commit f
+| * e [600b013]: Commit e
+| | * d [7d220a8]: Commit d
+| *-┘ c [d0b4d6c]: Commit c
+| * b [5681909]: Commit b
+| * a [363497b]: Commit a
+*-┘ [c3b3d18]: Commit message
 
      */
   }
