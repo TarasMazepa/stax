@@ -44,7 +44,7 @@ class InternalCommandLog extends InternalCommand {
           .toList()
           .reversed
           .toList();
-      output.toString()
+      output.toString();
     }
     /*
 
