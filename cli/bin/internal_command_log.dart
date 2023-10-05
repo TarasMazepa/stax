@@ -30,11 +30,20 @@ class InternalCommandLog extends InternalCommand {
             .toString()
             .trim());
     for (final pair in connectionPoints.entries) {
-      context.git.showBranchSha1Name
+      final numberOfBranches = pair.value.length;
+      final output = context.git.showBranchSha1Name
           .args(pair.value.map((e) => e.name).toList())
           .announce()
           .runSync()
-          .printNotEmptyResultFields();
+          .printNotEmptyResultFields()
+          .stdout
+          .toString()
+          .trim()
+          .split("\n")
+          .skip(numberOfBranches + 1)
+          .toList()
+          .reversed
+          .toList();
     }
     /*
 
