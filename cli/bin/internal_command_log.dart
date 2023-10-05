@@ -2,8 +2,23 @@ import 'package:collection/collection.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_all_branches.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
+import 'package:stax/tree/tree_node.dart';
 
 import 'internal_command.dart';
+
+class LogEntry {
+  final int branch;
+  final String pattern;
+  final String commitHash;
+  final String commitMessage;
+
+  LogEntry(this.branch, this.pattern, this.commitHash, this.commitMessage);
+
+  @override
+  String toString() {
+    return "$branch $pattern $commitHash $commitMessage";
+  }
+}
 
 class InternalCommandLog extends InternalCommand {
   InternalCommandLog() : super("log", "Builds a tree of all branches.");
@@ -41,10 +56,83 @@ class InternalCommandLog extends InternalCommand {
           .trim()
           .split("\n")
           .skip(numberOfBranches + 1)
-          .toList()
-          .reversed
           .toList();
-      output.toString();
+
+      String empty = () {
+        String result = "";
+        for (int i = 0; i < numberOfBranches; i++) {
+          result += " ";
+        }
+        return result;
+      }();
+      bool containsAll(String a, String b) {
+        for (int i = 0; i < a.length; i++) {
+          if (b[i] == " ") continue;
+          if (a[i] != " ") continue;
+          return false;
+        }
+        return true;
+      }
+
+      String makePattern(String line) => line.substring(0, numberOfBranches);
+
+      TreeNode<LogEntry> makeTreeNode(
+          String line, List<String> children, int? branchHint) {
+        final pattern = makePattern(line);
+        int? branchNumber = branchHint;
+        for (int i = 0; i < numberOfBranches; i++) {
+          if (pattern[i] == " ") continue;
+          bool nonOfTheChildren = true;
+          for (var child in children) {
+            if (child[i] != " ") {
+              nonOfTheChildren = false;
+              break;
+            }
+          }
+          if (nonOfTheChildren) {
+            branchNumber = i;
+            break;
+          }
+        }
+        return TreeNode(
+          LogEntry(
+            branchNumber!,
+            pattern,
+            line.substring(line.indexOf("[") + 1, line.indexOf("]")),
+            line.substring(line.indexOf("]") + 2),
+          ),
+        );
+      }
+
+      ({List<TreeNode<LogEntry>> left, List<TreeNode<LogEntry>> right}) split(
+          String line, List<TreeNode<LogEntry>> nodes) {
+        final List<TreeNode<LogEntry>> left = [];
+        final List<TreeNode<LogEntry>> right = [];
+        final pattern = makePattern(line);
+        for (var node in nodes) {
+          if (containsAll(pattern, node.data.pattern)) {
+            left.add(node);
+          } else {
+            right.add(node);
+          }
+        }
+        return (left: left, right: right);
+      }
+
+      List<TreeNode<LogEntry>> nodes = [
+        makeTreeNode(output[0], [empty], null)
+      ];
+      for (int i = 1; i < output.length; i++) {
+        var result = split(output[i], nodes);
+        nodes = result.right;
+        final newNode = makeTreeNode(
+            output[i],
+            result.left.map((e) => e.data.pattern).toList(),
+            result.left.firstOrNull?.data.branch);
+        newNode.addChildren(result.left);
+        nodes.add(newNode);
+      }
+      print(nodes);
     }
     /*
 
