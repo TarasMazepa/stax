@@ -3,7 +3,7 @@ import 'package:stax/git/branch_info.dart';
 
 extension ContextGitGetChildBranches on Context {
   List<BranchInfo> getChildBranches() {
-    return git.branchContains
+    return git.branchVvContains
         .announce("List child branches.")
         .runSync()
         .printNotEmptyResultFields()

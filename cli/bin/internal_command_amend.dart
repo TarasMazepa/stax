@@ -19,7 +19,7 @@ class InternalCommandAmend extends InternalCommand {
           "Run 'git add .' to add all the changes.");
       return;
     }
-    // final childBranches = context.getChildBranches();
+    final childBranches = context.getChildBranches();
     context.git.commitAmendNoEdit
         .announce("Amending changes to a commit.")
         .runSync()
@@ -29,10 +29,10 @@ class InternalCommandAmend extends InternalCommand {
             .announce("Getting hash of a new commit.")
             .runSync()
             .printNotEmptyResultFields();
-    // childBranches.removeWhere((e) => e.name == rebaseTarget);
-    // if (childBranches.isNotEmpty) {
-    //   // rebase
-    // }
+    childBranches.removeWhere((e) => e.name == rebaseTarget);
+    if (childBranches.isNotEmpty) {
+      // rebase
+    }
     context.git.pushForce
         .announce("Force pushing to a remote.")
         .runSync()

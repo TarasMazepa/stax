@@ -5,10 +5,10 @@ class Git {
   late final add = rawEc("git add");
   late final addAll = add.arg(".");
   late final branch = rawEc("git branch");
-  late final branchContains = branch.arg("--contains");
   late final branchCurrent = branch.arg("--show-current");
   late final branchDelete = branch.arg("-D");
   late final branchVv = branch.arg("-vv");
+  late final branchVvContains = branch.args(["-vv", "--contains"]);
   late final checkout = rawEc("git checkout");
   late final checkoutNewBranch = checkout.arg("-b");
   late final commit = rawEc("git commit");
