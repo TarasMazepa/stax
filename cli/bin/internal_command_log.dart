@@ -3,6 +3,7 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_all_branches.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/log/log_entry.dart';
+import 'package:stax/log/parsed_log_line.dart';
 import 'package:stax/log/string_contains_same_or_more_non_space_characters.dart';
 import 'package:stax/tree/tree_node.dart';
 
@@ -71,12 +72,13 @@ class InternalCommandLog extends InternalCommand {
 
       TreeNode<LogEntry> makeTreeNode(
           String line, List<String> children, int? branchHint) {
+        final parsedLine = ParsedLogLine.parse(line);
         return TreeNode(
           LogEntry(
             calculateBranchNumber(line, children, branchHint),
-            makePattern(line),
-            line.substring(line.indexOf("[") + 1, line.indexOf("]")),
-            line.substring(line.indexOf("]") + 2),
+            parsedLine.pattern,
+            parsedLine.commitHash,
+            parsedLine.commitMessage,
           ),
         );
       }
