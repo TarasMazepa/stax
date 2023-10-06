@@ -2,23 +2,10 @@ import 'package:collection/collection.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_all_branches.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
+import 'package:stax/log/log_entry.dart';
 import 'package:stax/tree/tree_node.dart';
 
 import 'internal_command.dart';
-
-class LogEntry {
-  final int branch;
-  final String pattern;
-  final String commitHash;
-  final String commitMessage;
-
-  LogEntry(this.branch, this.pattern, this.commitHash, this.commitMessage);
-
-  @override
-  String toString() {
-    return "$branch $pattern $commitHash $commitMessage";
-  }
-}
 
 class InternalCommandLog extends InternalCommand {
   InternalCommandLog() : super("log", "Builds a tree of all branches.");
@@ -58,13 +45,6 @@ class InternalCommandLog extends InternalCommand {
           .skip(numberOfBranches + 1)
           .toList();
 
-      String empty = () {
-        String result = "";
-        for (int i = 0; i < numberOfBranches; i++) {
-          result += " ";
-        }
-        return result;
-      }();
       bool containsAll(String a, String b) {
         for (int i = 0; i < a.length; i++) {
           if (b[i] == " ") continue;
@@ -120,7 +100,7 @@ class InternalCommandLog extends InternalCommand {
       }
 
       List<TreeNode<LogEntry>> nodes = [
-        makeTreeNode(output[0], [empty], null)
+        makeTreeNode(output[0], [(" " * numberOfBranches)], null)
       ];
       for (int i = 1; i < output.length; i++) {
         var result = split(output[i], nodes);
@@ -135,6 +115,24 @@ class InternalCommandLog extends InternalCommand {
       print(nodes);
     }
     /*
+
+| *
+*-┘
+
+| *
+| | *
+*-┘-┘
+
+| *
+| | *
+| | | *
+*-┘-┘-┘
+
+| *
+| | *
+| | | *
+| | | | *
+*-┘-┘-┘-┘
 
 ! [a] a
  ! [b] b
