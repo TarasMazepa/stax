@@ -56,7 +56,7 @@ class InternalCommandLog extends InternalCommand {
 
       String makePattern(String line) => line.substring(0, numberOfBranches);
 
-      TreeNode<LogEntry> makeTreeNode(
+      int calculateBranchNumber(
           String line, List<String> children, int? branchHint) {
         final pattern = makePattern(line);
         int? branchNumber = branchHint;
@@ -74,10 +74,15 @@ class InternalCommandLog extends InternalCommand {
             break;
           }
         }
+        return branchNumber!;
+      }
+
+      TreeNode<LogEntry> makeTreeNode(
+          String line, List<String> children, int? branchHint) {
         return TreeNode(
           LogEntry(
-            branchNumber!,
-            pattern,
+            calculateBranchNumber(line, children, branchHint),
+            makePattern(line),
             line.substring(line.indexOf("[") + 1, line.indexOf("]")),
             line.substring(line.indexOf("]") + 2),
           ),
