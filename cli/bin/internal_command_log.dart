@@ -3,6 +3,7 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_all_branches.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/log/log_entry.dart';
+import 'package:stax/log/string_contains_same_or_more_non_space_characters.dart';
 import 'package:stax/tree/tree_node.dart';
 
 import 'internal_command.dart';
@@ -45,15 +46,6 @@ class InternalCommandLog extends InternalCommand {
           .skip(numberOfBranches + 1)
           .toList();
 
-      bool containsAll(String a, String b) {
-        for (int i = 0; i < a.length; i++) {
-          if (b[i] == " ") continue;
-          if (a[i] != " ") continue;
-          return false;
-        }
-        return true;
-      }
-
       String makePattern(String line) => line.substring(0, numberOfBranches);
 
       int calculateBranchNumber(
@@ -95,7 +87,8 @@ class InternalCommandLog extends InternalCommand {
         final List<TreeNode<LogEntry>> right = [];
         final pattern = makePattern(line);
         for (var node in nodes) {
-          if (containsAll(pattern, node.data.pattern)) {
+          if (pattern.containsSameOrMoreNonSpacePositionalCharacters(
+              node.data.pattern)) {
             left.add(node);
           } else {
             right.add(node);
