@@ -92,18 +92,19 @@ class InternalCommandLog extends InternalCommand {
         return (children: children, peers: peers);
       }
 
-      List<LogTreeNode> nodes = [];
-      for (int i = 0; i < output.length; i++) {
-        var result = split(output[i], nodes);
-        nodes = result.peers;
-        final newNode = LogTreeNode(
-          output[i],
-          deductBranchName(
-              output[i], result.children, result.children.firstOrNull?.branchName),
-        );
-        newNode.addChildren(result.children);
-        nodes.add(newNode);
+      List<LogTreeNode> updateNodes(
+          List<LogTreeNode> nodes, ParsedLogLine line) {
+        var result = split(line, nodes);
+        return result.peers
+          ..add(LogTreeNode(
+            line,
+            deductBranchName(
+                line, result.children, result.children.firstOrNull?.branchName),
+          )..addChildren(result.children));
       }
+
+      List<LogTreeNode> nodes = output.fold(<LogTreeNode>[],
+              (previousValue, element) => updateNodes(previousValue, element));
       print(nodes);
     }
     /*
