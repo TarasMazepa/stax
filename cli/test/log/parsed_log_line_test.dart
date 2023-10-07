@@ -51,11 +51,107 @@ void main() {
     expect(line.commitHash, "5681909");
     expect(line.commitMessage, "b");
   });
-  test('+++++++ [363497b] a', () {
-    final line = ParsedLogLine.parse("+++++++ [363497b] a");
+  test('+++++++ [363497b] ', () {
+    final line = ParsedLogLine.parse("+++++++ [363497b] ");
     expect(line.branchIndexes, {0, 1, 2, 3, 4, 5, 6});
     expect(line.pattern, "+++++++");
     expect(line.commitHash, "363497b");
-    expect(line.commitMessage, "a");
+    expect(line.commitMessage, "");
+  });
+  test('contains all "+++++++" & "+++++++"', () {
+    final lineA = ParsedLogLine.parse("+++++++ [363497b] ");
+    final lineB = ParsedLogLine.parse("+++++++ [363497b] ");
+    expect(lineA.containsAllBranches(lineB), true);
+    expect(lineB.containsAllBranches(lineA), true);
+  });
+  test('contains all "+++++++" & "++++++ "', () {
+    final lineA = ParsedLogLine.parse("+++++++ [363497b] ");
+    final lineB = ParsedLogLine.parse("++++++  [363497b] ");
+    expect(lineA.containsAllBranches(lineB), true);
+    expect(lineB.containsAllBranches(lineA), false);
+  });
+  test('contains all "+++++++" & "+++++  "', () {
+    final lineA = ParsedLogLine.parse("+++++++ [363497b] ");
+    final lineB = ParsedLogLine.parse("+++++   [363497b] ");
+    expect(lineA.containsAllBranches(lineB), true);
+    expect(lineB.containsAllBranches(lineA), false);
+  });
+  test('contains all "+++++++" & "++++   "', () {
+    final lineA = ParsedLogLine.parse("+++++++ [363497b] ");
+    final lineB = ParsedLogLine.parse("++++    [363497b] ");
+    expect(lineA.containsAllBranches(lineB), true);
+    expect(lineB.containsAllBranches(lineA), false);
+  });
+  test('contains all "+++++++" & "+++    "', () {
+    final lineA = ParsedLogLine.parse("+++++++ [363497b] ");
+    final lineB = ParsedLogLine.parse("+++     [363497b] ");
+    expect(lineA.containsAllBranches(lineB), true);
+    expect(lineB.containsAllBranches(lineA), false);
+  });
+  test('contains all "+++++++" & "++     "', () {
+    final lineA = ParsedLogLine.parse("+++++++ [363497b] ");
+    final lineB = ParsedLogLine.parse("++      [363497b] ");
+    expect(lineA.containsAllBranches(lineB), true);
+    expect(lineB.containsAllBranches(lineA), false);
+  });
+  test('contains all "+++++++" & "+      "', () {
+    final lineA = ParsedLogLine.parse("+++++++ [363497b] ");
+    final lineB = ParsedLogLine.parse("+       [363497b] ");
+    expect(lineA.containsAllBranches(lineB), true);
+    expect(lineB.containsAllBranches(lineA), false);
+  });
+  test('contains all "+++++++" & "       "', () {
+    final lineA = ParsedLogLine.parse("+++++++ [363497b] ");
+    final lineB = ParsedLogLine.parse("        [363497b] ");
+    expect(lineA.containsAllBranches(lineB), true);
+    expect(lineB.containsAllBranches(lineA), false);
+  });
+  test('contains all " ++++++" & "+++++++"', () {
+    final lineA = ParsedLogLine.parse(" ++++++ [363497b] ");
+    final lineB = ParsedLogLine.parse("+++++++ [363497b] ");
+    expect(lineA.containsAllBranches(lineB), false);
+    expect(lineB.containsAllBranches(lineA), true);
+  });
+  test('contains all "  +++++" & "++++++ "', () {
+    final lineA = ParsedLogLine.parse("  +++++ [363497b] ");
+    final lineB = ParsedLogLine.parse("++++++  [363497b] ");
+    expect(lineA.containsAllBranches(lineB), false);
+    expect(lineB.containsAllBranches(lineA), false);
+  });
+  test('contains all "   ++++" & "+++++  "', () {
+    final lineA = ParsedLogLine.parse("   ++++ [363497b] ");
+    final lineB = ParsedLogLine.parse("+++++   [363497b] ");
+    expect(lineA.containsAllBranches(lineB), false);
+    expect(lineB.containsAllBranches(lineA), false);
+  });
+  test('contains all "    +++" & "++++   "', () {
+    final lineA = ParsedLogLine.parse("    +++ [363497b] ");
+    final lineB = ParsedLogLine.parse("++++    [363497b] ");
+    expect(lineA.containsAllBranches(lineB), false);
+    expect(lineB.containsAllBranches(lineA), false);
+  });
+  test('contains all "     ++" & "+++    "', () {
+    final lineA = ParsedLogLine.parse("     ++ [363497b] ");
+    final lineB = ParsedLogLine.parse("+++     [363497b] ");
+    expect(lineA.containsAllBranches(lineB), false);
+    expect(lineB.containsAllBranches(lineA), false);
+  });
+  test('contains all "      +" & "++     "', () {
+    final lineA = ParsedLogLine.parse("      + [363497b] ");
+    final lineB = ParsedLogLine.parse("++      [363497b] ");
+    expect(lineA.containsAllBranches(lineB), false);
+    expect(lineB.containsAllBranches(lineA), false);
+  });
+  test('contains all "       " & "+      "', () {
+    final lineA = ParsedLogLine.parse("        [363497b] ");
+    final lineB = ParsedLogLine.parse("+       [363497b] ");
+    expect(lineA.containsAllBranches(lineB), false);
+    expect(lineB.containsAllBranches(lineA), true);
+  });
+  test('contains all "       " & "       "', () {
+    final lineA = ParsedLogLine.parse("        [363497b] ");
+    final lineB = ParsedLogLine.parse("        [363497b] ");
+    expect(lineA.containsAllBranches(lineB), true);
+    expect(lineB.containsAllBranches(lineA), true);
   });
 }

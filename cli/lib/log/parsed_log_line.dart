@@ -20,6 +20,10 @@ class ParsedLogLine {
     );
   }
 
+  bool containsAllBranches(ParsedLogLine other) {
+    return branchIndexes.containsAll(other.branchIndexes);
+  }
+
   @override
   String toString() {
     return "$pattern $commitHash $commitMessage";
