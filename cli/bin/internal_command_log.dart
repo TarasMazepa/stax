@@ -45,16 +45,14 @@ class InternalCommandLog extends InternalCommand {
           .trim()
           .split("\n")
           .skip(numberOfBranches + 1)
+          .map((e) => ParsedLogLine.parse(e))
           .toList();
 
-      String makePattern(String line) => line.substring(0, numberOfBranches);
-
       int calculateBranchNumber(
-          String line, List<String> children, int? branchHint) {
-        final pattern = makePattern(line);
+          ParsedLogLine line, List<String> children, int? branchHint) {
         int? branchNumber = branchHint;
         for (int i = 0; i < numberOfBranches; i++) {
-          if (pattern[i] == " ") continue;
+          if (line.pattern[i] == " ") continue;
           bool nonOfTheChildren = true;
           for (var child in children) {
             if (child[i] != " ") {
@@ -71,25 +69,23 @@ class InternalCommandLog extends InternalCommand {
       }
 
       TreeNode<LogEntry> makeTreeNode(
-          String line, List<String> children, int? branchHint) {
-        final parsedLine = ParsedLogLine.parse(line);
+          ParsedLogLine line, List<String> children, int? branchHint) {
         return TreeNode(
           LogEntry(
             calculateBranchNumber(line, children, branchHint),
-            parsedLine.pattern,
-            parsedLine.commitHash,
-            parsedLine.commitMessage,
+            line.pattern,
+            line.commitHash,
+            line.commitMessage,
           ),
         );
       }
 
       ({List<TreeNode<LogEntry>> left, List<TreeNode<LogEntry>> right}) split(
-          String line, List<TreeNode<LogEntry>> nodes) {
+          ParsedLogLine line, List<TreeNode<LogEntry>> nodes) {
         final List<TreeNode<LogEntry>> left = [];
         final List<TreeNode<LogEntry>> right = [];
-        final pattern = makePattern(line);
         for (var node in nodes) {
-          if (pattern.containsSameOrMoreNonSpacePositionalCharacters(
+          if (line.pattern.containsSameOrMoreNonSpacePositionalCharacters(
               node.data.pattern)) {
             left.add(node);
           } else {
