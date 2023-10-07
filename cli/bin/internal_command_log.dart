@@ -2,10 +2,10 @@ import 'package:collection/collection.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_all_branches.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
+import 'package:stax/log/log_tree_node.dart';
 import 'package:stax/log/parsed_log_line.dart';
 import 'package:stax/log/string_contains_same_or_more_non_space_characters.dart';
 import 'package:stax/nullable_index_of.dart';
-import 'package:stax/tree/log_tree_node.dart';
 
 import 'internal_command.dart';
 
@@ -104,7 +104,7 @@ class InternalCommandLog extends InternalCommand {
       }
 
       List<LogTreeNode> nodes = output.fold(<LogTreeNode>[],
-              (previousValue, element) => updateNodes(previousValue, element));
+          (previousValue, element) => updateNodes(previousValue, element));
       print(nodes);
     }
     /*
