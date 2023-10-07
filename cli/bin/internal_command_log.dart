@@ -4,6 +4,7 @@ import 'package:stax/context/context_git_get_all_branches.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/log/parsed_log_line.dart';
 import 'package:stax/log/string_contains_same_or_more_non_space_characters.dart';
+import 'package:stax/nullable_index_of.dart';
 import 'package:stax/tree/tree_node.dart';
 
 import 'internal_command.dart';
@@ -24,7 +25,7 @@ class InternalCommandLog extends InternalCommand {
       return;
     }
     allBranches.remove(defaultBranch);
-    final connectionPoints = groupBy(
+    final connectionGroups = groupBy(
         allBranches,
         (branch) => context.git.mergeBase
             .args([defaultBranch.name, branch.name])
@@ -32,9 +33,10 @@ class InternalCommandLog extends InternalCommand {
             .stdout
             .toString()
             .trim());
-    for (final pair in connectionPoints.entries) {
+    for (final pair in connectionGroups.entries) {
+      final branches = pair.value;
       final output = context.git.showBranchSha1Name
-          .args(pair.value.map((e) => e.name).toList())
+          .args(branches.map((e) => e.name).toList())
           .announce()
           .runSync()
           .printNotEmptyResultFields()
@@ -42,7 +44,7 @@ class InternalCommandLog extends InternalCommand {
           .toString()
           .trim()
           .split("\n")
-          .skip(pair.value.length + 1)
+          .skip(branches.length + 1)
           .map((e) => ParsedLogLine.parse(e))
           .toList();
 
@@ -66,6 +68,15 @@ class InternalCommandLog extends InternalCommand {
         return branchNumber!;
       }
 
+      String deductBranchName(ParsedLogLine line, List<LogTreeNode> children,
+          String? branchNameHint) {
+        final branchHint = branches
+            .indexWhere((e) => e.name == branchNameHint)
+            .toNullableIndexOfResult();
+        final index = calculateBranchNumber(line, children, branchHint);
+        return branches[index].name;
+      }
+
       ({List<LogTreeNode> left, List<LogTreeNode> right}) split(
           ParsedLogLine line, List<LogTreeNode> nodes) {
         final List<LogTreeNode> left = [];
@@ -87,8 +98,8 @@ class InternalCommandLog extends InternalCommand {
         nodes = result.right;
         final newNode = LogTreeNode(
           output[i],
-          calculateBranchNumber(output[i], result.left,
-              result.left.firstOrNull?.branchLocalIndex),
+          deductBranchName(
+              output[i], result.left, result.left.firstOrNull?.branchName),
         );
         newNode.addChildren(result.left);
         nodes.add(newNode);

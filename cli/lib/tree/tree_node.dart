@@ -4,9 +4,9 @@ class LogTreeNode {
   LogTreeNode? parent;
   List<LogTreeNode> children = List.empty(growable: true);
   ParsedLogLine line;
-  int branchLocalIndex;
+  String branchName;
 
-  LogTreeNode(this.line, this.branchLocalIndex);
+  LogTreeNode(this.line, this.branchName);
 
   void addChild(LogTreeNode other) {
     other.parent = this;
@@ -25,6 +25,6 @@ class LogTreeNode {
 
   @override
   String toString() {
-    return "$branchLocalIndex $line [${children.join(", ")}]";
+    return "$branchName $line [${children.join(", ")}]";
   }
 }
