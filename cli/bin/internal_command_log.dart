@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_all_branches.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
-import 'package:stax/log/log_entry.dart';
 import 'package:stax/log/parsed_log_line.dart';
 import 'package:stax/log/string_contains_same_or_more_non_space_characters.dart';
 import 'package:stax/tree/tree_node.dart';
@@ -67,20 +66,18 @@ class InternalCommandLog extends InternalCommand {
         return branchNumber!;
       }
 
-      TreeNode<LogEntry> makeTreeNode(
+      TreeNode makeTreeNode(
           ParsedLogLine line, List<String> children, int? branchHint) {
         return TreeNode(
-          LogEntry(
-            calculateBranchNumber(line, children, branchHint),
-          ),
           line,
+          calculateBranchNumber(line, children, branchHint),
         );
       }
 
-      ({List<TreeNode<LogEntry>> left, List<TreeNode<LogEntry>> right}) split(
-          ParsedLogLine line, List<TreeNode<LogEntry>> nodes) {
-        final List<TreeNode<LogEntry>> left = [];
-        final List<TreeNode<LogEntry>> right = [];
+      ({List<TreeNode> left, List<TreeNode> right}) split(
+          ParsedLogLine line, List<TreeNode> nodes) {
+        final List<TreeNode> left = [];
+        final List<TreeNode> right = [];
         for (var node in nodes) {
           if (line.pattern.containsSameOrMoreNonSpacePositionalCharacters(
               node.line.pattern)) {
@@ -92,14 +89,14 @@ class InternalCommandLog extends InternalCommand {
         return (left: left, right: right);
       }
 
-      List<TreeNode<LogEntry>> nodes = [];
+      List<TreeNode> nodes = [];
       for (int i = 0; i < output.length; i++) {
         var result = split(output[i], nodes);
         nodes = result.right;
         final newNode = makeTreeNode(
             output[i],
             result.left.map((e) => e.line.pattern).toList(),
-            result.left.firstOrNull?.data.branch);
+            result.left.firstOrNull?.branchLocalIndex);
         newNode.addChildren(result.left);
         nodes.add(newNode);
       }
