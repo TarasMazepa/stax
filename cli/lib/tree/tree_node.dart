@@ -1,25 +1,25 @@
 import 'package:stax/log/parsed_log_line.dart';
 
-class TreeNode {
-  TreeNode? parent;
-  List<TreeNode> children = List.empty(growable: true);
+class LogTreeNode {
+  LogTreeNode? parent;
+  List<LogTreeNode> children = List.empty(growable: true);
   ParsedLogLine line;
   int branchLocalIndex;
 
-  TreeNode(this.line, this.branchLocalIndex);
+  LogTreeNode(this.line, this.branchLocalIndex);
 
-  void addChild(TreeNode other) {
+  void addChild(LogTreeNode other) {
     other.parent = this;
     children.add(other);
   }
 
-  void addChildren(List<TreeNode> children) {
+  void addChildren(List<LogTreeNode> children) {
     for (var child in children) {
       addChild(child);
     }
   }
 
-  void addParent(TreeNode other) {
+  void addParent(LogTreeNode other) {
     other.addChild(this);
   }
 

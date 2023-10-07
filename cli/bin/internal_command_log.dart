@@ -47,13 +47,13 @@ class InternalCommandLog extends InternalCommand {
           .toList();
 
       int calculateBranchNumber(
-          ParsedLogLine line, List<String> children, int? branchHint) {
+          ParsedLogLine line, List<LogTreeNode> children, int? branchHint) {
         int? branchNumber = branchHint;
         for (int i = 0; i < line.pattern.length; i++) {
           if (line.pattern[i] == " ") continue;
           bool nonOfTheChildren = true;
           for (var child in children) {
-            if (child[i] != " ") {
+            if (child.line.pattern[i] != " ") {
               nonOfTheChildren = false;
               break;
             }
@@ -66,18 +66,18 @@ class InternalCommandLog extends InternalCommand {
         return branchNumber!;
       }
 
-      TreeNode makeTreeNode(
-          ParsedLogLine line, List<String> children, int? branchHint) {
-        return TreeNode(
+      LogTreeNode makeTreeNode(
+          ParsedLogLine line, List<LogTreeNode> children, int? branchHint) {
+        return LogTreeNode(
           line,
           calculateBranchNumber(line, children, branchHint),
         );
       }
 
-      ({List<TreeNode> left, List<TreeNode> right}) split(
-          ParsedLogLine line, List<TreeNode> nodes) {
-        final List<TreeNode> left = [];
-        final List<TreeNode> right = [];
+      ({List<LogTreeNode> left, List<LogTreeNode> right}) split(
+          ParsedLogLine line, List<LogTreeNode> nodes) {
+        final List<LogTreeNode> left = [];
+        final List<LogTreeNode> right = [];
         for (var node in nodes) {
           if (line.pattern.containsSameOrMoreNonSpacePositionalCharacters(
               node.line.pattern)) {
@@ -89,14 +89,12 @@ class InternalCommandLog extends InternalCommand {
         return (left: left, right: right);
       }
 
-      List<TreeNode> nodes = [];
+      List<LogTreeNode> nodes = [];
       for (int i = 0; i < output.length; i++) {
         var result = split(output[i], nodes);
         nodes = result.right;
         final newNode = makeTreeNode(
-            output[i],
-            result.left.map((e) => e.line.pattern).toList(),
-            result.left.firstOrNull?.branchLocalIndex);
+            output[i], result.left, result.left.firstOrNull?.branchLocalIndex);
         newNode.addChildren(result.left);
         nodes.add(newNode);
       }
