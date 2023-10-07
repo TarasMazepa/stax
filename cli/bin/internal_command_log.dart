@@ -4,7 +4,6 @@ import 'package:stax/context/context_git_get_all_branches.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/log/log_tree_node.dart';
 import 'package:stax/log/parsed_log_line.dart';
-import 'package:stax/nullable_index_of.dart';
 
 import 'internal_command.dart';
 
@@ -47,33 +46,12 @@ class InternalCommandLog extends InternalCommand {
           .map((e) => ParsedLogLine.parse(e))
           .toList();
 
-      int calculateBranchNumber(
-          ParsedLogLine line, List<LogTreeNode> children, int? branchHint) {
-        int? branchNumber = branchHint;
-        for (int i = 0; i < line.pattern.length; i++) {
-          if (line.pattern[i] == " ") continue;
-          bool nonOfTheChildren = true;
-          for (var child in children) {
-            if (child.line.pattern[i] != " ") {
-              nonOfTheChildren = false;
-              break;
-            }
-          }
-          if (nonOfTheChildren) {
-            branchNumber = i;
-            break;
-          }
-        }
-        return branchNumber!;
-      }
-
-      String deductBranchName(ParsedLogLine line, List<LogTreeNode> children,
-          String? branchNameHint) {
-        final branchHint = branches
-            .indexWhere((e) => e.name == branchNameHint)
-            .toNullableIndexOfResult();
-        final index = calculateBranchNumber(line, children, branchHint);
-        return branches[index].name;
+      String deductBranchName(ParsedLogLine line, List<LogTreeNode> children) {
+        return (Set.of(line.branchIndexes)
+                  ..removeAll(children.expand((e) => e.line.branchIndexes)))
+                .map((e) => branches[e].name)
+                .firstOrNull ??
+            children.map((e) => e.branchName).first;
       }
 
       List<LogTreeNode> updateNodes(
@@ -84,7 +62,7 @@ class InternalCommandLog extends InternalCommand {
         return peers
           ..add(LogTreeNode(
             line,
-            deductBranchName(line, children, children.firstOrNull?.branchName),
+            deductBranchName(line, children),
           )..addChildren(children));
       }
 
