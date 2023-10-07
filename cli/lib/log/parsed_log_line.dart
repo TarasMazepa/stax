@@ -14,4 +14,9 @@ class ParsedLogLine {
       line.substring(rightBracketIndex + 2),
     );
   }
+
+  @override
+  String toString() {
+    return "$pattern $commitHash $commitMessage";
+  }
 }

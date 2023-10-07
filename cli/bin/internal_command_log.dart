@@ -72,10 +72,8 @@ class InternalCommandLog extends InternalCommand {
         return TreeNode(
           LogEntry(
             calculateBranchNumber(line, children, branchHint),
-            line.pattern,
-            line.commitHash,
-            line.commitMessage,
           ),
+          line,
         );
       }
 
@@ -85,7 +83,7 @@ class InternalCommandLog extends InternalCommand {
         final List<TreeNode<LogEntry>> right = [];
         for (var node in nodes) {
           if (line.pattern.containsSameOrMoreNonSpacePositionalCharacters(
-              node.data.pattern)) {
+              node.line.pattern)) {
             left.add(node);
           } else {
             right.add(node);
@@ -100,7 +98,7 @@ class InternalCommandLog extends InternalCommand {
         nodes = result.right;
         final newNode = makeTreeNode(
             output[i],
-            result.left.map((e) => e.data.pattern).toList(),
+            result.left.map((e) => e.line.pattern).toList(),
             result.left.firstOrNull?.data.branch);
         newNode.addChildren(result.left);
         nodes.add(newNode);

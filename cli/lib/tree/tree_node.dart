@@ -1,9 +1,12 @@
-class TreeNode<T> {
-  TreeNode? parent;
-  List<TreeNode> children = List.empty(growable: true);
-  T data;
+import 'package:stax/log/parsed_log_line.dart';
 
-  TreeNode(this.data);
+class TreeNode<T> {
+  TreeNode<T>? parent;
+  List<TreeNode<T>> children = List.empty(growable: true);
+  T data;
+  ParsedLogLine line;
+
+  TreeNode(this.data, this.line);
 
   void addChild(TreeNode<T> other) {
     other.parent = this;
@@ -22,6 +25,6 @@ class TreeNode<T> {
 
   @override
   String toString() {
-    return "$data [${children.join(", ")}]";
+    return "$data $line [${children.join(", ")}]";
   }
 }
