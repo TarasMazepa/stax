@@ -34,7 +34,6 @@ class InternalCommandLog extends InternalCommand {
             .toString()
             .trim());
     for (final pair in connectionPoints.entries) {
-      final numberOfBranches = pair.value.length;
       final output = context.git.showBranchSha1Name
           .args(pair.value.map((e) => e.name).toList())
           .announce()
@@ -44,14 +43,14 @@ class InternalCommandLog extends InternalCommand {
           .toString()
           .trim()
           .split("\n")
-          .skip(numberOfBranches + 1)
+          .skip(pair.value.length + 1)
           .map((e) => ParsedLogLine.parse(e))
           .toList();
 
       int calculateBranchNumber(
           ParsedLogLine line, List<String> children, int? branchHint) {
         int? branchNumber = branchHint;
-        for (int i = 0; i < numberOfBranches; i++) {
+        for (int i = 0; i < line.pattern.length; i++) {
           if (line.pattern[i] == " ") continue;
           bool nonOfTheChildren = true;
           for (var child in children) {
@@ -96,7 +95,7 @@ class InternalCommandLog extends InternalCommand {
       }
 
       List<TreeNode<LogEntry>> nodes = [
-        makeTreeNode(output[0], [(" " * numberOfBranches)], null)
+        makeTreeNode(output[0], [], null)
       ];
       for (int i = 1; i < output.length; i++) {
         var result = split(output[i], nodes);
