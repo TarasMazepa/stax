@@ -77,13 +77,18 @@ class InternalCommandLog extends InternalCommand {
         return branches[index].name;
       }
 
+      bool firstStrictlyContainsSecond(
+          ParsedLogLine first, ParsedLogLine second) {
+        return first.pattern
+            .containsSameOrMoreNonSpacePositionalCharacters(second.pattern);
+      }
+
       ({List<LogTreeNode> children, List<LogTreeNode> peers}) split(
           ParsedLogLine line, List<LogTreeNode> nodes) {
         final List<LogTreeNode> children = [];
         final List<LogTreeNode> peers = [];
         for (var node in nodes) {
-          if (line.pattern.containsSameOrMoreNonSpacePositionalCharacters(
-              node.line.pattern)) {
+          if (firstStrictlyContainsSecond(line, node.line)) {
             children.add(node);
           } else {
             peers.add(node);
