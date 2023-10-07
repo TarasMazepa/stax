@@ -5,7 +5,7 @@ import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/log/parsed_log_line.dart';
 import 'package:stax/log/string_contains_same_or_more_non_space_characters.dart';
 import 'package:stax/nullable_index_of.dart';
-import 'package:stax/tree/tree_node.dart';
+import 'package:stax/tree/log_tree_node.dart';
 
 import 'internal_command.dart';
 
@@ -77,31 +77,31 @@ class InternalCommandLog extends InternalCommand {
         return branches[index].name;
       }
 
-      ({List<LogTreeNode> left, List<LogTreeNode> right}) split(
+      ({List<LogTreeNode> children, List<LogTreeNode> peers}) split(
           ParsedLogLine line, List<LogTreeNode> nodes) {
-        final List<LogTreeNode> left = [];
-        final List<LogTreeNode> right = [];
+        final List<LogTreeNode> children = [];
+        final List<LogTreeNode> peers = [];
         for (var node in nodes) {
           if (line.pattern.containsSameOrMoreNonSpacePositionalCharacters(
               node.line.pattern)) {
-            left.add(node);
+            children.add(node);
           } else {
-            right.add(node);
+            peers.add(node);
           }
         }
-        return (left: left, right: right);
+        return (children: children, peers: peers);
       }
 
       List<LogTreeNode> nodes = [];
       for (int i = 0; i < output.length; i++) {
         var result = split(output[i], nodes);
-        nodes = result.right;
+        nodes = result.peers;
         final newNode = LogTreeNode(
           output[i],
           deductBranchName(
-              output[i], result.left, result.left.firstOrNull?.branchName),
+              output[i], result.children, result.children.firstOrNull?.branchName),
         );
-        newNode.addChildren(result.left);
+        newNode.addChildren(result.children);
         nodes.add(newNode);
       }
       print(nodes);
