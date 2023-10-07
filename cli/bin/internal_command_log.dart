@@ -66,14 +66,6 @@ class InternalCommandLog extends InternalCommand {
         return branchNumber!;
       }
 
-      LogTreeNode makeTreeNode(
-          ParsedLogLine line, List<LogTreeNode> children, int? branchHint) {
-        return LogTreeNode(
-          line,
-          calculateBranchNumber(line, children, branchHint),
-        );
-      }
-
       ({List<LogTreeNode> left, List<LogTreeNode> right}) split(
           ParsedLogLine line, List<LogTreeNode> nodes) {
         final List<LogTreeNode> left = [];
@@ -93,8 +85,11 @@ class InternalCommandLog extends InternalCommand {
       for (int i = 0; i < output.length; i++) {
         var result = split(output[i], nodes);
         nodes = result.right;
-        final newNode = makeTreeNode(
-            output[i], result.left, result.left.firstOrNull?.branchLocalIndex);
+        final newNode = LogTreeNode(
+          output[i],
+          calculateBranchNumber(output[i], result.left,
+              result.left.firstOrNull?.branchLocalIndex),
+        );
         newNode.addChildren(result.left);
         nodes.add(newNode);
       }
