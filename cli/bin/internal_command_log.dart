@@ -94,10 +94,8 @@ class InternalCommandLog extends InternalCommand {
         return (left: left, right: right);
       }
 
-      List<TreeNode<LogEntry>> nodes = [
-        makeTreeNode(output[0], [], null)
-      ];
-      for (int i = 1; i < output.length; i++) {
+      List<TreeNode<LogEntry>> nodes = [];
+      for (int i = 0; i < output.length; i++) {
         var result = split(output[i], nodes);
         nodes = result.right;
         final newNode = makeTreeNode(
