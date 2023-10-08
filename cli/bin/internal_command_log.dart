@@ -12,6 +12,7 @@ class InternalCommandLog extends InternalCommand {
 
   @override
   void run(List<String> args, Context context) {
+    context = context.withSilence(true);
     final defaultBranchName = context.getDefaultBranch();
     if (defaultBranchName == null) {
       return;
@@ -76,7 +77,9 @@ class InternalCommandLog extends InternalCommand {
       },
     );
 
-    print(connectionGroups.expand((e) => e.decorate(indent: 1)).join("\n"));
+    print(connectionGroups
+        .expand((e) => e.toDecoratedList(indent: 1))
+        .join("\n"));
 
     /*
 

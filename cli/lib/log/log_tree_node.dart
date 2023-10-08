@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:stax/log/decorated_log_line.dart';
 import 'package:stax/log/parsed_log_line.dart';
 
 class LogTreeNode {
@@ -19,6 +20,20 @@ class LogTreeNode {
       0 => 1,
       _ => children.map((e) => e.length()).max + 1,
     };
+  }
+
+  DecoratedLogLine toDecorated() {
+    return DecoratedLogLine(
+        branchName, line.commitHash, line.commitMessage, "*");
+  }
+
+  List<DecoratedLogLine> toDecoratedList({int indent = 0}) {
+    return children
+        .expandIndexed((i, e) =>
+            e.toDecoratedList().map((e) => e.withIndent("| " * (i + indent))))
+        .followedBy([
+      toDecorated().withExtend("-┘" * (children.length - 1 + indent))
+    ]).toList();
   }
 
   List<String> decorate({int indent = 0}) {
