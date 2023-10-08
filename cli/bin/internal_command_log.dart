@@ -23,6 +23,7 @@ class InternalCommandLog extends InternalCommand {
       return;
     }
     final connectionGroups = allBranches
+        .whereNot((e) => e == defaultBranch)
         .groupListsBy((branch) => context.git.mergeBase
             .args([defaultBranch.name, branch.name])
             .runSync()
