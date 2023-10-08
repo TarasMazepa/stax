@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_all_branches.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
-import 'package:stax/git/branch_info.dart';
 import 'package:stax/log/log_tree_node.dart';
 import 'package:stax/log/parsed_log_line.dart';
 
@@ -45,10 +44,7 @@ class InternalCommandLog extends InternalCommand {
           .split("\n")
           .skip(branches.length + 1)
           .map((e) => ParsedLogLine.parse(e))
-          .toList();
-
-      List<LogTreeNode> updateNodes(List<LogTreeNode> nodes, ParsedLogLine line,
-          List<BranchInfo> branches) {
+          .fold(<LogTreeNode>[], (nodes, line) {
         final result = groupBy(nodes, (e) => line.containsAllBranches(e.line));
         final peers = result[false] ?? [];
         final children = result[true] ?? [];
@@ -63,13 +59,8 @@ class InternalCommandLog extends InternalCommand {
             branchName,
             children,
           ));
-      }
-
-      List<LogTreeNode> nodes = output.fold(
-          <LogTreeNode>[],
-          (previousValue, element) =>
-              updateNodes(previousValue, element, branches));
-      print(nodes);
+      });
+      print(output);
     }
     /*
 
