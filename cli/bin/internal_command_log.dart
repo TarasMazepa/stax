@@ -29,39 +29,43 @@ class InternalCommandLog extends InternalCommand {
         .map(
       (commitToBranches) {
         final branches = commitToBranches.value;
-        return context.git.showBranchSha1Name
-            .args(branches.map((e) => e.name).toList())
-            .announce()
-            .runSync()
-            .printNotEmptyResultFields()
-            .stdout
-            .toString()
-            .trim()
-            .split("\n")
-            .skip(branches.length + 1)
-            .map(ParsedLogLine.parse)
-            .fold(
-          <LogTreeNode>[],
-          (nodes, line) => (groupBy(
-            nodes,
-            (node) => line.containsAllBranches(node.line),
-          )..putIfAbsent(true, () => []))
-              .entries
-              .expand((group) => !group.key
-                  ? group.value
-                  : [
-                      LogTreeNode(
-                        line,
-                        group.value,
-                        line.branchIndexes
-                                .where((index) => group.value.none((e) =>
-                                    e.line.branchIndexes.contains(index)))
-                                .map((e) => branches[e].name)
-                                .firstOrNull ??
-                            group.value.map((e) => e.branchName).first,
-                      )
-                    ])
-              .toList(),
+        return LogTreeNode(
+          ParsedLogLine("", commitToBranches.key, ""),
+          defaultBranchName,
+          context.git.showBranchSha1Name
+              .args(branches.map((e) => e.name).toList())
+              .announce()
+              .runSync()
+              .printNotEmptyResultFields()
+              .stdout
+              .toString()
+              .trim()
+              .split("\n")
+              .skip(branches.length + 1)
+              .map(ParsedLogLine.parse)
+              .fold(
+            <LogTreeNode>[],
+            (nodes, line) => (groupBy(
+              nodes,
+              (node) => line.containsAllBranches(node.line),
+            )..putIfAbsent(true, () => []))
+                .entries
+                .expand((group) => !group.key
+                    ? group.value
+                    : [
+                        LogTreeNode(
+                          line,
+                          line.branchIndexes
+                                  .where((index) => group.value.none((e) =>
+                                      e.line.branchIndexes.contains(index)))
+                                  .map((e) => branches[e].name)
+                                  .firstOrNull ??
+                              group.value.map((e) => e.branchName).first,
+                          group.value,
+                        )
+                      ])
+                .toList(),
+          ),
         );
       },
     );

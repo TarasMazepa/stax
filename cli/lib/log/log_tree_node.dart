@@ -6,7 +6,7 @@ class LogTreeNode {
   final ParsedLogLine line;
   final String branchName;
 
-  LogTreeNode(this.line, this.children, this.branchName) {
+  LogTreeNode(this.line, this.branchName, this.children) {
     for (var child in children) {
       child.parent = this;
     }
