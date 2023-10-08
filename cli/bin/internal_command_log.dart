@@ -44,21 +44,27 @@ class InternalCommandLog extends InternalCommand {
           .split("\n")
           .skip(branches.length + 1)
           .map((e) => ParsedLogLine.parse(e))
-          .fold(<LogTreeNode>[], (nodes, line) {
-        final result = groupBy(nodes, (e) => line.containsAllBranches(e.line));
-        final peers = result[false] ?? [];
-        final children = result[true] ?? [];
-        return peers
-          ..add(LogTreeNode(
-            line,
-            children,
-            (Set.of(line.branchIndexes)
-                      ..removeAll(children.expand((e) => e.line.branchIndexes)))
-                    .map((e) => branches[e].name)
-                    .firstOrNull ??
-                children.map((e) => e.branchName).first,
-          ));
-      });
+          .fold(
+              <LogTreeNode>[],
+              (nodes, line) => ({true: <LogTreeNode>[]}..addAll(
+                      groupBy(nodes, (e) => line.containsAllBranches(e.line))))
+                  .entries
+                  .expand((e) => switch (e.key) {
+                        false => e.value,
+                        true => [
+                            LogTreeNode(
+                              line,
+                              e.value,
+                              (Set.of(line.branchIndexes)
+                                        ..removeAll(e.value.expand(
+                                            (e) => e.line.branchIndexes)))
+                                      .map((e) => branches[e].name)
+                                      .firstOrNull ??
+                                  e.value.map((e) => e.branchName).first,
+                            )
+                          ],
+                      })
+                  .toList());
       print(output);
     }
     /*
