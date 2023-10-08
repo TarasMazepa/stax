@@ -48,16 +48,15 @@ class InternalCommandLog extends InternalCommand {
         final result = groupBy(nodes, (e) => line.containsAllBranches(e.line));
         final peers = result[false] ?? [];
         final children = result[true] ?? [];
-        final branchName = (Set.of(line.branchIndexes)
-                  ..removeAll(children.expand((e) => e.line.branchIndexes)))
-                .map((e) => branches[e].name)
-                .firstOrNull ??
-            children.map((e) => e.branchName).first;
         return peers
           ..add(LogTreeNode(
             line,
-            branchName,
             children,
+            (Set.of(line.branchIndexes)
+                      ..removeAll(children.expand((e) => e.line.branchIndexes)))
+                    .map((e) => branches[e].name)
+                    .firstOrNull ??
+                children.map((e) => e.branchName).first,
           ));
       });
       print(output);
