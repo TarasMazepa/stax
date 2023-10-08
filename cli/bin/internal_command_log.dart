@@ -50,7 +50,7 @@ class InternalCommandLog extends InternalCommand {
               ..addAll(groupBy(nodes, (e) => line.containsAllBranches(e.line))))
             .entries
             .expand(
-              (e) => e.key
+              (e) => !e.key
                   ? e.value
                   : [
                       LogTreeNode(
