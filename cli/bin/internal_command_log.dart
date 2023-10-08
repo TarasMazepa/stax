@@ -70,7 +70,7 @@ class InternalCommandLog extends InternalCommand {
       },
     );
 
-    print(connectionGroups);
+    print(connectionGroups.expand((e) => e.decorate()).join("\n"));
 
     /*
 
