@@ -49,9 +49,10 @@ class InternalCommandLog extends InternalCommand {
               (nodes, line) => ({true: <LogTreeNode>[]}..addAll(
                       groupBy(nodes, (e) => line.containsAllBranches(e.line))))
                   .entries
-                  .expand((e) => switch (e.key) {
-                        false => e.value,
-                        true => [
+                  .expand(
+                    (e) => e.key
+                        ? e.value
+                        : [
                             LogTreeNode(
                               line,
                               e.value,
@@ -63,7 +64,7 @@ class InternalCommandLog extends InternalCommand {
                                   e.value.map((e) => e.branchName).first,
                             )
                           ],
-                      })
+                  )
                   .toList());
       print(output);
     }
