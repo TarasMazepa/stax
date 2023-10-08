@@ -53,9 +53,9 @@ class InternalCommandLog extends InternalCommand {
                       LogTreeNode(
                         line,
                         group.value,
-                        (Set.of(line.branchIndexes)
-                                  ..removeAll(group.value
-                                      .expand((e) => e.line.branchIndexes)))
+                        line.branchIndexes
+                                .where((index) => group.value.none((e) =>
+                                    e.line.branchIndexes.contains(index)))
                                 .map((e) => branches[e].name)
                                 .firstOrNull ??
                             group.value.map((e) => e.branchName).first,
