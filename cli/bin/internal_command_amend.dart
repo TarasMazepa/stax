@@ -13,6 +13,10 @@ class InternalCommandAmend extends InternalCommand {
 
   @override
   void run(final List<String> args, final Context context) {
+    /**
+     * TODO:
+     *  - Rebase
+     */
     context.handleAddAllFlag(args);
     if (context.isThereNoStagedChanges()) {
       context.printToConsole("Can't amend - there is nothing staged. "

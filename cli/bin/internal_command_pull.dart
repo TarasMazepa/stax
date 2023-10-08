@@ -13,6 +13,10 @@ class InternalCommandPull extends InternalCommand {
 
   @override
   void run(List<String> args, Context context) {
+    /**
+     * TODO:
+     *  - Warn about deleting branch on which user was originally
+     */
     final currentBranch = context.getCurrentBranch();
     final defaultBranch = context.getDefaultBranch();
     if (defaultBranch == null) {

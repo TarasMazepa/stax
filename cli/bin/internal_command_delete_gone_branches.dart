@@ -11,6 +11,10 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
 
   @override
   void run(final List<String> args, final Context context) {
+    /**
+     * TODO:
+     *  - Adds shorter command version, like "cleanup"
+     */
     context.fetchWithPrune();
     final branchesToDelete = context.git.branchVv
         .announce("Checking if any remote branches are gone.")

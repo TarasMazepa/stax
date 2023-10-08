@@ -12,6 +12,12 @@ class InternalCommandLog extends InternalCommand {
 
   @override
   void run(List<String> args, Context context) {
+    /**
+     * TODO:
+     *  - Show/Hide commit hashes, messages
+     *  - Collapse not important commits
+     *  - Sort connection groups
+     */
     context = context.withSilence(true);
     final defaultBranchName = context.getDefaultBranch();
     if (defaultBranchName == null) {
