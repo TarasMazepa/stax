@@ -63,7 +63,8 @@ class InternalCommandLog extends InternalCommand {
           ..add(LogTreeNode(
             line,
             deductBranchName(line, children),
-          )..addChildren(children));
+            children,
+          ));
       }
 
       List<LogTreeNode> nodes = output.fold(<LogTreeNode>[],
