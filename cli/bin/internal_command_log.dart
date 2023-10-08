@@ -3,21 +3,28 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_all_branches.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/log/log_tree_node.dart';
+import 'package:stax/log/log_tree_print.dart';
 import 'package:stax/log/parsed_log_line.dart';
 
 import 'internal_command.dart';
 
 class InternalCommandLog extends InternalCommand {
-  InternalCommandLog() : super("log", "Builds a tree of all branches.");
+  static final String collapseFlag = "--collapse";
+
+  InternalCommandLog()
+      : super("log", "Builds a tree of all branches.", flags: {
+          collapseFlag:
+              "Collapses commits that are not heads of branches and only have one child commit."
+        });
 
   @override
   void run(List<String> args, Context context) {
     /**
      * TODO:
      *  - Show/Hide commit hashes, messages
-     *  - Collapse not important commits
      *  - Sort connection groups
      */
+    final collapse = args.remove(collapseFlag);
     context = context.withSilence(true);
     final defaultBranchName = context.getDefaultBranch();
     if (defaultBranchName == null) {
@@ -81,12 +88,12 @@ class InternalCommandLog extends InternalCommand {
           ),
         );
       },
-    );
-    final lines =
-        connectionGroups.expand((e) => e.toDecoratedList(indent: 1)).toList();
-    final alignment = lines
-        .map((e) => e.getAlignment())
-        .reduce((value, element) => value + element);
-    print(lines.map((e) => e.align(alignment)).join("\n"));
+    ).toList();
+    if (collapse) {
+      for (var group in connectionGroups) {
+        group.collapse();
+      }
+    }
+    print(connectionGroups.printedLogTree());
   }
 }

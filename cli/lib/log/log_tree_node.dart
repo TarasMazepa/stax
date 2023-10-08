@@ -12,6 +12,10 @@ class LogTreeNode {
     for (var child in children) {
       child.parent = this;
     }
+    sortChildren();
+  }
+
+  void sortChildren() {
     children.sort((a, b) => b.length() - a.length());
   }
 
@@ -20,6 +24,25 @@ class LogTreeNode {
       0 => 1,
       _ => children.map((e) => e.length()).max + 1,
     };
+  }
+
+  void collapse() {
+    if (children.isEmpty) return;
+    final parent = this.parent;
+    if (parent != null &&
+        children.length == 1 &&
+        branchName == children[0].branchName) {
+      final child = children[0];
+      child.parent = parent;
+      parent.children.remove(this);
+      parent.children.add(child);
+      child.collapse();
+      parent.sortChildren();
+      return;
+    }
+    for (var child in children) {
+      child.collapse();
+    }
   }
 
   DecoratedLogLine toDecorated() {
