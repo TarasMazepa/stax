@@ -21,10 +21,11 @@ class LogTreeNode {
     };
   }
 
-  List<String> decorate() {
+  List<String> decorate({int indent = 0}) {
     return children
-        .expandIndexed((i, e) => e.decorate().map((e) => "| " * i + e))
-        .followedBy(["*${"-┘" * (children.length - 1)}"]).toList();
+        .expandIndexed(
+            (i, e) => e.decorate().map((e) => "| " * (i + indent) + e))
+        .followedBy(["*${"-┘" * (children.length - 1 + indent)}"]).toList();
   }
 
   @override
