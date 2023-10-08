@@ -36,13 +36,6 @@ class LogTreeNode {
     ]).toList();
   }
 
-  List<String> decorate({int indent = 0}) {
-    return children
-        .expandIndexed(
-            (i, e) => e.decorate().map((e) => "| " * (i + indent) + e))
-        .followedBy(["*${"-┘" * (children.length - 1 + indent)}"]).toList();
-  }
-
   @override
   String toString() {
     return "$branchName $line [${children.join(", ")}]";
