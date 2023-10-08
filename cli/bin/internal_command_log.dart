@@ -30,10 +30,9 @@ class InternalCommandLog extends InternalCommand {
             .runSync()
             .stdout
             .toString()
-            .trim());
-    for (final pair in connectionGroups.entries) {
-      final branches = pair.value;
-      final output = context.git.showBranchSha1Name
+            .trim()).entries.map((commitToBranches) {
+      final branches = commitToBranches.value;
+      return context.git.showBranchSha1Name
           .args(branches.map((e) => e.name).toList())
           .announce()
           .runSync()
@@ -67,8 +66,10 @@ class InternalCommandLog extends InternalCommand {
             )
             .toList(),
       );
-      print(output);
-    }
+    });
+
+    print(connectionGroups);
+
     /*
 
 | *
