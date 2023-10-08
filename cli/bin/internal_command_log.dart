@@ -16,16 +16,11 @@ class InternalCommandLog extends InternalCommand {
     if (defaultBranchName == null) {
       return;
     }
-    final allBranches = context.getAllBranches();
-    final defaultBranch =
-        allBranches.where((e) => e.name == defaultBranchName).firstOrNull;
-    if (defaultBranch == null) {
-      return;
-    }
-    final connectionGroups = allBranches
-        .whereNot((e) => e == defaultBranch)
+    final connectionGroups = context
+        .getAllBranches()
+        .whereNot((e) => e.name == defaultBranchName)
         .groupListsBy((branch) => context.git.mergeBase
-            .args([defaultBranch.name, branch.name])
+            .args([defaultBranchName, branch.name])
             .runSync()
             .stdout
             .toString()
