@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/log/decorated_log_line.dart';
 import 'package:stax/log/parsed_log_line.dart';
 
@@ -16,7 +17,12 @@ class LogTreeNode {
   }
 
   void sortChildren() {
-    children.sort((a, b) => b.length() - a.length());
+    children.sort((a, b) => b.sortingValue() - a.sortingValue());
+  }
+
+  int sortingValue() {
+    return length() +
+        (branchName == ContextGitGetDefaultBranch.defaultBranch ? 1000000 : 0);
   }
 
   int length() {

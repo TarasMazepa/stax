@@ -3,9 +3,12 @@ import 'package:stax/on_empty_on_iterable.dart';
 import 'package:stax/once.dart';
 
 extension ContextGitGetDefaultBranch on Context {
+  static String? defaultBranch;
+
   String? getDefaultBranch() {
+    if (defaultBranch != null) return defaultBranch;
     final complainAboutEmptyOnce = Once();
-    return git.remote
+    return defaultBranch = git.remote
         .announce("Checking name of your remote.")
         .runSync()
         .printNotEmptyResultFields()
