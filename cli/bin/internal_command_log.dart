@@ -24,32 +24,34 @@ class InternalCommandLog extends InternalCommand {
     }
     allBranches.remove(defaultBranch);
     final connectionGroups = groupBy(
-        allBranches,
-        (branch) => context.git.mergeBase
-            .args([defaultBranch.name, branch.name])
-            .runSync()
-            .stdout
-            .toString()
-            .trim()).entries.map((commitToBranches) {
-      final branches = commitToBranches.value;
-      return context.git.showBranchSha1Name
-          .args(branches.map((e) => e.name).toList())
-          .announce()
+      allBranches,
+      (branch) => context.git.mergeBase
+          .args([defaultBranch.name, branch.name])
           .runSync()
-          .printNotEmptyResultFields()
           .stdout
           .toString()
-          .trim()
-          .split("\n")
-          .skip(branches.length + 1)
-          .map((e) => ParsedLogLine.parse(e))
-          .fold(
-        <LogTreeNode>[],
-        (nodes, line) => ({true: <LogTreeNode>[]}
-              ..addAll(groupBy(nodes, (e) => line.containsAllBranches(e.line))))
-            .entries
-            .expand(
-              (e) => !e.key
+          .trim(),
+    ).entries.map(
+      (commitToBranches) {
+        final branches = commitToBranches.value;
+        return context.git.showBranchSha1Name
+            .args(branches.map((e) => e.name).toList())
+            .announce()
+            .runSync()
+            .printNotEmptyResultFields()
+            .stdout
+            .toString()
+            .trim()
+            .split("\n")
+            .skip(branches.length + 1)
+            .map(ParsedLogLine.parse)
+            .fold(
+          <LogTreeNode>[],
+          (nodes, line) => ({
+            true: <LogTreeNode>[]
+          }..addAll(groupBy(nodes, (e) => line.containsAllBranches(e.line))))
+              .entries
+              .expand((e) => !e.key
                   ? e.value
                   : [
                       LogTreeNode(
@@ -62,11 +64,11 @@ class InternalCommandLog extends InternalCommand {
                                 .firstOrNull ??
                             e.value.map((e) => e.branchName).first,
                       )
-                    ],
-            )
-            .toList(),
-      );
-    });
+                    ])
+              .toList(),
+        );
+      },
+    );
 
     print(connectionGroups);
 
