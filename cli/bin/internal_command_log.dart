@@ -22,16 +22,15 @@ class InternalCommandLog extends InternalCommand {
     if (defaultBranch == null) {
       return;
     }
-    allBranches.remove(defaultBranch);
-    final connectionGroups = groupBy(
-      allBranches,
-      (branch) => context.git.mergeBase
-          .args([defaultBranch.name, branch.name])
-          .runSync()
-          .stdout
-          .toString()
-          .trim(),
-    ).entries.map(
+    final connectionGroups = allBranches
+        .groupListsBy((branch) => context.git.mergeBase
+            .args([defaultBranch.name, branch.name])
+            .runSync()
+            .stdout
+            .toString()
+            .trim())
+        .entries
+        .map(
       (commitToBranches) {
         final branches = commitToBranches.value;
         return context.git.showBranchSha1Name
