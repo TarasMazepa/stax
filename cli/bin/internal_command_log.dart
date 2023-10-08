@@ -42,25 +42,26 @@ class InternalCommandLog extends InternalCommand {
             .map(ParsedLogLine.parse)
             .fold(
           <LogTreeNode>[],
-          (nodes, line) =>
-              (groupBy(nodes, (e) => line.containsAllBranches(e.line))
-                    ..putIfAbsent(true, () => []))
-                  .entries
-                  .expand((e) => !e.key
-                      ? e.value
-                      : [
-                          LogTreeNode(
-                            line,
-                            e.value,
-                            (Set.of(line.branchIndexes)
-                                      ..removeAll(e.value
-                                          .expand((e) => e.line.branchIndexes)))
-                                    .map((e) => branches[e].name)
-                                    .firstOrNull ??
-                                e.value.map((e) => e.branchName).first,
-                          )
-                        ])
-                  .toList(),
+          (nodes, line) => (groupBy(
+            nodes,
+            (node) => line.containsAllBranches(node.line),
+          )..putIfAbsent(true, () => []))
+              .entries
+              .expand((group) => !group.key
+                  ? group.value
+                  : [
+                      LogTreeNode(
+                        line,
+                        group.value,
+                        (Set.of(line.branchIndexes)
+                                  ..removeAll(group.value
+                                      .expand((e) => e.line.branchIndexes)))
+                                .map((e) => branches[e].name)
+                                .firstOrNull ??
+                            group.value.map((e) => e.branchName).first,
+                      )
+                    ])
+              .toList(),
         );
       },
     );
