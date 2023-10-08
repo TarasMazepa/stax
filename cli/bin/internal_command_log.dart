@@ -29,8 +29,14 @@ class InternalCommandLog extends InternalCommand {
         .map(
       (commitToBranches) {
         final branches = commitToBranches.value;
+        final shortCommit = context.git.revParseShort
+            .arg(commitToBranches.key)
+            .runSync()
+            .stdout
+            .toString()
+            .trim();
         return LogTreeNode(
-          ParsedLogLine("", commitToBranches.key, ""),
+          ParsedLogLine("", shortCommit, ""),
           defaultBranchName,
           context.git.showBranchSha1Name
               .args(branches.map((e) => e.name).toList())
