@@ -16,13 +16,16 @@ class LogTreeNode {
     sortChildren();
   }
 
+  bool isDefaultBranch() {
+    return branchName == ContextGitGetDefaultBranch.defaultBranch;
+  }
+
   void sortChildren() {
     children.sort((a, b) => b.sortingValue() - a.sortingValue());
   }
 
   int sortingValue() {
-    return length() +
-        (branchName == ContextGitGetDefaultBranch.defaultBranch ? 1000000 : 0);
+    return length() + (isDefaultBranch() ? 1000000 : 0);
   }
 
   int length() {
@@ -51,17 +54,19 @@ class LogTreeNode {
     }
   }
 
-  DecoratedLogLine toDecorated() {
-    return DecoratedLogLine(
-        branchName, line.commitHash, line.commitMessage, "*");
-  }
-
-  List<DecoratedLogLine> toDecoratedList({int indent = 0}) {
+  List<DecoratedLogLine> toDecoratedList() {
+    final emptyIndent = (isDefaultBranch() &&
+            children.isNotEmpty &&
+            !children.first.isDefaultBranch())
+        ? 1
+        : 0;
     return children
-        .expandIndexed((i, e) =>
-            e.toDecoratedList().map((e) => e.withIndent("| " * (i + indent))))
+        .expandIndexed((i, e) => e
+            .toDecoratedList()
+            .map((e) => e.withIndent("  " * emptyIndent + "| " * i)))
         .followedBy([
-      toDecorated().withExtend("-┘" * (children.length - 1 + indent))
+      DecoratedLogLine(branchName, line.commitHash, line.commitMessage,
+          "*${"-┘" * (children.length - 1 + emptyIndent)}")
     ]).toList();
   }
 

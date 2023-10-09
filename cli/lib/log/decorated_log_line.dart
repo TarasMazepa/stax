@@ -14,11 +14,6 @@ class DecoratedLogLine {
         branchName, commitHash, commitMessage, indent + decoration);
   }
 
-  DecoratedLogLine withExtend(String extend) {
-    return DecoratedLogLine(
-        branchName, commitHash, commitMessage, decoration + extend);
-  }
-
   DecoratedLogLineAlignment getAlignment() {
     return DecoratedLogLineAlignment(branchName.length, commitHash.length,
         commitMessage.length, decoration.length);

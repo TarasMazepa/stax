@@ -2,8 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_all_branches.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
+import 'package:stax/context/context_git_log_one_line_no_decorate_single_branch.dart';
 import 'package:stax/log/log_tree_node.dart';
-import 'package:stax/log/log_tree_print.dart';
 import 'package:stax/log/parsed_log_line.dart';
 
 import 'internal_command.dart';
@@ -30,6 +30,8 @@ class InternalCommandLog extends InternalCommand {
     if (defaultBranchName == null) {
       return;
     }
+    final defaultBranchCommits =
+        context.logOneLineNoDecorateSingleBranch(defaultBranchName);
     final connectionGroups = context
         .getAllBranches()
         .whereNot((e) => e.name == defaultBranchName)
@@ -49,8 +51,10 @@ class InternalCommandLog extends InternalCommand {
             .stdout
             .toString()
             .trim();
+        final commit = defaultBranchCommits
+            .firstWhere((element) => element.hash == shortCommit);
         return LogTreeNode(
-          ParsedLogLine("", shortCommit, ""),
+          ParsedLogLine("", commit.hash, commit.message),
           defaultBranchName,
           context.git.showBranchSha1Name
               .args(branches.map((e) => e.name).toList())
@@ -89,11 +93,30 @@ class InternalCommandLog extends InternalCommand {
         );
       },
     ).toList();
-    if (collapse) {
-      for (var group in connectionGroups) {
-        group.collapse();
-      }
+    final topCommit = defaultBranchCommits.first;
+    if (connectionGroups
+            .firstWhereOrNull((e) => e.line.commitHash == topCommit.hash) ==
+        null) {
+      connectionGroups.add(LogTreeNode(
+          ParsedLogLine("", topCommit.hash, topCommit.message),
+          defaultBranchName, []));
     }
-    print(connectionGroups.printedLogTree());
+    connectionGroups.sort((a, b) => [a, b]
+        .map((line) => defaultBranchCommits
+            .indexWhere((e) => e.hash == line.line.commitHash))
+        .reduce((v, e) => v - e));
+    final node = connectionGroups.reduce((value, element) {
+      element.children.add(value);
+      element.sortChildren();
+      return element;
+    });
+    if (collapse) {
+      node.collapse();
+    }
+    final lines = node.toDecoratedList().toList();
+    final alignment = lines
+        .map((e) => e.getAlignment())
+        .reduce((value, element) => value + element);
+    print(lines.map((e) => e.align(alignment)).join("\n"));
   }
 }

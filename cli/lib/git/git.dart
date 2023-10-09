@@ -19,6 +19,7 @@ class Git {
   late final fetch = rawEc("git fetch");
   late final fetchWithPrune = fetch.arg("-p");
   late final log = rawEc("git log");
+  late final logOneLineNoDecorate = log.args(["--oneline", "--no-decorate"]);
   late final logTimestampOne = log.args(["--format=format:%ct", "-1"]);
   late final mergeBase = rawEc("git merge-base");
   late final pull = rawEc("git pull");
