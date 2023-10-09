@@ -10,11 +10,16 @@ import 'internal_command.dart';
 
 class InternalCommandLog extends InternalCommand {
   static final String collapseFlag = "--collapse";
+  static final String branchesFlag = "--branches";
 
   InternalCommandLog()
       : super("log", "Builds a tree of all branches.", flags: {
           collapseFlag:
-              "Collapses commits that are not heads of branches and only have one child commit."
+              "Collapses commits that are not heads of branches and only have one child commit.",
+          branchesFlag:
+              "Hides commit hashes and messages leaves you with branches only. "
+                  "You can still see multiple occurrences of a single branch in a tree. "
+                  "Using this flag automatically assumes --collapse flag too.",
         });
 
   @override
@@ -24,7 +29,8 @@ class InternalCommandLog extends InternalCommand {
      *  - Show/Hide commit hashes, messages
      *  - Sort connection groups
      */
-    final collapse = args.remove(collapseFlag);
+    final onlyBranches = args.remove(branchesFlag);
+    final collapse = args.remove(collapseFlag) || onlyBranches;
     context = context.withSilence(true);
     final defaultBranchName = context.getDefaultBranch();
     if (defaultBranchName == null) {
@@ -117,6 +123,14 @@ class InternalCommandLog extends InternalCommand {
     final alignment = lines
         .map((e) => e.getAlignment())
         .reduce((value, element) => value + element);
-    print(lines.map((e) => e.align(alignment)).join("\n"));
+    print(lines
+        .map(
+          (e) => e.decorateToString(
+            alignment,
+            includeCommitHash: !onlyBranches,
+            includeCommitMessage: !onlyBranches,
+          ),
+        )
+        .join("\n"));
   }
 }

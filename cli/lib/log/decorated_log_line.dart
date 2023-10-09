@@ -19,14 +19,20 @@ class DecoratedLogLine {
         commitMessage.length, decoration.length);
   }
 
-  String align(DecoratedLogLineAlignment alignment) {
+  String decorateToString(
+    DecoratedLogLineAlignment alignment, {
+    bool includeCommitHash = true,
+    bool includeCommitMessage = true,
+    bool includeBranchName = true,
+  }) {
     String align(String field, int size) {
       return field + (" " * (size - field.length));
     }
 
-    return "${align(decoration, alignment.decoration)} "
-        "[${align(commitHash, alignment.commitHash)}] "
-        "${align(branchName, alignment.branchName)} $commitMessage";
+    return "${align(decoration, alignment.decoration)}"
+        "${includeCommitHash ? " [${align(commitHash, alignment.commitHash)}]" : ""}"
+        "${includeBranchName ? " ${align(branchName, alignment.branchName)}" : ""}"
+        "${includeCommitMessage ? " $commitMessage" : ""}";
   }
 
   @override
