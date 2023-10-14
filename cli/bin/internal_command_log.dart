@@ -51,14 +51,8 @@ class InternalCommandLog extends InternalCommand {
         .map(
       (commitToBranches) {
         final branches = commitToBranches.value;
-        final shortCommit = context.git.revParseShort
-            .arg(commitToBranches.key)
-            .runSync()
-            .stdout
-            .toString()
-            .trim();
-        final commit = defaultBranchCommits
-            .firstWhere((element) => element.hash == shortCommit);
+        final commit = defaultBranchCommits.firstWhere(
+            (element) => commitToBranches.key.startsWith(element.hash));
         return LogTreeNode(
           ParsedLogLine("", commit.hash, commit.message),
           defaultBranchName,
@@ -119,7 +113,7 @@ class InternalCommandLog extends InternalCommand {
     if (collapse) {
       node.collapse();
     }
-    final lines = node.toDecoratedList().toList();
+    final lines = node.toDecoratedList();
     final alignment = lines
         .map((e) => e.getAlignment())
         .reduce((value, element) => value + element);
