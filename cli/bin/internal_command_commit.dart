@@ -1,4 +1,5 @@
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_explain_to_user_no_staged_changes.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
 
@@ -29,9 +30,7 @@ class InternalCommandCommit extends InternalCommand {
     }
     context.handleAddAllFlag(args);
     if (context.isThereNoStagedChanges()) {
-      context.printToConsole("Can't commit - there is nothing staged. "
-          "Run 'git add .' to add all the changes. "
-          "If that haven't worked - try editing some files.");
+      context.explainToUserNoStagedChanges();
       return;
     }
     final commitMessage = args[0];

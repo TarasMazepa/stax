@@ -1,4 +1,5 @@
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_explain_to_user_no_staged_changes.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/context/context_git_get_child_branches.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
@@ -19,8 +20,7 @@ class InternalCommandAmend extends InternalCommand {
      */
     context.handleAddAllFlag(args);
     if (context.isThereNoStagedChanges()) {
-      context.printToConsole("Can't amend - there is nothing staged. "
-          "Run 'git add .' to add all the changes.");
+      context.explainToUserNoStagedChanges();
       return;
     }
     final childBranches = context.getChildBranches();
