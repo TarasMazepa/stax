@@ -30,6 +30,7 @@ class CliTestSetup {
   }
 
   void setUp() {
+    tearDown();
     Context.implicit().git.clone.args([bundleFile, testRepoPath]).runSync();
   }
 
