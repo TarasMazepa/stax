@@ -11,6 +11,7 @@ class Git {
   late final branchVvContains = branch.args(["-vv", "--contains"]);
   late final checkout = rawEc("git checkout");
   late final checkoutNewBranch = checkout.arg("-b");
+  late final clone = rawEc("git clone");
   late final commit = rawEc("git commit");
   late final commitAmendNoEdit = commit.args(["--amend", "--no-edit"]);
   late final commitWithMessage = commit.arg("-m");
