@@ -53,6 +53,14 @@ class CliTestSetup {
     return runSync(liveStaxPath, args);
   }
 
+  Future<Process> start(String command, [List<String>? args]) {
+    return Process.start(command, args ?? [], workingDirectory: testRepoPath);
+  }
+
+  Future<Process> startLiveStax([List<String>? args]) {
+    return start(liveStaxPath, args);
+  }
+
   @override
   String toString() {
     return "$testFile $bundleFile $testRepoPath";
