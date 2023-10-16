@@ -17,7 +17,7 @@ class CliTestSetup {
     final right = stackTraceLine.indexOf(
         ":",
         left +
-            5 /* Just enough to jump over 'file:' at teh beginning of the uri */);
+            5 /* Just enough to jump over 'file:' at the beginning of the uri */);
     final fileName =
         Uri.parse(stackTraceLine.substring(left, right)).toFilePath();
     final repoRoot = fileName.substring(0, fileName.indexOf("/cli/test/cli/"));
