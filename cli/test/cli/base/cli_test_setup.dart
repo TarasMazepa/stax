@@ -6,8 +6,10 @@ class CliTestSetup {
   String testFile;
   String bundleFile;
   String testRepoPath;
+  String liveStaxPath;
 
-  CliTestSetup(this.testFile, this.bundleFile, this.testRepoPath);
+  CliTestSetup(
+      this.testFile, this.bundleFile, this.testRepoPath, this.liveStaxPath);
 
   factory CliTestSetup.create() {
     final stackTraceLine = StackTrace.current.toString().split("\n")[2];
@@ -18,14 +20,15 @@ class CliTestSetup {
             5 /* Just enough to jump over 'file:' at teh beginning of the uri */);
     final fileName =
         Uri.parse(stackTraceLine.substring(left, right)).toFilePath();
-    final indexOfCliFolder = fileName.indexOf("/cli/test/cli/");
+    final repoRoot = fileName.substring(0, fileName.indexOf("/cli/test/cli/"));
     return CliTestSetup(
       fileName,
       fileName.replaceRange(
           fileName.length - 4 /* Length of 'dart' filename extension*/,
           fileName.length,
           "bundle"),
-      "${fileName.substring(0, indexOfCliFolder)}/cli/.test/repo",
+      "$repoRoot/cli/.test/repo",
+      "$repoRoot/dev/stax-live",
     );
   }
 

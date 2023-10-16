@@ -4,7 +4,7 @@ import 'package:test/scaffolding.dart';
 import 'cli_test_setup.dart';
 
 @isTestGroup
-void cliGroup(Object? description, dynamic Function(String path) body,
+void cliGroup(Object? description, dynamic Function(CliTestSetup setup) body,
     {String? testOn,
     Timeout? timeout,
     Object? skip,
@@ -26,6 +26,6 @@ void cliGroup(Object? description, dynamic Function(String path) body,
     tearDown(() {
       setup.tearDown();
     });
-    body(setup.testRepoPath);
+    body(setup);
   });
 }
