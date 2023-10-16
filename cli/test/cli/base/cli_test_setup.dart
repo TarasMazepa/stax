@@ -45,6 +45,14 @@ class CliTestSetup {
     }
   }
 
+  ProcessResult runSync(String command, [List<String>? args]) {
+    return Process.runSync(command, args ?? [], workingDirectory: testRepoPath);
+  }
+
+  ProcessResult runLiveStaxSync([List<String>? args]) {
+    return runSync(liveStaxPath, args);
+  }
+
   @override
   String toString() {
     return "$testFile $bundleFile $testRepoPath";
