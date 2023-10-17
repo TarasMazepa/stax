@@ -84,7 +84,7 @@ class InternalCommandCommit extends InternalCommand {
           .trim();
       context.command([
         "open",
-        "${url.substring(0, url.length - 4)}/compare/$previousBranch...$resultingBranchName"
+        "${url.substring(0, url.length - 4)}/compare/$previousBranch...$resultingBranchName?expand=1"
       ]).runSync();
     }
   }
