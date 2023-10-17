@@ -27,6 +27,7 @@ class Git {
   late final push = rawEc("git push");
   late final pushForce = push.arg("--force");
   late final remote = rawEc("git remote");
+  late final remoteGetUrl = remote.arg("get-url");
   late final revList = rawEc("git rev-list");
   late final revListCount = revList.arg("--count");
   late final revParse = rawEc("git rev-parse");
