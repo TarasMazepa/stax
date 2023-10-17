@@ -1,12 +1,15 @@
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_explain_to_user_no_staged_changes.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
+import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
 
 import 'internal_command.dart';
 import 'sanitize_branch_name.dart';
 
 class InternalCommandCommit extends InternalCommand {
+  static const prFlag = "--pr";
+
   InternalCommandCommit()
       : super(
             "commit",
@@ -14,7 +17,10 @@ class InternalCommandCommit extends InternalCommand {
                 "First argument is mandatory commit message. "
                 "Second argument is optional branch name, if not provided "
                 "branch name would be generated from commit message.",
-            flags: {}..addAll(ContextHandleAddAllFlag.description),
+            flags: {
+              prFlag:
+                  "Opens PR creation page on your remote. Works only if you have GitHub as your remote."
+            }..addAll(ContextHandleAddAllFlag.description),
             arguments: {
               "arg1":
                   "Required commit message, usually enclosed in double quotes like this: \"Sample commit message\".",
@@ -29,6 +35,7 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
     context.handleAddAllFlag(args);
+    final createPr = args.remove(prFlag);
     if (context.isThereNoStagedChanges()) {
       context.explainToUserNoStagedChanges();
       return;
@@ -49,6 +56,7 @@ class InternalCommandCommit extends InternalCommand {
     }
     context.printToConsole("Commit  message: '$commitMessage'");
     context.printToConsole("New branch name: '$resultingBranchName'");
+    final previousBranch = createPr ? context.getCurrentBranch() : null;
     final newBranchCheckoutExitCode = context.git.checkoutNewBranch
         .arg(resultingBranchName)
         .announce("Creating new branch.")
@@ -66,5 +74,18 @@ class InternalCommandCommit extends InternalCommand {
         .runSync()
         .printNotEmptyResultFields();
     context.git.push.announce("Pushing").runSync().printNotEmptyResultFields();
+    if (createPr) {
+      final remote = context.git.remote.runSync().stdout.toString().trim();
+      final url = context.git.remoteGetUrl
+          .arg(remote)
+          .runSync()
+          .stdout
+          .toString()
+          .trim();
+      context.command([
+        "open",
+        "${url.substring(0, url.length - 4)}/compare/$previousBranch...$resultingBranchName"
+      ]);
+    }
   }
 }
