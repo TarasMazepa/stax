@@ -44,3 +44,5 @@ Deletes local branches with gone remotes. Useful when you are using `stax-commit
 
 ### stax pull
 Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
+
+### stax log
