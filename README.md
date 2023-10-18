@@ -46,3 +46,4 @@ Deletes local branches with gone remotes. Useful when you are using `stax-commit
 Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
 
 ### stax log
+Outputs tree like structure of your branches
