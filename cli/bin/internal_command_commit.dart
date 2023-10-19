@@ -30,14 +30,15 @@ class InternalCommandCommit extends InternalCommand {
 
   @override
   void run(final List<String> args, final Context context) {
-    if (args.isEmpty) {
-      context.printToConsole("You need to provide commit message.");
-      return;
-    }
     context.handleAddAllFlag(args);
     final createPr = args.remove(prFlag);
     if (context.isThereNoStagedChanges()) {
       context.explainToUserNoStagedChanges();
+      return;
+    }
+    if (args.isEmpty) {
+      context.printToConsole(
+          "You need to provide commit message. Something like this: 'stax commit \"My new commit message\"'");
       return;
     }
     final commitMessage = args[0];
