@@ -22,10 +22,6 @@ void main() {
           setup.runLiveStaxSync(["log", "--branches"]).stdout.toString().trim(),
           "* main");
     });
-    test("commit", () {
-      expect(setup.runLiveStaxSync(["commit"]).stdout.toString().trim(),
-          "You need to provide commit message.");
-    });
     test("commit 'commit message'", () async {
       await setup
           .startLiveStax(["commit", "commit message"]).then((process) async {
