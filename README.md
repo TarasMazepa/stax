@@ -33,12 +33,10 @@ Date:   Fri Sep 8 14:58:04 2023 -0700
 ```
 You can see that a branch with `two-in-one-commit-name-and-branch-name` name was created as well as a commit with the same name `two-in-one-commit-name-and-branch-name`.
 
-#### Flags
-
-##### -a
+#### -a flag
 Adds all the files to staging area
 
-##### --pr
+#### --pr flag
 Redirects you to a create PR page
 
 ### stax amend
