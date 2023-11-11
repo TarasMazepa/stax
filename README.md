@@ -31,7 +31,12 @@ Date:   Fri Sep 8 14:58:04 2023 -0700
     two-in-one-commit-name-and-branch-name
 
 ```
-You can see that a branch with `two-in-one-commit-name-and-branch-name` name was created as well as a commit with the same name `two-in-one-commit-name-and-branch-name`. 
+You can see that a branch with `two-in-one-commit-name-and-branch-name` name was created as well as a commit with the same name `two-in-one-commit-name-and-branch-name`.
+
+#### Flags
+
+##### -a
+Adds all the files to staging area
 
 ### stax amend
 Amends to the current commit and force pushes branch
