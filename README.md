@@ -38,6 +38,9 @@ You can see that a branch with `two-in-one-commit-name-and-branch-name` name was
 ##### -a
 Adds all the files to staging area
 
+##### --pr
+Redirects you to a create PR page
+
 ### stax amend
 Amends to the current commit and force pushes branch
 ```
