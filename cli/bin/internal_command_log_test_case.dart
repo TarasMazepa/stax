@@ -27,9 +27,17 @@ class InternalCommandLogTestCase extends InternalCommand {
 
   @override
   void run(List<String> args, Context context) {
+    final shuffleMain = false;
     var commitsSet = [
       [_Commit()]
     ];
+    List<_Commit> calculateCommits(int count, int index) {
+      _Commit.nextId = count;
+      if (count == 1) return [_Commit()];
+
+      return calculateCommits(count - 1, index);
+    }
+
     void printSingleUml(
         int prefix, int index, int mainId, List<_Commit> commits) {
       String name(_Commit commit) =>
@@ -87,12 +95,13 @@ class InternalCommandLogTestCase extends InternalCommand {
       for (int index = 0; index < commitsSet.length; index++) {
         for (int mainId = 1; mainId <= commitsSet[index].length; mainId++) {
           printSingleUml(prefix, index, mainId, commitsSet[index]);
+          if (!shuffleMain) break;
         }
       }
     }
 
     List<List<_Commit>> next() {
-      _Commit.nextId++;
+      _Commit.nextId = commitsSet.first.length + 1;
       return commitsSet
           .expand((commits) => commits.mapIndexed(
               (index, element) => [...commits, element.newChildCommit()]))
@@ -106,9 +115,9 @@ class InternalCommandLogTestCase extends InternalCommand {
     commitsSet = next();
     // printUml(3);
     commitsSet = next();
-    printUml(4);
+    // printUml(4);
     commitsSet = next();
-    // printUml(5);
+    printUml(5);
     context.printToConsole("@enduml");
   }
 }
