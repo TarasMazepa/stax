@@ -30,59 +30,63 @@ class InternalCommandLogTestCase extends InternalCommand {
     var commitsSet = [
       [_Commit()]
     ];
+    void printSingleUml(
+        int prefix, int index, int mainId, List<_Commit> commits) {
+      String name(_Commit commit) =>
+          "${prefix}_${index + 1}_${mainId}_${commit.id}${commit.id == mainId ? "_main" : ""}";
+      String nodeName(_Commit commit) => "(${name(commit)})";
+      for (var commit in commits) {
+        commit.children.clear();
+      }
+      for (var commit in commits) {
+        commit.assignChild();
+      }
+      if (commits.length == 1) {
+        context.printToConsole(nodeName(commits.first));
+      } else {
+        for (var commit in commits) {
+          if (commit.parent == null) continue;
+          context.printToConsole(
+              "${nodeName(commit.parent!)} -up-> ${nodeName(commit)}");
+        }
+      }
+      List<String> gitLines(_Commit commit) => [
+            "stax commit -a --accept-all ${name(commit)}",
+            ...commit.children.expand((element) => [
+                  ...gitLines(element),
+                  "git checkout ${name(commit)}",
+                ])
+          ];
+      context.printToConsole("note bottom of ${nodeName(commits.first)}");
+      String previousValue = "";
+      bool haveSeenNonCheckout = false;
+      gitLines(commits.first)
+          .reversed
+          .whereIndexed((index, element) {
+            if (haveSeenNonCheckout) return true;
+            if (!element.startsWith("git checkout")) {
+              return haveSeenNonCheckout = true;
+            }
+            return false;
+          })
+          .where((element) {
+            final result = !(previousValue.startsWith("git checkout") &&
+                element.startsWith("git checkout"));
+            previousValue = element;
+            return result;
+          })
+          .toList()
+          .reversed
+          .forEach((element) {
+            context.printToConsole(element);
+          });
+      context.printToConsole("end note");
+    }
+
     void printUml(int prefix) {
       for (int index = 0; index < commitsSet.length; index++) {
         for (int mainId = 1; mainId <= commitsSet[index].length; mainId++) {
-          String name(_Commit commit) =>
-              "${prefix}_${index + 1}_${mainId}_${commit.id}${commit.id == mainId ? "_main" : ""}";
-          String nodeName(_Commit commit) => "(${name(commit)})";
-          final commits = commitsSet[index];
-          for (var commit in commits) {
-            commit.children.clear();
-          }
-          for (var commit in commits) {
-            commit.assignChild();
-          }
-          if (commits.length == 1) {
-            context.printToConsole(nodeName(commits.first));
-          } else {
-            for (var commit in commits) {
-              if (commit.parent == null) continue;
-              context.printToConsole(
-                  "${nodeName(commit.parent!)} -up-> ${nodeName(commit)}");
-            }
-          }
-          List<String> gitLines(_Commit commit) => [
-                "stax commit -a --accept-all ${name(commit)}",
-                ...commit.children.expand((element) => [
-                      ...gitLines(element),
-                      "git checkout ${name(commit)}",
-                    ])
-              ];
-          context.printToConsole("note bottom of ${nodeName(commits.first)}");
-          String previousValue = "";
-          bool haveSeenNonCheckout = false;
-          gitLines(commits.first)
-              .reversed
-              .whereIndexed((index, element) {
-                if (haveSeenNonCheckout) return true;
-                if (!element.startsWith("git checkout")) {
-                  return haveSeenNonCheckout = true;
-                }
-                return false;
-              })
-              .where((element) {
-                final result = !(previousValue.startsWith("git checkout") &&
-                    element.startsWith("git checkout"));
-                previousValue = element;
-                return result;
-              })
-              .toList()
-              .reversed
-              .forEach((element) {
-                context.printToConsole(element);
-              });
-          context.printToConsole("end note");
+          printSingleUml(prefix, index, mainId, commitsSet[index]);
         }
       }
     }
@@ -96,14 +100,15 @@ class InternalCommandLogTestCase extends InternalCommand {
     }
 
     context.printToConsole("@startuml");
-    int prefix = 1;
-    printUml(prefix++);
+    // printUml(1);
     commitsSet = next();
-    printUml(prefix++);
+    // printUml(2);
     commitsSet = next();
-    printUml(prefix++);
+    // printUml(3);
     commitsSet = next();
-    printUml(prefix++);
+    printUml(4);
+    commitsSet = next();
+    // printUml(5);
     context.printToConsole("@enduml");
   }
 }
