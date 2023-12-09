@@ -4,6 +4,7 @@ import 'internal_command_available_commands.dart';
 import 'internal_command_log.dart';
 import 'internal_command_commit.dart';
 import 'internal_command_delete_gone_branches.dart';
+import 'internal_command_log_test_case.dart';
 import 'internal_command_main_branch.dart';
 import 'internal_command_pull.dart';
 import 'internal_command_settings.dart';
@@ -17,6 +18,7 @@ final List<InternalCommand> internalCommands = [
   InternalCommandCommit(),
   InternalCommandDeleteGoneBranches(),
   InternalCommandLog(),
+  InternalCommandLogTestCase(),
   InternalCommandMainBranch(),
   InternalCommandPull(),
   InternalCommandSettings(),
