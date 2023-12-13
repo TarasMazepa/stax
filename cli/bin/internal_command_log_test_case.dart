@@ -8,11 +8,10 @@ class _Commit {
   final _Commit? parent;
   final int id;
   final List<_Commit> children = List.empty(growable: true);
-  static int nextId = 1;
 
-  _Commit([this.parent]) : id = nextId;
+  _Commit(this.id, [this.parent]);
 
-  _Commit newChildCommit() => _Commit(this);
+  _Commit newChildCommit(int id) => _Commit(id, this);
 
   void assignChild() {
     if (parent == null) return;
@@ -29,19 +28,24 @@ class InternalCommandLogTestCase extends InternalCommand {
   void run(List<String> args, Context context) {
     final shuffleMain = false;
     var commitsSet = [
-      [_Commit()]
+      [_Commit(1)]
     ];
-    List<_Commit> calculateCommits(int count, int index) {
-      _Commit.nextId = count;
-      if (count == 1) return [_Commit()];
+    int calculateVariants(int count) {
+      if (count == 1) return 1;
+      return calculateVariants(count - 1) * (count - 1);
+    }
 
-      return calculateCommits(count - 1, index);
+    List<_Commit> calculateCommits(int count, int index) {
+      context.printToConsole("'calculateCommits $count $index");
+      if (count == 1) return [_Commit(count)];
+      final previous = calculateCommits(count - 1, index ~/ (count - 1));
+      return [...previous, previous[index % (count - 1)].newChildCommit(count)];
     }
 
     void printSingleUml(
         int prefix, int index, int mainId, List<_Commit> commits) {
       String name(_Commit commit) =>
-          "${prefix}_${index + 1}_${mainId}_${commit.id}${commit.id == mainId ? "_main" : ""}";
+          "${prefix}_${index}_${mainId}_${commit.id}${commit.id == mainId ? "_main" : ""}";
       String nodeName(_Commit commit) => "(${name(commit)})";
       for (var commit in commits) {
         commit.children.clear();
@@ -91,6 +95,10 @@ class InternalCommandLogTestCase extends InternalCommand {
       context.printToConsole("end note");
     }
 
+    void printCalculatedCommits(int prefix, int index, int mainId) {
+      printSingleUml(prefix, index, mainId, calculateCommits(prefix, index));
+    }
+
     void printUml(int prefix) {
       for (int index = 0; index < commitsSet.length; index++) {
         for (int mainId = 1; mainId <= commitsSet[index].length; mainId++) {
@@ -101,23 +109,33 @@ class InternalCommandLogTestCase extends InternalCommand {
     }
 
     List<List<_Commit>> next() {
-      _Commit.nextId = commitsSet.first.length + 1;
+      final id = commitsSet.first.length + 1;
       return commitsSet
           .expand((commits) => commits.mapIndexed(
-              (index, element) => [...commits, element.newChildCommit()]))
+              (index, element) => [...commits, element.newChildCommit(id)]))
           .toList();
     }
 
     context.printToConsole("@startuml");
     // printUml(1);
+    printCalculatedCommits(1, 1, 1);
     commitsSet = next();
     // printUml(2);
+    printCalculatedCommits(2, 1, 1);
     commitsSet = next();
     // printUml(3);
+    printCalculatedCommits(3, 1, 1);
+    printCalculatedCommits(3, 2, 1);
     commitsSet = next();
     // printUml(4);
+    printCalculatedCommits(4, 0, 1);
+    printCalculatedCommits(4, 1, 1);
+    printCalculatedCommits(4, 2, 1);
+    printCalculatedCommits(4, 3, 1);
+    printCalculatedCommits(4, 4, 1);
+    printCalculatedCommits(4, 5, 1);
     commitsSet = next();
-    printUml(5);
+    // printUml(5);
     context.printToConsole("@enduml");
   }
 }
