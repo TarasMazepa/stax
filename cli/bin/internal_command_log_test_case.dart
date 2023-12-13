@@ -26,11 +26,24 @@ class _CommitTree {
 
   _CommitTree(this.size, this.index, this.commits);
 
-  factory _CommitTree.generate(int size, int index) {
-    if (size == 1) return _CommitTree(1, 0, [_Commit(size)]);
-    final commits = _CommitTree.generate(size - 1, index ~/ (size - 1)).commits;
+  _CommitTree next(int index) {
+    final size = this.size + 1;
     return _CommitTree(size, index,
         [...commits, commits[index % (size - 1)].newChildCommit(size)]);
+  }
+
+  factory _CommitTree.generate(int size, int index) {
+    return chain(size, index).first;
+  }
+
+  static List<_CommitTree> chain(int size, int index) {
+    if (size == 1) {
+      return [
+        _CommitTree(1, 0, [_Commit(1)])
+      ];
+    }
+    final previous = chain(size - 1, index ~/ (size - 1));
+    return [previous.first.next(index), ...previous];
   }
 }
 
