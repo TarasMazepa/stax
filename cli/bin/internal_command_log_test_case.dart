@@ -19,6 +19,21 @@ class _Commit {
   }
 }
 
+class _CommitTree {
+  final int size;
+  final int index;
+  final List<_Commit> commits;
+
+  _CommitTree(this.size, this.index, this.commits);
+
+  factory _CommitTree.generate(int size, int index) {
+    if (size == 1) return _CommitTree(1, 0, [_Commit(size)]);
+    final commits = _CommitTree.generate(size - 1, index ~/ (size - 1)).commits;
+    return _CommitTree(size, index,
+        [...commits, commits[index % (size - 1)].newChildCommit(size)]);
+  }
+}
+
 class InternalCommandLogTestCase extends InternalCommand {
   InternalCommandLogTestCase()
       : super("log-test-case", "shows test case for log command",
@@ -35,11 +50,19 @@ class InternalCommandLogTestCase extends InternalCommand {
       return calculateVariants(count - 1) * (count - 1);
     }
 
-    List<_Commit> calculateCommits(int count, int index) {
-      context.printToConsole("'calculateCommits $count $index");
-      if (count == 1) return [_Commit(count)];
-      final previous = calculateCommits(count - 1, index ~/ (count - 1));
-      return [...previous, previous[index % (count - 1)].newChildCommit(count)];
+    List<List<_Commit>> calculateCommitsProgression(int count, int index) {
+      if (count == 1) {
+        return [
+          [_Commit(count)]
+        ];
+      }
+      final progression =
+          calculateCommitsProgression(count - 1, index ~/ (count - 1));
+      final last = progression.first;
+      return [
+        [...last, last[index % (count - 1)].newChildCommit(count)],
+        ...progression
+      ];
     }
 
     void printSingleUml(
@@ -95,8 +118,20 @@ class InternalCommandLogTestCase extends InternalCommand {
       context.printToConsole("end note");
     }
 
+    void printCommitTreeUml(_CommitTree commitTree, int mainId) {
+      printSingleUml(
+          commitTree.size, commitTree.index, mainId, commitTree.commits);
+    }
+
     void printCalculatedCommits(int prefix, int index, int mainId) {
-      printSingleUml(prefix, index, mainId, calculateCommits(prefix, index));
+      printCommitTreeUml(_CommitTree.generate(prefix, index), mainId);
+    }
+
+    void printCalculatedCommitsProgression(int prefix, int index, int mainId) {
+      int correctionPrefix = 0;
+      for (var value in calculateCommitsProgression(prefix, index)) {
+        printSingleUml(prefix - correctionPrefix++, index, mainId, value);
+      }
     }
 
     void printUml(int prefix) {
@@ -117,25 +152,16 @@ class InternalCommandLogTestCase extends InternalCommand {
     }
 
     context.printToConsole("@startuml");
-    // printUml(1);
-    printCalculatedCommits(1, 1, 1);
-    commitsSet = next();
-    // printUml(2);
-    printCalculatedCommits(2, 1, 1);
-    commitsSet = next();
-    // printUml(3);
+    printCalculatedCommits(1, 0, 1);
+    printCalculatedCommits(2, 0, 1);
+    printCalculatedCommits(3, 0, 1);
     printCalculatedCommits(3, 1, 1);
-    printCalculatedCommits(3, 2, 1);
-    commitsSet = next();
-    // printUml(4);
     printCalculatedCommits(4, 0, 1);
     printCalculatedCommits(4, 1, 1);
     printCalculatedCommits(4, 2, 1);
     printCalculatedCommits(4, 3, 1);
     printCalculatedCommits(4, 4, 1);
     printCalculatedCommits(4, 5, 1);
-    commitsSet = next();
-    // printUml(5);
     context.printToConsole("@enduml");
   }
 }
