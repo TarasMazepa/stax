@@ -13,6 +13,10 @@ class _Commit {
 
   _Commit newChildCommit(int id) => _Commit(id, this);
 
+  String name(_CommitTree commitTree, int mainId) {
+    return "${commitTree.size}_${commitTree.index}_${mainId}_$id${id == mainId ? "_main" : ""}";
+  }
+
   void assignChild() {
     if (parent == null) return;
     parent?.children.add(this);
@@ -36,6 +40,11 @@ class _CommitTree {
     return chain(size, index).first;
   }
 
+  static int variants(int size) {
+    if (size == 1) return 1;
+    return variants(size - 1) * (size - 1);
+  }
+
   static List<_CommitTree> chain(int size, int index) {
     if (size == 1) {
       return [
@@ -52,8 +61,7 @@ class _CommitTree {
       result += "$string\n";
     }
 
-    String name(_Commit commit) =>
-        "${size}_${index}_${mainId}_${commit.id}${commit.id == mainId ? "_main" : ""}";
+    String name(_Commit commit) => commit.name(this, mainId);
     String nodeName(_Commit commit) => "(${name(commit)})";
     for (var commit in commits) {
       commit.children.clear();
@@ -109,80 +117,10 @@ class InternalCommandLogTestCase extends InternalCommand {
 
   @override
   void run(List<String> args, Context context) {
-    final shuffleMain = false;
-    var commitsSet = [
-      [_Commit(1)]
-    ];
-    int calculateVariants(int count) {
-      if (count == 1) return 1;
-      return calculateVariants(count - 1) * (count - 1);
-    }
-
-    List<List<_Commit>> calculateCommitsProgression(int count, int index) {
-      if (count == 1) {
-        return [
-          [_Commit(count)]
-        ];
-      }
-      final progression =
-          calculateCommitsProgression(count - 1, index ~/ (count - 1));
-      final last = progression.first;
-      return [
-        [...last, last[index % (count - 1)].newChildCommit(count)],
-        ...progression
-      ];
-    }
-
-    void printSingleUml(
-        int prefix, int index, int mainId, List<_Commit> commits) {
-      context.printToConsole(
-          _CommitTree(prefix, index, commits).toUmlString(mainId));
-    }
-
-    void printCommitTreeUml(_CommitTree commitTree, int mainId) {
-      printSingleUml(
-          commitTree.size, commitTree.index, mainId, commitTree.commits);
-    }
-
-    void printCalculatedCommits(int prefix, int index, int mainId) {
-      printCommitTreeUml(_CommitTree.generate(prefix, index), mainId);
-    }
-
-    void printCalculatedCommitsProgression(int prefix, int index, int mainId) {
-      int correctionPrefix = 0;
-      for (var value in calculateCommitsProgression(prefix, index)) {
-        printSingleUml(prefix - correctionPrefix++, index, mainId, value);
-      }
-    }
-
-    void printUml(int prefix) {
-      for (int index = 0; index < commitsSet.length; index++) {
-        for (int mainId = 1; mainId <= commitsSet[index].length; mainId++) {
-          printSingleUml(prefix, index, mainId, commitsSet[index]);
-          if (!shuffleMain) break;
-        }
-      }
-    }
-
-    List<List<_Commit>> next() {
-      final id = commitsSet.first.length + 1;
-      return commitsSet
-          .expand((commits) => commits.mapIndexed(
-              (index, element) => [...commits, element.newChildCommit(id)]))
-          .toList();
-    }
-
     context.printToConsole("@startuml");
-    printCalculatedCommits(1, 0, 1);
-    printCalculatedCommits(2, 0, 1);
-    printCalculatedCommits(3, 0, 1);
-    printCalculatedCommits(3, 1, 1);
-    printCalculatedCommits(4, 0, 1);
-    printCalculatedCommits(4, 1, 1);
-    printCalculatedCommits(4, 2, 1);
-    printCalculatedCommits(4, 3, 1);
-    printCalculatedCommits(4, 4, 1);
-    printCalculatedCommits(4, 5, 1);
+    for (var commitTree in _CommitTree.chain(5, 18)) {
+      context.printToConsole(commitTree.toUmlString(1));
+    }
     context.printToConsole("@enduml");
   }
 }
