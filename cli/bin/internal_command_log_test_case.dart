@@ -45,6 +45,61 @@ class _CommitTree {
     final previous = chain(size - 1, index ~/ (size - 1));
     return [previous.first.next(index), ...previous];
   }
+
+  String toUmlString(int mainId) {
+    String result = "";
+    void addToResult(String string) {
+      result += "$string\n";
+    }
+
+    String name(_Commit commit) =>
+        "${size}_${index}_${mainId}_${commit.id}${commit.id == mainId ? "_main" : ""}";
+    String nodeName(_Commit commit) => "(${name(commit)})";
+    for (var commit in commits) {
+      commit.children.clear();
+    }
+    for (var commit in commits) {
+      commit.assignChild();
+    }
+    if (commits.length == 1) {
+      addToResult(nodeName(commits.first));
+    } else {
+      for (var commit in commits) {
+        if (commit.parent == null) continue;
+        addToResult("${nodeName(commit.parent!)} -up-> ${nodeName(commit)}");
+      }
+    }
+    List<String> gitLines(_Commit commit) => [
+          "stax commit -a --accept-all ${name(commit)}",
+          ...commit.children.expand((element) => [
+                ...gitLines(element),
+                "git checkout ${name(commit)}",
+              ])
+        ];
+    addToResult("note bottom of ${nodeName(commits.first)}");
+    String previousValue = "";
+    bool haveSeenNonCheckout = false;
+    gitLines(commits.first)
+        .reversed
+        .whereIndexed((index, element) {
+          if (haveSeenNonCheckout) return true;
+          if (!element.startsWith("git checkout")) {
+            return haveSeenNonCheckout = true;
+          }
+          return false;
+        })
+        .where((element) {
+          final result = !(previousValue.startsWith("git checkout") &&
+              element.startsWith("git checkout"));
+          previousValue = element;
+          return result;
+        })
+        .toList()
+        .reversed
+        .forEach(addToResult);
+    addToResult("end note");
+    return result.trim();
+  }
 }
 
 class InternalCommandLogTestCase extends InternalCommand {
@@ -80,55 +135,8 @@ class InternalCommandLogTestCase extends InternalCommand {
 
     void printSingleUml(
         int prefix, int index, int mainId, List<_Commit> commits) {
-      String name(_Commit commit) =>
-          "${prefix}_${index}_${mainId}_${commit.id}${commit.id == mainId ? "_main" : ""}";
-      String nodeName(_Commit commit) => "(${name(commit)})";
-      for (var commit in commits) {
-        commit.children.clear();
-      }
-      for (var commit in commits) {
-        commit.assignChild();
-      }
-      if (commits.length == 1) {
-        context.printToConsole(nodeName(commits.first));
-      } else {
-        for (var commit in commits) {
-          if (commit.parent == null) continue;
-          context.printToConsole(
-              "${nodeName(commit.parent!)} -up-> ${nodeName(commit)}");
-        }
-      }
-      List<String> gitLines(_Commit commit) => [
-            "stax commit -a --accept-all ${name(commit)}",
-            ...commit.children.expand((element) => [
-                  ...gitLines(element),
-                  "git checkout ${name(commit)}",
-                ])
-          ];
-      context.printToConsole("note bottom of ${nodeName(commits.first)}");
-      String previousValue = "";
-      bool haveSeenNonCheckout = false;
-      gitLines(commits.first)
-          .reversed
-          .whereIndexed((index, element) {
-            if (haveSeenNonCheckout) return true;
-            if (!element.startsWith("git checkout")) {
-              return haveSeenNonCheckout = true;
-            }
-            return false;
-          })
-          .where((element) {
-            final result = !(previousValue.startsWith("git checkout") &&
-                element.startsWith("git checkout"));
-            previousValue = element;
-            return result;
-          })
-          .toList()
-          .reversed
-          .forEach((element) {
-            context.printToConsole(element);
-          });
-      context.printToConsole("end note");
+      context.printToConsole(
+          _CommitTree(prefix, index, commits).toUmlString(mainId));
     }
 
     void printCommitTreeUml(_CommitTree commitTree, int mainId) {
