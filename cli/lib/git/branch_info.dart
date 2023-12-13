@@ -70,7 +70,11 @@ class BranchInfo {
       if (clothingBracketIndex != null) {
         commitMessageStarIndex = clothingBracketIndex + 2;
         final remoteInfo = raw.substring(i, clothingBracketIndex).split(":");
-        final remoteNameParts = remoteInfo[0].split("/");
+        final splitPoint = remoteInfo[0].indexOf("/").toNullableIndexOfResult();
+        final remoteNameParts = [
+          remoteInfo[0].substring(0, splitPoint),
+          if (splitPoint != null) remoteInfo[0].substring(splitPoint + 1)
+        ];
         if (remoteNameParts.length == 2 &&
             remoteNameParts[1] == name &&
             remoteInfo.length == 2) {
