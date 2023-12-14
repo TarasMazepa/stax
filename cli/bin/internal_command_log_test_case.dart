@@ -44,7 +44,7 @@ class _CommitTree {
 
   static int variants(int size) {
     if (size == 1) return 1;
-    return variants(size - 1) * (size - 1);
+    return min(4294967296, variants(size - 1) * (size - 1));
   }
 
   static List<_CommitTree> randomChain(int size) {
@@ -124,7 +124,7 @@ class InternalCommandLogTestCase extends InternalCommand {
   @override
   void run(List<String> args, Context context) {
     context.printToConsole("@startuml");
-    for (var commitTree in _CommitTree.randomChain(13)) {
+    for (var commitTree in _CommitTree.randomChain(17)) {
       context.printToConsole(commitTree.toUmlString(1));
     }
     context.printToConsole("@enduml");
