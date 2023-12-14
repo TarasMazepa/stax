@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:stax/context/context.dart';
 
@@ -43,6 +45,10 @@ class _CommitTree {
   static int variants(int size) {
     if (size == 1) return 1;
     return variants(size - 1) * (size - 1);
+  }
+
+  static List<_CommitTree> randomChain(int size) {
+    return chain(size, Random().nextInt(variants(size)));
   }
 
   static List<_CommitTree> chain(int size, int index) {
@@ -118,7 +124,7 @@ class InternalCommandLogTestCase extends InternalCommand {
   @override
   void run(List<String> args, Context context) {
     context.printToConsole("@startuml");
-    for (var commitTree in _CommitTree.chain(5, 18)) {
+    for (var commitTree in _CommitTree.randomChain(13)) {
       context.printToConsole(commitTree.toUmlString(1));
     }
     context.printToConsole("@enduml");
