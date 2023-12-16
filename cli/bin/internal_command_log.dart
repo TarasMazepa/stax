@@ -9,28 +9,12 @@ import 'package:stax/log/parsed_log_line.dart';
 import 'internal_command.dart';
 
 class InternalCommandLog extends InternalCommand {
-  static final String collapseFlag = "--collapse";
-  static final String branchesFlag = "--branches";
-
-  InternalCommandLog()
-      : super("log", "Builds a tree of all branches.", flags: {
-          collapseFlag:
-              "Collapses commits that are not heads of branches and only have one child commit.",
-          branchesFlag:
-              "Hides commit hashes and messages leaves you with branches only. "
-                  "You can still see multiple occurrences of a single branch in a tree. "
-                  "Using this flag automatically assumes --collapse flag too.",
-        });
+  InternalCommandLog() : super("log", "Builds a tree of all branches.");
 
   @override
   void run(List<String> args, Context context) {
-    /**
-     * TODO:
-     *  - Show/Hide commit hashes, messages
-     *  - Sort connection groups
-     */
-    final onlyBranches = args.remove(branchesFlag);
-    final collapse = args.remove(collapseFlag) || onlyBranches;
+    final onlyBranches = true;
+    final collapse = true;
     context = context.withSilence(true);
     final defaultBranchName = context.getDefaultBranch();
     if (defaultBranchName == null) {
