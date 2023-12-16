@@ -13,7 +13,6 @@ class InternalCommandLog extends InternalCommand {
 
   @override
   void run(List<String> args, Context context) {
-    final onlyBranches = true;
     final collapse = true;
     context = context.withSilence(true);
     final defaultBranchName = context.getDefaultBranch();
@@ -101,14 +100,6 @@ class InternalCommandLog extends InternalCommand {
     final alignment = lines
         .map((e) => e.getAlignment())
         .reduce((value, element) => value + element);
-    print(lines
-        .map(
-          (e) => e.decorateToString(
-            alignment,
-            includeCommitHash: !onlyBranches,
-            includeCommitMessage: !onlyBranches,
-          ),
-        )
-        .join("\n"));
+    print(lines.map((e) => e.decorateToString(alignment)).join("\n"));
   }
 }

@@ -65,8 +65,8 @@ class LogTreeNode {
             .toDecoratedList()
             .map((e) => e.withIndent("  " * emptyIndent + "| " * i)))
         .followedBy([
-      DecoratedLogLine(branchName, line.commitHash, line.commitMessage,
-          "*${"-┘" * (children.length - 1 + emptyIndent)}")
+      DecoratedLogLine(
+          branchName, "*${"-┘" * (children.length - 1 + emptyIndent)}")
     ]).toList();
   }
 
