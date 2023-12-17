@@ -72,6 +72,6 @@ class LogTreeNode {
 
   @override
   String toString() {
-    return "$branchName $line [${children.join(", ")}]";
+    return "$branchName [${children.join(", ")}]";
   }
 }

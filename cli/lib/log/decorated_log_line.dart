@@ -14,16 +14,13 @@ class DecoratedLogLine {
     return DecoratedLogLineAlignment(branchName.length, decoration.length);
   }
 
-  String decorateToString(
-    DecoratedLogLineAlignment alignment, {
-    bool includeBranchName = true,
-  }) {
+  String decorateToString(DecoratedLogLineAlignment alignment) {
     String align(String field, int size) {
       return field + (" " * (size - field.length));
     }
 
-    return "${align(decoration, alignment.decoration)}"
-        "${includeBranchName ? " ${align(branchName, alignment.branchName)}" : ""}";
+    return "${align(decoration, alignment.decoration)} "
+        "${align(branchName, alignment.branchName)}";
   }
 
   @override
