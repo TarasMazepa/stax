@@ -1,8 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
-import 'package:stax/log/decorated/decorated_log_line.dart';
-import 'package:stax/log/decorated/decorated_log_line_producer.dart';
-import 'package:stax/log/decorated/decorated_log_line_producer_adapter_for_log_tree_node.dart';
 import 'package:stax/log/parsed_log_line.dart';
 
 class LogTreeNode {
