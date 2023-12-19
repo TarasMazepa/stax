@@ -1,4 +1,4 @@
-import 'package:stax/log/decorated_log_line_alignment.dart';
+import 'package:stax/log/decorated/decorated_log_line_alignment.dart';
 
 class DecoratedLogLine {
   final String branchName;

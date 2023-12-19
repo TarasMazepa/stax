@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
-import 'package:stax/log/decorated_log_line.dart';
+import 'package:stax/log/decorated/decorated_log_line.dart';
+import 'package:stax/log/decorated/decorated_log_line_producer.dart';
+import 'package:stax/log/decorated/decorated_log_line_producer_adapter_for_log_tree_node.dart';
 import 'package:stax/log/parsed_log_line.dart';
 
 class LogTreeNode {
@@ -55,19 +57,8 @@ class LogTreeNode {
   }
 
   List<DecoratedLogLine> toDecoratedList() {
-    final emptyIndent = (isDefaultBranch() &&
-            children.isNotEmpty &&
-            !children.first.isDefaultBranch())
-        ? 1
-        : 0;
-    return children
-        .expandIndexed((i, e) => e
-            .toDecoratedList()
-            .map((e) => e.withIndent("  " * emptyIndent + "| " * i)))
-        .followedBy([
-      DecoratedLogLine(
-          branchName, "*${"-┘" * (children.length - 1 + emptyIndent)}")
-    ]).toList();
+    return produceDecoratedLogLine(
+        this, DecoratedLogLineProducerAdapterForLogTreeNode());
   }
 
   @override
