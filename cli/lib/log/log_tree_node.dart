@@ -56,11 +56,6 @@ class LogTreeNode {
     }
   }
 
-  List<DecoratedLogLine> toDecoratedList() {
-    return produceDecoratedLogLine(
-        this, DecoratedLogLineProducerAdapterForLogTreeNode());
-  }
-
   @override
   String toString() {
     return "$branchName [${children.join(", ")}]";

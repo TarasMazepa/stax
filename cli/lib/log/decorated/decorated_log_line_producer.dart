@@ -9,7 +9,7 @@ abstract class DecoratedLogLineProducerAdapter<T> {
   String branchName(T t);
 }
 
-List<DecoratedLogLine> produceDecoratedLogLine<T>(
+List<DecoratedLogLine> _produceDecoratedLogLine<T>(
   T root,
   DecoratedLogLineProducerAdapter<T> adapter,
 ) {
@@ -20,7 +20,7 @@ List<DecoratedLogLine> produceDecoratedLogLine<T>(
       ? 1
       : 0;
   return children
-      .expandIndexed((i, e) => produceDecoratedLogLine(e, adapter)
+      .expandIndexed((i, e) => _produceDecoratedLogLine(e, adapter)
           .map((e) => e.withIndent("  " * emptyIndent + "| " * i)))
       .followedBy([
     DecoratedLogLine(
@@ -28,4 +28,15 @@ List<DecoratedLogLine> produceDecoratedLogLine<T>(
       "*${"-┘" * (children.length - 1 + emptyIndent)}",
     )
   ]).toList();
+}
+
+List<String> materializeDecoratedLogLines<T>(
+  T root,
+  DecoratedLogLineProducerAdapter<T> adapter,
+) {
+  final lines = _produceDecoratedLogLine(root, adapter);
+  final alignment = lines
+      .map((e) => e.getAlignment())
+      .reduce((value, element) => value + element);
+  return lines.map((e) => e.decorateToString(alignment)).toList();
 }

@@ -2,9 +2,33 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:stax/context/context.dart';
+import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 
 import 'internal_command.dart';
 import 'types_for_internal_command.dart';
+
+class _DecoratedLogLineProducerAdapterForLogTestCase
+    implements DecoratedLogLineProducerAdapter<_Commit> {
+  final _CommitTree commitTree;
+  final int mainId;
+
+  _DecoratedLogLineProducerAdapterForLogTestCase(this.commitTree, this.mainId);
+
+  @override
+  String branchName(_Commit t) {
+    return t.name(commitTree, mainId);
+  }
+
+  @override
+  List<_Commit> children(_Commit t) {
+    return t.children.sorted((a, b) => b.id - a.id);
+  }
+
+  @override
+  bool isDefaultBranch(_Commit t) {
+    return t.id == mainId;
+  }
+}
 
 class _Commit {
   final _Commit? parent;
@@ -111,6 +135,9 @@ class _CommitTree {
         .toList()
         .reversed
         .forEach(addToResult);
+    materializeDecoratedLogLines(commits.first,
+            _DecoratedLogLineProducerAdapterForLogTestCase(this, mainId))
+        .forEach((element) => addToResult("\"\"$element\"\""));
     addToResult("end note");
     return result.trim();
   }
@@ -124,8 +151,9 @@ class InternalCommandLogTestCase extends InternalCommand {
   @override
   void run(List<String> args, Context context) {
     context.printToConsole("@startuml");
-    for (var commitTree in _CommitTree.randomChain(17)) {
-      context.printToConsole(commitTree.toUmlString(1));
+    for (var commitTree in _CommitTree.randomChain(14)) {
+      context.printToConsole(
+          commitTree.toUmlString(Random().nextInt(commitTree.size) + 1));
     }
     context.printToConsole("@enduml");
   }
