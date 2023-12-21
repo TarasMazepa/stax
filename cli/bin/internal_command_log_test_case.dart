@@ -50,16 +50,17 @@ class _Commit {
 }
 
 class _CommitTree {
-  final int size;
   final int index;
   final List<_Commit> commits;
 
-  _CommitTree(this.size, this.index, this.commits);
+  int get size => commits.length;
+
+  _CommitTree(this.index, this.commits);
 
   _CommitTree next(int index) {
     final size = this.size + 1;
-    return _CommitTree(size, index,
-        [...commits, commits[index % (size - 1)].newChildCommit(size)]);
+    return _CommitTree(
+        index, [...commits, commits[index % (size - 1)].newChildCommit(size)]);
   }
 
   factory _CommitTree.generate(int size, int index) {
@@ -78,7 +79,7 @@ class _CommitTree {
   static List<_CommitTree> chain(int size, int index) {
     if (size == 1) {
       return [
-        _CommitTree(1, 0, [_Commit(1)])
+        _CommitTree(0, [_Commit(1)])
       ];
     }
     final previous = chain(size - 1, index ~/ (size - 1));
