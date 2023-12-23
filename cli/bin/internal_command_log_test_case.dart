@@ -86,6 +86,16 @@ class _CommitTree {
     return [previous.first.next(index), ...previous];
   }
 
+  static List<_CommitTree> indexedChain(List<int> indexes) {
+    final result = [
+      _CommitTree(0, [_Commit(1)])
+    ];
+    for (final index in indexes) {
+      result.add(result.last.next(index));
+    }
+    return result;
+  }
+
   String toUmlString(int mainId) {
     String result = "";
     void addToResult(String string) {
