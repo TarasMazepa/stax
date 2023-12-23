@@ -57,6 +57,8 @@ class _CommitTree {
 
   _CommitTree(this.code, this.commits);
 
+  _CommitTree.initial() : this("0", [_Commit(1)]);
+
   _CommitTree next(int index) {
     final size = this.size + 1;
     return _CommitTree(index.toString(),
@@ -78,18 +80,14 @@ class _CommitTree {
 
   static List<_CommitTree> chain(int size, int index) {
     if (size == 1) {
-      return [
-        _CommitTree("0", [_Commit(1)])
-      ];
+      return [_CommitTree.initial()];
     }
     final previous = chain(size - 1, index ~/ (size - 1));
     return [previous.first.next(index), ...previous];
   }
 
   static List<_CommitTree> indexedChain(List<int> indexes) {
-    final result = [
-      _CommitTree("0", [_Commit(1)])
-    ];
+    final result = [_CommitTree.initial()];
     for (final index in indexes) {
       result.add(result.last.next(index));
     }
