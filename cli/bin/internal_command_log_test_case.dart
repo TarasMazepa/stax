@@ -13,14 +13,18 @@ class _CompactedIndexes {
 
   final List<int> indexes;
   final String compacted;
+  final List<_Commit> commits;
 
-  _CompactedIndexes(this.indexes, this.compacted);
+  _CompactedIndexes(this.indexes, this.compacted, this.commits);
 
   int get length => indexes.length;
 
   _CompactedIndexes subIndexes(int end) {
     return _CompactedIndexes(
-        indexes.sublist(0, end), compacted.substring(0, end));
+      indexes.sublist(0, end),
+      compacted.substring(0, end),
+      commits.sublist(0, end),
+    );
   }
 
   List<_CompactedIndexes> allSubIndexes() {
@@ -31,6 +35,11 @@ class _CompactedIndexes {
     return result;
   }
 
+  factory _CompactedIndexes.calculateCommits(
+      List<int> indexes, String compacted) {
+    return _CompactedIndexes(indexes, compacted, []);
+  }
+
   factory _CompactedIndexes.fromIndexes(List<int> indexes) {
     final compacted = StringBuffer();
     for (int i = 0; i < indexes.length; i++) {
@@ -38,7 +47,7 @@ class _CompactedIndexes {
       if (i < index) throw Exception("indexes[$i] $index > $i");
       compacted.write(_alphabet[index]);
     }
-    return _CompactedIndexes(indexes, compacted.toString());
+    return _CompactedIndexes.calculateCommits(indexes, compacted.toString());
   }
 
   factory _CompactedIndexes.fromCompacted(String compacted) {
@@ -51,7 +60,7 @@ class _CompactedIndexes {
       }
       indexes.add(index);
     }
-    return _CompactedIndexes(indexes, compacted);
+    return _CompactedIndexes.calculateCommits(indexes, compacted);
   }
 
   factory _CompactedIndexes.random(int length) {
