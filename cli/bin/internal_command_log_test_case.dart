@@ -16,6 +16,21 @@ class _CompactedIndexes {
 
   _CompactedIndexes(this.indexes, this.compacted);
 
+  int get length => indexes.length;
+
+  _CompactedIndexes subIndexes(int end) {
+    return _CompactedIndexes(
+        indexes.sublist(0, end), compacted.substring(0, end));
+  }
+
+  List<_CompactedIndexes> allSubIndexes() {
+    final result = <_CompactedIndexes>[];
+    for (int i = 0; i <= length; i++) {
+      result.add(subIndexes(i));
+    }
+    return result;
+  }
+
   factory _CompactedIndexes.fromIndexes(List<int> indexes) {
     final compacted = StringBuffer();
     for (int i = 0; i < indexes.length; i++) {
