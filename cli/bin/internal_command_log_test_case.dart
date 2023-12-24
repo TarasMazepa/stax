@@ -7,6 +7,44 @@ import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 import 'internal_command.dart';
 import 'types_for_internal_command.dart';
 
+class _CompactedIndexes {
+  static final _alphabet =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+  final List<int> indexes;
+  final String compacted;
+
+  _CompactedIndexes(this.indexes, this.compacted);
+
+  factory _CompactedIndexes.fromIndexes(List<int> indexes) {
+    final compacted = StringBuffer();
+    for (int i = 0; i < indexes.length; i++) {
+      final index = indexes[i];
+      if (i < index) throw Exception("indexes[$i] $index > $i");
+      compacted.write(_alphabet[index]);
+    }
+    return _CompactedIndexes(indexes, compacted.toString());
+  }
+
+  factory _CompactedIndexes.fromCompacted(String compacted) {
+    final indexes = <int>[];
+    for (int i = 0; i < compacted.length; i++) {
+      final char = compacted[i];
+      final index = _alphabet.indexOf(char);
+      if (index == -1) {
+        throw Exception("'$char' is not in base64 alphabet '$_alphabet'");
+      }
+      indexes.add(index);
+    }
+    return _CompactedIndexes(indexes, compacted);
+  }
+
+  @override
+  String toString() {
+    return "indexes:$indexes compacted:$compacted";
+  }
+}
+
 class _DecoratedLogLineProducerAdapterForLogTestCase
     implements DecoratedLogLineProducerAdapter<_Commit> {
   final _CommitTree commitTree;
