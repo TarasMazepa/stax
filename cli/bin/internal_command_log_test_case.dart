@@ -33,7 +33,7 @@ class _DecoratedLogLineProducerAdapterForLogTestCase
 class _Commit {
   final _Commit? parent;
   final int id;
-  final List<_Commit> children = List.empty(growable: true);
+  final List<_Commit> children = [];
 
   _Commit(this.id, [this.parent]);
 
@@ -161,7 +161,7 @@ class InternalCommandLogTestCase extends InternalCommand {
     context.printToConsole("@startuml");
     for (var commitTree in _CommitTree.randomChain(14)) {
       context.printToConsole(
-          commitTree.toUmlString(Random().nextInt(commitTree.size) + 1));
+          commitTree.toUmlString(Random().nextInt(commitTree.size)));
     }
     context.printToConsole("@enduml");
   }
