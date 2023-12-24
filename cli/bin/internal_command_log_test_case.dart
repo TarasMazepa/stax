@@ -59,9 +59,9 @@ class _CommitTree {
 
   _CommitTree.initial() : this("0", [_Commit(0)]);
 
-  _CommitTree next(int index) {
-    return _CommitTree(index.toString(),
-        [...commits, commits[index % size].newChildCommit(size)]);
+  _CommitTree next(int index, String code) {
+    return _CommitTree(
+        code, [...commits, commits[index % size].newChildCommit(size)]);
   }
 
   factory _CommitTree.generate(int size, int index) {
@@ -82,13 +82,13 @@ class _CommitTree {
       return [_CommitTree.initial()];
     }
     final previous = chain(size - 1, index ~/ (size - 1));
-    return [previous.first.next(index), ...previous];
+    return [previous.first.next(index, index.toString()), ...previous];
   }
 
   static List<_CommitTree> indexedChain(List<int> indexes) {
     final result = [_CommitTree.initial()];
     for (final index in indexes) {
-      result.add(result.last.next(index));
+      result.add(result.last.next(index, index.toString()));
     }
     return result;
   }
