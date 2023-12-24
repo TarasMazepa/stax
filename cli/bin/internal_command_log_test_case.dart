@@ -40,7 +40,7 @@ class _Commit {
   _Commit newChildCommit(int id) => _Commit(id, this);
 
   String name(_CommitTree commitTree, int mainId) {
-    return "${commitTree.size}_${commitTree.code}_${mainId}_$id${id == mainId ? "_main" : ""}";
+    return "${commitTree.commitNamePrefix}_${mainId}_$id${id == mainId ? "_main" : ""}";
   }
 
   void assignChild() {
@@ -54,6 +54,8 @@ class _CommitTree {
   final String code;
 
   int get size => commits.length;
+
+  String get commitNamePrefix => "${size}_$code";
 
   _CommitTree(this.code, this.commits);
 
