@@ -128,27 +128,6 @@ class _CommitTree {
         code, [...commits, commits[index % size].newChildCommit(size)]);
   }
 
-  factory _CommitTree.generate(int size, int index) {
-    return chain(size, index).first;
-  }
-
-  static int variants(int size) {
-    if (size == 1) return 1;
-    return min(4294967296, variants(size - 1) * (size - 1));
-  }
-
-  static List<_CommitTree> randomChain(int size) {
-    return chain(size, Random().nextInt(variants(size)));
-  }
-
-  static List<_CommitTree> chain(int size, int index) {
-    if (size == 1) {
-      return [_CommitTree.initial()];
-    }
-    final previous = chain(size - 1, index ~/ (size - 1));
-    return [previous.first.next(index, index.toString()), ...previous];
-  }
-
   static List<_CommitTree> indexedChain(_CompactedIndexes indexes) {
     final result = [_CommitTree.initial()];
     for (final index in indexes.indexes) {
