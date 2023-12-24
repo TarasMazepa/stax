@@ -134,19 +134,12 @@ class _CommitTree {
   final List<_Commit> commits;
   final String code;
 
-  int get size => commits.length;
-
-  String get commitNamePrefix => "${size}_$code";
+  String get commitNamePrefix => code;
 
   _CommitTree(this.code, this.commits);
 
   _CommitTree.fromCompactedIndexes(_CompactedIndexes indexes)
       : this(indexes.compacted, indexes.commits);
-
-  _CommitTree next(int index, String code) {
-    return _CommitTree(
-        code, [...commits, commits[index % size].newChildCommit(size)]);
-  }
 
   static List<_CommitTree> indexedChain(_CompactedIndexes indexes) {
     return indexes
