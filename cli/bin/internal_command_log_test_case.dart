@@ -39,6 +39,15 @@ class _CompactedIndexes {
     return _CompactedIndexes(indexes, compacted);
   }
 
+  factory _CompactedIndexes.random(int length) {
+    final random = Random();
+    final indexes = <int>[];
+    for (int i = 0; i < length; i++) {
+      indexes.add(random.nextInt(i + 1));
+    }
+    return _CompactedIndexes.fromIndexes(indexes);
+  }
+
   @override
   String toString() {
     return "indexes:$indexes compacted:$compacted";
@@ -199,9 +208,9 @@ class InternalCommandLogTestCase extends InternalCommand {
   @override
   void run(List<String> args, Context context) {
     context.printToConsole("@startuml");
-    for (var commitTree in _CommitTree.randomChain(14)) {
-      context.printToConsole(
-          commitTree.toUmlString(Random().nextInt(commitTree.size)));
+    for (var commitTree
+        in _CommitTree.indexedChain(_CompactedIndexes.random(14).indexes)) {
+      context.printToConsole(commitTree.toUmlString(0));
     }
     context.printToConsole("@enduml");
   }
