@@ -131,21 +131,16 @@ class _Commit {
 }
 
 class _CommitTree {
-  final List<_Commit> commits;
-  final String code;
+  final _CompactedIndexes indexes;
 
-  String get commitNamePrefix => code;
+  String get commitNamePrefix => indexes.compacted;
 
-  _CommitTree(this.code, this.commits);
+  List<_Commit> get commits => indexes.commits;
 
-  _CommitTree.fromCompactedIndexes(_CompactedIndexes indexes)
-      : this(indexes.compacted, indexes.commits);
+  _CommitTree(this.indexes);
 
   static List<_CommitTree> indexedChain(_CompactedIndexes indexes) {
-    return indexes
-        .allSubIndexes()
-        .map(_CommitTree.fromCompactedIndexes)
-        .toList();
+    return indexes.allSubIndexes().map(_CommitTree.new).toList();
   }
 
   String toUmlString(int mainId) {
