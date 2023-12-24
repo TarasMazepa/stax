@@ -23,7 +23,7 @@ class _CompactedIndexes {
     return _CompactedIndexes(
       indexes.sublist(0, end),
       compacted.substring(0, end),
-      commits.sublist(0, end),
+      commits.sublist(0, end + 1),
     );
   }
 
@@ -140,7 +140,8 @@ class _CommitTree {
 
   _CommitTree(this.code, this.commits);
 
-  _CommitTree.initial() : this("0", [_Commit(0)]);
+  _CommitTree.fromCompactedIndexes(_CompactedIndexes indexes)
+      : this(indexes.compacted, indexes.commits);
 
   _CommitTree next(int index, String code) {
     return _CommitTree(
@@ -148,11 +149,10 @@ class _CommitTree {
   }
 
   static List<_CommitTree> indexedChain(_CompactedIndexes indexes) {
-    final result = [_CommitTree.initial()];
-    for (final index in indexes.indexes) {
-      result.add(result.last.next(index, index.toString()));
-    }
-    return result;
+    return indexes
+        .allSubIndexes()
+        .map(_CommitTree.fromCompactedIndexes)
+        .toList();
   }
 
   String toUmlString(int mainId) {
@@ -221,7 +221,6 @@ class InternalCommandLogTestCase extends InternalCommand {
   @override
   void run(List<String> args, Context context) {
     context.printToConsole("@startuml");
-    context.printToConsole("'${_CompactedIndexes.random(10)}");
     for (var commitTree
         in _CommitTree.indexedChain(_CompactedIndexes.random(14))) {
       context.printToConsole(commitTree.toUmlString(0));
