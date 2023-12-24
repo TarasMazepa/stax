@@ -37,7 +37,12 @@ class _CompactedIndexes {
 
   factory _CompactedIndexes.calculateCommits(
       List<int> indexes, String compacted) {
-    return _CompactedIndexes(indexes, compacted, []);
+    int id = 0;
+    final commits = [_Commit(id++)];
+    for (int index in indexes) {
+      commits.add(commits[index].newChildCommit(id++));
+    }
+    return _CompactedIndexes(indexes, compacted, commits);
   }
 
   factory _CompactedIndexes.fromIndexes(List<int> indexes) {
@@ -74,7 +79,7 @@ class _CompactedIndexes {
 
   @override
   String toString() {
-    return "indexes:$indexes compacted:$compacted";
+    return "indexes:$indexes compacted:$compacted commits:$commits";
   }
 }
 
@@ -117,6 +122,11 @@ class _Commit {
   void assignChild() {
     if (parent == null) return;
     parent?.children.add(this);
+  }
+
+  @override
+  String toString() {
+    return "$id <- ${parent?.id}";
   }
 }
 
@@ -211,6 +221,7 @@ class InternalCommandLogTestCase extends InternalCommand {
   @override
   void run(List<String> args, Context context) {
     context.printToConsole("@startuml");
+    context.printToConsole("'${_CompactedIndexes.random(10)}");
     for (var commitTree
         in _CommitTree.indexedChain(_CompactedIndexes.random(14))) {
       context.printToConsole(commitTree.toUmlString(0));
