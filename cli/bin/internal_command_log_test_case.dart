@@ -134,9 +134,9 @@ class _CommitTree {
     return [previous.first.next(index, index.toString()), ...previous];
   }
 
-  static List<_CommitTree> indexedChain(List<int> indexes) {
+  static List<_CommitTree> indexedChain(_CompactedIndexes indexes) {
     final result = [_CommitTree.initial()];
-    for (final index in indexes) {
+    for (final index in indexes.indexes) {
       result.add(result.last.next(index, index.toString()));
     }
     return result;
@@ -209,7 +209,7 @@ class InternalCommandLogTestCase extends InternalCommand {
   void run(List<String> args, Context context) {
     context.printToConsole("@startuml");
     for (var commitTree
-        in _CommitTree.indexedChain(_CompactedIndexes.random(14).indexes)) {
+        in _CommitTree.indexedChain(_CompactedIndexes.random(14))) {
       context.printToConsole(commitTree.toUmlString(0));
     }
     context.printToConsole("@enduml");
