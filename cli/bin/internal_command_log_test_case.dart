@@ -57,12 +57,11 @@ class _CommitTree {
 
   _CommitTree(this.code, this.commits);
 
-  _CommitTree.initial() : this("0", [_Commit(1)]);
+  _CommitTree.initial() : this("0", [_Commit(0)]);
 
   _CommitTree next(int index) {
-    final size = this.size + 1;
     return _CommitTree(index.toString(),
-        [...commits, commits[index % (size - 1)].newChildCommit(size)]);
+        [...commits, commits[index % size].newChildCommit(size)]);
   }
 
   factory _CommitTree.generate(int size, int index) {
