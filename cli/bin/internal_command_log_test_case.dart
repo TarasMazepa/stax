@@ -88,18 +88,24 @@ class _DecoratedLogLineProducerAdapterForLogTestCase
   final _CommitTree commitTree;
   final int mainId;
   final bool collapse;
+  final bool showBranchedCommitNames;
 
-  _DecoratedLogLineProducerAdapterForLogTestCase(
-      this.commitTree, this.mainId, this.collapse);
+  _DecoratedLogLineProducerAdapterForLogTestCase(this.commitTree, this.mainId,
+      this.collapse, this.showBranchedCommitNames);
 
   @override
   String branchName(_Commit commit) {
-    final name = commit.name(commitTree, mainId);
+    final rawName = commit.name(commitTree, mainId);
+    final name = showBranchedCommitNames ? " $rawName " : rawName;
     if (isDefaultBranch(commit)) {
       return name;
     }
     if (collapse && isDefaultBranchOrHasDefaultBranchAsAChild(commit)) {
-      return "";
+      if (showBranchedCommitNames) {
+        return "[$rawName]";
+      } else {
+        return "";
+      }
     }
     return name;
   }
@@ -116,9 +122,18 @@ class _DecoratedLogLineProducerAdapterForLogTestCase
         : commit.id;
   }
 
+  _Commit collapsedChild(_Commit commit) {
+    if (isDefaultBranch(commit)) return commit;
+    if (commit.children.length != 1) return commit;
+    if (!isDefaultBranchOrHasDefaultBranchAsAChild(commit)) return commit;
+    return collapsedChild(commit.children.single);
+  }
+
   @override
   List<_Commit> children(_Commit commit) {
-    return commit.children.sorted((a, b) => sortingValue(b) - sortingValue(a));
+    return commit.children
+        .map(collapsedChild)
+        .sorted((a, b) => sortingValue(b) - sortingValue(a));
   }
 
   @override
@@ -214,8 +229,9 @@ class _CommitTree {
         .toList()
         .reversed
         .forEach(addToResult);
-    materializeDecoratedLogLines(commits.first,
-            _DecoratedLogLineProducerAdapterForLogTestCase(this, mainId, true))
+    final adapter = _DecoratedLogLineProducerAdapterForLogTestCase(
+        this, mainId, true, false);
+    materializeDecoratedLogLines(adapter.collapsedChild(commits.first), adapter)
         .forEach((element) => addToResult("\"\"$element\"\""));
     addToResult("end note");
     return result.trim();
