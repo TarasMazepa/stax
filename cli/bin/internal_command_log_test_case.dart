@@ -19,6 +19,30 @@ class _CompactedIndexes {
 
   int get length => indexes.length;
 
+  _CompactedIndexes next() {
+    final newIndexes = [...indexes];
+    for (int i = newIndexes.length - 1; i >= 0; i--) {
+      if (newIndexes[i] != i) {
+        newIndexes[i]++;
+        break;
+      } else {
+        newIndexes[i] = 0;
+      }
+    }
+    return _CompactedIndexes.fromIndexes(newIndexes);
+  }
+
+  bool isTimeToLengthen() {
+    for (int i = 0; i < length; i++) {
+      if (indexes[i] != i) return false;
+    }
+    return true;
+  }
+
+  _CompactedIndexes lengthen() {
+    return _CompactedIndexes.fromIndexes(List.filled(length + 1, 0));
+  }
+
   _CompactedIndexes subIndexes(int end) {
     return _CompactedIndexes(
       indexes.sublist(0, end),
@@ -246,10 +270,16 @@ class InternalCommandLogTestCase extends InternalCommand {
   @override
   void run(List<String> args, Context context) {
     context.printToConsole("@startuml");
-    for (var commitTree in _CommitTree.indexedChain(
-        _CompactedIndexes.fromCompacted("ABCCDADHAFCDCI"))) {
-      context.printToConsole(
-          commitTree.toUmlString(min(7, commitTree.indexes.length)));
+    var indexes = _CompactedIndexes.fromIndexes([]);
+    for (int i = 0; i < 10; i++) {
+      for (int j = 0; j < indexes.commits.length; j++) {
+        context.printToConsole(_CommitTree(indexes).toUmlString(j));
+      }
+      if (indexes.isTimeToLengthen()) {
+        indexes = indexes.lengthen();
+      } else {
+        indexes = indexes.next();
+      }
     }
     context.printToConsole("@enduml");
   }
