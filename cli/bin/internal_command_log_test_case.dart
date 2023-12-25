@@ -87,12 +87,21 @@ class _DecoratedLogLineProducerAdapterForLogTestCase
     implements DecoratedLogLineProducerAdapter<_Commit> {
   final _CommitTree commitTree;
   final int mainId;
+  final bool collapse;
 
-  _DecoratedLogLineProducerAdapterForLogTestCase(this.commitTree, this.mainId);
+  _DecoratedLogLineProducerAdapterForLogTestCase(
+      this.commitTree, this.mainId, this.collapse);
 
   @override
   String branchName(_Commit commit) {
-    return commit.name(commitTree, mainId);
+    final name = commit.name(commitTree, mainId);
+    if (isDefaultBranch(commit)) {
+      return name;
+    }
+    if (collapse && isDefaultBranchOrHasDefaultBranchAsAChild(commit)) {
+      return "";
+    }
+    return name;
   }
 
   bool isDefaultBranchOrHasDefaultBranchAsAChild(_Commit commit) {
@@ -206,7 +215,7 @@ class _CommitTree {
         .reversed
         .forEach(addToResult);
     materializeDecoratedLogLines(commits.first,
-            _DecoratedLogLineProducerAdapterForLogTestCase(this, mainId))
+            _DecoratedLogLineProducerAdapterForLogTestCase(this, mainId, true))
         .forEach((element) => addToResult("\"\"$element\"\""));
     addToResult("end note");
     return result.trim();
