@@ -14,12 +14,17 @@ class _CompactedIndexes {
   final List<int> indexes;
   final String compacted;
   final List<_Commit> commits;
+  final int mainId;
 
-  _CompactedIndexes(this.indexes, this.compacted, this.commits);
+  _CompactedIndexes(this.indexes, this.compacted, this.commits,
+      [this.mainId = 0]);
 
   int get length => indexes.length;
 
   _CompactedIndexes next() {
+    if (mainId != commits.length - 1) {
+      return _CompactedIndexes(indexes, compacted, commits, mainId + 1);
+    }
     final newIndexes = [...indexes];
     for (int i = newIndexes.length - 1; i >= 0; i--) {
       if (newIndexes[i] != i) {
@@ -33,6 +38,7 @@ class _CompactedIndexes {
   }
 
   bool isTimeToLengthen() {
+    if (mainId != commits.length - 1) return false;
     for (int i = 0; i < length; i++) {
       if (indexes[i] != i) return false;
     }
@@ -203,7 +209,8 @@ class _CommitTree {
     return indexes.allSubIndexes().map(_CommitTree.new).toList();
   }
 
-  String toUmlString(int mainId) {
+  String toUmlString() {
+    final mainId = indexes.mainId;
     String result = "";
     void addToResult(String string) {
       result += "$string\n";
@@ -271,10 +278,8 @@ class InternalCommandLogTestCase extends InternalCommand {
   void run(List<String> args, Context context) {
     context.printToConsole("@startuml");
     var indexes = _CompactedIndexes.fromIndexes([]);
-    for (int i = 0; i < 10; i++) {
-      for (int j = 0; j < indexes.commits.length; j++) {
-        context.printToConsole(_CommitTree(indexes).toUmlString(j));
-      }
+    for (int i = 0; i < 20; i++) {
+      context.printToConsole(_CommitTree(indexes).toUmlString());
       if (indexes.isTimeToLengthen()) {
         indexes = indexes.lengthen();
       } else {
