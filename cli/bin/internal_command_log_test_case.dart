@@ -16,8 +16,7 @@ class _CompactedIndexes {
   final List<_Commit> commits;
   final int mainId;
 
-  _CompactedIndexes(this.indexes, this.compacted, this.commits,
-      [this.mainId = 0]);
+  _CompactedIndexes(this.indexes, this.compacted, this.commits, this.mainId);
 
   int get length => indexes.length;
 
@@ -34,7 +33,7 @@ class _CompactedIndexes {
         newIndexes[i] = 0;
       }
     }
-    return _CompactedIndexes.fromIndexes(newIndexes);
+    return _CompactedIndexes.fromIndexes(newIndexes, 0);
   }
 
   bool isTimeToLengthen() {
@@ -45,8 +44,8 @@ class _CompactedIndexes {
     return true;
   }
 
-  _CompactedIndexes lengthen() {
-    return _CompactedIndexes.fromIndexes(List.filled(length + 1, 0));
+  _CompactedIndexes lengthenAndReset() {
+    return _CompactedIndexes.fromIndexes(List.filled(length + 1, 0), 0);
   }
 
   _CompactedIndexes subIndexes(int end) {
@@ -73,27 +72,34 @@ class _CompactedIndexes {
   }
 
   factory _CompactedIndexes.calculateCommits(
-      List<int> indexes, String compacted) {
+    List<int> indexes,
+    String compacted,
+    int mainId,
+  ) {
     int id = 0;
     final commits = [_Commit(id++)];
     for (int index in indexes) {
       commits.add(commits[index].newChildCommit(id++));
     }
-    return _CompactedIndexes(indexes, compacted, commits);
+    return _CompactedIndexes(indexes, compacted, commits, mainId);
   }
 
-  factory _CompactedIndexes.fromIndexes(List<int> indexes) {
+  factory _CompactedIndexes.fromIndexes(List<int> indexes, int mainId) {
     final compacted = StringBuffer();
     for (int i = 0; i < indexes.length; i++) {
       final index = indexes[i];
       if (i < index) throw Exception("indexes[$i] $index > $i");
       compacted.write(_alphabet[index]);
     }
-    return _CompactedIndexes.calculateCommits(indexes, compacted.toString());
+    return _CompactedIndexes.calculateCommits(
+        indexes, compacted.toString(), mainId);
   }
 
-  factory _CompactedIndexes.fromCompacted(String compacted) {
+  factory _CompactedIndexes.fromCompacted(String compactedWithMainId) {
     final indexes = <int>[];
+    final parts = compactedWithMainId.split("_");
+    final compacted = parts.first;
+    final mainId = int.tryParse(parts.last) ?? 0;
     for (int i = 0; i < compacted.length; i++) {
       final char = compacted[i];
       final index = _alphabet.indexOf(char);
@@ -102,16 +108,17 @@ class _CompactedIndexes {
       }
       indexes.add(index);
     }
-    return _CompactedIndexes.calculateCommits(indexes, compacted);
+    return _CompactedIndexes.calculateCommits(indexes, compacted, mainId);
   }
 
-  factory _CompactedIndexes.random(int length) {
+  factory _CompactedIndexes.random(int length, [int? mainId]) {
     final random = Random();
     final indexes = <int>[];
     for (int i = 0; i < length; i++) {
       indexes.add(random.nextInt(i + 1));
     }
-    return _CompactedIndexes.fromIndexes(indexes);
+    return _CompactedIndexes.fromIndexes(
+        indexes, mainId ?? random.nextInt(length));
   }
 
   @override
@@ -284,10 +291,7 @@ class InternalCommandLogTestCase extends InternalCommand {
   @override
   void run(List<String> args, Context context) {
     context.printToConsole("@startuml");
-    var indexes = _CompactedIndexes.random(20);
-    for (int i = 0; i < 10; i++) {
-      indexes = indexes.next();
-    }
+    var indexes = _CompactedIndexes.fromCompacted("ABCBDFDFGCKJFFDIHKOQ_8");
     for (int i = 0; i <= 20; i++) {
       context.printToConsole(_CommitTree(indexes).toUmlString());
       indexes = indexes.subIndexes(indexes.length - 1);
