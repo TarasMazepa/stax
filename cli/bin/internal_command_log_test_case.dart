@@ -91,18 +91,30 @@ class _DecoratedLogLineProducerAdapterForLogTestCase
   _DecoratedLogLineProducerAdapterForLogTestCase(this.commitTree, this.mainId);
 
   @override
-  String branchName(_Commit t) {
-    return t.name(commitTree, mainId);
+  String branchName(_Commit commit) {
+    return commit.name(commitTree, mainId);
+  }
+
+  bool isDefaultBranchOrHasDefaultBranchAsAChild(_Commit commit) {
+    return isDefaultBranch(commit) ||
+        commit.children.any(
+            (element) => isDefaultBranchOrHasDefaultBranchAsAChild(element));
+  }
+
+  int sortingValue(_Commit commit) {
+    return isDefaultBranchOrHasDefaultBranchAsAChild(commit)
+        ? 10000
+        : commit.id;
   }
 
   @override
-  List<_Commit> children(_Commit t) {
-    return t.children.sorted((a, b) => b.id - a.id);
+  List<_Commit> children(_Commit commit) {
+    return commit.children.sorted((a, b) => sortingValue(b) - sortingValue(a));
   }
 
   @override
-  bool isDefaultBranch(_Commit t) {
-    return t.id == mainId;
+  bool isDefaultBranch(_Commit commit) {
+    return commit.id == mainId;
   }
 }
 
@@ -209,9 +221,10 @@ class InternalCommandLogTestCase extends InternalCommand {
   @override
   void run(List<String> args, Context context) {
     context.printToConsole("@startuml");
-    for (var commitTree
-        in _CommitTree.indexedChain(_CompactedIndexes.random(14))) {
-      context.printToConsole(commitTree.toUmlString(0));
+    for (var commitTree in _CommitTree.indexedChain(
+        _CompactedIndexes.fromCompacted("ABCCDADHAFCDCI"))) {
+      context.printToConsole(
+          commitTree.toUmlString(min(7, commitTree.indexes.length)));
     }
     context.printToConsole("@enduml");
   }
