@@ -50,10 +50,17 @@ class _CompactedIndexes {
   }
 
   _CompactedIndexes subIndexes(int end) {
+    if (end < 0) return this;
+    final biggestId = end + 1;
+    int newMainId = mainId;
+    while (newMainId >= biggestId) {
+      newMainId = commits[newMainId].parent!.id;
+    }
     return _CompactedIndexes(
       indexes.sublist(0, end),
       compacted.substring(0, end),
-      commits.sublist(0, end + 1),
+      commits.sublist(0, biggestId),
+      newMainId,
     );
   }
 
@@ -277,14 +284,13 @@ class InternalCommandLogTestCase extends InternalCommand {
   @override
   void run(List<String> args, Context context) {
     context.printToConsole("@startuml");
-    var indexes = _CompactedIndexes.fromIndexes([]);
-    for (int i = 0; i < 20; i++) {
+    var indexes = _CompactedIndexes.random(20);
+    for (int i = 0; i < 10; i++) {
+      indexes = indexes.next();
+    }
+    for (int i = 0; i <= 20; i++) {
       context.printToConsole(_CommitTree(indexes).toUmlString());
-      if (indexes.isTimeToLengthen()) {
-        indexes = indexes.lengthen();
-      } else {
-        indexes = indexes.next();
-      }
+      indexes = indexes.subIndexes(indexes.length - 1);
     }
     context.printToConsole("@enduml");
   }
