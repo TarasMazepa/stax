@@ -224,13 +224,12 @@ class _CommitTree {
   }
 
   String toUmlString() {
-    final mainId = indexes.mainId;
     String result = "";
     void addToResult(String string) {
       result += "$string\n";
     }
 
-    String name(_Commit commit) => commit.name(this, mainId);
+    String name(_Commit commit) => commit.name(this, indexes.mainId);
     String nodeName(_Commit commit) => "(${name(commit)})";
     for (var commit in commits) {
       commit.children.clear();
@@ -275,7 +274,7 @@ class _CommitTree {
         .reversed
         .forEach(addToResult);
     final adapter = _DecoratedLogLineProducerAdapterForLogTestCase(
-        this, mainId, true, false);
+        this, indexes.mainId, true, false);
     materializeDecoratedLogLines(adapter.collapsedChild(commits.first), adapter)
         .forEach((element) => addToResult("\"\"$element\"\""));
     addToResult("end note");
