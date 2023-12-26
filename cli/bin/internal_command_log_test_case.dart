@@ -23,8 +23,14 @@ class _CommitTree {
   int get length => indexes.length;
 
   _CommitTree next() {
+    if (isTimeToLengthen()) {
+      return lengthenAndReset();
+    }
+    if (currentId != commits.length - 1) {
+      return _CommitTree(indexes, compacted, commits, mainId, currentId + 1);
+    }
     if (mainId != commits.length - 1) {
-      return _CommitTree(indexes, compacted, commits, mainId + 1, currentId);
+      return _CommitTree(indexes, compacted, commits, mainId + 1, 0);
     }
     final newIndexes = [...indexes];
     for (int i = newIndexes.length - 1; i >= 0; i--) {
@@ -35,10 +41,11 @@ class _CommitTree {
         newIndexes[i] = 0;
       }
     }
-    return _CommitTree.fromIndexes(newIndexes, 0);
+    return _CommitTree.fromIndexes(newIndexes, 0, 0);
   }
 
   bool isTimeToLengthen() {
+    if (currentId != commits.length - 1) return false;
     if (mainId != commits.length - 1) return false;
     for (int i = 0; i < length; i++) {
       if (indexes[i] != i) return false;
@@ -47,7 +54,7 @@ class _CommitTree {
   }
 
   _CommitTree lengthenAndReset() {
-    return _CommitTree.fromIndexes(List.filled(length + 1, 0), 0);
+    return _CommitTree.fromIndexes(List.filled(length + 1, 0), 0, 0);
   }
 
   _CommitTree subIndexes(int end) {
@@ -285,10 +292,10 @@ class InternalCommandLogTestCase extends InternalCommand {
   @override
   void run(List<String> args, Context context) {
     context.printToConsole("@startuml");
-    var indexes = _CommitTree.fromCompacted("ABCBDFDFGCKJFFDIHKOQ_8");
+    var indexes = _CommitTree.fromCompacted("");
     for (int i = 0; i <= 20; i++) {
       context.printToConsole(indexes.toUmlString());
-      indexes = indexes.subIndexes(indexes.length - 1);
+      indexes = indexes.next();
     }
     context.printToConsole("@enduml");
   }
