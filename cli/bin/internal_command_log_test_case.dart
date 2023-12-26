@@ -129,15 +129,15 @@ class _CompactedIndexes {
 
 class _DecoratedLogLineProducerAdapterForLogTestCase
     implements DecoratedLogLineProducerAdapter<_Commit> {
-  final _CommitTree commitTree;
+  final _CompactedIndexes indexes;
   final bool showBranchedCommitNames;
 
   _DecoratedLogLineProducerAdapterForLogTestCase(
-      this.commitTree, this.showBranchedCommitNames);
+      this.indexes, this.showBranchedCommitNames);
 
   @override
   String branchName(_Commit commit) {
-    final rawName = commit.name(commitTree);
+    final rawName = commit.name(indexes);
     final name = showBranchedCommitNames ? " $rawName " : rawName;
     if (isDefaultBranch(commit)) {
       return name;
@@ -180,7 +180,7 @@ class _DecoratedLogLineProducerAdapterForLogTestCase
 
   @override
   bool isDefaultBranch(_Commit commit) {
-    return commit.id == commitTree.indexes.mainId;
+    return commit.id == indexes.mainId;
   }
 }
 
@@ -193,8 +193,8 @@ class _Commit {
 
   _Commit newChildCommit(int id) => _Commit(id, this);
 
-  String name(_CommitTree commitTree) {
-    return "${commitTree.indexes.compacted}_${commitTree.indexes.mainId}_$id${id == commitTree.indexes.mainId ? "_main" : ""}";
+  String name(_CompactedIndexes indexes) {
+    return "${indexes.compacted}_${indexes.mainId}_$id${id == indexes.mainId ? "_main" : ""}";
   }
 
   void assignChild() {
@@ -225,7 +225,7 @@ class _CommitTree {
       result += "$string\n";
     }
 
-    String name(_Commit commit) => commit.name(this);
+    String name(_Commit commit) => commit.name(indexes);
     String nodeName(_Commit commit) => "(${name(commit)})";
     for (var commit in commits) {
       commit.children.clear();
@@ -269,7 +269,8 @@ class _CommitTree {
         .toList()
         .reversed
         .forEach(addToResult);
-    final adapter = _DecoratedLogLineProducerAdapterForLogTestCase(this, false);
+    final adapter =
+        _DecoratedLogLineProducerAdapterForLogTestCase(indexes, false);
     materializeDecoratedLogLines(adapter.collapsedChild(commits.first), adapter)
         .forEach((element) => addToResult("\"\"$element\"\""));
     addToResult("end note");
