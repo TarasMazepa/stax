@@ -130,15 +130,14 @@ class _CompactedIndexes {
 class _DecoratedLogLineProducerAdapterForLogTestCase
     implements DecoratedLogLineProducerAdapter<_Commit> {
   final _CommitTree commitTree;
-  final int mainId;
   final bool showBranchedCommitNames;
 
   _DecoratedLogLineProducerAdapterForLogTestCase(
-      this.commitTree, this.mainId, this.showBranchedCommitNames);
+      this.commitTree, this.showBranchedCommitNames);
 
   @override
   String branchName(_Commit commit) {
-    final rawName = commit.name(commitTree, mainId);
+    final rawName = commit.name(commitTree);
     final name = showBranchedCommitNames ? " $rawName " : rawName;
     if (isDefaultBranch(commit)) {
       return name;
@@ -181,7 +180,7 @@ class _DecoratedLogLineProducerAdapterForLogTestCase
 
   @override
   bool isDefaultBranch(_Commit commit) {
-    return commit.id == mainId;
+    return commit.id == commitTree.indexes.mainId;
   }
 }
 
@@ -194,8 +193,8 @@ class _Commit {
 
   _Commit newChildCommit(int id) => _Commit(id, this);
 
-  String name(_CommitTree commitTree, int mainId) {
-    return "${commitTree.commitNamePrefix}_${mainId}_$id${id == mainId ? "_main" : ""}";
+  String name(_CommitTree commitTree) {
+    return "${commitTree.indexes.compacted}_${commitTree.indexes.mainId}_$id${id == commitTree.indexes.mainId ? "_main" : ""}";
   }
 
   void assignChild() {
@@ -212,8 +211,6 @@ class _Commit {
 class _CommitTree {
   final _CompactedIndexes indexes;
 
-  String get commitNamePrefix => indexes.compacted;
-
   List<_Commit> get commits => indexes.commits;
 
   _CommitTree(this.indexes);
@@ -228,7 +225,7 @@ class _CommitTree {
       result += "$string\n";
     }
 
-    String name(_Commit commit) => commit.name(this, indexes.mainId);
+    String name(_Commit commit) => commit.name(this);
     String nodeName(_Commit commit) => "(${name(commit)})";
     for (var commit in commits) {
       commit.children.clear();
@@ -272,8 +269,7 @@ class _CommitTree {
         .toList()
         .reversed
         .forEach(addToResult);
-    final adapter = _DecoratedLogLineProducerAdapterForLogTestCase(
-        this, indexes.mainId, false);
+    final adapter = _DecoratedLogLineProducerAdapterForLogTestCase(this, false);
     materializeDecoratedLogLines(adapter.collapsedChild(commits.first), adapter)
         .forEach((element) => addToResult("\"\"$element\"\""));
     addToResult("end note");
