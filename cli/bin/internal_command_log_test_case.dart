@@ -17,14 +17,14 @@ class _CommitTree {
   final int mainId;
   final int currentId;
 
-  _CommitTree(this.indexes, this.compacted, this.commits, this.mainId,
-      [this.currentId = 0]);
+  _CommitTree(
+      this.indexes, this.compacted, this.commits, this.mainId, this.currentId);
 
   int get length => indexes.length;
 
   _CommitTree next() {
     if (mainId != commits.length - 1) {
-      return _CommitTree(indexes, compacted, commits, mainId + 1);
+      return _CommitTree(indexes, compacted, commits, mainId + 1, currentId);
     }
     final newIndexes = [...indexes];
     for (int i = newIndexes.length - 1; i >= 0; i--) {
@@ -57,11 +57,16 @@ class _CommitTree {
     while (newMainId >= biggestId) {
       newMainId = commits[newMainId].parent!.id;
     }
+    int newCurrentId = currentId;
+    while (newCurrentId >= biggestId) {
+      newCurrentId = commits[newCurrentId].parent!.id;
+    }
     return _CommitTree(
       indexes.sublist(0, end),
       compacted.substring(0, end),
       commits.sublist(0, biggestId),
       newMainId,
+      newCurrentId,
     );
   }
 
@@ -76,14 +81,15 @@ class _CommitTree {
   factory _CommitTree.calculateCommits(
     List<int> indexes,
     String compacted,
-    int mainId,
-  ) {
+    int mainId, [
+    int currentId = 0,
+  ]) {
     int id = 0;
     final commits = [_Commit(id++)];
     for (int index in indexes) {
       commits.add(commits[index].newChildCommit(id++));
     }
-    return _CommitTree(indexes, compacted, commits, mainId);
+    return _CommitTree(indexes, compacted, commits, mainId, currentId);
   }
 
   factory _CommitTree.fromIndexes(List<int> indexes, int mainId) {
@@ -180,7 +186,7 @@ class _CommitTree {
 
   @override
   String toString() {
-    return "indexes:$indexes compacted:$compacted commits:$commits";
+    return "mainId:$mainId currentId:$currentId indexes:$indexes compacted:$compacted commits:$commits";
   }
 }
 
