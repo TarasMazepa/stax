@@ -114,12 +114,10 @@ class _CommitTree {
         indexes, compacted.toString(), mainId, currentId);
   }
 
-  factory _CommitTree.fromCompacted(String compactedWithMainId,
-      [int currentId = 0]) {
+  factory _CommitTree.fromCompacted(String compactedWithMainAndCurrentIds) {
     final indexes = <int>[];
-    final parts = compactedWithMainId.split("_");
+    final parts = compactedWithMainAndCurrentIds.split("_");
     final compacted = parts.first;
-    final mainId = int.tryParse(parts.last) ?? 0;
     for (int i = 0; i < compacted.length; i++) {
       final char = compacted[i];
       final index = _alphabet.indexOf(char);
@@ -128,6 +126,8 @@ class _CommitTree {
       }
       indexes.add(index);
     }
+    final mainId = int.tryParse(parts.elementAtOrNull(1) ?? "") ?? 0;
+    final currentId = int.tryParse(parts.elementAtOrNull(2) ?? "") ?? 0;
     return _CommitTree.calculateCommits(indexes, compacted, mainId, currentId);
   }
 
