@@ -121,6 +121,63 @@ class _CompactedIndexes {
         indexes, mainId ?? random.nextInt(length));
   }
 
+  String toUmlString() {
+    String result = "";
+    void addToResult(String string) {
+      result += "$string\n";
+    }
+
+    String name(_Commit commit) => commit.name(this);
+    String nodeName(_Commit commit) => "(${name(commit)})";
+    for (var commit in commits) {
+      commit.children.clear();
+    }
+    for (var commit in commits) {
+      commit.assignChild();
+    }
+    if (commits.length == 1) {
+      addToResult(nodeName(commits.first));
+    } else {
+      for (var commit in commits) {
+        if (commit.parent == null) continue;
+        addToResult("${nodeName(commit.parent!)} -up-> ${nodeName(commit)}");
+      }
+    }
+    List<String> gitLines(_Commit commit) => [
+          "stax commit -a --accept-all ${name(commit)}",
+          ...commit.children.expand((element) => [
+                ...gitLines(element),
+                "git checkout ${name(commit)}",
+              ])
+        ];
+    addToResult("note bottom of ${nodeName(commits.first)}");
+    String previousValue = "";
+    bool haveSeenNonCheckout = false;
+    gitLines(commits.first)
+        .reversed
+        .whereIndexed((index, element) {
+          if (haveSeenNonCheckout) return true;
+          if (!element.startsWith("git checkout")) {
+            return haveSeenNonCheckout = true;
+          }
+          return false;
+        })
+        .where((element) {
+          final result = !(previousValue.startsWith("git checkout") &&
+              element.startsWith("git checkout"));
+          previousValue = element;
+          return result;
+        })
+        .toList()
+        .reversed
+        .forEach(addToResult);
+    final adapter = _DecoratedLogLineProducerAdapterForLogTestCase(this, false);
+    materializeDecoratedLogLines(adapter.collapsedChild(commits.first), adapter)
+        .forEach((element) => addToResult("\"\"$element\"\""));
+    addToResult("end note");
+    return result.trim();
+  }
+
   @override
   String toString() {
     return "indexes:$indexes compacted:$compacted commits:$commits";
@@ -218,64 +275,6 @@ class _CommitTree {
   static List<_CommitTree> indexedChain(_CompactedIndexes indexes) {
     return indexes.allSubIndexes().map(_CommitTree.new).toList();
   }
-
-  String toUmlString() {
-    String result = "";
-    void addToResult(String string) {
-      result += "$string\n";
-    }
-
-    String name(_Commit commit) => commit.name(indexes);
-    String nodeName(_Commit commit) => "(${name(commit)})";
-    for (var commit in commits) {
-      commit.children.clear();
-    }
-    for (var commit in commits) {
-      commit.assignChild();
-    }
-    if (commits.length == 1) {
-      addToResult(nodeName(commits.first));
-    } else {
-      for (var commit in commits) {
-        if (commit.parent == null) continue;
-        addToResult("${nodeName(commit.parent!)} -up-> ${nodeName(commit)}");
-      }
-    }
-    List<String> gitLines(_Commit commit) => [
-          "stax commit -a --accept-all ${name(commit)}",
-          ...commit.children.expand((element) => [
-                ...gitLines(element),
-                "git checkout ${name(commit)}",
-              ])
-        ];
-    addToResult("note bottom of ${nodeName(commits.first)}");
-    String previousValue = "";
-    bool haveSeenNonCheckout = false;
-    gitLines(commits.first)
-        .reversed
-        .whereIndexed((index, element) {
-          if (haveSeenNonCheckout) return true;
-          if (!element.startsWith("git checkout")) {
-            return haveSeenNonCheckout = true;
-          }
-          return false;
-        })
-        .where((element) {
-          final result = !(previousValue.startsWith("git checkout") &&
-              element.startsWith("git checkout"));
-          previousValue = element;
-          return result;
-        })
-        .toList()
-        .reversed
-        .forEach(addToResult);
-    final adapter =
-        _DecoratedLogLineProducerAdapterForLogTestCase(indexes, false);
-    materializeDecoratedLogLines(adapter.collapsedChild(commits.first), adapter)
-        .forEach((element) => addToResult("\"\"$element\"\""));
-    addToResult("end note");
-    return result.trim();
-  }
 }
 
 class InternalCommandLogTestCase extends InternalCommand {
@@ -288,7 +287,7 @@ class InternalCommandLogTestCase extends InternalCommand {
     context.printToConsole("@startuml");
     var indexes = _CompactedIndexes.fromCompacted("ABCBDFDFGCKJFFDIHKOQ_8");
     for (int i = 0; i <= 20; i++) {
-      context.printToConsole(_CommitTree(indexes).toUmlString());
+      context.printToConsole(indexes.toUmlString());
       indexes = indexes.subIndexes(indexes.length - 1);
     }
     context.printToConsole("@enduml");
