@@ -190,6 +190,7 @@ class _CommitTree {
         .toList()
         .reversed
         .forEach(addToResult);
+    addToResult("git checkout ${name(commits[currentId])}");
     final adapter = _DecoratedLogLineProducerAdapterForLogTestCase(this);
     materializeDecoratedLogLines(adapter.collapsedChild(commits.first), adapter)
         .forEach((element) => addToResult("\"\"$element\"\""));
