@@ -265,18 +265,6 @@ class _Commit {
   }
 }
 
-class _CommitTree {
-  final _CompactedIndexes indexes;
-
-  List<_Commit> get commits => indexes.commits;
-
-  _CommitTree(this.indexes);
-
-  static List<_CommitTree> indexedChain(_CompactedIndexes indexes) {
-    return indexes.allSubIndexes().map(_CommitTree.new).toList();
-  }
-}
-
 class InternalCommandLogTestCase extends InternalCommand {
   InternalCommandLogTestCase()
       : super("log-test-case", "shows test case for log command",
