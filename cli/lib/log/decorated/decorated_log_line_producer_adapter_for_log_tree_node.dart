@@ -17,4 +17,9 @@ class DecoratedLogLineProducerAdapterForLogTreeNode
   bool isDefaultBranch(LogTreeNode t) {
     return t.isDefaultBranch();
   }
+
+  @override
+  bool isCurrent(LogTreeNode t) {
+    return false;
+  }
 }

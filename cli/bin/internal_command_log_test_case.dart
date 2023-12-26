@@ -237,6 +237,11 @@ class _DecoratedLogLineProducerAdapterForLogTestCase
   bool isDefaultBranch(_Commit commit) {
     return commit.id == commitTree.mainId;
   }
+
+  @override
+  bool isCurrent(_Commit commit) {
+    return false;
+  }
 }
 
 class _Commit {
