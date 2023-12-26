@@ -15,8 +15,10 @@ class _CommitTree {
   final String compacted;
   final List<_Commit> commits;
   final int mainId;
+  final int currentId;
 
-  _CommitTree(this.indexes, this.compacted, this.commits, this.mainId);
+  _CommitTree(this.indexes, this.compacted, this.commits, this.mainId,
+      [this.currentId = 0]);
 
   int get length => indexes.length;
 
@@ -169,7 +171,7 @@ class _CommitTree {
         .toList()
         .reversed
         .forEach(addToResult);
-    final adapter = _DecoratedLogLineProducerAdapterForLogTestCase(this, false);
+    final adapter = _DecoratedLogLineProducerAdapterForLogTestCase(this);
     materializeDecoratedLogLines(adapter.collapsedChild(commits.first), adapter)
         .forEach((element) => addToResult("\"\"$element\"\""));
     addToResult("end note");
@@ -185,24 +187,18 @@ class _CommitTree {
 class _DecoratedLogLineProducerAdapterForLogTestCase
     implements DecoratedLogLineProducerAdapter<_Commit> {
   final _CommitTree commitTree;
-  final bool showBranchedCommitNames;
 
-  _DecoratedLogLineProducerAdapterForLogTestCase(
-      this.commitTree, this.showBranchedCommitNames);
+  _DecoratedLogLineProducerAdapterForLogTestCase(this.commitTree);
 
   @override
   String branchName(_Commit commit) {
     final rawName = commit.name(commitTree);
-    final name = showBranchedCommitNames ? " $rawName " : rawName;
+    final name = " $rawName ";
     if (isDefaultBranch(commit)) {
       return name;
     }
     if (isDefaultBranchOrHasDefaultBranchAsAChild(commit)) {
-      if (showBranchedCommitNames) {
-        return "[$rawName]";
-      } else {
-        return "";
-      }
+      return "[$rawName]";
     }
     return name;
   }
@@ -220,6 +216,7 @@ class _DecoratedLogLineProducerAdapterForLogTestCase
   }
 
   _Commit collapsedChild(_Commit commit) {
+    if (isCurrent(commit)) return commit;
     if (isDefaultBranch(commit)) return commit;
     if (commit.children.length != 1) return commit;
     if (!isDefaultBranchOrHasDefaultBranchAsAChild(commit)) return commit;
@@ -240,7 +237,7 @@ class _DecoratedLogLineProducerAdapterForLogTestCase
 
   @override
   bool isCurrent(_Commit commit) {
-    return false;
+    return commitTree.currentId == commit.id;
   }
 }
 
