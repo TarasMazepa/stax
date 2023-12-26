@@ -81,9 +81,9 @@ class _CommitTree {
   factory _CommitTree.calculateCommits(
     List<int> indexes,
     String compacted,
-    int mainId, [
-    int currentId = 0,
-  ]) {
+    int mainId,
+    int currentId,
+  ) {
     int id = 0;
     final commits = [_Commit(id++)];
     for (int index in indexes) {
@@ -92,17 +92,23 @@ class _CommitTree {
     return _CommitTree(indexes, compacted, commits, mainId, currentId);
   }
 
-  factory _CommitTree.fromIndexes(List<int> indexes, int mainId) {
+  factory _CommitTree.fromIndexes(
+    List<int> indexes,
+    int mainId, [
+    int currentId = 0,
+  ]) {
     final compacted = StringBuffer();
     for (int i = 0; i < indexes.length; i++) {
       final index = indexes[i];
       if (i < index) throw Exception("indexes[$i] $index > $i");
       compacted.write(_alphabet[index]);
     }
-    return _CommitTree.calculateCommits(indexes, compacted.toString(), mainId);
+    return _CommitTree.calculateCommits(
+        indexes, compacted.toString(), mainId, currentId);
   }
 
-  factory _CommitTree.fromCompacted(String compactedWithMainId) {
+  factory _CommitTree.fromCompacted(String compactedWithMainId,
+      [int currentId = 0]) {
     final indexes = <int>[];
     final parts = compactedWithMainId.split("_");
     final compacted = parts.first;
@@ -115,7 +121,7 @@ class _CommitTree {
       }
       indexes.add(index);
     }
-    return _CommitTree.calculateCommits(indexes, compacted, mainId);
+    return _CommitTree.calculateCommits(indexes, compacted, mainId, currentId);
   }
 
   factory _CommitTree.random(int length, [int? mainId]) {
