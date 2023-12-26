@@ -270,7 +270,7 @@ class _Commit {
   _Commit newChildCommit(int id) => _Commit(id, this);
 
   String name(_CommitTree indexes) {
-    return "${indexes.compacted}_${indexes.mainId}_${indexes.currentId}_$id${id == indexes.mainId ? "_main" : ""}";
+    return "${indexes.compacted}_${indexes.mainId}_${indexes.currentId}_$id";
   }
 
   void assignChild() {
