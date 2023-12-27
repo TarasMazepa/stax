@@ -7,7 +7,7 @@ import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 import 'internal_command.dart';
 import 'types_for_internal_command.dart';
 
-class _CommitTree {
+class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
   static final _alphabet =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
@@ -191,8 +191,7 @@ class _CommitTree {
         .reversed
         .forEach(addToResult);
     addToResult("git checkout ${name(commits[currentId])}");
-    final adapter = _DecoratedLogLineProducerAdapterForLogTestCase(this);
-    materializeDecoratedLogLines(adapter.collapsedChild(commits.first), adapter)
+    materializeDecoratedLogLines(collapsedChild(commits.first), this)
         .forEach((element) => addToResult("\"\"$element\"\""));
     addToResult("end note");
     return result.trim();
@@ -202,17 +201,10 @@ class _CommitTree {
   String toString() {
     return "mainId:$mainId currentId:$currentId indexes:$indexes compacted:$compacted commits:$commits";
   }
-}
-
-class _DecoratedLogLineProducerAdapterForLogTestCase
-    implements DecoratedLogLineProducerAdapter<_Commit> {
-  final _CommitTree commitTree;
-
-  _DecoratedLogLineProducerAdapterForLogTestCase(this.commitTree);
 
   @override
   String branchName(_Commit commit) {
-    final rawName = commit.name(commitTree);
+    final rawName = commit.name(this);
     final name = " $rawName ";
     if (isDefaultBranch(commit)) {
       return name;
@@ -252,12 +244,12 @@ class _DecoratedLogLineProducerAdapterForLogTestCase
 
   @override
   bool isDefaultBranch(_Commit commit) {
-    return commit.id == commitTree.mainId;
+    return commit.id == mainId;
   }
 
   @override
   bool isCurrent(_Commit commit) {
-    return commitTree.currentId == commit.id;
+    return commit.id == currentId;
   }
 }
 
