@@ -21,11 +21,7 @@ List<DecoratedLogLine> _produceDecoratedLogLine<T>(
           !adapter.isDefaultBranch(children.first))
       ? 1
       : 0;
-  final point = adapter.isCurrent(root)
-      ? "x"
-      : adapter.isDefaultBranch(root)
-          ? "*"
-          : "o";
+  final point = adapter.isCurrent(root) ? "x" : "o";
   return children
       .expandIndexed((i, e) => _produceDecoratedLogLine(e, adapter)
           .map((e) => e.withIndent("  " * emptyIndent + "| " * i)))
