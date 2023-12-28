@@ -101,9 +101,9 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
 
   factory _CommitTree.fromIndexes(
     List<int> indexes,
-    int mainId, [
-    int currentId = 0,
-  ]) {
+    int mainId,
+    int currentId,
+  ) {
     final compacted = StringBuffer();
     for (int i = 0; i < indexes.length; i++) {
       final index = indexes[i];
@@ -131,13 +131,14 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
     return _CommitTree.calculateCommits(indexes, compacted, mainId, currentId);
   }
 
-  factory _CommitTree.random(int length, [int? mainId]) {
+  factory _CommitTree.random(int length, [int? mainId, int? currentId]) {
     final random = Random();
     final indexes = <int>[];
     for (int i = 0; i < length; i++) {
       indexes.add(random.nextInt(i + 1));
     }
-    return _CommitTree.fromIndexes(indexes, mainId ?? random.nextInt(length));
+    return _CommitTree.fromIndexes(indexes, mainId ?? random.nextInt(length),
+        currentId ?? random.nextInt(length));
   }
 
   String toUmlString() {
