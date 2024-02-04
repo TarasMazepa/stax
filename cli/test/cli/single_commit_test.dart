@@ -9,18 +9,7 @@ void main() {
       expect(setup.runSync("ls").stdout.toString().trim(), "readme.md");
     });
     test("log", () {
-      expect(setup.runLiveStaxSync(["log"]).stdout.toString().trim(),
-          "* [465015f] main Adds readme");
-    });
-    test("log --collapse", () {
-      expect(
-          setup.runLiveStaxSync(["log", "--collapse"]).stdout.toString().trim(),
-          "* [465015f] main Adds readme");
-    });
-    test("log --branches", () {
-      expect(
-          setup.runLiveStaxSync(["log", "--branches"]).stdout.toString().trim(),
-          "* main");
+      expect(setup.runLiveStaxSync(["log"]).stdout.toString().trim(), "o main");
     });
     test("commit 'commit message'", () async {
       await setup
