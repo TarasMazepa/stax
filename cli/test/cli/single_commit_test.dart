@@ -9,7 +9,7 @@ void main() {
       expect(setup.runSync("ls").stdout.toString().trim(), "readme.md");
     });
     test("log", () {
-      expect(setup.runLiveStaxSync(["log"]).stdout.toString().trim(), "* main");
+      expect(setup.runLiveStaxSync(["log"]).stdout.toString().trim(), "o main");
     });
     test("commit 'commit message'", () async {
       await setup
