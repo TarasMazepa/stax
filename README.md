@@ -1,4 +1,4 @@
-# Stax
+# Stax v.0.9
 
 Stax is a tool that will help you a bit with day-to-day stax-like git workflow.
 
