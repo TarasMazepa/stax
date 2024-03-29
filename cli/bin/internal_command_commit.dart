@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_explain_to_user_no_staged_changes.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
@@ -77,16 +79,26 @@ class InternalCommandCommit extends InternalCommand {
     context.git.push.announce("Pushing").runSync().printNotEmptyResultFields();
     if (createPr) {
       final remote = context.git.remote.runSync().stdout.toString().trim();
-      final url = context.git.remoteGetUrl
+      final remoteUrl = context.git.remoteGetUrl
           .arg(remote)
           .runSync()
           .stdout
           .toString()
           .trim();
-      context.command([
-        "open",
-        "${url.substring(0, url.length - 4)}/compare/$previousBranch...$resultingBranchName?expand=1"
-      ]).runSync();
+      final newPrUrl =
+          "${remoteUrl.substring(0, remoteUrl.length - 4)}/compare/$previousBranch...$resultingBranchName?expand=1";
+      final openCommand = () {
+        if (Platform.isWindows) {
+          return [
+            "PowerShell",
+            "-Command",
+            """& {Start-Process "$newPrUrl"}""",
+          ];
+        }
+        return ["open", newPrUrl];
+      }();
+
+      context.command(openCommand).runSync();
     }
   }
 }
