@@ -2,7 +2,7 @@
 
 Stax is a tool that will help you a bit with day-to-day stax-like git workflow.
 
-Main purpose is to make it easier to creat smaller PRs.
+Main purpose is to make it easier to creat smaller PRs. And reduce amount of energy other people need to review them.
 
 Currently, the tool is still in the early incubation period.
 
