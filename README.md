@@ -1,4 +1,4 @@
-# Stax a
+# Stax a b
 
 Stax is a tool that will help you a bit with day-to-day stax-like git workflow.
 
