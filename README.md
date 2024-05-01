@@ -8,11 +8,11 @@ Main purpose is to make it easier to creat smaller PRs. And reduce amount of ene
 
 | Feature | Status |
 |-|-|
-| [commit](https://github.com/TarasMazepa/stax#stax-commit) | ✅ |
-| [amend](https://github.com/TarasMazepa/stax#stax-amend) | ✅ |
-| [delete-gone-branches](https://github.com/TarasMazepa/stax#stax-delete-gone-branches) | ✅ |
-| [pull](https://github.com/TarasMazepa/stax#stax-pull) | ✅ |
-| [log](https://github.com/TarasMazepa/stax#stax-log) | 🚧 |
+| [commit](#stax-commit) | ✅ |
+| [amend](#stax-amend) | ✅ |
+| [delete-gone-branches](#stax-delete-gone-branches) | ✅ |
+| [pull](#stax-pull) | ✅ |
+| [log](#stax-log) | 🚧 |
 | rebase | 🔲 |
 
 ## v2
