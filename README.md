@@ -4,7 +4,20 @@ Stax is a tool that will help you a bit with day-to-day stax-like git workflow.
 
 Main purpose is to make it easier to creat smaller PRs. And reduce amount of energy other people need to review them.
 
-Currently, the tool is still in the early incubation period.
+## v1 Roadmap
+
+| Feature | Status |
+|-|-|
+| [commit](https://github.com/TarasMazepa/stax#stax-commit) | ✅ |
+| [amend](https://github.com/TarasMazepa/stax#stax-amend) | ✅ |
+| [delete-gone-branches](https://github.com/TarasMazepa/stax#stax-delete-gone-branches) | ✅ |
+| [pull](https://github.com/TarasMazepa/stax#stax-pull) | ✅ |
+| [log](https://github.com/TarasMazepa/stax#stax-log) | 🚧 |
+| rebase | 🔲 |
+
+## v2
+
+Would be an UI tool that will implement all features from v1.
 
 ## What is stax-like git workflow?
 
