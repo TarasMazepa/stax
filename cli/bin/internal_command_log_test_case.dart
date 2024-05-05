@@ -12,25 +12,25 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
   final List<int> indexes;
-  final String compacted;
   final List<_Commit> commits;
   final int mainId;
   final int currentId;
 
-  _CommitTree(
-      this.indexes, this.compacted, this.commits, this.mainId, this.currentId);
+  _CommitTree(this.indexes, this.commits, this.mainId, this.currentId);
 
   int get length => indexes.length;
+
+  String get compacted => indexes.map((e) => _alphabet[e]).join();
 
   _CommitTree next() {
     if (isTimeToLengthen()) {
       return lengthenAndReset();
     }
     if (currentId != commits.length - 1) {
-      return _CommitTree(indexes, compacted, commits, mainId, currentId + 1);
+      return _CommitTree(indexes, commits, mainId, currentId + 1);
     }
     if (mainId != commits.length - 1) {
-      return _CommitTree(indexes, compacted, commits, mainId + 1, 0);
+      return _CommitTree(indexes, commits, mainId + 1, 0);
     }
     final newIndexes = [...indexes];
     for (int i = newIndexes.length - 1; i >= 0; i--) {
@@ -70,7 +70,6 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
     }
     return _CommitTree(
       indexes.sublist(0, end),
-      compacted.substring(0, end),
       commits.sublist(0, biggestId),
       newMainId,
       newCurrentId,
@@ -85,9 +84,8 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
     return result;
   }
 
-  factory _CommitTree.calculateCommits(
+  factory _CommitTree.fromIndexes(
     List<int> indexes,
-    String compacted,
     int mainId,
     int currentId,
   ) {
@@ -96,22 +94,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
     for (int index in indexes) {
       commits.add(commits[index].newChildCommit(id++));
     }
-    return _CommitTree(indexes, compacted, commits, mainId, currentId);
-  }
-
-  factory _CommitTree.fromIndexes(
-    List<int> indexes,
-    int mainId,
-    int currentId,
-  ) {
-    final compacted = StringBuffer();
-    for (int i = 0; i < indexes.length; i++) {
-      final index = indexes[i];
-      if (i < index) throw Exception("indexes[$i] $index > $i");
-      compacted.write(_alphabet[index]);
-    }
-    return _CommitTree.calculateCommits(
-        indexes, compacted.toString(), mainId, currentId);
+    return _CommitTree(indexes, commits, mainId, currentId);
   }
 
   factory _CommitTree.fromCompacted(String compactedWithMainAndCurrentIds) {
@@ -128,7 +111,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
     }
     final mainId = int.tryParse(parts.elementAtOrNull(1) ?? "") ?? 0;
     final currentId = int.tryParse(parts.elementAtOrNull(2) ?? "") ?? 0;
-    return _CommitTree.calculateCommits(indexes, compacted, mainId, currentId);
+    return _CommitTree.fromIndexes(indexes, mainId, currentId);
   }
 
   factory _CommitTree.random(int length, [int? mainId, int? currentId]) {
