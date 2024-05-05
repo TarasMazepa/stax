@@ -32,10 +32,10 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
     if (isTimeToLengthen()) {
       return lengthenAndReset();
     }
-    if (currentId != commits.length - 1) {
+    if (currentId != length) {
       return _CommitTree(indexes, mainId, currentId + 1);
     }
-    if (mainId != commits.length - 1) {
+    if (mainId != length) {
       return _CommitTree(indexes, mainId + 1, 0);
     }
     final newIndexes = [...indexes];
@@ -51,8 +51,8 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
   }
 
   bool isTimeToLengthen() {
-    if (currentId != commits.length - 1) return false;
-    if (mainId != commits.length - 1) return false;
+    if (currentId != length) return false;
+    if (mainId != length) return false;
     for (int i = 0; i < length; i++) {
       if (indexes[i] != i) return false;
     }
