@@ -12,12 +12,19 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
   final List<int> indexes;
-  final List<_Commit> commits;
   final int mainId;
   final int currentId;
   late String compacted = indexes.map((e) => _alphabet[e]).join();
+  late List<_Commit> commits = () {
+    int id = 0;
+    final commits = [_Commit(id++)];
+    for (int index in indexes) {
+      commits.add(commits[index].newChildCommit(id++));
+    }
+    return commits;
+  }();
 
-  _CommitTree(this.indexes, this.commits, this.mainId, this.currentId);
+  _CommitTree(this.indexes, this.mainId, this.currentId);
 
   int get length => indexes.length;
 
@@ -26,10 +33,10 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
       return lengthenAndReset();
     }
     if (currentId != commits.length - 1) {
-      return _CommitTree(indexes, commits, mainId, currentId + 1);
+      return _CommitTree(indexes, mainId, currentId + 1);
     }
     if (mainId != commits.length - 1) {
-      return _CommitTree(indexes, commits, mainId + 1, 0);
+      return _CommitTree(indexes, mainId + 1, 0);
     }
     final newIndexes = [...indexes];
     for (int i = newIndexes.length - 1; i >= 0; i--) {
@@ -40,7 +47,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
         newIndexes[i] = 0;
       }
     }
-    return _CommitTree.fromIndexes(newIndexes, 0, 0);
+    return _CommitTree(newIndexes, 0, 0);
   }
 
   bool isTimeToLengthen() {
@@ -53,7 +60,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
   }
 
   _CommitTree lengthenAndReset() {
-    return _CommitTree.fromIndexes(List.filled(length + 1, 0), 0, 0);
+    return _CommitTree(List.filled(length + 1, 0), 0, 0);
   }
 
   _CommitTree subIndexes(int end) {
@@ -69,7 +76,6 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
     }
     return _CommitTree(
       indexes.sublist(0, end),
-      commits.sublist(0, biggestId),
       newMainId,
       newCurrentId,
     );
@@ -81,19 +87,6 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
       result.add(subIndexes(i));
     }
     return result;
-  }
-
-  factory _CommitTree.fromIndexes(
-    List<int> indexes,
-    int mainId,
-    int currentId,
-  ) {
-    int id = 0;
-    final commits = [_Commit(id++)];
-    for (int index in indexes) {
-      commits.add(commits[index].newChildCommit(id++));
-    }
-    return _CommitTree(indexes, commits, mainId, currentId);
   }
 
   factory _CommitTree.fromCompacted(String compactedWithMainAndCurrentIds) {
@@ -110,7 +103,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
     }
     final mainId = int.tryParse(parts.elementAtOrNull(1) ?? "") ?? 0;
     final currentId = int.tryParse(parts.elementAtOrNull(2) ?? "") ?? 0;
-    return _CommitTree.fromIndexes(indexes, mainId, currentId);
+    return _CommitTree(indexes, mainId, currentId);
   }
 
   factory _CommitTree.random(int length, [int? mainId, int? currentId]) {
@@ -119,7 +112,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
     for (int i = 0; i < length; i++) {
       indexes.add(random.nextInt(i + 1));
     }
-    return _CommitTree.fromIndexes(indexes, mainId ?? random.nextInt(length),
+    return _CommitTree(indexes, mainId ?? random.nextInt(length),
         currentId ?? random.nextInt(length));
   }
 
