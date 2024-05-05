@@ -122,7 +122,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
       result += "$string\n";
     }
 
-    String name(_Commit commit) => commitName(commit.id);
+    String name(_Commit commit) => commit.name(this);
     String nodeName(_Commit commit) => "(${name(commit)})";
     for (var commit in commits) {
       commit.children.clear();
@@ -178,13 +178,9 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
     return "mainId:$mainId currentId:$currentId indexes:$indexes compacted:$compacted commits:$commits";
   }
 
-  String commitName(int commitId) {
-    return "${compacted}_${mainId}_${currentId}_$commitId";
-  }
-
   @override
   String branchName(_Commit commit) {
-    final rawName = commitName(commit.id);
+    final rawName = commit.name(this);
     final name = " $rawName ";
     if (isDefaultBranch(commit)) {
       return name;
@@ -241,6 +237,10 @@ class _Commit {
   _Commit(this.id, [this.parent]);
 
   _Commit newChildCommit(int id) => _Commit(id, this);
+
+  String name(_CommitTree indexes) {
+    return "${indexes.compacted}_${indexes.mainId}_${indexes.currentId}_$id";
+  }
 
   void assignChild() {
     if (parent == null) return;
