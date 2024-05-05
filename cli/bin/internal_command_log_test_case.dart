@@ -15,12 +15,11 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
   final List<_Commit> commits;
   final int mainId;
   final int currentId;
+  late String compacted = indexes.map((e) => _alphabet[e]).join();
 
   _CommitTree(this.indexes, this.commits, this.mainId, this.currentId);
 
   int get length => indexes.length;
-
-  String get compacted => indexes.map((e) => _alphabet[e]).join();
 
   _CommitTree next() {
     if (isTimeToLengthen()) {
