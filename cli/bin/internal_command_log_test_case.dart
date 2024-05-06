@@ -122,8 +122,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
       result += "$string\n";
     }
 
-    String name(_Commit commit) => commitName(commit.id);
-    String nodeName(_Commit commit) => "(${name(commit)})";
+    String nodeName(_Commit commit) => "(${commitName(commit.id)})";
     for (var commit in commits) {
       commit.children.clear();
     }
@@ -139,10 +138,10 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
       }
     }
     List<String> gitLines(_Commit commit) => [
-          "stax commit -a --accept-all ${name(commit)}",
+          "stax commit -a --accept-all ${commitName(commit.id)}",
           ...commit.children.expand((element) => [
                 ...gitLines(element),
-                "git checkout ${name(commit)}",
+                "git checkout ${commitName(commit.id)}",
               ])
         ];
     addToResult("note bottom of ${nodeName(commits.first)}");
@@ -166,7 +165,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
         .toList()
         .reversed
         .forEach(addToResult);
-    addToResult("git checkout ${name(commits[currentId])}");
+    addToResult("git checkout ${commitName(currentId)}");
     materializeDecoratedLogLines(collapsedChild(commits.first), this)
         .forEach((element) => addToResult("\"\"$element\"\""));
     addToResult("end note");
