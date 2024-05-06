@@ -67,18 +67,17 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
   _CommitTree subIndexes(int end) {
     if (end < 0) return this;
     final biggestId = end + 1;
-    int newMainId = mainId;
-    while (newMainId >= biggestId) {
-      newMainId = commits[newMainId].parent!.id;
+    int newId(int currentId) {
+      while (currentId >= biggestId) {
+        currentId = indexes[currentId - 1];
+      }
+      return currentId;
     }
-    int newCurrentId = currentId;
-    while (newCurrentId >= biggestId) {
-      newCurrentId = commits[newCurrentId].parent!.id;
-    }
+
     return _CommitTree(
       indexes.sublist(0, end),
-      newMainId,
-      newCurrentId,
+      newId(mainId),
+      newId(currentId),
     );
   }
 
