@@ -139,6 +139,16 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
             "${nodeName(commit.parent!.id)} -up-> ${nodeName(commit.id)}");
       }
     }
+    addToResult("note bottom of ${nodeName(initialCommitId)}");
+    getTargetCommands().forEach(addToResult);
+    getTargetOutput().forEach((element) => addToResult("\"\"$element\"\""));
+    addToResult("end note");
+    return result.trim();
+  }
+
+  List<String> getTargetCommands() {
+    String previousValue = "";
+    bool haveSeenNonCheckout = false;
     List<String> gitLines(_Commit commit) => [
           "stax commit -a --accept-all ${commitName(commit.id)}",
           ...commit.children.expand((element) => [
@@ -146,10 +156,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
                 "git checkout ${commitName(commit.id)}",
               ])
         ];
-    addToResult("note bottom of ${nodeName(initialCommitId)}");
-    String previousValue = "";
-    bool haveSeenNonCheckout = false;
-    gitLines(commits.first)
+    return gitLines(commits.first)
         .reversed
         .whereIndexed((index, element) {
           if (haveSeenNonCheckout) return true;
@@ -166,11 +173,8 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
         })
         .toList()
         .reversed
-        .forEach(addToResult);
-    addToResult("git checkout ${commitName(currentId)}");
-    getTargetOutput().forEach((element) => addToResult("\"\"$element\"\""));
-    addToResult("end note");
-    return result.trim();
+        .followedBy(["git checkout ${commitName(currentId)}"])
+        .toList();
   }
 
   List<String> getTargetOutput() {
