@@ -232,26 +232,6 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<int> {
   }
 }
 
-class _Commit {
-  final _Commit? parent;
-  final int id;
-  final List<_Commit> children = [];
-
-  _Commit(this.id, [this.parent]);
-
-  _Commit newChildCommit(int id) => _Commit(id, this);
-
-  void assignChild() {
-    if (parent == null) return;
-    parent?.children.add(this);
-  }
-
-  @override
-  String toString() {
-    return "$id <- ${parent?.id}";
-  }
-}
-
 class InternalCommandLogTestCase extends InternalCommand {
   InternalCommandLogTestCase()
       : super("log-test-case", "shows test case for log command",
