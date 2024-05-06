@@ -133,11 +133,9 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
     if (commits.length == 1) {
       addToResult(nodeName(initialCommitId));
     } else {
-      for (var commit in commits) {
-        if (commit.parent == null) continue;
-        addToResult(
-            "${nodeName(commit.parent!.id)} -up-> ${nodeName(commit.id)}");
-      }
+      indexes.forEachIndexed((index, element) {
+        addToResult("${nodeName(element)} -up-> ${nodeName(index + 1)}");
+      });
     }
     addToResult("note bottom of ${nodeName(initialCommitId)}");
     getTargetCommands().forEach(addToResult);
