@@ -7,7 +7,7 @@ import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 import 'internal_command.dart';
 import 'types_for_internal_command.dart';
 
-class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
+class _CommitTree implements DecoratedLogLineProducerAdapter<int> {
   static final _alphabet =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
   static const initialCommitId = 0;
@@ -16,14 +16,6 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
   final int mainId;
   final int currentId;
   late String compacted = indexes.map((e) => _alphabet[e]).join();
-  late List<_Commit> commits = () {
-    int id = initialCommitId;
-    final commits = [_Commit(id++)];
-    for (int index in indexes) {
-      commits.add(commits[index].newChildCommit(id++));
-    }
-    return commits;
-  }();
 
   _CommitTree(this.indexes, this.mainId, this.currentId);
 
@@ -123,12 +115,6 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
     }
 
     String nodeName(int id) => "(${commitName(id)})";
-    for (var commit in commits) {
-      commit.children.clear();
-    }
-    for (var commit in commits) {
-      commit.assignChild();
-    }
     if (length == 0) {
       addToResult(nodeName(initialCommitId));
     } else {
@@ -148,9 +134,9 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
     bool haveSeenNonCheckout = false;
     List<String> gitLines(int id) => [
           "stax commit -a --accept-all ${commitName(id)}",
-          ...indexes.expandIndexed((index, element) => element == id
+          ..._children(id).expand((element) => element == id
               ? [
-                  ...gitLines(index + 1),
+                  ...gitLines(element),
                   "git checkout ${commitName(id)}",
                 ]
               : [])
@@ -178,12 +164,12 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
   }
 
   List<String> getTargetOutput() {
-    return materializeDecoratedLogLines(commits.first, this);
+    return materializeDecoratedLogLines(initialCommitId, this);
   }
 
   @override
   String toString() {
-    return "mainId:$mainId currentId:$currentId indexes:$indexes compacted:$compacted commits:$commits";
+    return "mainId:$mainId currentId:$currentId indexes:$indexes compacted:$compacted";
   }
 
   String commitName(int commitId) {
@@ -191,53 +177,58 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
   }
 
   @override
-  String branchName(_Commit commit) {
-    final rawName = commitName(commit.id);
+  String branchName(int id) {
+    final rawName = commitName(id);
     final name = " $rawName ";
-    if (isDefaultBranch(commit)) {
+    if (isDefaultBranch(id)) {
       return name;
     }
-    if (isDefaultBranchOrHasDefaultBranchAsAChild(commit)) {
+    if (isDefaultBranchOrHasDefaultBranchAsAChild(id)) {
       return "[$rawName]";
     }
     return name;
   }
 
-  bool isDefaultBranchOrHasDefaultBranchAsAChild(_Commit commit) {
-    return isDefaultBranch(commit) ||
-        commit.children.any(
+  bool isDefaultBranchOrHasDefaultBranchAsAChild(int id) {
+    return isDefaultBranch(id) ||
+        _children(id).any(
             (element) => isDefaultBranchOrHasDefaultBranchAsAChild(element));
   }
 
-  int sortingValue(_Commit commit) {
-    return isDefaultBranchOrHasDefaultBranchAsAChild(commit)
-        ? 10000
-        : commit.id;
+  int sortingValue(int id) {
+    return isDefaultBranchOrHasDefaultBranchAsAChild(id) ? 10000 : id;
   }
 
-  _Commit collapsedChild(_Commit commit) {
-    if (isCurrent(commit)) return commit;
-    if (isDefaultBranch(commit)) return commit;
-    if (commit.children.length != 1) return commit;
-    if (!isDefaultBranchOrHasDefaultBranchAsAChild(commit)) return commit;
-    return collapsedChild(commit.children.single);
+  int collapsedChild(int id) {
+    if (isCurrent(id)) return id;
+    if (isDefaultBranch(id)) return id;
+    if (_children(id).length != 1) return id;
+    if (!isDefaultBranchOrHasDefaultBranchAsAChild(id)) return id;
+    return collapsedChild(_children(id).single);
+  }
+
+  List<int> _children(int id) {
+    return indexes
+        .expandIndexed<int>(
+            (index, element) => element == id ? [index + 1] : [])
+        .toList();
   }
 
   @override
-  List<_Commit> children(_Commit commit) {
-    return commit.children
+  List<int> children(int id) {
+    return _children(id)
         .map(collapsedChild)
         .sorted((a, b) => sortingValue(b) - sortingValue(a));
   }
 
   @override
-  bool isDefaultBranch(_Commit commit) {
-    return commit.id == mainId;
+  bool isDefaultBranch(int id) {
+    return id == mainId;
   }
 
   @override
-  bool isCurrent(_Commit commit) {
-    return commit.id == currentId;
+  bool isCurrent(int id) {
+    return id == currentId;
   }
 }
 
