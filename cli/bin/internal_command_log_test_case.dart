@@ -10,13 +10,14 @@ import 'types_for_internal_command.dart';
 class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
   static final _alphabet =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  static const initialCommitId = 0;
 
   final List<int> indexes;
   final int mainId;
   final int currentId;
   late String compacted = indexes.map((e) => _alphabet[e]).join();
   late List<_Commit> commits = () {
-    int id = 0;
+    int id = initialCommitId;
     final commits = [_Commit(id++)];
     for (int index in indexes) {
       commits.add(commits[index].newChildCommit(id++));
@@ -134,7 +135,8 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
     } else {
       for (var commit in commits) {
         if (commit.parent == null) continue;
-        addToResult("${nodeName(commit.parent!.id)} -up-> ${nodeName(commit.id)}");
+        addToResult(
+            "${nodeName(commit.parent!.id)} -up-> ${nodeName(commit.id)}");
       }
     }
     List<String> gitLines(_Commit commit) => [
@@ -144,7 +146,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
                 "git checkout ${commitName(commit.id)}",
               ])
         ];
-    addToResult("note bottom of ${nodeName(commits.first.id)}");
+    addToResult("note bottom of ${nodeName(initialCommitId)}");
     String previousValue = "";
     bool haveSeenNonCheckout = false;
     gitLines(commits.first)
