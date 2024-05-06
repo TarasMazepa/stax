@@ -146,14 +146,17 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
   List<String> getTargetCommands() {
     String previousValue = "";
     bool haveSeenNonCheckout = false;
-    List<String> gitLines(_Commit commit) => [
-          "stax commit -a --accept-all ${commitName(commit.id)}",
-          ...commit.children.expand((element) => [
-                ...gitLines(element),
-                "git checkout ${commitName(commit.id)}",
-              ])
+    List<String> gitLines(int id) => [
+          "stax commit -a --accept-all ${commitName(id)}",
+          ...indexes.expandIndexed((index, element) => element == id
+              ? [
+                  ...gitLines(index + 1),
+                  "git checkout ${commitName(id)}",
+                ]
+              : [])
         ];
-    return gitLines(commits.first)
+
+    return gitLines(initialCommitId)
         .reversed
         .whereIndexed((index, element) {
           if (haveSeenNonCheckout) return true;
