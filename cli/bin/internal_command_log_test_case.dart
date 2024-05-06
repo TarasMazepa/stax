@@ -122,7 +122,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
       result += "$string\n";
     }
 
-    String nodeName(_Commit commit) => "(${commitName(commit.id)})";
+    String nodeName(int id) => "(${commitName(id)})";
     for (var commit in commits) {
       commit.children.clear();
     }
@@ -130,11 +130,11 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
       commit.assignChild();
     }
     if (commits.length == 1) {
-      addToResult(nodeName(commits.first));
+      addToResult(nodeName(commits.first.id));
     } else {
       for (var commit in commits) {
         if (commit.parent == null) continue;
-        addToResult("${nodeName(commit.parent!)} -up-> ${nodeName(commit)}");
+        addToResult("${nodeName(commit.parent!.id)} -up-> ${nodeName(commit.id)}");
       }
     }
     List<String> gitLines(_Commit commit) => [
@@ -144,7 +144,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
                 "git checkout ${commitName(commit.id)}",
               ])
         ];
-    addToResult("note bottom of ${nodeName(commits.first)}");
+    addToResult("note bottom of ${nodeName(commits.first.id)}");
     String previousValue = "";
     bool haveSeenNonCheckout = false;
     gitLines(commits.first)
