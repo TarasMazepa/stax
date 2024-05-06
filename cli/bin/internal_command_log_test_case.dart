@@ -131,7 +131,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
       commit.assignChild();
     }
     if (commits.length == 1) {
-      addToResult(nodeName(commits.first.id));
+      addToResult(nodeName(initialCommitId));
     } else {
       for (var commit in commits) {
         if (commit.parent == null) continue;
