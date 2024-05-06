@@ -168,10 +168,13 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<_Commit> {
         .reversed
         .forEach(addToResult);
     addToResult("git checkout ${commitName(currentId)}");
-    materializeDecoratedLogLines(collapsedChild(commits.first), this)
-        .forEach((element) => addToResult("\"\"$element\"\""));
+    getTargetOutput().forEach((element) => addToResult("\"\"$element\"\""));
     addToResult("end note");
     return result.trim();
+  }
+
+  List<String> getTargetOutput() {
+    return materializeDecoratedLogLines(commits.first, this);
   }
 
   @override
