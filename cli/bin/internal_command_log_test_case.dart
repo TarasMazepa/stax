@@ -133,13 +133,12 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<int> {
     String previousValue = "";
     bool haveSeenNonCheckout = false;
     List<String> gitLines(int id) => [
+          "echo '${commitName(id)}' > ${commitName(id)}",
           "stax commit -a --accept-all ${commitName(id)}",
-          ..._children(id).expand((element) => element == id
-              ? [
-                  ...gitLines(element),
-                  "git checkout ${commitName(id)}",
-                ]
-              : [])
+          ..._children(id).expand((element) => [
+                ...gitLines(element),
+                "git checkout ${commitName(id)}",
+              ])
         ];
 
     return gitLines(initialCommitId)
