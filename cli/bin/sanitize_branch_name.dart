@@ -11,6 +11,7 @@ bool isLetter(int codeUnit) {
   return [
     CodeUnits.smallLetterRange,
     CodeUnits.largeLetterRange,
+    CodeUnits.underscoreRange,
   ].anyRangeContains(codeUnit);
 }
 
@@ -18,6 +19,7 @@ bool isLetterOrNumber(int codeUnit) {
   return [
     CodeUnits.smallLetterRange,
     CodeUnits.largeLetterRange,
+    CodeUnits.underscoreRange,
     CodeUnits.numbersRange,
   ].anyRangeContains(codeUnit);
 }
@@ -26,7 +28,6 @@ bool isAcceptableSpecialSymbol(int codeUnit) {
   return [
     CodeUnits.dashRange,
     CodeUnits.dotRange,
-    CodeUnits.underscoreRange,
     CodeUnits.slashRange,
   ].anyRangeContains(codeUnit);
 }
@@ -59,11 +60,11 @@ String sanitizeBranchName(String branchNameCandidate) {
   }
   int left = 0;
   int right = result.length;
-  while (left < right) {
+  while (left < right - 1) {
     if (isLetter(result.codeUnitAt(left))) break;
     left++;
   }
-  while (left < right) {
+  while (left < right - 1) {
     if (isLetterOrNumber(result.codeUnitAt(right - 1))) break;
     right--;
   }

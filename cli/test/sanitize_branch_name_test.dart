@@ -8,14 +8,14 @@ void main() {
         "perfectly-n0rmal.branch_name/maybe");
   });
   test('removing left trailing symbols', () {
-    expect(sanitizeBranchName("14287890241_...--//---b"), "b");
+    expect(sanitizeBranchName("14287890241...--//---b"), "b");
   });
   test('removing right trailing symbols', () {
-    expect(sanitizeBranchName("b1_...#^%^*&(*)*(--//---"), "b1");
+    expect(sanitizeBranchName("b1...#^%^*&(*)*(--//---"), "b1");
   });
   test('removing left and right trailing symbols', () {
-    expect(sanitizeBranchName("14287890241_...--//---b_...#^%^*&(*)*(--//---"),
-        "b");
+    expect(
+        sanitizeBranchName("14287890241...--//---b...#^%^*&(*)*(--//---"), "b");
   });
   test('substituting with dash', () {
     expect(sanitizeBranchName("almost good name"), "almost-good-name");
@@ -25,8 +25,10 @@ void main() {
   });
   test('removing subsequent symbols', () {
     expect(
-        sanitizeBranchName(
-            "remove-----------me________please//////I......ask****you"),
+        sanitizeBranchName("remove-----------me_please//////I......ask****you"),
         "remove-me_please/I.ask-you");
+  });
+  test('_0_0_0', () {
+    expect(sanitizeBranchName("_0_0_0"), "_0_0_0");
   });
 }
