@@ -7,7 +7,7 @@ import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 import 'internal_command.dart';
 import 'types_for_internal_command.dart';
 
-class _CommitTree implements DecoratedLogLineProducerAdapter<int> {
+class CommitTreeForTestCases implements DecoratedLogLineProducerAdapter<int> {
   static final _alphabet =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
   static const initialCommitId = 0;
@@ -17,19 +17,23 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<int> {
   final int currentId;
   late String compacted = indexes.map((e) => _alphabet[e]).join();
 
-  _CommitTree(this.indexes, this.mainId, this.currentId);
+  CommitTreeForTestCases([
+    this.indexes = const [],
+    this.mainId = 0,
+    this.currentId = 0,
+  ]);
 
   int get length => indexes.length;
 
-  _CommitTree next() {
+  CommitTreeForTestCases next() {
     if (isTimeToLengthen()) {
       return lengthenAndReset();
     }
     if (currentId != length) {
-      return _CommitTree(indexes, mainId, currentId + 1);
+      return CommitTreeForTestCases(indexes, mainId, currentId + 1);
     }
     if (mainId != length) {
-      return _CommitTree(indexes, mainId + 1, 0);
+      return CommitTreeForTestCases(indexes, mainId + 1, 0);
     }
     final newIndexes = [...indexes];
     for (int i = newIndexes.length - 1; i >= 0; i--) {
@@ -40,7 +44,7 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<int> {
         newIndexes[i] = 0;
       }
     }
-    return _CommitTree(newIndexes, 0, 0);
+    return CommitTreeForTestCases(newIndexes, 0, 0);
   }
 
   bool isTimeToLengthen() {
@@ -52,11 +56,11 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<int> {
     return true;
   }
 
-  _CommitTree lengthenAndReset() {
-    return _CommitTree(List.filled(length + 1, 0), 0, 0);
+  CommitTreeForTestCases lengthenAndReset() {
+    return CommitTreeForTestCases(List.filled(length + 1, 0), 0, 0);
   }
 
-  _CommitTree subIndexes(int end) {
+  CommitTreeForTestCases subIndexes(int end) {
     if (end < 0) return this;
     final biggestId = end + 1;
     int newId(int currentId) {
@@ -66,22 +70,23 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<int> {
       return currentId;
     }
 
-    return _CommitTree(
+    return CommitTreeForTestCases(
       indexes.sublist(0, end),
       newId(mainId),
       newId(currentId),
     );
   }
 
-  List<_CommitTree> allSubIndexes() {
-    final result = <_CommitTree>[];
+  List<CommitTreeForTestCases> allSubIndexes() {
+    final result = <CommitTreeForTestCases>[];
     for (int i = 0; i <= length; i++) {
       result.add(subIndexes(i));
     }
     return result;
   }
 
-  factory _CommitTree.fromCompacted(String compactedWithMainAndCurrentIds) {
+  factory CommitTreeForTestCases.fromCompacted(
+      String compactedWithMainAndCurrentIds) {
     final indexes = <int>[];
     final parts = compactedWithMainAndCurrentIds.split("_");
     final compacted = parts.first;
@@ -95,16 +100,17 @@ class _CommitTree implements DecoratedLogLineProducerAdapter<int> {
     }
     final mainId = int.tryParse(parts.elementAtOrNull(1) ?? "") ?? 0;
     final currentId = int.tryParse(parts.elementAtOrNull(2) ?? "") ?? 0;
-    return _CommitTree(indexes, mainId, currentId);
+    return CommitTreeForTestCases(indexes, mainId, currentId);
   }
 
-  factory _CommitTree.random(int length, [int? mainId, int? currentId]) {
+  factory CommitTreeForTestCases.random(int length,
+      [int? mainId, int? currentId]) {
     final random = Random();
     final indexes = <int>[];
     for (int i = 0; i < length; i++) {
       indexes.add(random.nextInt(i + 1));
     }
-    return _CommitTree(indexes, mainId ?? random.nextInt(length),
+    return CommitTreeForTestCases(indexes, mainId ?? random.nextInt(length),
         currentId ?? random.nextInt(length));
   }
 
@@ -239,7 +245,7 @@ class InternalCommandLogTestCase extends InternalCommand {
   @override
   void run(List<String> args, Context context) {
     context.printToConsole("@startuml");
-    var indexes = _CommitTree.fromCompacted("");
+    var indexes = CommitTreeForTestCases();
     for (int i = 0; i <= 20; i++) {
       context.printToConsole(indexes.toUmlString());
       indexes = indexes.next();
