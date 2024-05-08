@@ -28,7 +28,7 @@ class CliTestSetup {
           fileName.length,
           "bundle"),
       "$repoRoot/cli/.test/repo",
-      "$repoRoot/stax",
+      "$repoRoot/dev/stax",
     );
   }
 
