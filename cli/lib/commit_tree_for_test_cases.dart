@@ -143,24 +143,25 @@ class CommitTreeForTestCases implements DecoratedLogLineProducerAdapter<int> {
               ])
         ];
 
-    return gitLines(initialCommitId)
-        .reversed
-        .whereIndexed((index, element) {
-          if (haveSeenNonCheckout) return true;
-          if (!element.startsWith("git checkout")) {
-            return haveSeenNonCheckout = true;
-          }
-          return false;
-        })
-        .where((element) {
-          final result = !(previousValue.startsWith("git checkout") &&
-              element.startsWith("git checkout"));
-          previousValue = element;
-          return result;
-        })
-        .toList()
-        .reversed
-        .followedBy(["git checkout ${commitName(currentId)}"])
+    return ["git init"]
+        .followedBy(gitLines(initialCommitId)
+            .reversed
+            .whereIndexed((index, element) {
+              if (haveSeenNonCheckout) return true;
+              if (!element.startsWith("git checkout")) {
+                return haveSeenNonCheckout = true;
+              }
+              return false;
+            })
+            .where((element) {
+              final result = !(previousValue.startsWith("git checkout") &&
+                  element.startsWith("git checkout"));
+              previousValue = element;
+              return result;
+            })
+            .toList()
+            .reversed
+            .followedBy(["git checkout ${commitName(currentId)}"]))
         .toList();
   }
 
