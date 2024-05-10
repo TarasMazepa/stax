@@ -7,10 +7,10 @@ import 'package:stax/git/git.dart';
 
 class Context {
   final bool silent;
+  final String? workingDirectory;
   final bool forcedLoudness;
   final bool acceptAll;
   final bool declineAll;
-  final String? workingDirectory;
 
   late final Git git = Git(this);
 

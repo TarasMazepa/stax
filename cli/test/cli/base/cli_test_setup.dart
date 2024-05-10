@@ -61,6 +61,6 @@ class CliTestSetup {
 
   @override
   String toString() {
-    return "$testFile $bundleFile $testRepoPath";
+    return "$testFile $bundleFile $testRepoPath $liveStaxPath";
   }
 }
