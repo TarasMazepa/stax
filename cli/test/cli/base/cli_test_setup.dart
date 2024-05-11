@@ -16,17 +16,21 @@ class CliTestSetup {
     final left = stackTraceLine.indexOf("(") + 1;
     final right =
         stackTraceLine.lastIndexOf(":", stackTraceLine.lastIndexOf(":") - 1);
-    final fileName =
-        Uri.parse(stackTraceLine.substring(left, right)).toFilePath();
-    final repoRoot = fileName.substring(0, fileName.indexOf("/cli/test/cli/"));
+    final uri = Uri.parse(stackTraceLine.substring(left, right));
+    final fileName = uri.toFilePath();
+    final repoRoot = uri.replace(
+        path: uri.path.substring(0, uri.path.indexOf("/cli/test/cli/")));
+    final testRepo = repoRoot.replace(path: "${repoRoot.path}/cli/.test/repo");
+    final liveStax = repoRoot.replace(
+        path: "${repoRoot.path}/dev/stax${Platform.isWindows ? ".bat" : ""}");
     return CliTestSetup(
       fileName,
       fileName.replaceRange(
           fileName.length - 4 /* Length of 'dart' filename extension*/,
           fileName.length,
           "bundle"),
-      "$repoRoot/cli/.test/repo",
-      "$repoRoot/dev/stax",
+      testRepo.toFilePath(),
+      liveStax.toFilePath(),
     );
   }
 

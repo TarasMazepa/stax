@@ -7,6 +7,8 @@ void main() {
   cliGroup("single_commit", (CliTestSetup setup) {
     test("ls", () {
       expect(setup.runSync("ls").stdout.toString().trim(), "readme.md");
+    }, onPlatform: {
+      "windows": [Skip("ls doesn't work on windows")]
     });
     test("log", () {
       expect(setup.runLiveStaxSync(["log"]).stdout.toString().trim(), "o main");
