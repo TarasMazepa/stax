@@ -4,6 +4,14 @@ Stax is a tool that will help you a bit with day-to-day stax-like git workflow.
 
 Main purpose is to make it easier to creat smaller PRs. And reduce amount of energy other people need to review them.
 
+## Installation
+
+To use stax you need to install dart in your system.
+
+Afterwards, clone this repo and put path to the repo into your PATH variable.
+
+Let me know if you need some help, create a ticket on the repo.
+
 ## v1 Roadmap
 
 | Feature | Status |
