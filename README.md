@@ -6,7 +6,7 @@ Main purpose is to make it easier to creat smaller PRs. And reduce amount of ene
 
 ## Installation
 
-To use stax you need to install dart in your system.
+To use stax you need to [install dart](https://dart.dev/get-dart) in your system.
 
 Afterwards, clone this repo and put path to the repo into your PATH variable.
 
