@@ -4,7 +4,7 @@ import 'base/cli_group.dart';
 import 'base/cli_test_setup.dart';
 
 void main() {
-  cliGroup("single_commit", (CliTestSetup setup) {
+  cliGroup("single_commit", bundle: true, (CliTestSetup setup) {
     test("ls", () {
       expect(setup.runSync("ls").stdout.toString().trim(), "readme.md");
     }, onPlatform: {

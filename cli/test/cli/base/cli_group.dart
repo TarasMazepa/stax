@@ -11,8 +11,9 @@ void cliGroup(Object? description, dynamic Function(CliTestSetup setup) body,
     Object? tags,
     Map<String, dynamic>? onPlatform,
     int? retry,
+    bool bundle = false,
     @Deprecated('Debug only') bool solo = false}) {
-  final CliTestSetup setup = CliTestSetup.create();
+  final CliTestSetup setup = CliTestSetup.create(bundle);
   group(description,
       testOn: testOn,
       timeout: timeout,
