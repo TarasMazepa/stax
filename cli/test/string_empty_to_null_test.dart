@@ -2,14 +2,17 @@ import "package:stax/string_empty_to_null.dart";
 import "package:test/test.dart";
 
 void main() {
-  test("Test if empty string returns null", () {
-    String emptyString = "";
-    expect(emptyString.emptyToNull(), null);
+  test("empty string", () {
+    expect("".emptyToNull(), null);
   });
 
-  test("Test if null string returns null", () {
-    String? nullString;
+  test("null", () {
+    String? nullString = null;
 
-    expect(nullString, null);
+    expect(nullString.emptyToNull(), null);
+  });
+
+  test("nonempty string", () {
+    expect("something".emptyToNull(), "something");
   });
 }
