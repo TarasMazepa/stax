@@ -7,7 +7,7 @@ void main() {
   });
 
   test("null", () {
-    String? nullString = null;
+    String? nullString;
 
     expect(nullString.emptyToNull(), null);
   });
