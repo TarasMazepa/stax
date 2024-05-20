@@ -14,14 +14,14 @@ Let me know if you need some help, create a ticket on the repo.
 
 ## v1 Roadmap
 
-| Feature | Status |
-|-|-|
-| [commit](#stax-commit) | ✅ |
-| [amend](#stax-amend) | ✅ |
-| [delete-gone-branches](#stax-delete-gone-branches) | ✅ |
-| [pull](#stax-pull) | ✅ |
-| [log](#stax-log) | 🚧 |
-| rebase | 🔲 |
+| Feature | Status | Description |
+|-|-|-------------|
+| [commit](#stax-commit) | ✅ | TBA         |
+| [amend](#stax-amend) | ✅ | TBA            |
+| [delete-gone-branches](#stax-delete-gone-branches) | ✅ | TBA            |
+| [pull](#stax-pull) | ✅ | TBA            |
+| [log](#stax-log) | 🚧 | TBA            |
+| rebase | 🔲 |  TBA           |
 
 ## v2
 
