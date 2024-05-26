@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  release:
+    types:
+      - created
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, macos-13, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ matrix.sdk }}
+      - name: Install dependencies
+        run: dart pub get
+        working-directory: cli
+      - name: Build & Upload
+        run: |
+          dart compile exe bin/cli.dart -o bin/stax
+          tar -czvf ${{ matrix.os }}_.tar.gz bin/stax
+          gh release upload ${{ github.event.release.tag_name }} ${{ matrix.os }}_.tar.gz
+        working-directory: cli
