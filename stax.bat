@@ -3,4 +3,4 @@
 set DIRNAME=%~dp0
 if "%DIRNAME%" == "" set DIRNAME=.
 
-dart run "%DIRNAME%\bin\stax.dill" %*
+"%DIRNAME%bin\windows-x64\stax" %*
