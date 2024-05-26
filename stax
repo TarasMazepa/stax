@@ -4,6 +4,8 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
 if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
   "$SCRIPT_DIR/bin/linux-x64/stax" "$@"
+elif [ "$(expr substr $(uname -s) 1 5)" == "MINGW" ]; then
+  "$SCRIPT_DIR/bin/windows-x64/stax" "$@"
 elif [[ $(uname -m) == 'arm64' ]]; then
   "$SCRIPT_DIR/bin/macos-arm64/stax" "$@"
 else
