@@ -12,5 +12,4 @@ jobs:
         os: [ubuntu-latest, macos-latest, macos-13, windows-latest]
     steps:
       - uses: actions/checkout@v4
-      - name: Install dependencies
-        run: ./stax help
+      - run: ./stax help
