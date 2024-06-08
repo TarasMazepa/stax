@@ -28,6 +28,6 @@ class InternalCommandUpdate extends InternalCommand {
         .runSync()
         .printNotEmptyResultFields();
     context.printToConsole(
-        "Please refer to the most recent installation instructions in the repository README file for accurate and up-to-date information. You can find the installation section here: https://github.com/TarasMazepa/homebrew-stax");
+        "Please refer to the most recent installation instructions in the repository README file for accurate and up-to-date information. You can find the installation section here: https://github.com/TarasMazepa/stax?tab=readme-ov-file#installation");
   }
 }
