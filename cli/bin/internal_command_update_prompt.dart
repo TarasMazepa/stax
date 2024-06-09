@@ -27,22 +27,12 @@ class InternalCommandUpdatePrompt extends InternalCommand {
         return false;
       }
     }
-    bool answer = context.commandLineContinueQuestion(
-        "Stax will update after executing your command.");
-    if (answer) {
-      context.printToConsole(
-          "Thanks for supporting stax and updating it to latest version!");
-    } else {
-      context.printToConsole(
-          "Ok, will ask again in ${silenceDuration.inDays} day(s).");
-    }
-    return answer;
+
+    return false;
   }
 
   @override
   void run(final List<String> args, Context context) {
     shouldAutoUpdateAfterExecutingCommand(args, context);
-    context.printToConsole(
-        "Please refer to the most recent installation instructions in the repository README file for accurate and up-to-date information. You can find the installation section here: https://github.com/TarasMazepa/stax?tab=readme-ov-file#installation");
   }
 }
