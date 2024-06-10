@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:stax/context/context.dart';
-import 'package:stax/context/context_git_get_repository_root.dart';
+import 'package:cli_util/cli_util.dart';
 import 'package:stax/settings/date_time_setting.dart';
+import 'package:path/path.dart' as path;
 
 class Settings {
   static Settings _load() {
     dynamic error = Exception("Unknown error");
     for (int i = 0; i < 3; i++) {
       if (!_file.existsSync()) {
-        _file.createSync();
+        _file.createSync(recursive: true);
         _file.writeAsStringSync("{}", flush: true);
       }
       try {
@@ -24,19 +24,15 @@ class Settings {
     throw error;
   }
 
-  static final _rootPath = Context.implicit()
-      .withSilence(true)
-      .withScriptPathAsWorkingDirectory()
-      .getRepositoryRoot();
-
-  static final _file = File("$_rootPath/.stax_settings");
+  static final _file = File.fromUri(
+      path.toUri(path.join(applicationConfigHome("stax"), ".stax_config")));
 
   static final instance = _load();
 
   final Map<String, dynamic> settings;
 
   late final DateTimeSetting lastUpdatePrompt =
-      DateTimeSetting("last_update_prompt", DateTime(2023), this);
+      DateTimeSetting("last_update_prompt", DateTime.now(), this);
 
   Settings(this.settings);
 
