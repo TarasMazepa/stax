@@ -23,7 +23,7 @@ See https://docs.brew.sh/Homebrew-on-Linux
 #### Install stax
 
 ```
-brew install stax
+brew install TarasMazepa/stax/stax
 ```
 
 ### WSL on Windows
