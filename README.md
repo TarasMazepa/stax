@@ -6,37 +6,19 @@ Main purpose is to make it easier to creat smaller PRs. And reduce amount of ene
 
 ## Installation
 
-### MacOS
+### MacOS/Linux/WSL on Windows
 
 #### Install brew
+
+##### MacOS
 
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-#### Install tap
-
-```
-brew install TarasMazepa/stax
-```
-
-#### Install stax
-
-```
-brew install stax
-```
-
-### Linux
-
-#### Install brew
+##### Linux/WSL on Windows
 
 See https://docs.brew.sh/Homebrew-on-Linux
-
-#### Install tap
-
-```
-brew install TarasMazepa/stax
-```
 
 #### Install stax
 
@@ -50,16 +32,10 @@ brew install stax
 
 See https://docs.brew.sh/Homebrew-on-Linux
 
-#### Install tap
-
-```
-brew install TarasMazepa/stax
-```
-
 #### Install stax
 
 ```
-brew install stax
+brew install TarasMazepa/stax/stax
 ```
 
 ### Windows
