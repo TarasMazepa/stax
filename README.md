@@ -6,6 +6,64 @@ Main purpose is to make it easier to creat smaller PRs. And reduce amount of ene
 
 ## Installation
 
+### MacOS
+
+#### Install brew
+
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+#### Install tap
+
+```
+brew install TarasMazepa/stax
+```
+
+#### Install stax
+
+```
+brew install stax
+```
+
+### Linux
+
+#### Install brew
+
+See https://docs.brew.sh/Homebrew-on-Linux
+
+#### Install tap
+
+```
+brew install TarasMazepa/stax
+```
+
+#### Install stax
+
+```
+brew install stax
+```
+
+### WSL on Windows
+
+#### Install brew
+
+See https://docs.brew.sh/Homebrew-on-Linux
+
+#### Install tap
+
+```
+brew install TarasMazepa/stax
+```
+
+#### Install stax
+
+```
+brew install stax
+```
+
+### Windows
+
 To use stax you need to [install dart](https://dart.dev/get-dart) in your system.
 
 Afterwards, clone this repo and put path to the repo into your PATH variable.
