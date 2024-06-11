@@ -26,18 +26,6 @@ See https://docs.brew.sh/Homebrew-on-Linux
 brew install TarasMazepa/stax/stax
 ```
 
-### WSL on Windows
-
-#### Install brew
-
-See https://docs.brew.sh/Homebrew-on-Linux
-
-#### Install stax
-
-```
-brew install TarasMazepa/stax/stax
-```
-
 ### Windows
 
 To use stax you need to [install dart](https://dart.dev/get-dart) in your system.
