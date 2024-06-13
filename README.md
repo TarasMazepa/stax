@@ -28,9 +28,7 @@ brew install TarasMazepa/stax/stax
 
 ### Windows
 
-To use stax you need to [install dart](https://dart.dev/get-dart) in your system.
-
-Afterwards, clone this repo and put path to the repo into your PATH variable.
+Clone this repo and put path to the repo into your PATH variable.
 
 Let me know if you need some help, create a ticket on the repo.
 
