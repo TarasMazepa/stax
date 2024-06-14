@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:stax/context/context.dart';
@@ -54,7 +55,13 @@ class CliTestSetup {
   }
 
   ProcessResult runSync(String command, [List<String>? args]) {
-    return Process.runSync(command, args ?? [], workingDirectory: testRepoPath);
+    return Process.runSync(
+      command,
+      args ?? [],
+      workingDirectory: testRepoPath,
+      stdoutEncoding: const Utf8Codec(),
+      stderrEncoding: const Utf8Codec(),
+    );
   }
 
   ProcessResult runLiveStaxSync([List<String>? args]) {

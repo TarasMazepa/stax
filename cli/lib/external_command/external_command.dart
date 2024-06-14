@@ -43,8 +43,8 @@ class ExternalCommand {
       {Map<String, String>? environment,
       bool includeParentEnvironment = true,
       bool runInShell = false,
-      Encoding? stdoutEncoding = systemEncoding,
-      Encoding? stderrEncoding = systemEncoding}) {
+      Encoding? stdoutEncoding = const Utf8Codec(),
+      Encoding? stderrEncoding = const Utf8Codec()}) {
     return Process.runSync(executable, arguments,
             workingDirectory: context.workingDirectory,
             environment: environment,
