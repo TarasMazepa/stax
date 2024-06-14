@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:stax/context/context.dart';
@@ -38,6 +39,7 @@ class CliTestSetup {
 
   void setUp() {
     tearDown();
+    Directory(testRepoPath).createSync(recursive: true);
     final bundle = bundleFile;
     if (bundle != null) {
       Context.implicit().git.clone.args([bundle, testRepoPath]).runSync();
@@ -55,7 +57,12 @@ class CliTestSetup {
   }
 
   ProcessResult runSync(String command, [List<String>? args]) {
-    return Process.runSync(command, args ?? [], workingDirectory: testRepoPath);
+    return Process.runSync(
+      command,
+      args ?? [],
+      workingDirectory: testRepoPath,
+      // stdoutEncoding: Platform.isWindows ? Utf8Codec() : systemEncoding,
+    );
   }
 
   ProcessResult runLiveStaxSync([List<String>? args]) {
