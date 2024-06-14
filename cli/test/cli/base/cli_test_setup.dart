@@ -3,15 +3,15 @@ import 'dart:io';
 import 'package:stax/context/context.dart';
 
 class CliTestSetup {
-  String testFile;
-  String bundleFile;
-  String testRepoPath;
-  String liveStaxPath;
+  final String testFile;
+  final String? bundleFile;
+  final String testRepoPath;
+  final String liveStaxPath;
 
   CliTestSetup(
       this.testFile, this.bundleFile, this.testRepoPath, this.liveStaxPath);
 
-  factory CliTestSetup.create() {
+  factory CliTestSetup.create(bool bundle) {
     final stackTraceLine = StackTrace.current.toString().split("\n")[2];
     final left = stackTraceLine.indexOf("(") + 1;
     final right =
@@ -25,10 +25,12 @@ class CliTestSetup {
         path: "${repoRoot.path}/dev/stax${Platform.isWindows ? ".bat" : ""}");
     return CliTestSetup(
       fileName,
-      fileName.replaceRange(
-          fileName.length - 4 /* Length of 'dart' filename extension*/,
-          fileName.length,
-          "bundle"),
+      bundle
+          ? fileName.replaceRange(
+              fileName.length - 4 /* Length of 'dart' filename extension*/,
+              fileName.length,
+              "bundle")
+          : null,
       testRepo.toFilePath(),
       liveStax.toFilePath(),
     );
@@ -36,7 +38,10 @@ class CliTestSetup {
 
   void setUp() {
     tearDown();
-    Context.implicit().git.clone.args([bundleFile, testRepoPath]).runSync();
+    final bundle = bundleFile;
+    if (bundle != null) {
+      Context.implicit().git.clone.args([bundle, testRepoPath]).runSync();
+    }
   }
 
   void tearDown() {
