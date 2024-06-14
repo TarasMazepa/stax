@@ -1,6 +1,7 @@
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
+import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/external_command/extended_process_result.dart';
 
 import 'internal_command.dart';
@@ -17,6 +18,9 @@ class InternalCommandPull extends InternalCommand {
      * TODO:
      *  - Warn about deleting branch on which user was originally
      */
+    if (context.handleNotInsideGitWorkingTree()) {
+      return;
+    }
     final currentBranch = context.getCurrentBranch();
     final defaultBranch = context.getDefaultBranch();
     if (defaultBranch == null) {

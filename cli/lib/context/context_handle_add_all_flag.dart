@@ -8,7 +8,7 @@ extension ContextHandleAddAllFlag on Context {
 
   void handleAddAllFlag(List<String> args) {
     if (args.remove("-a")) {
-      if (isThereStagedChanges()) {
+      if (areThereStagedChanges()) {
         git.addAll
             .askContinueQuestion(
                 "You already have some staged changes. Do you really want to add all?")
@@ -22,7 +22,7 @@ extension ContextHandleAddAllFlag on Context {
             .printNotEmptyResultFields();
       }
     } else {
-      if (isThereNoStagedChanges()) {
+      if (areThereNoStagedChanges()) {
         git.addAll
             .askContinueQuestion(
                 "You do not have any staged changes. Do you want to add all?")
