@@ -20,9 +20,9 @@ jobs:
           sdk: ${{ matrix.sdk }}
       - run: dart pub get
         working-directory: cli
-      - name: Build & Upload
-        run: |
-          dart compile exe bin/cli.dart -o bin/stax
-          tar -czvf ${{ matrix.os }}_.tar.gz bin/stax
-          gh release upload ${{ github.event.release.tag_name }} ${{ matrix.os }}_.tar.gz
+      - run: dart compile exe bin/cli.dart -o bin/stax
+        working-directory: cli
+      - run: tar -czvf ${{ matrix.os }}_.tar.gz bin/stax
+        working-directory: cli
+      - run: gh release upload ${{ github.event.release.tag_name }} ${{ matrix.os }}_.tar.gz
         working-directory: cli
