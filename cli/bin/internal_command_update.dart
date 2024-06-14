@@ -14,10 +14,8 @@ class InternalCommandUpdate extends InternalCommand {
   @override
   void run(final List<String> args, Context context) {
     if (!Platform.isWindows) {
-      context.printToConsole("""
-
-Please refer to the most recent installation instructions in the repository README file for accurate and up-to-date information. You can find the installation section here: https://github.com/TarasMazepa/stax?tab=readme-ov-file#installation
-""");
+      context.printParagraph(
+          "Please refer to the most recent installation instructions in the repository README file for accurate and up-to-date information. You can find the installation section here: https://github.com/TarasMazepa/stax?tab=readme-ov-file#installation");
       return;
     }
     context = context

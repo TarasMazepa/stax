@@ -66,6 +66,13 @@ class Context {
     print(object);
   }
 
+  void printParagraph(Object? object) {
+    printToConsole("""
+
+$object
+""");
+  }
+
   bool commandLineContinueQuestion(String questionContext) {
     if (declineAll) {
       printToConsole(

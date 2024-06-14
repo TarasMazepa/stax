@@ -19,9 +19,7 @@ void main(List<String> arguments) {
       }
   }
   if (arguments.contains("--old-style-installation")) {
-    context.printToConsole("""
-
-You are using old style installation. Check https://github.com/TarasMazepa/stax?tab=readme-ov-file#installation for most up to date installation instructions for your OS.
-""");
+    context.printParagraph(
+        "You are using old style installation. Check https://github.com/TarasMazepa/stax?tab=readme-ov-file#installation for most up to date installation instructions for your OS.");
   }
 }
