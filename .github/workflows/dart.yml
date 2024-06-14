@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  dart:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
