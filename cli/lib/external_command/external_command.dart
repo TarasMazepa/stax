@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:stax/context/context.dart';
+import 'package:stax/default_encoding.dart';
 import 'package:stax/external_command/extended_process_result.dart';
 
 class ExternalCommand {
@@ -39,36 +40,42 @@ class ExternalCommand {
     return this;
   }
 
-  ExtendedProcessResult runSync(
-      {Map<String, String>? environment,
-      bool includeParentEnvironment = true,
-      bool runInShell = false,
-      Encoding? stdoutEncoding = systemEncoding,
-      Encoding? stderrEncoding = systemEncoding}) {
-    return Process.runSync(executable, arguments,
-            workingDirectory: context.workingDirectory,
-            environment: environment,
-            includeParentEnvironment: includeParentEnvironment,
-            runInShell: runInShell,
-            stdoutEncoding: stdoutEncoding,
-            stderrEncoding: stderrEncoding)
-        .extend(this);
+  ExtendedProcessResult runSync({
+    Map<String, String>? environment,
+    bool includeParentEnvironment = true,
+    bool runInShell = false,
+    Encoding? stdoutEncoding,
+    Encoding? stderrEncoding,
+  }) {
+    return Process.runSync(
+      executable,
+      arguments,
+      workingDirectory: context.workingDirectory,
+      environment: environment,
+      includeParentEnvironment: includeParentEnvironment,
+      runInShell: runInShell,
+      stdoutEncoding: stdoutEncoding ?? defaultEncoding,
+      stderrEncoding: stderrEncoding ?? defaultEncoding,
+    ).extend(this);
   }
 
-  Future<ExtendedProcessResult> run(
-      {Map<String, String>? environment,
-      bool includeParentEnvironment = true,
-      bool runInShell = false,
-      Encoding? stdoutEncoding = systemEncoding,
-      Encoding? stderrEncoding = systemEncoding}) {
-    return Process.run(executable, arguments,
-            workingDirectory: context.workingDirectory,
-            environment: environment,
-            includeParentEnvironment: includeParentEnvironment,
-            runInShell: runInShell,
-            stdoutEncoding: stdoutEncoding,
-            stderrEncoding: stderrEncoding)
-        .then((value) => value.extend(this));
+  Future<ExtendedProcessResult> run({
+    Map<String, String>? environment,
+    bool includeParentEnvironment = true,
+    bool runInShell = false,
+    Encoding? stdoutEncoding,
+    Encoding? stderrEncoding,
+  }) {
+    return Process.run(
+      executable,
+      arguments,
+      workingDirectory: context.workingDirectory,
+      environment: environment,
+      includeParentEnvironment: includeParentEnvironment,
+      runInShell: runInShell,
+      stdoutEncoding: stdoutEncoding ?? defaultEncoding,
+      stderrEncoding: stderrEncoding ?? defaultEncoding,
+    ).then((value) => value.extend(this));
   }
 
   @override

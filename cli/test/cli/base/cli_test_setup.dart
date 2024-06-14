@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:stax/context/context.dart';
+import 'package:stax/default_encoding.dart';
 
 class CliTestSetup {
   final String testFile;
@@ -54,7 +55,13 @@ class CliTestSetup {
   }
 
   ProcessResult runSync(String command, [List<String>? args]) {
-    return Process.runSync(command, args ?? [], workingDirectory: testRepoPath);
+    return Process.runSync(
+      command,
+      args ?? [],
+      workingDirectory: testRepoPath,
+      stdoutEncoding: defaultEncoding,
+      stderrEncoding: defaultEncoding,
+    );
   }
 
   ProcessResult runLiveStaxSync([List<String>? args]) {
