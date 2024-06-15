@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:stax/context/context.dart';
+import 'package:uuid/uuid.dart';
 
 class CliTestSetup {
   final String testFile;
@@ -20,7 +21,8 @@ class CliTestSetup {
     final fileName = uri.toFilePath();
     final repoRoot = uri.replace(
         path: uri.path.substring(0, uri.path.indexOf("/cli/test/cli/")));
-    final testRepo = repoRoot.replace(path: "${repoRoot.path}/cli/.test/repo");
+    final testRepo =
+        repoRoot.replace(path: "${repoRoot.path}/cli/.test/${Uuid().v8g()}");
     final liveStax = repoRoot.replace(
         path: "${repoRoot.path}/dev/stax${Platform.isWindows ? ".bat" : ""}");
     return CliTestSetup(
