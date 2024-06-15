@@ -6,7 +6,7 @@ Main purpose is to make it easier to creat smaller PRs. And reduce amount of ene
 
 ## Installation
 
-### MacOS/Linux/WSL on Windows
+### MacOS/Linux/WSL on Windows/ChromeOS
 
 #### Install brew
 
