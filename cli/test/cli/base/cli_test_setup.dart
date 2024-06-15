@@ -1,9 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:stax/context/context.dart';
+import 'package:uuid/data.dart';
+import 'package:uuid/rng.dart';
 import 'package:uuid/uuid.dart';
 
 class CliTestSetup {
+  static final uuid = Uuid(goptions: GlobalOptions(MathRNG()));
+
   final String testFile;
   final String? bundleFile;
   final String testRepoPath;
@@ -22,7 +27,7 @@ class CliTestSetup {
     final repoRoot = uri.replace(
         path: uri.path.substring(0, uri.path.indexOf("/cli/test/cli/")));
     final testRepo =
-        repoRoot.replace(path: "${repoRoot.path}/cli/.test/${Uuid().v8g()}");
+        repoRoot.replace(path: "${repoRoot.path}/cli/.test/${uuid.v8g()}");
     final liveStax = repoRoot.replace(
         path: "${repoRoot.path}/dev/stax${Platform.isWindows ? ".bat" : ""}");
     return CliTestSetup(
@@ -57,7 +62,12 @@ class CliTestSetup {
   }
 
   ProcessResult runSync(String command, [List<String>? args]) {
-    return Process.runSync(command, args ?? [], workingDirectory: testRepoPath);
+    return Process.runSync(
+      command,
+      args ?? [],
+      workingDirectory: testRepoPath,
+      stdoutEncoding: Platform.isWindows ? const Utf8Codec() : systemEncoding,
+    );
   }
 
   ProcessResult runLiveStaxSync([List<String>? args]) {
