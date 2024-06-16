@@ -5,8 +5,8 @@ import 'internal_command.dart';
 import 'internal_commands.dart';
 import 'types_for_internal_command.dart';
 
-class InternalCommandAvailableCommands extends InternalCommand {
-  InternalCommandAvailableCommands()
+class InternalCommandHelp extends InternalCommand {
+  InternalCommandHelp()
       : super("help", "List of available commands.",
             flags: {"-a": "Show all commands including hidden."});
 
