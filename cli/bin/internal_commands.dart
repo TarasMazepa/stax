@@ -11,13 +11,14 @@ import 'internal_command_settings.dart';
 import 'internal_command_terminal.dart';
 import 'internal_command_update.dart';
 import 'internal_command_update_prompt.dart';
-import 'internal_command_setup.dart';
+import 'internal_command_doctor.dart';
 
 final List<InternalCommand> internalCommands = [
   InternalCommandAmend(),
   InternalCommandAvailableCommands(),
   InternalCommandCommit(),
   InternalCommandDeleteGoneBranches(),
+  InternalCommandDoctor(),
   InternalCommandLog(),
   InternalCommandLogTestCase(),
   InternalCommandMainBranch(),
@@ -26,7 +27,6 @@ final List<InternalCommand> internalCommands = [
   InternalCommandTerminal(),
   InternalCommandUpdate(),
   InternalCommandUpdatePrompt(),
-  InternalCommandSetup()
 ]..sort();
 
 final Map<String, InternalCommand> internalCommandRegistry = {

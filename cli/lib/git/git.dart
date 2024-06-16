@@ -16,10 +16,7 @@ class Git {
   late final commitAmendNoEdit = commit.args(["--amend", "--no-edit"]);
   late final commitWithMessage = commit.arg("-m");
   late final config = rawEc("git config");
-  late final configGetUser = config.args(["--get", "user.name"]);
-  late final configGetEmail = config.args(["--get", "user.email"]);
-  late final configGetAutoSetupRemote =
-      config.args(["--get", "push.autoSetupRemote"]);
+  late final configGet = config.args(["--get"]);
   late final diff = rawEc("git diff");
   late final diffCachedQuiet = diff.args(["--cached", "--quiet"]);
   late final fetch = rawEc("git fetch");
