@@ -28,6 +28,7 @@ Here are available commands:
          -a - Show all commands including hidden.
  • log - Builds a tree of all branches.
  • pull - Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
+ • setup - setup user information name, email.
 """);
     });
   });
