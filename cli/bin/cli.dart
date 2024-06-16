@@ -1,7 +1,7 @@
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
 
-import 'internal_command_available_commands.dart';
+import 'internal_command_help.dart';
 import 'internal_commands.dart';
 
 void main(List<String> arguments) {
@@ -9,7 +9,7 @@ void main(List<String> arguments) {
   final context = Context.implicit().handleGlobalFlags(arguments);
   switch (arguments) {
     case []:
-      InternalCommandAvailableCommands().run([], context);
+      InternalCommandHelp().run([], context);
     case [final commandName, ...final args]:
       final command = internalCommandRegistry[commandName];
       if (command == null) {
