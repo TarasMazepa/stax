@@ -52,7 +52,7 @@ class InternalCommandSetup extends InternalCommand {
         .trim()
         .emptyToNull();
 
-    if (getAutoSetupRemote == null) {
+    if (getAutoSetupRemote == null || getAutoSetupRemote == "false") {
       context.git.config
           .args(["--global", "push.autoSetupRemote", "true"])
           .announce("Setting push.autoSetupRemote to true")
