@@ -4,11 +4,11 @@
   <metadata>
     <id>stax</id>
     <version>0.6.3</version>
-    <packageSourceUrl>https://github.com/TarasMazepa/stax/chocolatey/</packageSourceUrl>
+    <packageSourceUrl>https://github.com/TarasMazepa/stax/tree/main/chocolatey/stax</packageSourceUrl>
     <owners>GPL</owners>
-    <title>stax</title>
+    <title>stax - streamline your git workflow</title>
     <authors>Taras Mazepa, Alvee</authors>
-    <projectUrl>https://github.com/TarasMazepa/stax</projectUrl>
+    <projectUrl>https://staxforgit.com/</projectUrl>
     <!--<iconUrl>http://rawcdn.githack.com/__REPLACE_YOUR_REPO__/master/icons/stax.png</iconUrl>-->
     <!-- <copyright>Year Software Vendor</copyright> -->
     <licenseUrl>https://github.com/TarasMazepa/stax/blob/main/LICENSE</licenseUrl>
@@ -26,7 +26,7 @@
     <releaseNotes>https://github.com/TarasMazepa/stax/blob/main/README.md</releaseNotes>
 
     <dependencies>
-        <dependency id="dart-sdk" />
+        <dependency id="dart-sdk" version="3.4.4" />
     </dependencies>
 
   </metadata>
