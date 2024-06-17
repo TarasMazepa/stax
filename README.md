@@ -37,6 +37,8 @@ Let me know if you need some help. Create a ticket on the repo.
 Will help you to set up everything that stax needs to start working
 ```
 stax doctor
+```
+```
 [V] git config --get user.name # TarasMazepa
 [V] git config --get user.email # 6552358+TarasMazepa@users.noreply.github.com
 [V] git config --get push.autoSetupRemote # true
@@ -44,6 +46,8 @@ stax doctor
 Stax will give you advice on how to configure everything.
 ```
 stax doctor
+```
+```
 [X] git config --get user.name # null
     X Set your git user name using:
       git config --global user.name "<your preferred name>"
