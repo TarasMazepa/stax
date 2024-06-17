@@ -26,8 +26,7 @@
     <releaseNotes>https://github.com/TarasMazepa/stax/blob/main/README.md</releaseNotes>
 
     <dependencies>
-<!-- Specifying dart-sdk doesn't work yet -->
-<!-- <dependency id="dart-sdk" /> -->
+        <dependency id="dart-sdk" />
     </dependencies>
 
   </metadata>
