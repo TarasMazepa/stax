@@ -21,8 +21,8 @@ Expand-Archive -Path $repoZipFile -DestinationPath $appFolder
 Set-Location "$appFolder\stax-main\cli"
 
 # Install dart
-& choco install dart-sdk -y
-& choco upgrade dart-sdk -y
+#& choco install dart-sdk -y
+#& choco upgrade dart-sdk -y
 
 # Build Dart App
 & dart pub get
