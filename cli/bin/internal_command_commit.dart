@@ -71,16 +71,31 @@ class InternalCommandCommit extends InternalCommand {
         .printNotEmptyResultFields()
         .exitCode;
     if (newBranchCheckoutExitCode != 0) {
-      context.printToConsole(
+      context.printParagraph(
           "Looks like we can't create new branch with '$resultingBranchName' name. Please pick a different name.");
       return;
     }
-    context.git.commitWithMessage
+    final commitExitCode = context.git.commitWithMessage
         .arg(commitMessage)
         .announce("Committing")
         .runSync()
-        .printNotEmptyResultFields();
-    context.git.push.announce("Pushing").runSync().printNotEmptyResultFields();
+        .printNotEmptyResultFields()
+        .exitCode;
+    if (commitExitCode != 0) {
+      context.printParagraph(
+          "See above git error. Additionally you can check `stax doctor` command output.");
+      return;
+    }
+    final pusExitCode = context.git.push
+        .announce("Pushing")
+        .runSync()
+        .printNotEmptyResultFields()
+        .exitCode;
+    if (pusExitCode != 0) {
+      context.printParagraph(
+          "See above git error. Additionally you can check `stax doctor` command output.");
+      return;
+    }
     if (createPr) {
       final remote = context.git.remote.runSync().stdout.toString().trim();
       final remoteUrl = context.git.remoteGetUrl
