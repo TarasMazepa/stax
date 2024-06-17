@@ -88,6 +88,7 @@ $object
         questionContext[questionContext.length - 1] != '\n';
     if (includeSpace) questionContext += " ";
     print("${questionContext}Continue y/N? ");
-    return stdin.readLineSync() == 'y';
+    final response = stdin.readLineSync();
+    return response == 'y' || response == 'Y' ;
   }
 }
