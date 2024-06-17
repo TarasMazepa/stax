@@ -28,9 +28,33 @@ brew install TarasMazepa/stax/stax
 
 ### Windows
 
-Clone this repo and put path to the repo into your PATH variable.
+Clone this repo and put the path to the repo into your PATH variable.
 
-Let me know if you need some help, create a ticket on the repo.
+Let me know if you need some help. Create a ticket on the repo.
+
+## stax doctor
+
+Will help you to set up everything that stax needs to start working
+```
+stax doctor
+[V] git config --get user.name # TarasMazepa
+[V] git config --get user.email # 6552358+TarasMazepa@users.noreply.github.com
+[V] git config --get push.autoSetupRemote # true
+```
+Stax will give you advice on how to configure everything.
+```
+stax doctor
+[X] git config --get user.name # null
+    X Set your git user name using:
+      git config --global user.name "<your preferred name>"
+[X] git config --get user.email # null
+    X Set your git user email using:
+      git config --global user.email "<your preferred email>"
+[X] git config --get push.autoSetupRemote # false
+    X Set git push.autoSetupRemote using:
+      git config --global push.autoSetupRemote true
+```
+
 
 ## v1 Roadmap
 
