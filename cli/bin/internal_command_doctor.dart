@@ -69,10 +69,39 @@ class InternalCommandDoctor extends InternalCommand {
     context.printToConsole(
         """[${boolToCheckmark(hasAutoSetupRemote)}] git config --get push.autoSetupRemote # $hasAutoSetupRemote""");
 
-    if (!hasUserEmail) {
+    if (!hasAutoSetupRemote) {
       context.printToConsole("""    X Set git push.autoSetupRemote using:""");
       context.printToConsole(
           """      git config --global push.autoSetupRemote true """);
+    }
+
+    final remote = context
+        .withSilence(true)
+        .git
+        .remote
+        .runSync()
+        .stdout
+        .toString()
+        .trim()
+        .emptyToNull();
+    final totalOrigin = context
+        .withSilence(true)
+        .git
+        .remote
+        .runSync()
+        .stdout
+        .toString()
+        .trim()
+        .split("\n")
+        .length;
+    final hasRemote = remote != null;
+    context.printToConsole(
+        """[${boolToCheckmark(hasRemote)}] git remote # $totalOrigin origin found""");
+
+    if (!hasRemote) {
+      context.printToConsole("""    X Set at least one remote origin using:""");
+      context.printToConsole(
+          """      git remote add origin https://github.com/username/repository.git """);
     }
   }
 }
