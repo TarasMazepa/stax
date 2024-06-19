@@ -11,6 +11,7 @@ class Git {
   late final branchVvContains = branch.args(["-vv", "--contains"]);
   late final checkout = rawEc("git checkout");
   late final checkoutNewBranch = checkout.arg("-b");
+  late final cherry = rawEc("git cherry");
   late final clone = rawEc("git clone");
   late final commit = rawEc("git commit");
   late final commitAmendNoEdit = commit.args(["--amend", "--no-edit"]);
@@ -22,14 +23,18 @@ class Git {
   late final fetch = rawEc("git fetch");
   late final fetchWithPrune = fetch.arg("-p");
   late final log = rawEc("git log");
+  late final logOneLine = log.arg("--oneline");
   late final logOneLineNoDecorate = log.args(["--oneline", "--no-decorate"]);
   late final logTimestampOne = log.args(["--format=format:%ct", "-1"]);
+  late final merge = rawEc("git merge");
   late final mergeBase = rawEc("git merge-base");
   late final pull = rawEc("git pull");
   late final push = rawEc("git push");
   late final pushForce = push.arg("--force");
   late final remote = rawEc("git remote");
   late final remoteGetUrl = remote.arg("get-url");
+  late final remoteShowOrigin = remote.args(["show", "origin"]);
+  late final reset = rawEc("git reset");
   late final revList = rawEc("git rev-list");
   late final revListCount = revList.arg("--count");
   late final revParse = rawEc("git rev-parse");
@@ -41,6 +46,7 @@ class Git {
   late final showBranch = rawEc("git show-branch");
   late final showBranchSha1Name = showBranch.arg("--sha1-name");
   late final status = rawEc("git status");
+  late final stash = rawEc("git stash");
   late final statusSb = status.arg("-sb");
 
   final Context context;
