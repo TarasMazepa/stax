@@ -28,6 +28,7 @@ Here are available commands:
       Flags:
          -a - Show all commands including hidden.
  • log - Builds a tree of all branches.
+ • merge - Merge all commits into a single one.
  • pull - Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
 """);
     });
