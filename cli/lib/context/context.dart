@@ -89,6 +89,19 @@ $object
     if (includeSpace) questionContext += " ";
     print("${questionContext}Continue y/N? ");
     final response = stdin.readLineSync();
-    return response == 'y' || response == 'Y' ;
+    return response == 'y' || response == 'Y';
+  }
+
+  String commandLineInputPrompt(String promptContext) {
+    while (true) {
+      print(promptContext);
+      String? userInput = stdin.readLineSync();
+
+      if (userInput != null && userInput.trim().isNotEmpty) {
+        return userInput.trim();
+      } else {
+        print("Please enter a value. Empty input is not allowed.");
+      }
+    }
   }
 }

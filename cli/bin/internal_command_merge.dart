@@ -32,30 +32,43 @@ class InternalCommandMerge extends InternalCommand {
         .runSync()
         .stdout
         .toString()
+        .trim()
         .split("\n");
+
     if (currentBranchCommits.length <= 1) {
       return context.printToConsole("Not enough commits to merge together.");
     }
     if (currentBranch == null) return;
 
-    String parentsLastCommitHash = "";
-    String initialCommitHash = currentBranchCommits[0].split(" ")[1];
-    String initialCommitMessage = currentBranchCommits[0].split(" ")[2];
+    String parentsLastCommitHash = context.git.logOneLine
+        .args(["-n", (currentBranchCommits.length + 1).toString()])
+        .runSync()
+        .stdout
+        .toString()
+        .split("\n")[currentBranchCommits.length]
+        .split(" ")[0];
+    String parentsLastCommitMessage = context.git.logOneLine
+        .args(["-n", (currentBranchCommits.length + 1).toString()])
+        .runSync()
+        .stdout
+        .toString()
+        .split("\n")[currentBranchCommits.length]
+        .split(" ")[1];
 
     bool shouldContinue = context.commandLineContinueQuestion(
-        "Stax detected $initialCommitHash $initialCommitMessage as the initial commit in this branch & will perform a merge (with squash), do you want to continue?");
+        "Stax detected ($parentsLastCommitHash $parentsLastCommitMessage) as the last commit in this parent branch & will perform a merge (with squash), do you want to continue?");
 
     if (!shouldContinue) return;
 
-    print(initialCommitHash);
-    print(initialCommitMessage);
+    String finalCommitMessage =
+        context.commandLineInputPrompt("Please enter a commit message: ");
 
     context.git.checkoutNewBranch.arg(staxTmpBranch).runSync();
     if (context.getCurrentBranch() != staxTmpBranch) {
       return context.printToConsole("Branch checkout failed, exiting program.");
     }
-    print("run here");
-    context.git.reset.arg(initialCommitHash).announce("reseting").runSync();
+
+    context.git.reset.arg(parentsLastCommitHash).announce("reseting").runSync();
 
     context.git.stash.announce("statsh").runSync();
 
@@ -64,20 +77,17 @@ class InternalCommandMerge extends InternalCommand {
         .announce("squash")
         .runSync();
     context.git.commitWithMessage
-        .arg('"squashed changes"')
+        .arg(finalCommitMessage)
         .announce("commit")
         .runSync();
-    context.git.checkout
-        .arg(currentBranch)
-        .announce("checkout current branch")
-        .runSync();
+    context.git.checkout.arg(currentBranch).announce("checkout").runSync();
     context.git.reset
         .args(["--hard", staxTmpBranch])
-        .announce("reset hard tmp")
+        .announce("reset hard temp branch")
         .runSync();
     context.git.branchDelete
         .arg(staxTmpBranch)
-        .announce("remove tmp branch")
+        .announce("remove temp branch")
         .runSync();
   }
 }
