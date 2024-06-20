@@ -5,16 +5,13 @@ import 'base/cli_group.dart';
 import 'base/cli_test_setup.dart';
 
 void main() {
-  List<String> praseDoctorOutput(String out) {
-    List<String> result = [];
-
-    for (int i = 0; i < out.length; i++) {
-      if (out[i] == "[" && out[i + 2] == "]") {
-        result.add(out[i + 1]);
-      }
-    }
-
-    return result;
+  List<String> getSuccessFailMarkForDoctorOutput(dynamic out) {
+    return out
+        .toString()
+        .split("\n")
+        .where((x) => x.length > 1 && x[0] == "[")
+        .map((x) => x[1])
+        .toList();
   }
 
   cliGroup("doctor", bundle: true, (CliTestSetup setup) {
@@ -25,7 +22,7 @@ void main() {
           .toString()
           .trim()
           .emptyToNull();
-      final defaultGobalEmail = setup
+      final defaultGlobalEmail = setup
           .runSync("git", ["config", "--get", "user.email"])
           .stdout
           .toString()
@@ -39,28 +36,23 @@ void main() {
           .emptyToNull();
       List<String> expectedOutput = [
         defaultGlobalUsername == null ? "X" : "V",
-        defaultGobalEmail == null ? "X" : "V",
+        defaultGlobalEmail == null ? "X" : "V",
         defaultGlobalAutoRemote == null ? "X" : "V",
         "V"
       ];
 
       expect(
-          praseDoctorOutput(
-              setup.runLiveStaxSync(["doctor"]).stdout.toString().trim()),
+          getSuccessFailMarkForDoctorOutput(
+              setup.runLiveStaxSync(["doctor"]).stdout),
           expectedOutput);
 
-      expectedOutput = [
-        expectedOutput[0],
-        expectedOutput[1],
-        expectedOutput[2],
-        "X"
-      ];
+      expectedOutput[3] = "X";
 
       setup.runSync("git", ["remote", "rm", "origin"]);
 
       expect(
-          praseDoctorOutput(
-              setup.runLiveStaxSync(["doctor"]).stdout.toString().trim()),
+          getSuccessFailMarkForDoctorOutput(
+              setup.runLiveStaxSync(["doctor"]).stdout),
           expectedOutput);
     });
   });
