@@ -10,98 +10,98 @@ class InternalCommandDoctor extends InternalCommand {
   void run(final List<String> args, Context context) {
     String boolToCheckmark(bool value) => value ? "V" : "X";
 
-    final userName = context
-        .withSilence(true)
-        .git
-        .configGet
-        .arg("user.name")
-        .announce("Checking for users name.")
-        .runSync()
-        .stdout
-        .toString()
-        .trim()
-        .emptyToNull();
+    {
+      final userName = context
+          .withSilence(true)
+          .git
+          .configGet
+          .arg("user.name")
+          .announce("Checking for users name.")
+          .runSync()
+          .stdout
+          .toString()
+          .trim()
+          .emptyToNull();
 
-    final hasUserName = userName != null;
-    context.printToConsole(
-        """[${boolToCheckmark(hasUserName)}] git config --get user.name # $userName""");
-
-    if (!hasUserName) {
-      context.printToConsole("""    X Set your git user name using:""");
+      final hasUserName = userName != null;
       context.printToConsole(
-          """      git config --global user.name "<your preferred name>" """);
+          """[${boolToCheckmark(hasUserName)}] git config --get user.name # $userName""");
+
+      if (!hasUserName) {
+        context.printToConsole("""    X Set your git user name using:""");
+        context.printToConsole(
+            """      git config --global user.name "<your preferred name>" """);
+      }
     }
 
-    final userEmail = context
-        .withSilence(true)
-        .git
-        .configGet
-        .arg("user.email")
-        .announce("Checking for users email.")
-        .runSync()
-        .stdout
-        .toString()
-        .trim()
-        .emptyToNull();
+    {
+      final userEmail = context
+          .withSilence(true)
+          .git
+          .configGet
+          .arg("user.email")
+          .announce("Checking for users email.")
+          .runSync()
+          .stdout
+          .toString()
+          .trim()
+          .emptyToNull();
 
-    final hasUserEmail = userEmail != null;
-    context.printToConsole(
-        """[${boolToCheckmark(hasUserEmail)}] git config --get user.email # $userEmail""");
-
-    if (!hasUserEmail) {
-      context.printToConsole("""    X Set your git user email using:""");
+      final hasUserEmail = userEmail != null;
       context.printToConsole(
-          """      git config --global user.email "<your preferred email>" """);
+          """[${boolToCheckmark(hasUserEmail)}] git config --get user.email # $userEmail""");
+
+      if (!hasUserEmail) {
+        context.printToConsole("""    X Set your git user email using:""");
+        context.printToConsole(
+            """      git config --global user.email "<your preferred email>" """);
+      }
     }
 
-    final autoSetupRemote = context
-        .withSilence(true)
-        .git
-        .configGet
-        .arg("push.autoSetupRemote")
-        .runSync()
-        .stdout
-        .toString()
-        .trim()
-        .emptyToNull();
+    {
+      final autoSetupRemote = context
+          .withSilence(true)
+          .git
+          .configGet
+          .arg("push.autoSetupRemote")
+          .runSync()
+          .stdout
+          .toString()
+          .trim()
+          .emptyToNull();
 
-    final hasAutoSetupRemote = autoSetupRemote == "true";
-    context.printToConsole(
-        """[${boolToCheckmark(hasAutoSetupRemote)}] git config --get push.autoSetupRemote # $hasAutoSetupRemote""");
-
-    if (!hasAutoSetupRemote) {
-      context.printToConsole("""    X Set git push.autoSetupRemote using:""");
+      final hasAutoSetupRemote = autoSetupRemote == "true";
       context.printToConsole(
-          """      git config --global push.autoSetupRemote true """);
+          """[${boolToCheckmark(hasAutoSetupRemote)}] git config --get push.autoSetupRemote # $hasAutoSetupRemote""");
+
+      if (!hasAutoSetupRemote) {
+        context.printToConsole("""    X Set git push.autoSetupRemote using:""");
+        context.printToConsole(
+            """      git config --global push.autoSetupRemote true """);
+      }
     }
 
-    final remote = context
-        .withSilence(true)
-        .git
-        .remote
-        .runSync()
-        .stdout
-        .toString()
-        .trim()
-        .emptyToNull();
-    final totalOrigin = context
-        .withSilence(true)
-        .git
-        .remote
-        .runSync()
-        .stdout
-        .toString()
-        .trim()
-        .split("\n")
-        .length;
-    final hasRemote = remote != null;
-    context.printToConsole(
-        """[${boolToCheckmark(hasRemote)}] git remote # $totalOrigin origin found""");
-
-    if (!hasRemote) {
-      context.printToConsole("""    X Set at least one remote origin using:""");
+    {
+      final remotes = context
+          .withSilence(true)
+          .git
+          .remote
+          .runSync()
+          .stdout
+          .toString()
+          .trim()
+          .split("\n")
+          .where((x) => x.isNotEmpty)
+          .toList();
+      final hasRemote = remotes.isNotEmpty;
       context.printToConsole(
-          """      git remote add origin https://github.com/username/repository.git """);
+          """[${boolToCheckmark(hasRemote)}] git remote # ${hasRemote ? "remote(s): ${remotes.join(", ")}" : "no remotes"}""");
+
+      if (!hasRemote) {
+        context.printToConsole("""    X Set at least one remote using:""");
+        context.printToConsole(
+            """      git remote add origin <url to git repository>""");
+      }
     }
   }
 }
