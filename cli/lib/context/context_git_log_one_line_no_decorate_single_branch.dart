@@ -7,8 +7,9 @@ extension ContextGitLogOneLineNoDecorateSingleBranch on Context {
         .runSync()
         .stdout
         .toString()
-        .trim()
         .split("\n")
+        .map((x) => x.trim())
+        .where((x) => x.isNotEmpty)
         .map(CommitHashAndMessage.parse)
         .toList();
   }
