@@ -70,6 +70,7 @@ stax doctor
 | [pull](#stax-pull)                                 | ✅      |
 | [log](#stax-log)                                   | 🚧     |
 | rebase                                             | 🔲     |
+| squash                                             | 🔲     |
 
 ## v2
 
