@@ -28,6 +28,8 @@ Here are available commands:
       Flags:
          -a - Show all commands including hidden.
  • log - Builds a tree of all branches.
+      Flags:
+         --default-branch - assume different default branch
  • pull - Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
 """);
     });

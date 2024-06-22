@@ -8,11 +8,16 @@ import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer_adapter_for_log_tree_node.dart';
 import 'package:stax/log/log_tree_node.dart';
 import 'package:stax/log/parsed_log_line.dart';
+import 'package:stax/nullable_index_of.dart';
 
 import 'internal_command.dart';
 
 class InternalCommandLog extends InternalCommand {
-  InternalCommandLog() : super("log", "Builds a tree of all branches.");
+  static final String defaultBranchFlag = "--default-branch";
+
+  InternalCommandLog()
+      : super("log", "Builds a tree of all branches.",
+            flags: {defaultBranchFlag: "assume different default branch"});
 
   @override
   void run(List<String> args, Context context) {
@@ -21,7 +26,16 @@ class InternalCommandLog extends InternalCommand {
     }
     final collapse = true;
     context = context.withSilence(true);
-    final defaultBranchName = context.getDefaultBranch();
+
+    String? providedDefaultBranch() {
+      final defaultBranchFlagIndex =
+          args.indexOf(defaultBranchFlag).toNullableIndexOfResult();
+      if (defaultBranchFlagIndex == null) return null;
+      return args.elementAtOrNull(defaultBranchFlagIndex + 1);
+    }
+
+    final defaultBranchName =
+        providedDefaultBranch() ?? context.getDefaultBranch();
     if (defaultBranchName == null) {
       return;
     }
