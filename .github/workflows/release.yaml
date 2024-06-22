@@ -7,7 +7,7 @@ env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  build:
+  release:
     permissions: write-all
     runs-on: ${{ matrix.os }}
     strategy:
