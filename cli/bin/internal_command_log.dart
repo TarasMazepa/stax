@@ -47,7 +47,7 @@ class InternalCommandLog extends InternalCommand {
     }
 
     final defaultBranchName =
-        providedDefaultBranch() ?? context.getDefaultBranch();
+        providedDefaultBranch() ?? context.getDefaultBranch(silent: true);
     if (defaultBranchName == null) {
       return;
     }

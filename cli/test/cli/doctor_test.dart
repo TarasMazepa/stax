@@ -38,6 +38,7 @@ void main() {
         defaultGlobalUsername == null ? "X" : "V",
         defaultGlobalEmail == null ? "X" : "V",
         defaultGlobalAutoRemote == null ? "X" : "V",
+        "V",
         "V"
       ];
 
@@ -47,6 +48,7 @@ void main() {
           expectedOutput);
 
       expectedOutput[3] = "X";
+      expectedOutput[4] = "X";
 
       setup.runSync("git", ["remote", "rm", "origin"]);
 

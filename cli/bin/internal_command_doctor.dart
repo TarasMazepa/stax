@@ -1,4 +1,6 @@
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_git_get_default_branch.dart';
+import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/string_empty_to_null.dart';
 import 'internal_command.dart';
 
@@ -82,25 +84,39 @@ class InternalCommandDoctor extends InternalCommand {
     }
 
     {
-      final remotes = context
-          .withSilence(true)
-          .git
-          .remote
-          .runSync()
-          .stdout
-          .toString()
-          .trim()
-          .split("\n")
-          .where((x) => x.isNotEmpty)
-          .toList();
-      final hasRemote = remotes.isNotEmpty;
-      context.printToConsole(
-          """[${boolToCheckmark(hasRemote)}] git remote # ${hasRemote ? "remote(s): ${remotes.join(", ")}" : "no remotes"}""");
-
-      if (!hasRemote) {
-        context.printToConsole("""    X Set at least one remote using:""");
+      if (context.isInsideWorkTree()) {
+        final remotes = context
+            .withSilence(true)
+            .git
+            .remote
+            .runSync()
+            .stdout
+            .toString()
+            .trim()
+            .split("\n")
+            .where((x) => x.isNotEmpty)
+            .toList();
+        final hasRemote = remotes.isNotEmpty;
         context.printToConsole(
-            """      git remote add origin <url to git repository>""");
+            """[${boolToCheckmark(hasRemote)}] git remote # ${hasRemote ? "remote(s): ${remotes.join(", ")}" : "no remotes"}""");
+
+        if (!hasRemote) {
+          context.printToConsole("""    X Set at least one remote using:""");
+          context.printToConsole(
+              """      git remote add origin <url to git repository>""");
+        }
+      }
+    }
+
+    {
+      String? defaultBranch = context.getDefaultBranch(silent: true);
+      context.printToConsole(
+          """[${boolToCheckmark(defaultBranch != null)}] default branch #${defaultBranch ?? "not found"}""");
+
+      if (defaultBranch == null) {
+        context.printToConsole("""    X Default branch needed:""");
+        context.printToConsole(
+            """      Please make sure you have a remote origin with default branch""");
       }
     }
   }
