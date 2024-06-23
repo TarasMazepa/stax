@@ -5,10 +5,12 @@ import 'package:stax/once.dart';
 extension ContextGitGetDefaultBranch on Context {
   static String? defaultBranch;
 
-  String? getDefaultBranch() {
+  String? getDefaultBranch({bool silent = false}) {
     if (defaultBranch != null) return defaultBranch;
     final complainAboutEmptyOnce = Once();
-    return defaultBranch = git.remote
+    return defaultBranch = withSilence(silent)
+        .git
+        .remote
         .announce("Checking name of your remote.")
         .runSync()
         .printNotEmptyResultFields()
@@ -21,7 +23,9 @@ extension ContextGitGetDefaultBranch on Context {
             "You have no remotes. Can't figure out default branch.")))
         .map((remote) => (
               remote: remote,
-              parts: git.revParseAbbrevRef
+              parts: withSilence(silent)
+                  .git
+                  .revParseAbbrevRef
                   .arg("$remote/HEAD")
                   .announce("Checking default branch on '$remote' remote.")
                   .runSync()
