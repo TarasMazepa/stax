@@ -83,40 +83,40 @@ class InternalCommandDoctor extends InternalCommand {
       }
     }
 
-    {
-      if (context.isInsideWorkTree()) {
-        final remotes = context
-            .withSilence(true)
-            .git
-            .remote
-            .runSync()
-            .stdout
-            .toString()
-            .trim()
-            .split("\n")
-            .where((x) => x.isNotEmpty)
-            .toList();
-        final hasRemote = remotes.isNotEmpty;
-        context.printToConsole(
-            """[${boolToCheckmark(hasRemote)}] git remote # ${hasRemote ? "remote(s): ${remotes.join(", ")}" : "no remotes"}""");
+    if (context.isInsideWorkTree()) {
+      final remotes = context
+          .withSilence(true)
+          .git
+          .remote
+          .runSync()
+          .stdout
+          .toString()
+          .trim()
+          .split("\n")
+          .where((x) => x.isNotEmpty)
+          .toList();
+      final hasRemote = remotes.isNotEmpty;
+      context.printToConsole(
+          """[${boolToCheckmark(hasRemote)}] git remote # ${hasRemote ? "remote(s): ${remotes.join(", ")}" : "no remotes"}""");
 
-        if (!hasRemote) {
-          context.printToConsole("""    X Set at least one remote using:""");
-          context.printToConsole(
-              """      git remote add origin <url to git repository>""");
-        }
+      if (!hasRemote) {
+        context.printToConsole("""    X Set at least one remote using:""");
+        context.printToConsole(
+            """      git remote add origin <url to git repository>""");
       }
     }
 
-    {
-      String? defaultBranch = context.getDefaultBranch(silent: true);
+    if (context.isInsideWorkTree()) {
+      String? defaultBranch = context.withSilence(true).getDefaultBranch();
+      String remote =
+          ContextGitGetDefaultBranch.remotes?.firstOrNull ?? "<remote>";
       context.printToConsole(
-          """[${boolToCheckmark(defaultBranch != null)}] default branch #${defaultBranch ?? "not found"}""");
+          """[${boolToCheckmark(defaultBranch != null)}] git rev-parse --abbrev-ref $remote/HEAD # ${defaultBranch ?? "not found"}""");
 
       if (defaultBranch == null) {
-        context.printToConsole("""    X Default branch needed:""");
+        context.printToConsole("""    X Set default remote branch using:""");
         context.printToConsole(
-            """      Please make sure you have a remote origin with default branch""");
+            """      git fetch -p ; git remote set-head $remote -a""");
       }
     }
   }
