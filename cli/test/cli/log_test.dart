@@ -9,7 +9,7 @@ import 'base/cli_group.dart';
 void main() {
   cliGroup("log", (setup) {
     test("empty", () {
-      print(setup.runSync("git", ["init"]).stdout);
+      setup.runSync("git", ["init"]);
       expect(setup.runLiveStaxSync(["log"]).stdout,
           "your repository has no branches\n");
     });
@@ -31,16 +31,6 @@ void main() {
             setup.runSync(parts[0], parts.sublist(1));
           }
         }
-        print(setup.runSync("git", ["log"]).stdout);
-        print(setup.runSync("git", ["log"]).stderr);
-        final result = setup.runLiveStaxSync([
-          "log",
-          "--loud",
-          "--default-branch",
-          defaultBranch,
-        ]);
-        print(result.stdout);
-        print(result.stderr);
         expect(
             setup.runLiveStaxSync([
               "log",
