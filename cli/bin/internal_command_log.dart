@@ -27,6 +27,18 @@ class InternalCommandLog extends InternalCommand {
     final collapse = true;
     context = context.withSilence(true);
 
+    final branches = context.getAllBranches();
+
+    if (branches.isEmpty) {
+      print("your repository has no branches");
+      return;
+    }
+
+    if (branches.length == 1) {
+      print("x  ${branches.first.name} ");
+      return;
+    }
+
     String? providedDefaultBranch() {
       final defaultBranchFlagIndex =
           args.indexOf(defaultBranchFlag).toNullableIndexOfResult();
@@ -41,8 +53,7 @@ class InternalCommandLog extends InternalCommand {
     }
     final defaultBranchCommits =
         context.logOneLineNoDecorateSingleBranch(defaultBranchName);
-    final connectionGroups = context
-        .getAllBranches()
+    final connectionGroups = branches
         .whereNot((e) => e.name == defaultBranchName)
         .groupListsBy((branch) => context.git.mergeBase
             .args([defaultBranchName, branch.name])

@@ -174,8 +174,12 @@ class CommitTreeForTestCases implements DecoratedLogLineProducerAdapter<int> {
     return "mainId:$mainId currentId:$currentId indexes:$indexes compacted:$compacted";
   }
 
+  String compactedWithMainAndCurrentId() {
+    return "${compacted}_${mainId}_$currentId";
+  }
+
   String commitName(int commitId) {
-    return "${compacted}_${mainId}_${currentId}_$commitId";
+    return "${compactedWithMainAndCurrentId()}_$commitId";
   }
 
   @override
