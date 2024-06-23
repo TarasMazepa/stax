@@ -184,13 +184,12 @@ class CommitTreeForTestCases implements DecoratedLogLineProducerAdapter<int> {
 
   @override
   String branchName(int id) {
-    final rawName = commitName(id);
-    final name = " $rawName ";
+    final name = commitName(id);
     if (isDefaultBranch(id)) {
       return name;
     }
     if (isDefaultBranchOrHasDefaultBranchAsAChild(id)) {
-      return "[$rawName]";
+      return "[$name]";
     }
     return name;
   }
