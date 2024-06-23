@@ -1,8 +1,12 @@
+import 'package:stax/code_units.dart';
 import 'package:stax/log/decorated/decorated_log_line_alignment.dart';
 
 class DecoratedLogLine {
   final String branchName;
   final String decoration;
+  late final bool branchNameHasBrackets =
+      branchName.codeUnits.first == CodeUnits.leftSquareBracket &&
+          branchName.codeUnits.last == CodeUnits.rightSquareBracket;
 
   DecoratedLogLine(this.branchName, this.decoration);
 
@@ -11,16 +15,24 @@ class DecoratedLogLine {
   }
 
   DecoratedLogLineAlignment getAlignment() {
-    return DecoratedLogLineAlignment(branchName.length, decoration.length);
+    return DecoratedLogLineAlignment(
+      branchName.length,
+      decoration.length,
+      branchNameHasBrackets,
+    );
   }
 
   String decorateToString(DecoratedLogLineAlignment alignment) {
-    String align(String field, int size) {
-      return field + (" " * (size - field.length));
+    String result = "";
+    result += decoration;
+    result += " " * (alignment.decoration - decoration.length);
+    result += " ";
+    if (alignment.branchNameHasBrackets && !branchNameHasBrackets) {
+      result += " $branchName";
+    } else {
+      result += branchName;
     }
-
-    return "${align(decoration, alignment.decoration)} "
-        "${align(branchName, alignment.branchName)}";
+    return result;
   }
 
   @override
