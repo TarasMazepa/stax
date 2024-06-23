@@ -12,6 +12,8 @@ class CodeUnits {
   static final dash = "-".codeUnitAt(0);
   static final underscore = "_".codeUnitAt(0);
   static final slash = "/".codeUnitAt(0);
+  static final leftSquareBracket = "[".codeUnitAt(0);
+  static final rightSquareBracket = "]".codeUnitAt(0);
 
   static final dotRange = IntRange.singleton(dot);
   static final dashRange = IntRange.singleton(dash);
