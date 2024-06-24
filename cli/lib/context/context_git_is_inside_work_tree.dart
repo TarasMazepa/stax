@@ -16,7 +16,7 @@ extension ContextGitIsInsideWorkTree on Context {
   }
 
   void explainToUserNotInsideGitWorkTree() {
-    printParagraph("You are not inside git working tree.");
+    printParagraph("You are not inside git work tree.");
   }
 
   bool handleNotInsideGitWorkingTree() {
