@@ -19,8 +19,11 @@ class InternalCommandLog extends InternalCommand {
     }
     context = context.withSilence(true);
 
+    final defaultBranch =
+        args.elementAtOrNull(args.indexOf(defaultBranchFlag) + 1);
+
     print(materializeDecoratedLogLines(context.gitLogAll().collapse(),
-            DecoratedLogLineProducerAdapterForGitLogAllNode())
+            DecoratedLogLineProducerAdapterForGitLogAllNode(defaultBranch))
         .join("\n"));
   }
 }

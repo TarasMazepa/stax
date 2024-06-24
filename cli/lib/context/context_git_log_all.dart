@@ -122,6 +122,10 @@ class GitLogAllNode {
 
 class DecoratedLogLineProducerAdapterForGitLogAllNode
     implements DecoratedLogLineProducerAdapter<GitLogAllNode> {
+  final String? defaultBranch;
+
+  DecoratedLogLineProducerAdapterForGitLogAllNode([this.defaultBranch]);
+
   @override
   String branchName(GitLogAllNode t) {
     return [
@@ -159,7 +163,9 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
 
   @override
   bool isDefaultBranch(GitLogAllNode t) {
-    return t.line.partsHasRemoteHead ||
+    return (t.line.partsHasRemoteHead ||
+            (defaultBranch != null &&
+                t.line.parts.any((x) => x.endsWith(defaultBranch!)))) ||
         t.children.any((x) => isDefaultBranch(x));
   }
 }
