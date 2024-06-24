@@ -8,6 +8,8 @@ Main purpose is to make it easier to create smaller PRs. And reduce amount of en
 
 ### MacOS/Linux/WSL on Windows/ChromeOS
 
+Homebrew is a package manager that works on MacOS and Linux systems.
+
 #### Install brew
 
 ##### MacOS
