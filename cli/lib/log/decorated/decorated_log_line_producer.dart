@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:stax/log/decorated/MapToStringOnListOfDecoratedLogLines.dart';
+import 'package:stax/log/decorated/map_to_string_on_list_of_decorated_log_lines.dart';
 import 'package:stax/log/decorated/decorated_log_line.dart';
 
 abstract class DecoratedLogLineProducerAdapter<T> {
