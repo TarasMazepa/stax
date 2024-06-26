@@ -3,8 +3,9 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_all_branches.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
+import 'package:stax/context/context_git_log_all.dart';
 import 'package:stax/context/context_git_log_one_line_no_decorate_single_branch.dart';
-import 'package:stax/log/decorated/MapToStringOnListOfDecoratedLogLines.dart';
+import 'package:stax/log/decorated/map_to_string_on_list_of_decorated_log_lines.dart';
 import 'package:stax/log/decorated/decorated_log_line.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer_adapter_for_log_tree_node.dart';
@@ -42,6 +43,8 @@ class InternalCommandLog extends InternalCommand {
           .join("\n"));
       return;
     }
+
+    print(context.gitLogAll().collapse().describe().join("\n"));
 
     String? providedDefaultBranch() {
       final defaultBranchFlagIndex =
