@@ -104,7 +104,7 @@ class InternalCommandCommit extends InternalCommand {
           .stdout
           .toString()
           .trim()
-          .replaceFirst("git@", "https://");
+          .replaceFirst("git@github.com:", "https://github.com/");
       final newPrUrl =
           "${remoteUrl.substring(0, remoteUrl.length - 4)}/compare/$previousBranch...$resultingBranchName?expand=1";
       final openCommand = () {
