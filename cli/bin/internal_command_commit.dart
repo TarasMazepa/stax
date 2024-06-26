@@ -103,7 +103,8 @@ class InternalCommandCommit extends InternalCommand {
           .runSync()
           .stdout
           .toString()
-          .trim();
+          .trim()
+          .replaceFirst("git@", "https://");
       final newPrUrl =
           "${remoteUrl.substring(0, remoteUrl.length - 4)}/compare/$previousBranch...$resultingBranchName?expand=1";
       final openCommand = () {
