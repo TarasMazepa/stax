@@ -117,6 +117,7 @@ class InternalCommandCommit extends InternalCommand {
         return ["open", newPrUrl];
       }();
 
+      context.printToConsole("> ${openCommand.join(" ")}");
       context.command(openCommand).runSync();
     }
   }
