@@ -14,7 +14,7 @@ void main() {
           "your repository has no branches\n");
     });
     var commitTree = CommitTreeForTestCases();
-    for (int i = 0; i < 1; i++, commitTree = commitTree.next()) {
+    for (int i = 0; i < 2; i++, commitTree = commitTree.next()) {
       final targetCommands = commitTree.getTargetCommands();
       final targetOutput = commitTree.getTargetOutput();
       final defaultBranch = commitTree.commitName(commitTree.mainId);
