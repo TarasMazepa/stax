@@ -6,7 +6,7 @@ extension GitLogAllOnContext on Context {
     final lines = git.log
         .args([
           "--decorate=full",
-          "--format=%h %p %(decorate:prefix=,suffix=,tag=tag>,separator= ,pointer=>)",
+          "--format=%h %ct %p %(decorate:prefix=,suffix=,tag=tag>,separator= ,pointer=>)",
           "--all",
         ])
         .runSync()
@@ -34,11 +34,13 @@ extension GitLogAllOnContext on Context {
 
 class GitLogAllLine {
   final String commitHash;
+  final int timestamp;
   final String? parentCommitHash;
   final List<String> parts;
 
   GitLogAllLine(
     this.commitHash,
+    this.timestamp,
     this.parentCommitHash,
     this.parts,
   );
@@ -47,16 +49,17 @@ class GitLogAllLine {
     final parts = line.split(" ").where((x) => x.isNotEmpty).toList();
     return GitLogAllLine(
       parts.first,
-      parts.elementAtOrNull(1),
-      parts.length >= 2
-          ? parts.sublist(2).whereNot((x) => x.startsWith("tag>")).toList()
+      int.parse(parts[1]),
+      parts.elementAtOrNull(2),
+      parts.length >= 3
+          ? parts.sublist(3).whereNot((x) => x.startsWith("tag>")).toList()
           : [],
     );
   }
 
   @override
   String toString() {
-    return "$commitHash"
+    return "$commitHash $timestamp"
         "${parentCommitHash == null ? "" : " $parentCommitHash"}"
         "${parts.isEmpty ? "" : " ${parts.join(" ")}"}";
   }
@@ -99,7 +102,7 @@ class GitLogAllNode {
 
   @override
   String toString() {
-    return "${line.commitHash}"
+    return "${line.commitHash} ${line.timestamp}"
         "${parent?.line.commitHash == null ? "" : " ${parent?.line.commitHash}"}"
         "${line.parts.isEmpty ? "" : " ${line.parts.join(" ")}"}";
   }
