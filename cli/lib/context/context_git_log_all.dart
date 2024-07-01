@@ -5,6 +5,7 @@ extension GitLogAllOnContext on Context {
   GitLogAllNode gitLogAll() {
     final lines = git.log
         .args([
+          "--decorate=full",
           "--format=%h %p %(decorate:prefix=,suffix=,tag=tag>,separator= ,pointer=>)",
           "--all",
         ])
