@@ -5,8 +5,8 @@ class DecoratedLogLine {
   final String branchName;
   final String decoration;
   late final bool branchNameHasBrackets =
-      branchName.codeUnits.first == CodeUnits.leftSquareBracket &&
-          branchName.codeUnits.last == CodeUnits.rightSquareBracket;
+      branchName.codeUnits.firstOrNull == CodeUnits.leftSquareBracket &&
+          branchName.codeUnits.lastOrNull == CodeUnits.rightSquareBracket;
 
   DecoratedLogLine(this.branchName, this.decoration);
 

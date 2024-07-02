@@ -10,8 +10,7 @@ void main() {
   cliGroup("log", (setup) {
     test("empty", () {
       setup.runSync("git", ["init"]);
-      expect(setup.runLiveStaxSync(["log"]).stdout,
-          "your repository has no branches\n");
+      expect(setup.runLiveStaxSync(["log"]).stdout, "");
     });
     var commitTree = CommitTreeForTestCases();
     for (int i = 0; i < 1; i++, commitTree = commitTree.next()) {
