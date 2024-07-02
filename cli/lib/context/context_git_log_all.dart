@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:stax/context/context.dart';
+import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 
 extension GitLogAllOnContext on Context {
   GitLogAllNode gitLogAll() {
@@ -110,5 +111,41 @@ class GitLogAllNode {
     return "${line.commitHash} ${line.timestamp}"
         "${parent?.line.commitHash == null ? "" : " ${parent?.line.commitHash}"}"
         "${line.parts.isEmpty ? "" : " ${line.parts.join(" ")}"}";
+  }
+}
+
+class DecoratedLogLineProducerAdapterForGitLogAllNode
+    implements DecoratedLogLineProducerAdapter<GitLogAllNode> {
+  @override
+  String branchName(GitLogAllNode t) {
+    return t.line.parts.join(", ");
+  }
+
+  @override
+  List<GitLogAllNode> children(GitLogAllNode t) {
+    return t.children.sorted((a, b) {
+      if (isDefaultBranch(a)) {
+        if (isDefaultBranch(b)) {
+          return a.line.timestamp - b.line.timestamp;
+        }
+        return -1;
+      }
+      if (isDefaultBranch(b)) {
+        return 1;
+      }
+      return a.line.timestamp - b.line.timestamp;
+    });
+  }
+
+  @override
+  bool isCurrent(GitLogAllNode t) {
+    return t.line.parts.any((x) => x.startsWith("HEAD>"));
+  }
+
+  @override
+  bool isDefaultBranch(GitLogAllNode t) {
+    return t.line.parts
+            .any((x) => x.startsWith("refs/remotes/") && x.endsWith("/HEAD")) ||
+        t.children.any((x) => isDefaultBranch(x));
   }
 }
