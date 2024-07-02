@@ -6,7 +6,7 @@ extension GitLogAllOnContext on Context {
     final lines = git.log
         .args([
           "--decorate=full",
-          "--format=%h %ct %p %(decorate:prefix=,suffix=,tag=tag>,separator= ,pointer=>)",
+          "--format=%h %ct %p %(decorate:tag=tag>,separator=|,pointer=>)",
           "--all",
         ])
         .runSync()
@@ -51,8 +51,13 @@ class GitLogAllLine {
       parts.first,
       int.parse(parts[1]),
       parts.elementAtOrNull(2),
-      parts.length >= 3
-          ? parts.sublist(3).whereNot((x) => x.startsWith("tag>")).toList()
+      parts.last[0] == '('
+          ? parts.last
+              .replaceAll("(", "")
+              .replaceAll(")", "")
+              .split("|")
+              .whereNot((x) => x.startsWith("tag>"))
+              .toList()
           : [],
     );
   }
