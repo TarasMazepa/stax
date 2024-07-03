@@ -74,7 +74,7 @@ stax doctor
 | rebase                                             | 🔲     |
 | squash                                             | 🔲     |
 
-## v2
+## v2 Roadmap
 
 Would be an UI tool that will implement all features from v1.
 
