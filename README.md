@@ -18,7 +18,7 @@ Homebrew is a package manager that works on MacOS and Linux systems.
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-##### Linux/WSL on Windows
+##### Linux/WSL on Windows/ChromeOS
 
 See https://docs.brew.sh/Homebrew-on-Linux
 
