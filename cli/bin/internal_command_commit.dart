@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_cleanup_flags.dart';
 import 'package:stax/context/context_explain_to_user_no_staged_changes.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
@@ -42,6 +43,7 @@ class InternalCommandCommit extends InternalCommand {
       context.explainToUserNoStagedChanges();
       return;
     }
+    context.cleanupFlags(args);
     if (args.isEmpty) {
       context.printToConsole(
           "You need to provide commit message. Something like this: 'stax commit \"My new commit message\"'");
