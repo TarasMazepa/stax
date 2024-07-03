@@ -120,8 +120,11 @@ class InternalCommandCommit extends InternalCommand {
         return ["open", newPrUrl];
       }();
 
-      context.printToConsole("> ${openCommand.join(" ")}");
-      context.command(openCommand).runSync();
+      context
+          .command(openCommand)
+          .announce("Opening PR in browser window")
+          .runSync()
+          .printNotEmptyResultFields();
     }
   }
 }
