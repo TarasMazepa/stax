@@ -88,12 +88,12 @@ class InternalCommandCommit extends InternalCommand {
           "See above git error. Additionally you can check `stax doctor` command output.");
       return;
     }
-    final pusExitCode = context.git.push
+    final pushExitCode = context.git.push
         .announce("Pushing")
         .runSync()
         .printNotEmptyResultFields()
         .exitCode;
-    if (pusExitCode != 0) {
+    if (pushExitCode != 0) {
       context.printParagraph(
           "See above git error. Additionally you can check `stax doctor` command output.");
       return;
