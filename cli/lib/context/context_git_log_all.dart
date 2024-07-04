@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:stax/comparison_chain.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 
@@ -151,18 +152,12 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
 
   @override
   List<GitLogAllNode> children(GitLogAllNode t) {
-    return t.children.sorted((a, b) {
-      if (isDefaultBranch(a)) {
-        if (isDefaultBranch(b)) {
-          return a.line.timestamp - b.line.timestamp;
-        }
-        return -1;
-      }
-      if (isDefaultBranch(b)) {
-        return 1;
-      }
-      return a.line.timestamp - b.line.timestamp;
-    });
+    return t.children.sorted((a, b) => ComparisonChain()
+        .chainBool(isDefaultBranch(a), isDefaultBranch(b))
+        .chain(() => b.line.timestamp - a.line.timestamp)
+        .chain(() => (b.line.parts.firstOrNull ?? "")
+            .compareTo(a.line.parts.firstOrNull ?? ""))
+        .compare());
   }
 
   @override
