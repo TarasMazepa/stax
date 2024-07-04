@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:stax/context/context.dart';
+import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 
 extension GitLogAllOnContext on Context {
   GitLogAllNode gitLogAll() {
@@ -33,10 +34,14 @@ extension GitLogAllOnContext on Context {
 }
 
 class GitLogAllLine {
+  static final remoteHeadPattern = RegExp(r"^refs/remotes/.+/HEAD$");
+
   final String commitHash;
   final int timestamp;
   final String? parentCommitHash;
   final List<String> parts;
+  late final bool partsHasRemoteHead =
+      parts.any((x) => remoteHeadPattern.matchAsPrefix(x) != null);
 
   GitLogAllLine(
     this.commitHash,
@@ -88,11 +93,17 @@ class GitLogAllNode {
     return children.last;
   }
 
-  GitLogAllNode collapse() {
-    children = children.map((x) => x.collapse()).toList();
-    if (line.parts.isEmpty && children.length == 1) {
+  GitLogAllNode? collapse() {
+    children = children.map((x) => x.collapse()).whereNotNull().toList();
+    final hasInterestingParts = line.partsHasRemoteHead ||
+        line.parts.any((x) =>
+            x.startsWith("refs/heads/") || x.startsWith("HEAD>refs/heads/"));
+    if (!hasInterestingParts && children.length == 1) {
       children.first.parent = parent;
       return children.first;
+    }
+    if (!hasInterestingParts && children.isEmpty) {
+      return null;
     }
     return this;
   }
@@ -101,14 +112,54 @@ class GitLogAllNode {
     return [...children.expand((x) => x.describe()), toString()];
   }
 
-  bool isHead() {
-    return line.parts.any((x) => x.startsWith("HEAD>"));
-  }
-
   @override
   String toString() {
     return "${line.commitHash} ${line.timestamp}"
         "${parent?.line.commitHash == null ? "" : " ${parent?.line.commitHash}"}"
         "${line.parts.isEmpty ? "" : " ${line.parts.join(" ")}"}";
+  }
+}
+
+class DecoratedLogLineProducerAdapterForGitLogAllNode
+    implements DecoratedLogLineProducerAdapter<GitLogAllNode> {
+  @override
+  String branchName(GitLogAllNode t) {
+    return [
+      if (t.line.partsHasRemoteHead)
+        ...t.line.parts
+            .where((x) => x.startsWith("refs/remotes/"))
+            .map((x) => x.replaceFirst("refs/remotes/", "")),
+      ...t.line.parts
+          .map((x) => x.replaceFirst("HEAD>", ""))
+          .where((x) => x.startsWith("refs/heads/"))
+          .map((x) => x.replaceFirst("refs/heads/", ""))
+    ].join(", ");
+  }
+
+  @override
+  List<GitLogAllNode> children(GitLogAllNode t) {
+    return t.children.sorted((a, b) {
+      if (isDefaultBranch(a)) {
+        if (isDefaultBranch(b)) {
+          return a.line.timestamp - b.line.timestamp;
+        }
+        return -1;
+      }
+      if (isDefaultBranch(b)) {
+        return 1;
+      }
+      return a.line.timestamp - b.line.timestamp;
+    });
+  }
+
+  @override
+  bool isCurrent(GitLogAllNode t) {
+    return t.line.parts.any((x) => x.startsWith("HEAD>"));
+  }
+
+  @override
+  bool isDefaultBranch(GitLogAllNode t) {
+    return t.line.partsHasRemoteHead ||
+        t.children.any((x) => isDefaultBranch(x));
   }
 }

@@ -11,7 +11,8 @@ void main() {
       "windows": [Skip("ls doesn't work on windows")]
     });
     test("log", () {
-      expect(setup.runLiveStaxSync(["log"]).stdout, "x main\n");
+      expect(setup.runLiveStaxSync(["log"]).stdout,
+          "x origin/main, origin/HEAD, main\n");
     });
     test("commit 'commit message'", () async {
       await setup
