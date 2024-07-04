@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
-
-dart compile kernel "$SCRIPT_DIR/../cli/bin/cli.dart" -o "$SCRIPT_DIR/../bin/stax.dill"
