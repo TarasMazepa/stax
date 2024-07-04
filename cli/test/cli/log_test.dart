@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:stax/commit_tree_for_test_cases.dart';
+import 'package:stax/commit_tree_for_test_case.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
@@ -12,7 +12,7 @@ void main() {
       setup.runSync("git", ["init"]);
       expect(setup.runLiveStaxSync(["log"]).stdout, "");
     });
-    var commitTree = CommitTreeForTestCases();
+    var commitTree = CommitTreeForTestCase();
     for (int i = 0; i < 2; i++, commitTree = commitTree.next()) {
       final targetCommands = commitTree.getTargetCommands();
       final targetOutput = commitTree.getTargetOutput();

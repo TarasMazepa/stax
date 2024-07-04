@@ -1,6 +1,10 @@
-import 'package:stax/commit_tree_for_test_cases.dart';
-import 'package:stax/context/context.dart';
+import 'dart:io';
 
+import 'package:stax/commit_tree_for_test_case.dart';
+import 'package:stax/context/context.dart';
+import 'package:stax/external_command/external_command.dart';
+
+import 'cli.dart';
 import 'internal_command.dart';
 import 'types_for_internal_command.dart';
 
@@ -11,12 +15,24 @@ class InternalCommandLogTestCase extends InternalCommand {
 
   @override
   void run(List<String> args, Context context) {
-    context.printToConsole("@startuml");
-    var indexes = CommitTreeForTestCases();
-    for (int i = 0; i <= 20; i++) {
-      context.printToConsole(indexes.toUmlString());
-      indexes = indexes.next();
+    for (final commandText
+        in CommitTreeForTestCase.fromCompacted(args[0]).getTargetCommands()) {
+      ExternalCommand command = context.command(commandText.split(" "));
+      if (command.parts[0] == "stax") {
+        main(command.parts.sublist(1));
+      } else if (Platform.isWindows && command.parts[0] == "echo") {
+        context
+            .command(["powershell", "-c", ...command.parts])
+            .runSync()
+            .printNotEmptyResultFields();
+      } else if (command.parts[0] == "echo") {
+        context
+            .command(["touch", ...command.parts.sublist(1)])
+            .runSync()
+            .printNotEmptyResultFields();
+      } else {
+        command.runSync().printNotEmptyResultFields();
+      }
     }
-    context.printToConsole("@enduml");
   }
 }

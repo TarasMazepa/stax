@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 
-class CommitTreeForTestCases implements DecoratedLogLineProducerAdapter<int> {
+class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
   static final _alphabet =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
   static const initialCommitId = 0;
@@ -13,7 +13,7 @@ class CommitTreeForTestCases implements DecoratedLogLineProducerAdapter<int> {
   final int currentId;
   late String compacted = indexes.map((e) => _alphabet[e]).join();
 
-  CommitTreeForTestCases([
+  CommitTreeForTestCase([
     this.indexes = const [],
     this.mainId = 0,
     this.currentId = 0,
@@ -21,15 +21,15 @@ class CommitTreeForTestCases implements DecoratedLogLineProducerAdapter<int> {
 
   int get length => indexes.length;
 
-  CommitTreeForTestCases next() {
+  CommitTreeForTestCase next() {
     if (isTimeToLengthen()) {
       return lengthenAndReset();
     }
     if (currentId != length) {
-      return CommitTreeForTestCases(indexes, mainId, currentId + 1);
+      return CommitTreeForTestCase(indexes, mainId, currentId + 1);
     }
     if (mainId != length) {
-      return CommitTreeForTestCases(indexes, mainId + 1, 0);
+      return CommitTreeForTestCase(indexes, mainId + 1, 0);
     }
     final newIndexes = [...indexes];
     for (int i = newIndexes.length - 1; i >= 0; i--) {
@@ -40,7 +40,7 @@ class CommitTreeForTestCases implements DecoratedLogLineProducerAdapter<int> {
         newIndexes[i] = 0;
       }
     }
-    return CommitTreeForTestCases(newIndexes, 0, 0);
+    return CommitTreeForTestCase(newIndexes, 0, 0);
   }
 
   bool isTimeToLengthen() {
@@ -52,11 +52,11 @@ class CommitTreeForTestCases implements DecoratedLogLineProducerAdapter<int> {
     return true;
   }
 
-  CommitTreeForTestCases lengthenAndReset() {
-    return CommitTreeForTestCases(List.filled(length + 1, 0), 0, 0);
+  CommitTreeForTestCase lengthenAndReset() {
+    return CommitTreeForTestCase(List.filled(length + 1, 0), 0, 0);
   }
 
-  CommitTreeForTestCases subIndexes(int end) {
+  CommitTreeForTestCase subIndexes(int end) {
     if (end < 0) return this;
     final biggestId = end + 1;
     int newId(int currentId) {
@@ -66,22 +66,22 @@ class CommitTreeForTestCases implements DecoratedLogLineProducerAdapter<int> {
       return currentId;
     }
 
-    return CommitTreeForTestCases(
+    return CommitTreeForTestCase(
       indexes.sublist(0, end),
       newId(mainId),
       newId(currentId),
     );
   }
 
-  List<CommitTreeForTestCases> allSubIndexes() {
-    final result = <CommitTreeForTestCases>[];
+  List<CommitTreeForTestCase> allSubIndexes() {
+    final result = <CommitTreeForTestCase>[];
     for (int i = 0; i <= length; i++) {
       result.add(subIndexes(i));
     }
     return result;
   }
 
-  factory CommitTreeForTestCases.fromCompacted(
+  factory CommitTreeForTestCase.fromCompacted(
       String compactedWithMainAndCurrentIds) {
     final indexes = <int>[];
     final parts = compactedWithMainAndCurrentIds.split("_");
@@ -96,17 +96,17 @@ class CommitTreeForTestCases implements DecoratedLogLineProducerAdapter<int> {
     }
     final mainId = int.tryParse(parts.elementAtOrNull(1) ?? "") ?? 0;
     final currentId = int.tryParse(parts.elementAtOrNull(2) ?? "") ?? 0;
-    return CommitTreeForTestCases(indexes, mainId, currentId);
+    return CommitTreeForTestCase(indexes, mainId, currentId);
   }
 
-  factory CommitTreeForTestCases.random(int length,
+  factory CommitTreeForTestCase.random(int length,
       [int? mainId, int? currentId]) {
     final random = Random();
     final indexes = <int>[];
     for (int i = 0; i < length; i++) {
       indexes.add(random.nextInt(i + 1));
     }
-    return CommitTreeForTestCases(indexes, mainId ?? random.nextInt(length),
+    return CommitTreeForTestCase(indexes, mainId ?? random.nextInt(length),
         currentId ?? random.nextInt(length));
   }
 
