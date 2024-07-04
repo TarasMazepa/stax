@@ -16,9 +16,18 @@ extension GitLogAllOnContext on Context {
         .split("\n")
         .where((x) => x.isNotEmpty)
         .map((x) => GitLogAllLine.parse(x))
-        .toList()
-        .reversed
-        .toList();
+        .sorted((a, b) {
+          if (a.parentCommitHash == null) {
+            if (b.parentCommitHash == null) {
+              return a.timestamp - b.timestamp;
+            }
+            return -1;
+          }
+          if (b.parentCommitHash == null) {
+            return 1;
+          }
+          return a.timestamp - b.timestamp;
+        });
     int i = 0;
     final root = GitLogAllNode.root(lines[0]);
     final nodes = {root.line.commitHash: root};
