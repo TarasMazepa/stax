@@ -16,27 +16,25 @@ extension GitLogAllOnContext on Context {
         .split("\n")
         .where((x) => x.isNotEmpty)
         .map((x) => GitLogAllLine.parse(x))
-        .sorted((a, b) {
-          if (a.parentCommitHash == null) {
-            if (b.parentCommitHash == null) {
-              return a.timestamp - b.timestamp;
-            }
-            return -1;
-          }
-          if (b.parentCommitHash == null) {
-            return 1;
-          }
-          return a.timestamp - b.timestamp;
-        });
-    int i = 0;
-    final root = GitLogAllNode.root(lines[0]);
+        .sorted((a, b) => a.timestamp - b.timestamp);
+    final root =
+        GitLogAllNode.root(lines.firstWhere((x) => x.parentCommitHash == null));
+    lines.remove(root.line);
     final nodes = {root.line.commitHash: root};
-    for (; i < lines.length; i++) {
-      final line = lines[i];
-      final parent = nodes[line.parentCommitHash];
-      if (parent == null) continue;
-      final node = parent.addChild(line);
-      nodes[node.line.commitHash] = node;
+    final nextLines = <GitLogAllLine>[];
+    while (lines.isNotEmpty) {
+      for (final line in lines) {
+        final parent = nodes[line.parentCommitHash];
+        if (parent == null) {
+          nextLines.add(line);
+          continue;
+        }
+        final node = parent.addChild(line);
+        nodes[node.line.commitHash] = node;
+      }
+      lines.clear();
+      lines.addAll(nextLines);
+      nextLines.clear();
     }
     return root;
   }
@@ -64,7 +62,9 @@ class GitLogAllLine {
     return GitLogAllLine(
       parts.first,
       int.parse(parts[1]),
-      parts.elementAtOrNull(2),
+      [parts.elementAtOrNull(2)]
+          .whereNot((x) => x?.startsWith("(") ?? false)
+          .elementAtOrNull(0),
       parts.last[0] == '('
           ? parts.last
               .replaceAll("(", "")
