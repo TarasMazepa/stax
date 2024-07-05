@@ -147,7 +147,7 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
             .map((x) => x.replaceFirst("refs/remotes/", "")),
       ...t.line.parts
           .map((x) => x.replaceFirst("HEAD -> ", ""))
-          .where((x) => x.startsWith("refs/heads/"))
+          .where((x) => x.startsWith("refs/heads/") || x == "HEAD")
           .map((x) => x.replaceFirst("refs/heads/", ""))
     ].join(", ");
   }
