@@ -1,0 +1,6 @@
+@startmindmap
++ stax amend
+++ git add . # if -a flag is used
+++ git commit -~-amend --no-edit
+++ git push --force
+@endmindmap

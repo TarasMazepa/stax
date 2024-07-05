@@ -1,0 +1,5 @@
+@startmindmap
++ stax delete-gone-branches
+++ git branch -vv
+++ git branch -D <list of gone branches>
+@endmindmap
