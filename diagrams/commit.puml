@@ -1,0 +1,8 @@
+@startmindmap
++ stax commit
+++ git add . # if -a flag used
+++ git checkout -b <branch name>
+++ git commit -m <commit name>
+++ git push
+++ open <PR creation page in browser> # if --pr flag is used
+@endmindmap
