@@ -164,7 +164,7 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
 
   @override
   bool isCurrent(GitLogAllNode t) {
-    return t.line.parts.any((x) => x.startsWith("HEAD -> "));
+    return t.line.parts.any((x) => x.startsWith("HEAD -> ") || x == "HEAD");
   }
 
   @override
