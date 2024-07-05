@@ -11,6 +11,10 @@ class ComparisonChain {
     return chain(() => boolToInt(left) - boolToInt(right));
   }
 
+  ComparisonChain chainBoolReverse(bool left, bool right) {
+    return chainBool(!left, !right);
+  }
+
   int compare() {
     return _result;
   }

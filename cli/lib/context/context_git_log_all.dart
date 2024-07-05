@@ -109,7 +109,9 @@ class GitLogAllNode {
     children = children.map((x) => x.collapse()).whereNotNull().toList();
     final hasInterestingParts = line.partsHasRemoteHead ||
         line.parts.any((x) =>
-            x.startsWith("refs/heads/") || x.startsWith("HEAD -> refs/heads/"));
+            x.startsWith("refs/heads/") ||
+            x.startsWith("HEAD -> refs/heads/") ||
+            x == "HEAD");
     if (!hasInterestingParts && children.length == 1) {
       children.first.parent = parent;
       return children.first;
@@ -155,7 +157,7 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
   @override
   List<GitLogAllNode> children(GitLogAllNode t) {
     return t.children.sorted((a, b) => ComparisonChain()
-        .chainBool(isDefaultBranch(a), isDefaultBranch(b))
+        .chainBoolReverse(isDefaultBranch(a), isDefaultBranch(b))
         .chain(() => b.line.timestamp - a.line.timestamp)
         .chain(() => (b.line.parts.firstOrNull ?? "")
             .compareTo(a.line.parts.firstOrNull ?? ""))
