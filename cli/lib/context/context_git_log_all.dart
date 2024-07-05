@@ -8,10 +8,11 @@ extension GitLogAllOnContext on Context {
     final lines = git.log
         .args([
           "--decorate=full",
-          "--format=%h %ct %p %(decorate:tag=tag>,separator=|,pointer=>)",
+          "--format=%h %ct %p %d",
           "--all",
         ])
         .runSync()
+        .printNotEmptyResultFields()
         .stdout
         .toString()
         .split("\n")
@@ -59,19 +60,20 @@ class GitLogAllLine {
   );
 
   factory GitLogAllLine.parse(String line) {
-    final parts = line.split(" ").where((x) => x.isNotEmpty).toList();
+    final parts = line.split("  ").where((x) => x.isNotEmpty).toList();
+    final firstParts = parts[0].split(" ").where((x) => x.isNotEmpty).toList();
     return GitLogAllLine(
-      parts.first,
-      int.parse(parts[1]),
-      [parts.elementAtOrNull(2)]
-          .whereNot((x) => x?.startsWith("(") ?? false)
-          .elementAtOrNull(0),
-      parts.last[0] == '('
+      firstParts.first,
+      int.parse(firstParts[1]),
+      firstParts.elementAtOrNull(2),
+      parts.length > 1
           ? parts.last
               .replaceAll("(", "")
               .replaceAll(")", "")
-              .split("|")
-              .whereNot((x) => x.startsWith("tag>"))
+              .split(", ")
+              .map((x) => x.trim())
+              .where((x) => x.isNotEmpty)
+              .whereNot((x) => x.startsWith("tag: "))
               .toList()
           : [],
     );
@@ -79,9 +81,9 @@ class GitLogAllLine {
 
   @override
   String toString() {
-    return "$commitHash $timestamp"
-        "${parentCommitHash == null ? "" : " $parentCommitHash"}"
-        "${parts.isEmpty ? "" : " ${parts.join(" ")}"}";
+    return "'$commitHash' '$timestamp'"
+        "${parentCommitHash == null ? "" : " '$parentCommitHash'"}"
+        "${parts.isEmpty ? "" : " ${parts.map((x) => "'$x'").join(" ")}"}";
   }
 }
 
@@ -107,7 +109,7 @@ class GitLogAllNode {
     children = children.map((x) => x.collapse()).whereNotNull().toList();
     final hasInterestingParts = line.partsHasRemoteHead ||
         line.parts.any((x) =>
-            x.startsWith("refs/heads/") || x.startsWith("HEAD>refs/heads/"));
+            x.startsWith("refs/heads/") || x.startsWith("HEAD -> refs/heads/"));
     if (!hasInterestingParts && children.length == 1) {
       children.first.parent = parent;
       return children.first;
@@ -144,7 +146,7 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
             .where((x) => x.startsWith("refs/remotes/"))
             .map((x) => x.replaceFirst("refs/remotes/", "")),
       ...t.line.parts
-          .map((x) => x.replaceFirst("HEAD>", ""))
+          .map((x) => x.replaceFirst("HEAD -> ", ""))
           .where((x) => x.startsWith("refs/heads/"))
           .map((x) => x.replaceFirst("refs/heads/", ""))
     ].join(", ");
@@ -162,7 +164,7 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
 
   @override
   bool isCurrent(GitLogAllNode t) {
-    return t.line.parts.any((x) => x.startsWith("HEAD>"));
+    return t.line.parts.any((x) => x.startsWith("HEAD -> "));
   }
 
   @override
