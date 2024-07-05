@@ -11,7 +11,7 @@ void main() {
       expect(setup.runLiveStaxSync(["log"]).stdout, "");
     });
     var commitTree = CommitTreeForTestCase();
-    for (int i = 0; i < 7; i++, commitTree = commitTree.next()) {
+    for (int i = 0; i < 20; i++, commitTree = commitTree.next()) {
       final targetOutput = commitTree.getTargetOutput();
       final defaultBranch = commitTree.commitName(commitTree.mainId);
       final commitName = commitTree.commitName(0);
