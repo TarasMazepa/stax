@@ -136,4 +136,11 @@ Switching to main branch, pull all the changes, deleting gone branches and switc
 ![stax pull diagram](https://github.com/TarasMazepa/stax/assets/6552358/581b2384-2cce-4e78-9be2-76241e0f6c8e)
 
 ### stax log
-Outputs tree like structure of your branches
+Outputs tree structure of your branches
+
+```
+> stax log
+x   origin/main, origin/HEAD, main
+| o Promotes-version-command-to-be-not-hidden-command
+o-┘
+```
