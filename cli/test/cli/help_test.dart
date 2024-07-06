@@ -31,6 +31,7 @@ Here are available commands:
       Flags:
          --default-branch - assume different default branch
  • pull - Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
+ • version - Version of stax
 """);
     });
   });
