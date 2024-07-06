@@ -158,11 +158,11 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
   List<GitLogAllNode> children(GitLogAllNode t) {
     return t.children.sorted((a, b) => ComparisonChain()
         .chainBoolReverse(isDefaultBranch(a), isDefaultBranch(b))
-        .chain(() => b.line.timestamp - a.line.timestamp)
         .chain(() => (b.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ??
                 "")
             .compareTo(
                 a.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ?? ""))
+        .chain(() => b.line.timestamp - a.line.timestamp)
         .compare());
   }
 
