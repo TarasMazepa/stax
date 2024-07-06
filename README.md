@@ -140,7 +140,9 @@ Outputs tree structure of your branches
 
 ```
 > stax log
-x   origin/main, origin/HEAD, main
+  x Updates-stax-log-example-in-readme
+  o Adds-stax-log-example-to-readme
+o-┘ origin/main, origin/HEAD, main
 | o Promotes-version-command-to-be-not-hidden-command
 o-┘
 ```
