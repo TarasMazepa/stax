@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
+import 'package:stax/comparison_chain.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 
 class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
@@ -197,14 +198,6 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
     return isDefaultBranchOrHasDefaultBranchAsAChild(id) ? 10000 : id;
   }
 
-  int collapsedChild(int id) {
-    if (isCurrent(id)) return id;
-    if (isDefaultBranch(id)) return id;
-    if (_children(id).length != 1) return id;
-    if (!isDefaultBranchOrHasDefaultBranchAsAChild(id)) return id;
-    return collapsedChild(_children(id).single);
-  }
-
   List<int> _children(int id) {
     return indexes
         .expandIndexed<int>(
@@ -214,9 +207,11 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
 
   @override
   List<int> children(int id) {
-    return _children(id)
-        .map(collapsedChild)
-        .sorted((a, b) => sortingValue(b) - sortingValue(a));
+    return _children(id).sorted((a, b) => ComparisonChain()
+        .chainBoolReverse(isDefaultBranchOrHasDefaultBranchAsAChild(a),
+            isDefaultBranchOrHasDefaultBranchAsAChild(b))
+        .chain(() => branchName(b).compareTo(branchName(a)))
+        .compare());
   }
 
   @override
