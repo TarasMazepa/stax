@@ -7,10 +7,10 @@ void main() {
   cliGroup("help", (setup) {
     test("help", () {
       expect(setup.runLiveStaxSync(["help"]).stdout, """Global flags:
-   --silent - Removes all output except user prompts.
-   --loud - Force all the output.
    --accept-all - Accept all the user prompts automatically.
    --decline-all - Decline all the user prompts automatically.
+   --loud - Force all the output.
+   --silent - Removes all output except user prompts.
 Here are available commands:
  • amend - Amends and pushes changes.
       Flags:
@@ -22,6 +22,7 @@ Here are available commands:
       Flags:
          --pr - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
          -a - Runs 'git add .' before other actions.
+         -b - Accepts branch name proposed by converting commit name to branch name.
  • delete-gone-branches - Deletes local branches with gone remotes.
       Flags:
          -f - Force delete gone branches.

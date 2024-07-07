@@ -13,6 +13,7 @@ import 'sanitize_branch_name.dart';
 
 class InternalCommandCommit extends InternalCommand {
   static const prFlag = "--pr";
+  static const branchNameFlag = "-b";
 
   InternalCommandCommit()
       : super(
@@ -23,7 +24,9 @@ class InternalCommandCommit extends InternalCommand {
                 "branch name would be generated from commit message.",
             flags: {
               prFlag:
-                  "Opens PR creation page on your remote. Works only if you have GitHub as your remote."
+                  "Opens PR creation page on your remote. Works only if you have GitHub as your remote.",
+              branchNameFlag:
+                  "Accepts branch name proposed by converting commit name to branch name.",
             }..addAll(ContextHandleAddAllFlag.description),
             arguments: {
               "arg1":
@@ -39,6 +42,7 @@ class InternalCommandCommit extends InternalCommand {
     }
     context.handleAddAllFlag(args);
     final createPr = args.remove(prFlag);
+    final acceptBranchName = args.remove(branchNameFlag);
     if (context.areThereNoStagedChanges()) {
       context.explainToUserNoStagedChanges();
       return;
@@ -59,7 +63,7 @@ class InternalCommandCommit extends InternalCommand {
       originalBranchName = args[1];
     }
     final resultingBranchName = sanitizeBranchName(originalBranchName);
-    if (originalBranchName != resultingBranchName) {
+    if (!acceptBranchName && originalBranchName != resultingBranchName) {
       if (!context.commandLineContinueQuestion(
           "Branch name was sanitized to '$resultingBranchName'.")) return;
     }
