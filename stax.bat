@@ -3,4 +3,9 @@
 set DIRNAME=%~dp0
 if "%DIRNAME%" == "" set DIRNAME=.
 
-"%DIRNAME%bin\windows-x64\stax" %*
+IF EXIST "%DIRNAME%usedev" (
+    echo Using live stax
+    .\dev\stax.bat %*
+) ELSE (
+    "%DIRNAME%bin\windows-x64\stax" %*
+)
