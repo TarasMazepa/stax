@@ -25,6 +25,7 @@ Here are available commands:
  • delete-gone-branches - Deletes local branches with gone remotes.
       Flags:
          -f - Force delete gone branches.
+         -s - Skip deletion of gone branches.
  • doctor - Helps to ensure that stax has everything to be used.
  • help - List of available commands.
       Flags:
@@ -35,6 +36,7 @@ Here are available commands:
  • pull - Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
       Flags:
          -f - Force delete gone branches.
+         -s - Skip deletion of gone branches.
  • version - Version of stax
 """);
     });
