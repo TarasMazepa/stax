@@ -138,6 +138,22 @@ class GitLogAllNode {
     return children.map((x) => x.findRemoteHead()).whereNotNull().firstOrNull;
   }
 
+  Iterable<String> localBranchNamesAndHead() {
+    return line.parts
+        .map((x) => x.replaceFirst("HEAD -> ", ""))
+        .where((x) => x.startsWith("refs/heads/") || x == "HEAD")
+        .map((x) => x.replaceFirst("refs/heads/", ""));
+  }
+
+  Iterable<String> localBranchNames() {
+    return localBranchNamesAndHead().whereNot((x) => x == "HEAD");
+  }
+
+  Iterable<String> localBranchNamesInOrderForRebase() {
+    return localBranchNames().take(1).followedBy(
+        children.expand((x) => x.localBranchNamesInOrderForRebase()));
+  }
+
   @override
   String toString() {
     return "${line.commitHash} ${line.timestamp}"
@@ -159,10 +175,7 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
         ...t.line.parts
             .where((x) => x.startsWith("refs/remotes/"))
             .map((x) => x.replaceFirst("refs/remotes/", "")),
-      ...t.line.parts
-          .map((x) => x.replaceFirst("HEAD -> ", ""))
-          .where((x) => x.startsWith("refs/heads/") || x == "HEAD")
-          .map((x) => x.replaceFirst("refs/heads/", ""))
+      ...t.localBranchNamesAndHead(),
     ].join(", ");
   }
 
