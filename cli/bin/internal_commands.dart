@@ -8,6 +8,7 @@ import 'internal_command_log.dart';
 import 'internal_command_log_test_case.dart';
 import 'internal_command_main_branch.dart';
 import 'internal_command_pull.dart';
+import 'internal_command_rebase.dart';
 import 'internal_command_settings.dart';
 import 'internal_command_terminal.dart';
 import 'internal_command_update.dart';
@@ -24,6 +25,7 @@ final List<InternalCommand> internalCommands = [
   InternalCommandLogTestCase(),
   InternalCommandMainBranch(),
   InternalCommandPull(),
+  InternalCommandRebase(),
   InternalCommandSettings(),
   InternalCommandTerminal(),
   InternalCommandUpdate(),

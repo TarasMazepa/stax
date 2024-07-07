@@ -51,6 +51,8 @@ class GitLogAllLine {
   final List<String> parts;
   late final bool partsHasRemoteHead =
       parts.any((x) => remoteHeadPattern.matchAsPrefix(x) != null);
+  late final bool isCurrent =
+      parts.any((x) => x.startsWith("HEAD -> ") || x == "HEAD");
 
   GitLogAllLine(
     this.commitHash,
@@ -126,6 +128,16 @@ class GitLogAllNode {
     return [...children.expand((x) => x.describe()), toString()];
   }
 
+  GitLogAllNode? findCurrent() {
+    if (line.isCurrent) return this;
+    return children.map((x) => x.findCurrent()).whereNotNull().firstOrNull;
+  }
+
+  GitLogAllNode? findRemoteHead() {
+    if (line.partsHasRemoteHead) return this;
+    return children.map((x) => x.findRemoteHead()).whereNotNull().firstOrNull;
+  }
+
   @override
   String toString() {
     return "${line.commitHash} ${line.timestamp}"
@@ -168,7 +180,7 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
 
   @override
   bool isCurrent(GitLogAllNode t) {
-    return t.line.parts.any((x) => x.startsWith("HEAD -> ") || x == "HEAD");
+    return t.line.isCurrent;
   }
 
   @override
