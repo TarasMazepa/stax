@@ -7,15 +7,21 @@ import 'internal_command.dart';
 
 class InternalCommandDeleteGoneBranches extends InternalCommand {
   static final String forceDeleteFlag = "-f";
+  static final String skipDeleteFlag = "-s";
   static final forceDeleteFlagEntry = {
     forceDeleteFlag: "Force delete gone branches."
+  };
+  static final skipDeleteFlagEntry = {
+    skipDeleteFlag: "Skip deletion of gone branches."
   };
 
   InternalCommandDeleteGoneBranches()
       : super(
           "delete-gone-branches",
           "Deletes local branches with gone remotes.",
-          flags: forceDeleteFlagEntry,
+          flags: {}
+            ..addAll(forceDeleteFlagEntry)
+            ..addAll(skipDeleteFlagEntry),
         );
 
   @override
@@ -41,6 +47,7 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
         .askContinueQuestion(
           "Local branches with gone remotes that would be deleted:\n${branchesToDelete.map((e) => "   • $e").join("\n")}\n",
           assumeYes: args.contains(forceDeleteFlag),
+          assumeNo: args.contains(skipDeleteFlag),
         )
         ?.announce("Deleting branches.")
         .runSync()

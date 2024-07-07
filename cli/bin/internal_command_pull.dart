@@ -13,7 +13,8 @@ class InternalCommandPull extends InternalCommand {
           "pull",
           "Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.",
           flags: {}
-            ..addAll(InternalCommandDeleteGoneBranches.forceDeleteFlagEntry),
+            ..addAll(InternalCommandDeleteGoneBranches.forceDeleteFlagEntry)
+            ..addAll(InternalCommandDeleteGoneBranches.skipDeleteFlagEntry),
         );
 
   @override
@@ -51,7 +52,9 @@ class InternalCommandPull extends InternalCommand {
     if (result == null) return;
     InternalCommandDeleteGoneBranches().run(
       args
-          .where((x) => x == InternalCommandDeleteGoneBranches.forceDeleteFlag)
+          .where((x) =>
+              x == InternalCommandDeleteGoneBranches.forceDeleteFlag ||
+              x == InternalCommandDeleteGoneBranches.skipDeleteFlag)
           .toList(),
       context,
     );
