@@ -70,7 +70,7 @@ stax doctor
 | [amend](#stax-amend)                               | ✅      |
 | [delete-gone-branches](#stax-delete-gone-branches) | ✅      |
 | [pull](#stax-pull)                                 | ✅      |
-| [log](#stax-log)                                   | ✅     |
+| [log](#stax-log)                                   | ✅      |
 | rebase                                             | 🚧     |
 | squash                                             | 🔲     |
 
