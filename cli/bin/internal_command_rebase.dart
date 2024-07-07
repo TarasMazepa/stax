@@ -1,7 +1,6 @@
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
-import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 
 import 'internal_command.dart';
 import 'types_for_internal_command.dart';
@@ -38,7 +37,7 @@ class InternalCommandRebase extends InternalCommand {
       return;
     }
 
-    final remoteHead = current.findRemoteHead();
+    final remoteHead = root.findRemoteHead();
 
     if (remoteHead == null) {
       context.printToConsole("Can't find remote head.");
@@ -50,10 +49,25 @@ class InternalCommandRebase extends InternalCommand {
       return;
     }
 
-    context.printParagraph(
-        "You are about to rebase following branches on top of main");
-    context.printToConsole(materializeDecoratedLogLines(
-            current, DecoratedLogLineProducerAdapterForGitLogAllNode())
-        .join("\n"));
+    final rebaseOnto = remoteHead.localBranchNames().firstOrNull;
+
+    if (rebaseOnto == null) {
+      context.printToConsole("Can't determine on which ref to rebase.");
+      return;
+    }
+
+    for (var branch in current.localBranchNamesInOrderForRebase()) {
+      final exitCode = context.git.rebase
+          .args([rebaseOnto, branch])
+          .announce()
+          .runSync()
+          .printNotEmptyResultFields()
+          .exitCode;
+      if (exitCode != 0) {
+        context.printToConsole("object");
+        return;
+      }
+      context.git.pushForce.announce().runSync().printNotEmptyResultFields();
+    }
   }
 }
