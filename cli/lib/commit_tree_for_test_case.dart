@@ -22,11 +22,20 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
 
   int get length => indexes.length;
 
-  CommitTreeForTestCase next() {
+  CommitTreeForTestCase next({bool skipCurrent = false}) {
+    bool isTimeToLengthen() {
+      if (!skipCurrent && currentId != length) return false;
+      if (mainId != length) return false;
+      for (int i = 0; i < length; i++) {
+        if (indexes[i] != i) return false;
+      }
+      return true;
+    }
+
     if (isTimeToLengthen()) {
       return lengthenAndReset();
     }
-    if (currentId != length) {
+    if (!skipCurrent && currentId != length) {
       return CommitTreeForTestCase(indexes, mainId, currentId + 1);
     }
     if (mainId != length) {
@@ -42,15 +51,6 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
       }
     }
     return CommitTreeForTestCase(newIndexes, 0, 0);
-  }
-
-  bool isTimeToLengthen() {
-    if (currentId != length) return false;
-    if (mainId != length) return false;
-    for (int i = 0; i < length; i++) {
-      if (indexes[i] != i) return false;
-    }
-    return true;
   }
 
   CommitTreeForTestCase lengthenAndReset() {
