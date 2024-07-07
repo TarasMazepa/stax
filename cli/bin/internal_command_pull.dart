@@ -9,8 +9,12 @@ import 'internal_command_delete_gone_branches.dart';
 
 class InternalCommandPull extends InternalCommand {
   InternalCommandPull()
-      : super("pull",
-            "Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.");
+      : super(
+          "pull",
+          "Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.",
+          flags: {}
+            ..addAll(InternalCommandDeleteGoneBranches.forceDeleteFlagEntry),
+        );
 
   @override
   void run(List<String> args, Context context) {
@@ -45,7 +49,12 @@ class InternalCommandPull extends InternalCommand {
         .printNotEmptyResultFields()
         .assertSuccessfulExitCode();
     if (result == null) return;
-    InternalCommandDeleteGoneBranches().run([], context);
+    InternalCommandDeleteGoneBranches().run(
+      args
+          .where((x) => x == InternalCommandDeleteGoneBranches.forceDeleteFlag)
+          .toList(),
+      context,
+    );
     if (needToSwitchBranches && currentBranch != null) {
       context.git.checkout
           .arg(currentBranch)

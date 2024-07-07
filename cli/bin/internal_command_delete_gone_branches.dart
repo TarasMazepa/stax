@@ -6,9 +6,17 @@ import 'package:stax/git/branch_info.dart';
 import 'internal_command.dart';
 
 class InternalCommandDeleteGoneBranches extends InternalCommand {
+  static final String forceDeleteFlag = "-f";
+  static final forceDeleteFlagEntry = {
+    forceDeleteFlag: "Force delete gone branches."
+  };
+
   InternalCommandDeleteGoneBranches()
-      : super("delete-gone-branches",
-            "Deletes local branches with gone remotes.");
+      : super(
+          "delete-gone-branches",
+          "Deletes local branches with gone remotes.",
+          flags: forceDeleteFlagEntry,
+        );
 
   @override
   void run(final List<String> args, final Context context) {
@@ -31,7 +39,9 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
     context.git.branchDelete
         .args(branchesToDelete)
         .askContinueQuestion(
-            "Local branches with gone remotes that would be deleted:\n${branchesToDelete.map((e) => "   • $e").join("\n")}\n")
+          "Local branches with gone remotes that would be deleted:\n${branchesToDelete.map((e) => "   • $e").join("\n")}\n",
+          assumeYes: args.contains(forceDeleteFlag),
+        )
         ?.announce("Deleting branches.")
         .runSync()
         .printNotEmptyResultFields();
