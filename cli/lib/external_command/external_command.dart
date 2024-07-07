@@ -25,7 +25,13 @@ class ExternalCommand {
     return args([extra]);
   }
 
-  ExternalCommand? askContinueQuestion(String questionContext) {
+  ExternalCommand? askContinueQuestion(
+    String questionContext, {
+    bool assumeYes = false,
+    bool assumeNo = false,
+  }) {
+    if (assumeYes) return this;
+    if (assumeNo) return null;
     return context.commandLineContinueQuestion(questionContext) ? this : null;
   }
 

@@ -23,6 +23,8 @@ Here are available commands:
          --pr - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
          -a - Runs 'git add .' before other actions.
  • delete-gone-branches - Deletes local branches with gone remotes.
+      Flags:
+         -f - Force delete gone branches.
  • doctor - Helps to ensure that stax has everything to be used.
  • help - List of available commands.
       Flags:
@@ -31,6 +33,8 @@ Here are available commands:
       Flags:
          --default-branch - assume different default branch
  • pull - Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
+      Flags:
+         -f - Force delete gone branches.
  • version - Version of stax
 """);
     });
