@@ -24,22 +24,33 @@ class InternalCommandMove extends InternalCommand {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }
+
+    final direction = args.elementAtOrNull(0);
+    final rawIndex = args.elementAtOrNull(1);
+    final int? index;
+    if (rawIndex != null) {
+      index = int.tryParse(rawIndex);
+      if (index == null) {
+        context.printToConsole("Can't parse '$rawIndex' as int.");
+        return;
+      }
+    } else {
+      index = null;
+    }
+
     final root = context.withSilence(true).gitLogAll().collapse();
 
     if (root == null) {
-      context.printToConsole("Can't find any branches.");
+      context.printToConsole("Can't find any nodes.");
       return;
     }
 
     final current = root.findCurrent();
 
     if (current == null) {
-      context.printToConsole("Can find current branch.");
+      context.printToConsole("Can find current node.");
       return;
     }
-
-    final direction = args.elementAtOrNull(0);
-    final index = args.elementAtOrNull(1);
 
     GitLogAllNode? target;
     switch (direction) {
@@ -47,8 +58,7 @@ class InternalCommandMove extends InternalCommand {
         if (current.children.isEmpty) {
           target = current;
         } else {
-          target =
-              current.sortedChildren.elementAtOrNull(int.tryParse(index ?? "0") ?? 0);
+          target = current.sortedChildren.elementAtOrNull(index ?? 0);
         }
       case "down":
         if (current.parent == null) {
@@ -57,8 +67,7 @@ class InternalCommandMove extends InternalCommand {
           target = current.parent;
         }
       case "top":
-        var node =
-            current.sortedChildren.elementAtOrNull(int.tryParse(index ?? "0") ?? 0);
+        var node = current.sortedChildren.elementAtOrNull(index ?? 0);
         if (node == null) {
           target = current;
         } else {
