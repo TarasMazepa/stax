@@ -76,7 +76,7 @@ stax doctor
 | [delete-gone-branches](#stax-delete-gone-branches) | ✅      |
 | [pull](#stax-pull)                                 | ✅      |
 | [log](#stax-log)                                   | ✅      |
-| rebase                                             | 🚧     |
+| [rebase](#stax-rebase)                             | 🚧     |
 | move                                               | 🚧     |
 | squash                                             | 🔲     |
 
