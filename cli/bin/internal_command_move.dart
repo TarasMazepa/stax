@@ -48,7 +48,7 @@ class InternalCommandMove extends InternalCommand {
           target = current;
         } else {
           target =
-              current.children.elementAtOrNull(int.tryParse(index ?? "0") ?? 0);
+              current.sortedChildren.elementAtOrNull(int.tryParse(index ?? "0") ?? 0);
         }
       case "down":
         if (current.parent == null) {
@@ -58,7 +58,7 @@ class InternalCommandMove extends InternalCommand {
         }
       case "top":
         var node =
-            current.children.elementAtOrNull(int.tryParse(index ?? "0") ?? 0);
+            current.sortedChildren.elementAtOrNull(int.tryParse(index ?? "0") ?? 0);
         if (node == null) {
           target = current;
         } else {
