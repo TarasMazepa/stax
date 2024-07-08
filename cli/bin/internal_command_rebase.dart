@@ -49,7 +49,7 @@ class InternalCommandRebase extends InternalCommand {
       return;
     }
 
-    final rebaseOnto = remoteHead.localBranchNames().firstOrNull;
+    final rebaseOnto = remoteHead.line.localBranchNames().firstOrNull;
 
     if (rebaseOnto == null) {
       context.printToConsole("Can't determine on which ref to rebase.");
