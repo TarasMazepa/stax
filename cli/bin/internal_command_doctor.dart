@@ -2,6 +2,7 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/string_empty_to_null.dart';
+
 import 'internal_command.dart';
 
 class InternalCommandDoctor extends InternalCommand {
@@ -20,6 +21,7 @@ class InternalCommandDoctor extends InternalCommand {
           .arg("user.name")
           .announce("Checking for users name.")
           .runSync()
+          .printNotEmptyResultFields()
           .stdout
           .toString()
           .trim()
@@ -44,6 +46,7 @@ class InternalCommandDoctor extends InternalCommand {
           .arg("user.email")
           .announce("Checking for users email.")
           .runSync()
+          .printNotEmptyResultFields()
           .stdout
           .toString()
           .trim()
@@ -66,7 +69,9 @@ class InternalCommandDoctor extends InternalCommand {
           .git
           .configGet
           .arg("push.autoSetupRemote")
+          .announce("Checking if push.autoSetupRemote set in git config.")
           .runSync()
+          .printNotEmptyResultFields()
           .stdout
           .toString()
           .trim()
@@ -88,7 +93,9 @@ class InternalCommandDoctor extends InternalCommand {
           .withSilence(true)
           .git
           .remote
+          .announce("Checking if git repository has remote.")
           .runSync()
+          .printNotEmptyResultFields()
           .stdout
           .toString()
           .trim()
