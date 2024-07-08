@@ -181,4 +181,4 @@ Rebase tree of branches on top of main.
 > [!NOTE]
 > Under construction
 
-Allows user to move between log nodes.
+Allows user to move between log nodes. It supports "up", "down", "top", "bottom", and "head" directions.
