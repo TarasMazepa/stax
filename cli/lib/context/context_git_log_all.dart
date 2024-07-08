@@ -171,9 +171,13 @@ class GitLogAllNode {
     return children.map((x) => x.findRemoteHead()).whereNotNull().firstOrNull;
   }
 
-  Iterable<String> localBranchNamesInOrderForRebase() {
-    return line.localBranchNames().take(1).followedBy(
-        children.expand((x) => x.localBranchNamesInOrderForRebase()));
+  Iterable<({String? parent, String node})> localBranchNamesInOrderForRebase() {
+    return [
+      (
+        parent: parent?.line.localBranchNames().first,
+        node: line.localBranchNames().first,
+      )
+    ].followedBy(children.expand((x) => x.localBranchNamesInOrderForRebase()));
   }
 
   bool isRemoteHeadReachable() {
