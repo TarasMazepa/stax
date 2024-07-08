@@ -182,3 +182,7 @@ Rebase tree of branches on top of main.
 > Under construction
 
 Allows user to move between log nodes. It supports "up", "down", "top", "bottom", and "head" directions.
+
+# Alternatives
+
+Here you will see list of alternatives to stax.
