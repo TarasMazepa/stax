@@ -72,7 +72,7 @@ class InternalCommandMove extends InternalCommand {
         if (node == null) {
           target = current;
         } else {
-          while (node?.children.length == 1 && node?.parent != null) {
+          while (node?.parent?.children.length == 1 && node?.parent != null) {
             node = node?.parent;
           }
           target = node;
