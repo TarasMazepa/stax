@@ -116,6 +116,17 @@ class GitLogAllNode {
   GitLogAllNode? parent;
   List<GitLogAllNode> children = [];
 
+  List<GitLogAllNode> get sortedChildren {
+    return children.sorted((a, b) => ComparisonChain()
+        .chainBoolReverse(a.isRemoteHeadReachable(), b.isRemoteHeadReachable())
+        .chain(() => (b.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ??
+                "")
+            .compareTo(
+                a.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ?? ""))
+        .chain(() => b.line.timestamp - a.line.timestamp)
+        .compare());
+  }
+
   factory GitLogAllNode.root(GitLogAllLine line) {
     assert(line.parentCommitHash == null,
         "To create root node line.parentCommitHash should be null");
