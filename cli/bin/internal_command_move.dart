@@ -44,23 +44,39 @@ class InternalCommandMove extends InternalCommand {
     GitLogAllNode? target;
     switch (direction) {
       case "up":
-        target =
-            current.children.elementAtOrNull(int.tryParse(index ?? "0") ?? 0);
+        if (current.children.isEmpty) {
+          target = current;
+        } else {
+          target =
+              current.children.elementAtOrNull(int.tryParse(index ?? "0") ?? 0);
+        }
       case "down":
-        target = current.parent;
+        if (current.parent == null) {
+          target = current;
+        } else {
+          target = current.parent;
+        }
       case "top":
         var node =
             current.children.elementAtOrNull(int.tryParse(index ?? "0") ?? 0);
-        while (node?.children.length == 1) {
-          node = node?.children.first;
+        if (node == null) {
+          target = current;
+        } else {
+          while (node?.children.length == 1) {
+            node = node?.children.first;
+          }
+          target = node;
         }
-        target = node;
       case "bottom":
         var node = current.parent;
-        while (node?.children.length == 1 && node?.parent != null) {
-          node = node?.parent;
+        if (node == null) {
+          target = current;
+        } else {
+          while (node?.children.length == 1 && node?.parent != null) {
+            node = node?.parent;
+          }
+          target = node;
         }
-        target = node;
       case "head":
         target = root.findRemoteHead();
       default:
@@ -70,6 +86,10 @@ class InternalCommandMove extends InternalCommand {
     if (target == null) {
       context.printToConsole(
           "Can't find target node with '$direction' direction${index == null ? "" : " and '$index' index"}.");
+      return;
+    }
+    if (target == current) {
+      context.printToConsole("Looks like you are already there.");
       return;
     }
     context.git.checkout
