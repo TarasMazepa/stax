@@ -175,3 +175,10 @@ o-┘
 > Under construction
 
 Rebase tree of branches on top of main.
+
+### stax move
+
+> [!NOTE]
+> Under construction
+
+Allows user to move between log nodes.
