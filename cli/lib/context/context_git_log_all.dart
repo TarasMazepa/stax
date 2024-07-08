@@ -174,7 +174,8 @@ class GitLogAllNode {
   Iterable<({String? parent, String node})> localBranchNamesInOrderForRebase() {
     return [
       (
-        parent: parent?.line.localBranchNames().first,
+        parent: parent?.line.localBranchNames().firstOrNull ??
+            parent?.line.remoteBranchNames().firstOrNull,
         node: line.localBranchNames().first,
       )
     ].followedBy(children.expand((x) => x.localBranchNamesInOrderForRebase()));
