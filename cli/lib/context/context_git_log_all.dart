@@ -165,6 +165,11 @@ class GitLogAllNode {
         children.expand((x) => x.localBranchNamesInOrderForRebase()));
   }
 
+  bool isRemoteHeadReachable() {
+    return line.partsHasRemoteHead ||
+        children.any((x) => x.isRemoteHeadReachable());
+  }
+
   @override
   String toString() {
     return "${line.commitHash} ${line.timestamp}"
