@@ -68,12 +68,19 @@ class InternalCommandMove extends InternalCommand {
           target = node;
         }
       case "bottom":
+        final isRemoteHeadReachable = current.isRemoteHeadReachable();
+        bool moveDownAtLeastOnce = true;
         var node = current.parent;
         if (node == null) {
           target = current;
         } else {
-          while (node?.parent?.children.length == 1 && node?.parent != null) {
+          while (node?.parent != null &&
+              (moveDownAtLeastOnce ||
+                  node?.parent?.isRemoteHeadReachable() ==
+                      isRemoteHeadReachable) &&
+              node?.parent?.children.length == 1) {
             node = node?.parent;
+            moveDownAtLeastOnce = false;
           }
           target = node;
         }
