@@ -174,7 +174,7 @@ o-┘
 > [!NOTE]
 > Under construction
 
-Rebase tree of branches on top of main.
+Rebase tree of nodes on top of the <remote>/head.
 
 ### stax move
 
