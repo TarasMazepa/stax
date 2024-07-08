@@ -1,6 +1,7 @@
 # Stax
 
-Stax is a tool that will help you a bit with day-to-day stax-like git workflow.
+Stax is a tool that will help you a bit with day-to-day stax-like git workflow. You can read more
+about it here https://www.stacking.dev/
 
 Main purpose is to make it easier to create smaller PRs. And reduce amount of energy other people
 need to review them.
@@ -181,7 +182,8 @@ Rebase tree of nodes on top of the <remote>/head.
 > [!NOTE]
 > Under construction
 
-Allows user to move between log nodes. It supports "up", "down", "top", "bottom", and "head" directions.
+Allows user to move between log nodes. It supports "up", "down", "top", "bottom", and "head"
+directions.
 
 # Alternatives
 
