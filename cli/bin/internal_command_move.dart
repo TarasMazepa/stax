@@ -14,8 +14,6 @@ class InternalCommandMove extends InternalCommand {
           arguments: {
             "arg1":
                 "up (one up), down (one down), top (to the closest top parent that have at least two children or to the top most node), bottom (to the closest bottom parent that have at least two children or bottom most node), head (<remote>/head)",
-            "opt2":
-                "when using 'up' or 'top' as arg1, you can specify index of the child which would be selected for the current node.",
           },
         );
 
@@ -59,42 +57,35 @@ class InternalCommandMove extends InternalCommand {
     }
 
     GitLogAllNode? target = {
-      "up": () => current.children.isEmpty
+      "up": (int? index) => current.children.isEmpty
           ? current
           : current.sortedChildren.elementAtOrNull(index ?? 0),
-      "down": () => current.parent ?? current,
-      "top": () {
+      "down": (int? index) => current.parent ?? current,
+      "top": (int? index) {
         var node = current.sortedChildren.elementAtOrNull(index ?? 0);
-        if (node == null) {
-          return current;
-        } else {
-          while (node?.children.length == 1) {
-            node = node?.children.first;
-          }
-          return node;
+        while (node?.children.length == 1) {
+          node = node?.children.first;
         }
+        return node;
       },
-      "bottom": () {
+      "bottom": (int? index) {
         final isRemoteHeadReachable = current.isRemoteHeadReachable();
-        bool moveDownAtLeastOnce = true;
         var node = current.parent;
         if (node == null) {
           return current;
         } else {
           while (node?.parent != null &&
-              (moveDownAtLeastOnce ||
-                  node?.parent?.isRemoteHeadReachable() ==
-                      isRemoteHeadReachable) &&
+              node?.parent?.isRemoteHeadReachable() == isRemoteHeadReachable &&
               node?.children.length == 1) {
             node = node?.parent;
-            moveDownAtLeastOnce = false;
           }
           return node;
         }
       },
+      "head": (int? index) => current.findRemoteHead(),
     }
         .entries
-        .fold<MapEntry<String, GitLogAllNode? Function()>?>(
+        .fold<MapEntry<String, GitLogAllNode? Function(int?)>?>(
             null,
             (value, element) => element.key.startsWith(direction)
                 ? element.key.length <=
@@ -102,7 +93,7 @@ class InternalCommandMove extends InternalCommand {
                     ? element
                     : value
                 : value)
-        ?.value();
+        ?.value(index);
 
     if (target == null) {
       context.printToConsole(
