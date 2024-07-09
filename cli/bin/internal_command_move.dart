@@ -26,6 +26,12 @@ class InternalCommandMove extends InternalCommand {
     }
 
     final direction = args.elementAtOrNull(0);
+
+    if (direction == null) {
+      context.printToConsole("Direction wasn't provided.");
+      return;
+    }
+
     final rawIndex = args.elementAtOrNull(1);
     final int? index;
     if (rawIndex != null) {
@@ -52,36 +58,28 @@ class InternalCommandMove extends InternalCommand {
       return;
     }
 
-    GitLogAllNode? target;
-    switch (direction) {
-      case "up":
-        if (current.children.isEmpty) {
-          target = current;
-        } else {
-          target = current.sortedChildren.elementAtOrNull(index ?? 0);
-        }
-      case "down":
-        if (current.parent == null) {
-          target = current;
-        } else {
-          target = current.parent;
-        }
-      case "top":
+    GitLogAllNode? target = {
+      "up": () => current.children.isEmpty
+          ? current
+          : current.sortedChildren.elementAtOrNull(index ?? 0),
+      "down": () => current.parent ?? current,
+      "top": () {
         var node = current.sortedChildren.elementAtOrNull(index ?? 0);
         if (node == null) {
-          target = current;
+          return current;
         } else {
           while (node?.children.length == 1) {
             node = node?.children.first;
           }
-          target = node;
+          return node;
         }
-      case "bottom":
+      },
+      "bottom": () {
         final isRemoteHeadReachable = current.isRemoteHeadReachable();
         bool moveDownAtLeastOnce = true;
         var node = current.parent;
         if (node == null) {
-          target = current;
+          return current;
         } else {
           while (node?.parent != null &&
               (moveDownAtLeastOnce ||
@@ -91,14 +89,21 @@ class InternalCommandMove extends InternalCommand {
             node = node?.parent;
             moveDownAtLeastOnce = false;
           }
-          target = node;
+          return node;
         }
-      case "head":
-        target = root.findRemoteHead();
-      default:
-        context.printToConsole("unknown direction '$direction'");
-        return;
+      },
     }
+        .entries
+        .fold<MapEntry<String, GitLogAllNode? Function()>?>(
+            null,
+            (value, element) => element.key.startsWith(direction)
+                ? element.key.length <=
+                        (value?.key.length ?? element.key.length)
+                    ? element
+                    : value
+                : value)
+        ?.value();
+
     if (target == null) {
       context.printToConsole(
           "Can't find target node with '$direction' direction${index == null ? "" : " and '$index' index"}.");
