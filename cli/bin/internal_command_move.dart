@@ -82,7 +82,7 @@ class InternalCommandMove extends InternalCommand {
           return node;
         }
       },
-      "head": (int? index) => current.findRemoteHead(),
+      "head": (int? index) => root.findRemoteHead(),
     }
         .entries
         .fold<MapEntry<String, GitLogAllNode? Function(int?)>?>(
