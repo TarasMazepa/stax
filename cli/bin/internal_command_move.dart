@@ -85,7 +85,7 @@ class InternalCommandMove extends InternalCommand {
               (moveDownAtLeastOnce ||
                   node?.parent?.isRemoteHeadReachable() ==
                       isRemoteHeadReachable) &&
-              node?.parent?.children.length == 1) {
+              node?.children.length == 1) {
             node = node?.parent;
             moveDownAtLeastOnce = false;
           }
