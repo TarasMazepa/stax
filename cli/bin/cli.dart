@@ -1,6 +1,7 @@
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
 
+import 'internal_command.dart';
 import 'internal_command_help.dart';
 import 'internal_commands.dart';
 
@@ -11,7 +12,14 @@ void main(List<String> arguments) {
     case []:
       InternalCommandHelp().run([], context);
     case [final commandName, ...final args]:
-      final command = internalCommandRegistry[commandName];
+      final command = internalCommandRegistry.entries.fold<InternalCommand?>(
+          null,
+          (previous, element) => element.key.startsWith(commandName)
+              ? element.key.length <=
+                      (previous?.name.length ?? element.key.length)
+                  ? element.value
+                  : previous
+              : previous);
       if (command == null) {
         context.printToConsole("Unknown command '$commandName'.");
       } else {
