@@ -187,4 +187,4 @@ directions.
 
 # Alternatives
 
-Here you will see list of alternatives to stax.
+You can find alternatives listed on https://www.stacking.dev/
