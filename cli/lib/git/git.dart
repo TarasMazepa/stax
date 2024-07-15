@@ -4,6 +4,7 @@ import 'package:stax/external_command/external_command.dart';
 class Git {
   late final add = rawEc("git add");
   late final addAll = add.arg(".");
+  late final addUpdate = add.args(["-u", "."]);
   late final branch = rawEc("git branch");
   late final branchCurrent = branch.arg("--show-current");
   late final branchDelete = branch.arg("-D");
