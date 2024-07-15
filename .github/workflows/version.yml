@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: getversion
-        run: echo "::set-output name=version::$(cat VERSION)"
+        run: echo "{version}={$(cat VERSION)}" >> $GITHUB_STATE
       - uses: actions/github-script@v5
         with:
           script: |
