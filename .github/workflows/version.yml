@@ -35,7 +35,7 @@ jobs:
           git config --global user.name 'stax'
           git config --global user.email 'stax@staxforgit.com'
           git commit -a -m "Chocolatey update stax to $TAG"
-          git push origin
+          git push origin --force
         env:
           TAG: ${{ steps.getversion.outputs.version }}
           GH_TOKEN: ${{ github.token }}
