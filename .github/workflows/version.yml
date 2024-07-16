@@ -38,6 +38,10 @@ jobs:
           git commit -a -m "Chocolatey update stax to $TAG"
           git push --set-upstream origin chocolatey-update-stax-to-$TAG
           gh pr merge $(gh pr create -B main -f) --auto --squash
+        env:
+          TAG: ${{ steps.getversion.outputs.version }}
+          GH_TOKEN: ${{ github.token }}
+      - run: |
           gh workflow run dart-test.yml --ref chocolatey-update-stax-to-$TAG
         env:
           TAG: ${{ steps.getversion.outputs.version }}
