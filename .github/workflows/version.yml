@@ -29,5 +29,5 @@ jobs:
             /repos/TarasMazepa/homebrew-stax/actions/workflows/update.yml/dispatches \
             -f "inputs[tag]=${{ steps.getversion.outputs.version }}"
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}
     
