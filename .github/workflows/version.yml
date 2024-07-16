@@ -34,8 +34,15 @@ jobs:
           sed -i "s+<version>.*</version>+<version>$TAG</version>+" ./chocolatey/stax/stax.nuspec
           git config --global user.name 'stax'
           git config --global user.email 'stax@staxforgit.com'
+          git checkout -b chocolatey-update-stax-to-$TAG
           git commit -a -m "Chocolatey update stax to $TAG"
-          git push origin --force
+          git push --set-upstream origin chocolatey-update-stax-to-$TAG
+          gh pr merge $(gh pr create -B main -f) --auto --squash
+        env:
+          TAG: ${{ steps.getversion.outputs.version }}
+          GH_TOKEN: ${{ github.token }}
+      - run: |
+          gh workflow run dart-test.yml --ref chocolatey-update-stax-to-$TAG
         env:
           TAG: ${{ steps.getversion.outputs.version }}
           GH_TOKEN: ${{ github.token }}
