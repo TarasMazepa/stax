@@ -2,7 +2,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      VERSION
+      chocolatey/stax
 
 jobs:
   version:
