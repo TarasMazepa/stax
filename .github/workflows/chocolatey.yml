@@ -9,15 +9,9 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: crazy-max/ghaction-chocolatey@v3
-      with:
-        args: source add -n=github-packages -s="https://nuget.pkg.github.com/tarasmazepa/index.json" -u "TarasMazepa" -p ${{ secrets.PAT }}
     - run: |
+        Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+        choco source add -n=github-packages -s="https://nuget.pkg.github.com/tarasmazepa/index.json" -u "TarasMazepa" -p ${{ secrets.PAT }}
         cd chocolatey\stax
-    - uses: crazy-max/ghaction-chocolatey@v3
-      with:
-        args: pack
-    - uses: crazy-max/ghaction-chocolatey@v3
-      with:
-        args: push "$(gci -filter "*.nupkg" -Name)" -s="https://nuget.pkg.github.com/tarasmazepa" -p ${{ secrets.PAT }}
-  
+        choco pack
+        choco push "$(gci -filter "*.nupkg" -Name)" -s="https://nuget.pkg.github.com/tarasmazepa" -p ${{ secrets.PAT }}
