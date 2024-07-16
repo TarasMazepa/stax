@@ -1,7 +1,7 @@
 ﻿$toolsDir = "$( Split-Path -parent $MyInvocation.MyCommand.Definition )"
 
 $repoZipFile = "$toolsDir\repo.zip"
-Get-ChocolateyWebFile -PackageName 'stax' -FileFullPath $repoZipFile -Url 'https://github.com/TarasMazepa/stax/archive/0.7.23.zip
+Get-ChocolateyWebFile -PackageName 'stax' -FileFullPath $repoZipFile -Url 'https://github.com/TarasMazepa/stax/archive/0.7.24.zip'
 Get-ChocolateyUnzip -FileFullPath $repoZipFile -Destination $toolsDir
 
 & dart pub --directory="$toolsDir\stax-main\cli" get
