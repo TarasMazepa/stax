@@ -5,7 +5,7 @@ on:
       chocolatey/stax/**
 
 jobs:
-  version:
+  chocolatey:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
