@@ -20,7 +20,8 @@ jobs:
               ref: 'refs/tags/${{ steps.getversion.outputs.version }}',
               sha: context.sha
             })
-      - run: |
+      - if: '!cancelled()'
+        run: |
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
