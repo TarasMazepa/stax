@@ -45,5 +45,5 @@ jobs:
           gh workflow run dart-test.yml --ref chocolatey-update-stax-to-$TAG
         env:
           TAG: ${{ steps.getversion.outputs.version }}
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.STAX_CREATE_PR }}
 
