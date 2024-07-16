@@ -1,0 +1,23 @@
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      VERSION
+
+jobs:
+  version:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: crazy-max/ghaction-chocolatey@v3
+      with:
+        args: source add -n=github-packages -s="https://nuget.pkg.github.com/tarasmazepa/index.json" -u "TarasMazepa" -p ${{ secrets.PAT }}
+    - uses: crazy-max/ghaction-chocolatey@v3
+      working-directory: chocolatey/stax
+      with:
+        args: pack
+    - uses: crazy-max/ghaction-chocolatey@v3
+      working-directory: chocolatey/stax
+      with:
+        args: push "$(gci -filter "*.nupkg" -Name)" -s="https://nuget.pkg.github.com/tarasmazepa" -p ${{ secrets.PAT }}
+  
