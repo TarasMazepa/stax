@@ -20,4 +20,13 @@ jobs:
               ref: 'refs/tags/${{ steps.getversion.outputs.version }}',
               sha: context.sha
             })
+      - run: |
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/TarasMazepa/homebrew-stax/actions/workflows/update.yml/dispatches \
+             -f "ref=main" -f "inputs[tag]=${{ steps.getversion.outputs.version }}"
+        env:
+          GH_TOKEN: ${{ github.token }}
     
