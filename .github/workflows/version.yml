@@ -39,10 +39,10 @@ jobs:
           git push --set-upstream origin chocolatey-update-stax-to-$TAG
         env:
           TAG: ${{ steps.getversion.outputs.version }}
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.PAT }}
       - run: |
           gh pr merge $(gh pr create -B main -f) --auto --squash
         env:
           TAG: ${{ steps.getversion.outputs.version }}
-          GH_TOKEN: ${{ secrets.STAX_CREATE_PR }}
+          GH_TOKEN: ${{ secrets.PAT }}
 
