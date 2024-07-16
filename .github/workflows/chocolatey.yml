@@ -14,4 +14,4 @@ jobs:
         choco source add -n=github-packages -s="https://nuget.pkg.github.com/tarasmazepa/index.json" -u "TarasMazepa" -p ${{ secrets.PAT }}
         cd chocolatey\stax
         choco pack
-        choco push "$(gci -filter "*.nupkg" -Name)" -s="https://nuget.pkg.github.com/tarasmazepa" -p ${{ secrets.PAT }}
+        choco push "$(gci -filter "*.nupkg" -Name)" --source "https://nuget.pkg.github.com/tarasmazepa" --api-key ${{ secrets.PAT }}
