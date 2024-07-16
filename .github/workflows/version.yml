@@ -27,7 +27,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/TarasMazepa/homebrew-stax/actions/workflows/update.yml/dispatches \
-            -f "inputs[tag]=${{ steps.getversion.outputs.version }}"
+            -f "ref=main" -f "inputs[tag]=${{ steps.getversion.outputs.version }}"
         env:
           GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}
     
