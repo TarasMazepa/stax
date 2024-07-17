@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v4
     - run: |
         Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-        choco source add -n=github-packages -s="https://nuget.pkg.github.com/tarasmazepa/index.json" -u "TarasMazepa" -p ${{ secrets.PAT }}
+        choco source add -n=github-packages -s="https://nuget.pkg.github.com/tarasmazepa/index.json" -u "TarasMazepa" --password ${{ secrets.GITHUB_TOKEN }}
         cd chocolatey\stax
         choco pack
-        choco push "$(gci -filter "*.nupkg" -Name)" --source "https://nuget.pkg.github.com/tarasmazepa" --api-key ${{ secrets.PAT }}
+        choco push "$(gci -filter "*.nupkg" -Name)" --source "https://nuget.pkg.github.com/tarasmazepa" --password ${{ secrets.GITHUB_TOKEN }}
