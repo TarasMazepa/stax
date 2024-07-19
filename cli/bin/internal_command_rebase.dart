@@ -11,6 +11,10 @@ class InternalCommandRebase extends InternalCommand {
           "rebase",
           "rebase tree of branches on top of main",
           type: InternalCommandType.hidden,
+          arguments: {
+            "opt1":
+                "Optional argument for target, will default to <remote>/HEAD",
+          },
         );
 
   @override
@@ -49,7 +53,8 @@ class InternalCommandRebase extends InternalCommand {
       return;
     }
 
-    final rebaseOnto = remoteHead.line.localBranchNames().firstOrNull;
+    final rebaseOnto = args.elementAtOrNull(0) ??
+        remoteHead.line.localBranchNames().firstOrNull;
 
     if (rebaseOnto == null) {
       context.printToConsole("Can't determine on which ref to rebase.");
