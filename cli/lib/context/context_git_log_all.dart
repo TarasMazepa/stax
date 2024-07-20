@@ -24,7 +24,13 @@ extension GitLogAllOnContext on Context {
     lines.remove(root.line);
     final nodes = {root.line.commitHash: root};
     final nextLines = <GitLogAllLine>[];
+    int oldLength = 0;
     while (lines.isNotEmpty) {
+      if (lines.length == oldLength) {
+        print("Omitting $oldLength nodes");
+        break;
+      }
+      oldLength = lines.length;
       for (final line in lines) {
         final parent = nodes[line.parentCommitHash];
         if (parent == null) {
