@@ -20,8 +20,7 @@ jobs:
               ref: 'refs/tags/${{ steps.getversion.outputs.version }}',
               sha: context.sha
             })
-      - if: '!cancelled()'
-        run: |
+      - run: |
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
@@ -33,6 +32,9 @@ jobs:
       - run: |
           sed -i "s+<version>.*</version>+<version>$TAG</version>+" ./chocolatey/stax/stax.nuspec
           sed -i "s+$tag = '.*'+$tag = '$TAG'+" ./chocolatey/stax/tools/chocolateyinstall.ps1
+          sed -i "s+-Checksum .*+-Checksum $(
+            curl -sL https://github.com/TarasMazepa/stax/archive/$TAG.zip | sha256sum | sed 's/  -//'
+          ) `+" ./chocolatey/stax/tools/chocolateyinstall.ps1
           git config --global user.name 'stax'
           git config --global user.email 'stax@staxforgit.com'
           git checkout -b chocolatey-update-stax-to-$TAG
