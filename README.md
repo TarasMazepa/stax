@@ -77,7 +77,7 @@ stax doctor
 | [pull](#stax-pull)                                 | ✅      |
 | [log](#stax-log)                                   | ✅      |
 | [rebase](#stax-rebase)                             | ✅     |
-| move                                               | 🚧     |
+| [move](#stax-move)                               | ✅     |
 
 ## v2 Roadmap
 
