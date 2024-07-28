@@ -183,6 +183,6 @@ Move has five directions:
 
 # Videos
 
-[Checking out stacking workflow](https://www.youtube.com/watch?v=zoqbYxW3saY)
-
 [Why stack pull request?](https://youtu.be/gJu0oseqaqs)
+
+[Checking out stacking workflow](https://www.youtube.com/watch?v=zoqbYxW3saY)
