@@ -186,3 +186,14 @@ Move has five directions:
 [Why stack pull request?](https://youtu.be/gJu0oseqaqs)
 
 [Checking out stacking workflow](https://www.youtube.com/watch?v=zoqbYxW3saY)
+
+## Alternatives
+
+* https://sapling-scm.com/
+* https://graphite.dev/
+* https://stacked-git.github.io/
+* https://github.com/ezyang/ghstack
+* https://www.git-town.com/
+* https://ejoffe.github.io/spr/
+* https://stacked-git.github.io/
+* https://github.com/modularml/stack-pr
