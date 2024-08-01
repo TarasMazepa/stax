@@ -2,13 +2,13 @@
 
 $repoZipFile = "$toolsDir\repo.zip"
 
-$tag = '0.6.3'
+$tag = '0.8.1'
 
 Get-ChocolateyWebFile `
     -PackageName 'stax' `
     -FileFullPath $repoZipFile `
     -Url "https://github.com/TarasMazepa/stax/archive/$tag.zip" `
-    -Checksum B4C2E8246EA5662D88009085AEFA1FD6957485369ACE872FBB84261FEE47010A `
+    -Checksum 0fab8cb2265b3485653a3594c45e8113dcdf2fca0ab2e118507a7633dd5ee9d2 `
     -ChecksumType SHA256
 
 Get-ChocolateyUnzip `
