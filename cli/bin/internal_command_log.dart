@@ -7,10 +7,17 @@ import 'internal_command.dart';
 
 class InternalCommandLog extends InternalCommand {
   static final String defaultBranchFlag = "--default-branch";
+  static final String allBranchesFlag = "-a";
 
   InternalCommandLog()
-      : super("log", "Builds a tree of all branches.",
-            flags: {defaultBranchFlag: "assume different default branch"});
+      : super(
+          "log",
+          "Builds a tree of all branches.",
+          flags: {
+            defaultBranchFlag: "assume different default branch",
+            allBranchesFlag: "show remote branches also"
+          },
+        );
 
   @override
   void run(List<String> args, Context context) {
@@ -22,8 +29,16 @@ class InternalCommandLog extends InternalCommand {
     final defaultBranch =
         args.elementAtOrNull(args.indexOf(defaultBranchFlag) + 1);
 
-    print(materializeDecoratedLogLines(context.gitLogAll().collapse(),
-            DecoratedLogLineProducerAdapterForGitLogAllNode(defaultBranch))
-        .join("\n"));
+    final showAllBranches = args.remove(allBranchesFlag);
+
+    print(
+      materializeDecoratedLogLines(
+        context.gitLogAll().collapse(showAllBranches),
+        DecoratedLogLineProducerAdapterForGitLogAllNode(
+          showAllBranches,
+          defaultBranch,
+        ),
+      ).join("\n"),
+    );
   }
 }

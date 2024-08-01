@@ -21,9 +21,9 @@ Here are available commands:
          arg1 - Required commit message, usually enclosed in double quotes like this: "Sample commit message".
          opt2 - Optional branch name, if not provided commit message would be converted to branch name.
       Flags:
-         --pr - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
          -a - Runs 'git add .' before other actions. Which adds tracked and untracked files.
          -b - Accepts branch name proposed by converting commit name to branch name.
+         --pr - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
          -u - Runs 'git add -u .' before other actions. Which adds only tracked files.
  • delete-gone-branches - Deletes local branches with gone remotes.
       Flags:
@@ -35,6 +35,7 @@ Here are available commands:
          -a - Show all commands including hidden.
  • log - Builds a tree of all branches.
       Flags:
+         -a - show remote branches also
          --default-branch - assume different default branch
  • pull - Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
       Flags:
