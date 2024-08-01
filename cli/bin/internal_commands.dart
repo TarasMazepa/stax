@@ -1,5 +1,6 @@
 import 'internal_command.dart';
 import 'internal_command_amend.dart';
+import 'internal_command_checkout.dart';
 import 'internal_command_commit.dart';
 import 'internal_command_delete_gone_branches.dart';
 import 'internal_command_doctor.dart';
@@ -19,6 +20,7 @@ import 'internal_command_version.dart';
 final List<InternalCommand> internalCommands = [
   InternalCommandAmend(),
   InternalCommandCommit(),
+  InternalCommandCheckout(),
   InternalCommandDeleteGoneBranches(),
   InternalCommandDoctor(),
   InternalCommandHelp(),

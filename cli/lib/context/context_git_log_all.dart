@@ -174,14 +174,26 @@ class GitLogAllNode {
     return [...children.expand((x) => x.describe()), toString()];
   }
 
+  GitLogAllNode? find(bool Function(GitLogAllNode) predicate) {
+    if (predicate(this)) return this;
+    return children
+        .map(
+          (x) => x.find(predicate),
+        )
+        .whereNotNull()
+        .firstOrNull;
+  }
+
   GitLogAllNode? findCurrent() {
-    if (line.isCurrent) return this;
-    return children.map((x) => x.findCurrent()).whereNotNull().firstOrNull;
+    return find(
+      (x) => x.line.isCurrent,
+    );
   }
 
   GitLogAllNode? findRemoteHead() {
-    if (line.partsHasRemoteHead) return this;
-    return children.map((x) => x.findRemoteHead()).whereNotNull().firstOrNull;
+    return find(
+      (x) => x.line.partsHasRemoteHead,
+    );
   }
 
   Iterable<({String? parent, String node})> localBranchNamesInOrderForRebase() {
@@ -192,6 +204,15 @@ class GitLogAllNode {
         node: line.localBranchNames().first,
       )
     ].followedBy(children.expand((x) => x.localBranchNamesInOrderForRebase()));
+  }
+
+  Iterable<String> remoteBranchNamesInOrderForCheckout() {
+    return children
+        .expand(
+          (x) => x.remoteBranchNamesInOrderForCheckout(),
+        )
+        .cast<String?>()
+        .followedBy([line.remoteBranchNames().firstOrNull]).whereNotNull();
   }
 
   bool isRemoteHeadReachable() {

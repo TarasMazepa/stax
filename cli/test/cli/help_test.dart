@@ -16,6 +16,9 @@ Here are available commands:
       Flags:
          -a - Runs 'git add .' before other actions. Which adds tracked and untracked files.
          -u - Runs 'git add -u .' before other actions. Which adds only tracked files.
+ • checkout - checkout PR stack
+      Positional arguments:
+         arg1 - name of the remote ref
  • commit - Creates a branch, commits, and pushes it to remote. First argument is mandatory commit message. Second argument is optional branch name, if not provided branch name would be generated from commit message.
       Positional arguments:
          arg1 - Required commit message, usually enclosed in double quotes like this: "Sample commit message".
