@@ -4,11 +4,11 @@ import 'package:stax/context/context_git_log_all.dart';
 
 import 'internal_command.dart';
 
-class InternalCommandCheckout extends InternalCommand {
-  InternalCommandCheckout()
+class InternalCommandGet extends InternalCommand {
+  InternalCommandGet()
       : super(
-          "checkout",
-          "checkout PR stack",
+          "get",
+          "checkout all child branches",
           arguments: {
             "arg1": "name of the remote ref",
           },
@@ -39,7 +39,9 @@ class InternalCommandCheckout extends InternalCommand {
       return;
     }
 
-    for (String branch in targetNode.remoteBranchNamesInOrderForCheckout()) {
+    for (String branch in targetNode.remoteBranchNamesInOrderForCheckout().map(
+          (x) => x.substring(x.indexOf("/")),
+        )) {
       final result = context.git.checkout
           .arg(branch)
           .announce()

@@ -16,9 +16,6 @@ Here are available commands:
       Flags:
          -a - Runs 'git add .' before other actions. Which adds tracked and untracked files.
          -u - Runs 'git add -u .' before other actions. Which adds only tracked files.
- • checkout - checkout PR stack
-      Positional arguments:
-         arg1 - name of the remote ref
  • commit - Creates a branch, commits, and pushes it to remote. First argument is mandatory commit message. Second argument is optional branch name, if not provided branch name would be generated from commit message.
       Positional arguments:
          arg1 - Required commit message, usually enclosed in double quotes like this: "Sample commit message".
@@ -33,6 +30,9 @@ Here are available commands:
          -f - Force delete gone branches.
          -s - Skip deletion of gone branches.
  • doctor - Helps to ensure that stax has everything to be used.
+ • get - checkout all child branches
+      Positional arguments:
+         arg1 - name of the remote ref
  • help - List of available commands.
       Flags:
          -a - Show all commands including hidden.
