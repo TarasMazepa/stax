@@ -20,9 +20,9 @@ import 'internal_command_version.dart';
 final List<InternalCommand> internalCommands = [
   InternalCommandAmend(),
   InternalCommandCommit(),
-  InternalCommandCheckout(),
   InternalCommandDeleteGoneBranches(),
   InternalCommandDoctor(),
+  InternalCommandGet(),
   InternalCommandHelp(),
   InternalCommandLog(),
   InternalCommandLogTestCase(),
