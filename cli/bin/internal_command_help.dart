@@ -22,12 +22,24 @@ class InternalCommandHelp extends InternalCommand {
 
   void printMapSorted(
       Context context, String header, Map<String, String>? map, String indent) {
-    printEntries(context, header, map?.entries.sortedBy((x) => x.key), indent);
+    printEntries(
+      context,
+      header,
+      map?.entries.sortedBy(
+        (x) => x.key.replaceAll("-", ""),
+      ),
+      indent,
+    );
   }
 
   void printMap(
       Context context, String header, Map<String, String>? map, String indent) {
-    printEntries(context, header, map?.entries.toList(), indent);
+    printEntries(
+      context,
+      header,
+      map?.entries.toList(),
+      indent,
+    );
   }
 
   @override

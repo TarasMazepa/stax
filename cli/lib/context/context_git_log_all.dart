@@ -49,16 +49,19 @@ extension GitLogAllOnContext on Context {
 }
 
 class GitLogAllLine {
-  static final remoteHeadPattern = RegExp(r"^refs/remotes/.+/HEAD$");
-
   final String commitHash;
   final int timestamp;
   final String? parentCommitHash;
   final List<String> parts;
-  late final bool partsHasRemoteHead =
-      parts.any((x) => remoteHeadPattern.matchAsPrefix(x) != null);
-  late final bool isCurrent =
-      parts.any((x) => x.startsWith("HEAD -> ") || x == "HEAD");
+  late final bool partsHasRemoteHead = parts.any(
+    (x) => x.startsWith("refs/remotes/") && x.endsWith("/HEAD"),
+  );
+  late final bool partsHasRemoteRef = parts.any(
+    (x) => x.startsWith("refs/remotes/"),
+  );
+  late final bool isCurrent = parts.any(
+    (x) => x.startsWith("HEAD -> ") || x == "HEAD",
+  );
 
   GitLogAllLine(
     this.commitHash,
@@ -146,9 +149,13 @@ class GitLogAllNode {
     return children.last;
   }
 
-  GitLogAllNode? collapse() {
-    children = children.map((x) => x.collapse()).whereNotNull().toList();
-    final hasInterestingParts = line.partsHasRemoteHead ||
+  GitLogAllNode? collapse([bool showAllBranches = false]) {
+    children = children
+        .map((x) => x.collapse(showAllBranches))
+        .whereNotNull()
+        .toList();
+    final hasInterestingParts = (showAllBranches && line.partsHasRemoteRef) ||
+        line.partsHasRemoteHead ||
         line.parts.any((x) =>
             x.startsWith("refs/heads/") ||
             x.startsWith("HEAD -> refs/heads/") ||
@@ -203,13 +210,18 @@ class GitLogAllNode {
 class DecoratedLogLineProducerAdapterForGitLogAllNode
     implements DecoratedLogLineProducerAdapter<GitLogAllNode> {
   final String? defaultBranch;
+  final bool showAllBranches;
 
-  DecoratedLogLineProducerAdapterForGitLogAllNode([this.defaultBranch]);
+  DecoratedLogLineProducerAdapterForGitLogAllNode(
+    this.showAllBranches, [
+    this.defaultBranch,
+  ]);
 
   @override
   String branchName(GitLogAllNode t) {
     return [
-      if (t.line.partsHasRemoteHead) ...t.line.remoteBranchNames(),
+      if (showAllBranches || t.line.partsHasRemoteHead)
+        ...t.line.remoteBranchNames(),
       ...t.line.localBranchNamesAndHead(),
     ].join(", ");
   }
