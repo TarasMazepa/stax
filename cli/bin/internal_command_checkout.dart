@@ -40,7 +40,7 @@ class InternalCommandGet extends InternalCommand {
     }
 
     for (String branch in targetNode.remoteBranchNamesInOrderForCheckout().map(
-          (x) => x.substring(x.indexOf("/")),
+          (x) => x.substring(x.indexOf("/") + 1),
         )) {
       final result = context.git.checkout
           .arg(branch)
