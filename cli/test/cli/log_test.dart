@@ -16,7 +16,9 @@ void main() {
     final random = Random();
     for (int i = 0; i < 10; i++, commitTree = commitTree.next()) {
       final skip = random.nextInt(pow(10, i) as int);
-      for (int j = 0; j < skip; j++, commitTree = commitTree.next());
+      for (int j = 0; j < skip; j++, commitTree = commitTree.next()) {
+         {}
+      }
       final targetOutput = commitTree.getTargetOutput();
       final defaultBranch = commitTree.commitName(commitTree.mainId);
       final commitName = commitTree.commitName(0);
