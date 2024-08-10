@@ -1,0 +1,22 @@
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      VERSION
+
+jobs:
+  version-tagger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: getversion
+        run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ steps.getversion.outputs.version }}',
+              sha: context.sha
+            })
