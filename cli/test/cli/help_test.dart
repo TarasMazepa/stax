@@ -14,17 +14,19 @@ void main() {
 Here are available commands:
  • amend - Amends and pushes changes.
       Flags:
-         -a - Runs 'git add .' before other actions. Which adds tracked and untracked files.
-         -u - Runs 'git add -u .' before other actions. Which adds only tracked files.
+         -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
+         -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
+         -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
  • commit - Creates a branch, commits, and pushes it to remote. First argument is mandatory commit message. Second argument is optional branch name, if not provided branch name would be generated from commit message.
       Positional arguments:
          arg1 - Required commit message, usually enclosed in double quotes like this: "Sample commit message".
          opt2 - Optional branch name, if not provided commit message would be converted to branch name.
       Flags:
-         -a - Runs 'git add .' before other actions. Which adds tracked and untracked files.
+         -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
+         -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
          -b - Accepts branch name proposed by converting commit name to branch name.
          --pr - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
-         -u - Runs 'git add -u .' before other actions. Which adds only tracked files.
+         -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
  • delete-gone-branches - Deletes local branches with gone remotes.
       Flags:
          -f - Force delete gone branches.
