@@ -37,7 +37,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}
       - run: |
-          git checkout HEAD~
           sed -i "s+<dependency id='dart-sdk' version='.*' />+<dependency id='dart-sdk' version='$DART_SDK_VERSION' />+" ./chocolatey/stax/stax.nuspec
           git checkout -b chocolatey-update-dart-sdk-to-$DART_SDK_VERSION
           git commit -a -m "Chocolatey update dart sdk to $DART_SDK_VERSION"
