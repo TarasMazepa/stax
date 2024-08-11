@@ -2,7 +2,7 @@
 
 $repoZipFile = "$toolsDir\repo.zip"
 
-$tag = '0.9.4'
+$tag = '0.9.5'
 
 Get-ChocolateyWebFile `
     -PackageName 'stax' `
