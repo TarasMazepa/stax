@@ -27,6 +27,11 @@ class InternalCommandGet extends InternalCommand {
       return;
     }
 
+    context.git.fetchWithPrune
+        .announce("Fetching latest changes from the remote")
+        .runSync()
+        .printNotEmptyResultFields();
+
     final targetNode =
         context.withSilence(true).gitLogAll().collapse(true)?.find(
               (x) => x.line.parts.any(
