@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, macos-13, windows-latest]
+        os: [ ubuntu-latest, macos-latest, macos-13, windows-latest ]
 
     steps:
       - uses: actions/checkout@v3
@@ -20,4 +20,6 @@ jobs:
       - run: dart test
         working-directory: cli
       - run: dart analyze
+        working-directory: cli
+      - run: dart compile exe bin/cli.dart
         working-directory: cli
