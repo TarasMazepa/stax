@@ -1,19 +1,13 @@
 ﻿$toolsDir = "$( Split-Path -parent $MyInvocation.MyCommand.Definition )"
 
-$repoZipFile = "$toolsDir\repo.zip"
+$tag = '0.6.3'
 
-$tag = '0.9.5'
-
-Get-ChocolateyWebFile `
+Install-ChocolateyZipPackage `
     -PackageName 'stax' `
-    -FileFullPath $repoZipFile `
     -Url "https://github.com/TarasMazepa/stax/archive/$tag.zip" `
-    -Checksum d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed `
-    -ChecksumType SHA256
-
-Get-ChocolateyUnzip `
-    -FileFullPath $repoZipFile `
-    -Destination $toolsDir
+    -Checksum B4C2E8246EA5662D88009085AEFA1FD6957485369ACE872FBB84261FEE47010A `
+    -ChecksumType SHA256 `
+    -UnzipLocation "$toolsDir"
 
 & dart pub --directory="$toolsDir\stax-$tag\cli" get
 & dart compile exe "$toolsDir\stax-$tag\cli\bin\cli.dart" -o "$toolsDir\stax.exe"
