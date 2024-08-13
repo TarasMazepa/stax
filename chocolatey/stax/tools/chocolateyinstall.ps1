@@ -1,4 +1,4 @@
-﻿$toolsDir = "$( Split-Path -parent $MyInvocation.MyCommand.Definition )"
+﻿$toolsDir = "$(Split-Path -Parent $MyInvocation.MyCommand.Definition)"
 
 $tag = '0.6.3'
 
@@ -9,7 +9,9 @@ Install-ChocolateyZipPackage `
     -ChecksumType SHA256 `
     -UnzipLocation "$toolsDir"
 
-& dart pub --directory="$toolsDir\stax-$tag\cli" get
-& dart compile exe "$toolsDir\stax-$tag\cli\bin\cli.dart" -o "$toolsDir\stax.exe"
+$archivePath = "$toolsDir\stax-$tag\cli"
+
+& dart pub --directory="$archivePath" get
+& dart compile exe "$archivePath\bin\cli.dart" -o "$toolsDir\stax.exe"
 
 Install-BinFile -Name stax -Path "$toolsDir\stax.exe"
