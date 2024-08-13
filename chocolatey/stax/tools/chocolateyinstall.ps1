@@ -9,9 +9,9 @@ Install-ChocolateyZipPackage `
     -ChecksumType SHA256 `
     -UnzipLocation "$toolsDir"
 
-$archivePath = "$toolsDir\stax-$tag\cli"
+$cliPath = "$toolsDir\stax-$tag\cli"
 
-& dart pub --directory="$archivePath" get
-& dart compile exe "$archivePath\bin\cli.dart" -o "$toolsDir\stax.exe"
+& dart pub --directory="$cliPath" get
+& dart compile exe "$cliPath\bin\cli.dart" -o "$toolsDir\stax.exe"
 
 Install-BinFile -Name stax -Path "$toolsDir\stax.exe"
