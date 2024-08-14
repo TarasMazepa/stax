@@ -23,7 +23,7 @@ jobs:
       - run: |
           sed -i "s+<version>.*</version>+<version>$TAG</version>+" ./chocolatey/stax/stax.nuspec
           sed -i "s+$tag = '.*'+$tag = '$TAG'+" ./chocolatey/stax/tools/chocolateyinstall.ps1
-          checksum=$(curl -sL https://github.com/TarasMazepa/stax/archive/$TAG.zip | sha256sum | sed 's/  -//')
+          checksum=${$(curl -sL https://github.com/TarasMazepa/stax/archive/$TAG.zip | sha256sum | sed 's/  -//')^^}
           sed -i "s+-Checksum .*+-Checksum $checksum \`+" ./chocolatey/stax/tools/chocolateyinstall.ps1
           git config --global user.name 'stax'
           git config --global user.email 'stax@staxforgit.com'
