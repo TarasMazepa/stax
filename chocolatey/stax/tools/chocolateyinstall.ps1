@@ -1,13 +1,13 @@
-﻿$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = '0.9.6'
 
 $toolsDir = "$(Split-Path -Parent $MyInvocation.MyCommand.Definition)"
 
-$tag = '0.6.3'
+$tag = '0.9.6'
 
 Install-ChocolateyZipPackage `
     -PackageName 'stax' `
     -Url "https://github.com/TarasMazepa/stax/archive/$tag.zip" `
-    -Checksum B4C2E8246EA5662D88009085AEFA1FD6957485369ACE872FBB84261FEE47010A `
+    -Checksum d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed `
     -ChecksumType SHA256 `
     -UnzipLocation "$toolsDir"
 
