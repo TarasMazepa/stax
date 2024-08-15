@@ -6,33 +6,49 @@ The primary purpose is to make it easier to create smaller PRs. And reduce the a
 
 ## Installation
 
-### MacOS/Linux/WSL on Windows/ChromeOS
+### MacOS
 
-Homebrew is a package manager that works on MacOS and Linux systems.
+[Homebrew](https://brew.sh/) is a package manager for MacOS.
 
-#### Install brew
-
-##### MacOS
-
-```
+```shell
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-##### Linux/WSL on Windows/ChromeOS
+Install stax
 
-See https://docs.brew.sh/Homebrew-on-Linux
-
-#### Install stax
-
-```
+```shell
 brew install TarasMazepa/stax/stax
 ```
 
 ### Windows
 
-Clone this repo and put the path to the repo into your PATH variable.
+[Chocolatey](https://chocolatey.org/) is a package manager for Windows systems.
 
-Let me know if you need some help. Create a ticket on the repo.
+Follow [this guide](https://docs.chocolatey.org/en-us/choco/setup/) to install chocolatey.
+
+Install stax
+
+```powershell
+choco install stax
+```
+
+### Linux/WSL on Windows/ChromeOS
+
+Homebrew is a package manager for MacOS that also [works on Linux systems](https://docs.brew.sh/Homebrew-on-Linux).
+
+```shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Install stax
+
+```shell
+brew install TarasMazepa/stax/stax
+```
+
+### Alternative
+
+Clone this repo and put the path to the repo into your PATH variable.
 
 ## stax doctor
 
@@ -46,24 +62,6 @@ stax doctor
 [V] git config --get user.name # TarasMazepa
 [V] git config --get user.email # 6552358+TarasMazepa@users.noreply.github.com
 [V] git config --get push.autoSetupRemote # true
-```
-
-Stax will give you advice on how to configure everything.
-
-```
-stax doctor
-```
-
-```
-[X] git config --get user.name # null
-    X Set your git user name using:
-      git config --global user.name "<your preferred name>"
-[X] git config --get user.email # null
-    X Set your git user email using:
-      git config --global user.email "<your preferred email>"
-[X] git config --get push.autoSetupRemote # false
-    X Set git push.autoSetupRemote using:
-      git config --global push.autoSetupRemote true
 ```
 
 ## v1 Roadmap
@@ -82,7 +80,7 @@ stax doctor
 
 It would be a UI tool that will implement all features from v1.
 
-## What is stax-like git workflow?
+## What is stacking PRs git workflow?
 
 It is a way to reduce the burden of creating commits, branches, and PRs, so it doesn't consume much
 of your time. As a result, you can start creating more PRs with smaller changes and have
@@ -121,14 +119,6 @@ Date:   Fri Sep 8 14:58:04 2023 -0700
 
 You can see that a branch with `two-in-one-commit-name-and-branch-name` name was created as well as
 a commit with the same name `two-in-one-commit-name-and-branch-name`.
-
-#### -a flag
-
-Adds all the files to the staging area
-
-#### --pr flag
-
-Redirects you to a create PR page
 
 ### stax amend
 
