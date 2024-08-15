@@ -22,7 +22,7 @@ brew install TarasMazepa/stax/stax
 
 ### Windows
 
-[Chocolatey](https://chocolatey.org/) is a package manager for Windows systems.
+[Chocolatey](https://chocolatey.org/) is a package manager for Windows.
 
 Follow [this guide](https://docs.chocolatey.org/en-us/choco/setup/) to install chocolatey.
 
