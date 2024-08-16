@@ -44,7 +44,7 @@ jobs:
             /repos/TarasMazepa/homebrew-stax/actions/workflows/update.yml/dispatches \
             -f "ref=main" -f "inputs[dart_sdk_version]=${{ steps.get-version.outputs.dart_sdk_version }}"
         env:
-          GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}
+          GH_TOKEN: ${{ secrets.PAT }}
       - run: |
           git checkout HEAD~
           sed -i "s+<dependency id='dart-sdk' version='.*' />+<dependency id='dart-sdk' version='$DART_SDK_VERSION' />+" ./chocolatey/stax/stax.nuspec
