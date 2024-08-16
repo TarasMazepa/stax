@@ -34,7 +34,7 @@ jobs:
           git push --set-upstream origin update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION
           gh pr merge $(gh pr create -B main -f) --auto --squash
         env:
-          GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}
+          GH_TOKEN: ${{ secrets.PAT }}
           DART_SDK_VERSION: ${{ steps.get-version.outputs.dart_sdk_version }}
       - run: |
           gh api \
@@ -44,7 +44,7 @@ jobs:
             /repos/TarasMazepa/homebrew-stax/actions/workflows/update.yml/dispatches \
             -f "ref=main" -f "inputs[dart_sdk_version]=${{ steps.get-version.outputs.dart_sdk_version }}"
         env:
-          GH_TOKEN: ${{ secrets.PAT }}
+          GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}
       - run: |
           git checkout HEAD~
           sed -i "s+<dependency id='dart-sdk' version='.*' />+<dependency id='dart-sdk' version='$DART_SDK_VERSION' />+" ./chocolatey/stax/stax.nuspec
