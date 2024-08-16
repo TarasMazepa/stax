@@ -4,9 +4,6 @@ on:
     paths:
       DART_SDK_VERSION
 
-env:
-  GH_TOKEN: ${{ secrets.PAT }}
-
 jobs:
   dart-sdk-version-trigger:
     runs-on: ubuntu-latest
@@ -56,4 +53,5 @@ jobs:
           git push --set-upstream origin chocolatey-update-dart-sdk-to-$DART_SDK_VERSION
           gh pr merge $(gh pr create -B main -f) --auto --squash
         env:
+          GH_TOKEN: ${{ secrets.PAT }}
           DART_SDK_VERSION: ${{ steps.get-version.outputs.dart_sdk_version }}
