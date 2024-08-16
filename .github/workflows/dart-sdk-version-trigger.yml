@@ -32,9 +32,16 @@ jobs:
           sed -i "s+          sdk: .*+          sdk: $DART_SDK_VERSION+" ./.github/workflows/*
           git checkout -b update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION
           git commit -a -m "Update dart sdk version for cli to $DART_SDK_VERSION"
-          git push https://TarasMazepa:$GH_TOKEN@github.com/TarasMazepa/stax \
-            update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION:update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION
-          gh pr merge $(gh pr create -B main -f) --auto --squash
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
+          DART_SDK_VERSION: ${{ steps.get-version.outputs.dart_sdk_version }}
+      - uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION
+        env:
+          DART_SDK_VERSION: ${{ steps.get-version.outputs.dart_sdk_version }}
+      - run: gh pr merge $(gh pr create -B main -f) --auto --squash
         env:
           GH_TOKEN: ${{ secrets.PAT }}
           DART_SDK_VERSION: ${{ steps.get-version.outputs.dart_sdk_version }}
