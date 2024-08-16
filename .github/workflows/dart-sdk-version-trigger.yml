@@ -32,6 +32,7 @@ jobs:
           sed -i "s+          sdk: .*+          sdk: $DART_SDK_VERSION+" ./.github/workflows/*
           git checkout -b update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION
           git commit -a -m "Update dart sdk version for cli to $DART_SDK_VERSION"
+          git remote set-url --push origin https://TarasMazepa:$GH_TOKEN@github.com/TarasMazepa/stax
           git push --set-upstream origin update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION
           gh pr merge $(gh pr create -B main -f) --auto --squash
         env:
