@@ -32,12 +32,11 @@ class InternalCommandGet extends InternalCommand {
         .runSync()
         .printNotEmptyResultFields();
 
-    final targetNode =
-        context.withSilence(true).gitLogAll().collapse(true)?.find(
-              (x) => x.line.parts.any(
-                (p) => p.endsWith(targetRef),
-              ),
-            );
+    final targetNode = context
+        .withSilence(true)
+        .gitLogAll()
+        .collapse(true)
+        ?.findAnyRefThatEndsWith(targetRef);
 
     if (targetNode == null) {
       context.printToConsole("Can't find target ref '$targetRef'");
