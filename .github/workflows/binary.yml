@@ -11,9 +11,11 @@ jobs:
         os: [ ubuntu-latest, macos-latest, macos-13, windows-latest ]
     steps:
       - uses: actions/checkout@v4
+      - id: get-dart-version
+        run: echo "dart_sdk_version=$(cat DART_SDK_VERSION)" >> $GITHUB_OUTPUT
       - uses: dart-lang/setup-dart@v1
         with:
-          sdk: 3.4.4
+          sdk: ${{ steps.get-dart-version.outputs.dart_sdk_version }}
       - run: dart pub get
         working-directory: cli
       - run: ./stax help
