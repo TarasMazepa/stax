@@ -37,6 +37,7 @@ jobs:
           git push --set-upstream origin update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION
           gh pr merge $(gh pr create -B main -f) --auto --squash
         env:
+          GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}
           DART_SDK_VERSION: ${{ steps.get-version.outputs.dart_sdk_version }}
       - run: |
           gh api \
