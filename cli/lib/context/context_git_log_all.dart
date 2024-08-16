@@ -174,6 +174,14 @@ class GitLogAllNode {
     return [...children.expand((x) => x.describe()), toString()];
   }
 
+  GitLogAllNode? findAnyRefThatEndsWith(String suffix) {
+    return find(
+      (x) => x.line.parts.any(
+        (element) => element.endsWith(suffix),
+      ),
+    );
+  }
+
   GitLogAllNode? find(bool Function(GitLogAllNode) predicate) {
     if (predicate(this)) return this;
     return children

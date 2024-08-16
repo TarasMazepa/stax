@@ -22,6 +22,7 @@ class InternalCommandRebase extends InternalCommand {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }
+
     final root = context.withSilence(true).gitLogAll().collapse();
 
     if (root == null) {
@@ -36,30 +37,23 @@ class InternalCommandRebase extends InternalCommand {
       return;
     }
 
-    if (current.line.parts.contains("HEAD")) {
-      context.printToConsole("You are in detached HEAD state. Can't rebase.");
+    final userProvidedTarget = args.elementAtOrNull(0);
+
+    final GitLogAllNode? targetNode = userProvidedTarget != null
+        ? root.findAnyRefThatEndsWith(userProvidedTarget)
+        : root.findRemoteHead();
+
+    if (targetNode == null) {
+      context.printToConsole("Can't find target branch.");
       return;
     }
 
-    final remoteHead = root.findRemoteHead();
-
-    if (remoteHead == null) {
-      context.printToConsole("Can't find remote head.");
-      return;
-    }
-
-    if (current == remoteHead) {
+    if (current == targetNode) {
       context.printToConsole("Nothing to rebase.");
       return;
     }
 
-    final rebaseOnto = args.elementAtOrNull(0) ??
-        remoteHead.line.localBranchNames().firstOrNull;
-
-    if (rebaseOnto == null) {
-      context.printToConsole("Can't determine on which ref to rebase.");
-      return;
-    }
+    final rebaseOnto = targetNode.line.branchNameOrCommitHash();
 
     bool changeParentOnce = true;
 
@@ -72,7 +66,7 @@ class InternalCommandRebase extends InternalCommand {
           .exitCode;
       changeParentOnce = false;
       if (exitCode != 0) {
-        context.printToConsole("object");
+        context.printParagraph("Rebase failed");
         return;
       }
       context.git.pushForce.announce().runSync().printNotEmptyResultFields();
