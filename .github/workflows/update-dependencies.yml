@@ -1,0 +1,39 @@
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "25 12 * * *"
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pCYSl5EDgo/cat@master
+        id: get-dart-version
+        with:
+          path: DART_SDK_VERSION
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ steps.get-dart-version.outputs.text }}
+      - run: dart pub upgrade
+        working-directory: cli
+      - run: dart pub get
+        working-directory: cli
+      - run: dart test
+        working-directory: cli
+      - run: dart analyze
+        working-directory: cli
+      - run: dart compile exe bin/cli.dart
+        working-directory: cli
+      - run: |
+          if git diff --exit-code; then
+            branch_name=update-dart-dependencies-$RANDOM
+            git config --global user.name 'stax'
+            git config --global user.email 'stax@staxforgit.com'
+            git checkout -b $branch_name
+            git commit -a -m "Update dart dependencies"
+            git push --set-upstream origin $branch_name
+            gh pr merge $(gh pr create -B main -f) --auto --squash
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
