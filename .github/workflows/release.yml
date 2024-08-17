@@ -15,11 +15,13 @@ jobs:
         os: [ ubuntu-latest, macos-latest, macos-13, windows-latest ]
     steps:
       - uses: actions/checkout@v4
-      - id: get-dart-version
-        run: echo "dart_sdk_version=$(cat DART_SDK_VERSION)" >> $GITHUB_OUTPUT
+      - uses: pCYSl5EDgo/cat@master
+        id: get-dart-version
+        with:
+          path: DART_SDK_VERSION
       - uses: dart-lang/setup-dart@v1
         with:
-          sdk: ${{ steps.get-dart-version.outputs.dart_sdk_version }}
+          sdk: ${{ steps.get-dart-version.outputs.text }}
       - run: dart pub get
         working-directory: cli
       - run: dart compile exe bin/cli.dart -o bin/stax
