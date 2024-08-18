@@ -26,8 +26,7 @@ jobs:
       - run: dart compile exe bin/cli.dart
         working-directory: cli
       - run: |
-          if git diff --quiet; then
-          elif
+          if ! git diff --quiet; then
             branch_name=update-dart-dependencies-$RANDOM
             git config --global user.name 'stax'
             git config --global user.email 'stax@staxforgit.com'
