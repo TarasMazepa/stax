@@ -9,20 +9,18 @@ on:
       - created
 
 env:
-  REF: ${{ github.event.release.tag_name ?? inputs.tag }}
+  RELEASE: ${{ github.event.release.tag_name }}
+  TAG: ${{ inputs.tag }}
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  release:
+  macos-arm:
     permissions: write-all
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, macos-latest, macos-13, windows-latest ]
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: $REF
+          ref: $RELEASE$TAG
       - uses: pCYSl5EDgo/cat@master
         id: get-dart-version
         with:
@@ -32,9 +30,66 @@ jobs:
           sdk: ${{ steps.get-dart-version.outputs.text }}
       - run: dart pub get
         working-directory: cli
-      - run: dart compile exe bin/cli.dart -o bin/stax
+      - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax
+      - run: zip cli/bin/stax macos-arm.zip
+      - run: gh release upload $RELEASE$TAG macos-arm.zip
+
+  macos-x64:
+    permissions: write-all
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: $RELEASE$TAG
+      - uses: pCYSl5EDgo/cat@master
+        id: get-dart-version
+        with:
+          path: DART_SDK_VERSION
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ steps.get-dart-version.outputs.text }}
+      - run: dart pub get
         working-directory: cli
-      - run: tar -czvf ${{ matrix.os }}_.tar.gz bin/stax
+      - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax
+      - run: zip cli/bin/stax macos-x64.zip
+      - run: gh release upload $RELEASE$TAG macos-x64.zip
+
+  linux-x64:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: $RELEASE$TAG
+      - uses: pCYSl5EDgo/cat@master
+        id: get-dart-version
+        with:
+          path: DART_SDK_VERSION
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ steps.get-dart-version.outputs.text }}
+      - run: dart pub get
         working-directory: cli
-      - run: gh release upload $REF ${{ matrix.os }}_.tar.gz
+      - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax
+      - run: zip cli/bin/stax linux-x64.zip
+      - run: gh release upload $RELEASE$TAG linux-x64.zip
+
+  windows-x64:
+    permissions: write-all
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: $RELEASE$TAG
+      - uses: pCYSl5EDgo/cat@master
+        id: get-dart-version
+        with:
+          path: DART_SDK_VERSION
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ steps.get-dart-version.outputs.text }}
+      - run: dart pub get
         working-directory: cli
+      - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax.exe
+      - run: zip cli/bin/stax.exe windows-x64.zip
+      - run: gh release upload $RELEASE$TAG windows-x64.zip
