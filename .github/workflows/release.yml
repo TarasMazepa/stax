@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: $CHECKOUT
+          ref: ${{ env.CHECKOUT }}
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
       - uses: pCYSl5EDgo/cat@master
@@ -44,7 +44,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: $CHECKOUT
+          ref: ${{ env.CHECKOUT }}
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
       - uses: pCYSl5EDgo/cat@master
@@ -68,7 +68,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: $CHECKOUT
+          ref: ${{ env.CHECKOUT }}
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
       - uses: pCYSl5EDgo/cat@master
@@ -92,7 +92,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: $CHECKOUT
+          ref: ${{ env.CHECKOUT }}
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
       - uses: pCYSl5EDgo/cat@master
