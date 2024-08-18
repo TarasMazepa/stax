@@ -1,6 +1,6 @@
 ﻿$ErrorActionPreference = "Stop"
 
-$toolsDir = "$(Split-Path -Parent $MyInvocation.MyCommand.Definition)"
+$toolsDir = "$( Split-Path -Parent $MyInvocation.MyCommand.Definition )"
 
 $tag = '0.9.13'
 
@@ -14,6 +14,6 @@ Install-ChocolateyZipPackage `
 $cliPath = "$toolsDir\stax-$tag\cli"
 
 & dart pub --directory="$cliPath" get
-& dart compile exe "$cliPath\bin\cli.dart" -o "$toolsDir\stax.exe" "-Dversion=$tag"
+& dart compile exe -o "$toolsDir\stax.exe" "-Dversion=$tag" "$cliPath\bin\cli.dart"
 
 Install-BinFile -Name stax -Path "$toolsDir\stax.exe"
