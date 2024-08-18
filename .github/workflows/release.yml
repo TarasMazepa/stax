@@ -32,7 +32,11 @@ jobs:
           sdk: ${{ steps.get-dart-version.outputs.text }}
       - run: dart pub get
         working-directory: cli
-      - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax
+      - uses: pCYSl5EDgo/cat@master
+        id: get-stax-version
+        with:
+          path: VERSION
+      - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax -Dversion=${{ steps.get-stax-version.outputs.text }}
       - run: zip macos-arm.zip cli/bin/stax
       - run: gh release upload $CHECKOUT macos-arm.zip
         env:
@@ -56,7 +60,11 @@ jobs:
           sdk: ${{ steps.get-dart-version.outputs.text }}
       - run: dart pub get
         working-directory: cli
-      - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax
+      - uses: pCYSl5EDgo/cat@master
+        id: get-stax-version
+        with:
+          path: VERSION
+      - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax -Dversion=${{ steps.get-stax-version.outputs.text }}
       - run: zip macos-x64.zip cli/bin/stax
       - run: gh release upload $CHECKOUT macos-x64.zip
         env:
@@ -80,7 +88,11 @@ jobs:
           sdk: ${{ steps.get-dart-version.outputs.text }}
       - run: dart pub get
         working-directory: cli
-      - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax
+      - uses: pCYSl5EDgo/cat@master
+        id: get-stax-version
+        with:
+          path: VERSION
+      - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax -Dversion=${{ steps.get-stax-version.outputs.text }}
       - run: zip linux-x64.zip cli/bin/stax
       - run: gh release upload $CHECKOUT linux-x64.zip
         env:
@@ -104,7 +116,11 @@ jobs:
           sdk: ${{ steps.get-dart-version.outputs.text }}
       - run: dart pub get
         working-directory: cli
-      - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax.exe
+      - uses: pCYSl5EDgo/cat@master
+        id: get-stax-version
+        with:
+          path: VERSION
+      - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax.exe -Dversion=${{ steps.get-stax-version.outputs.text }}
       - run: powershell Compress-Archive cli/bin/stax.exe windows-x64.zip
       - run: gh release upload ${{ env.CHECKOUT }} windows-x64.zip
         env:
