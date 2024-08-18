@@ -2,7 +2,7 @@
 
 $toolsDir = "$(Split-Path -Parent $MyInvocation.MyCommand.Definition)"
 
-$tag = '0.9.11'
+$tag = '0.9.12'
 
 Install-ChocolateyZipPackage `
     -PackageName 'stax' `
