@@ -120,6 +120,7 @@ jobs:
         id: get-stax-version
         with:
           path: VERSION
+          trim: true
       - run: dart compile exe -o stax.exe "-Dversion=${{ steps.get-stax-version.outputs.text }}" cli/bin/cli.dart
       - run: powershell Compress-Archive stax.exe windows-x64.zip
       - run: gh release upload ${{ env.CHECKOUT }} windows-x64.zip
