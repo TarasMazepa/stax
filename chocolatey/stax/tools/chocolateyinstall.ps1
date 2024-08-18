@@ -14,6 +14,6 @@ Install-ChocolateyZipPackage `
 $cliPath = "$toolsDir\stax-$tag\cli"
 
 & dart pub --directory="$cliPath" get
-& dart compile exe "$cliPath\bin\cli.dart" -o "$toolsDir\stax.exe"
+& dart compile exe "$cliPath\bin\cli.dart" -o "$toolsDir\stax.exe" "-Dversion=$tag"
 
 Install-BinFile -Name stax -Path "$toolsDir\stax.exe"
