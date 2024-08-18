@@ -12,6 +12,7 @@ env:
   RELEASE: ${{ github.event.release.tag_name }}
   TAG: ${{ inputs.tag }}
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  CHECKOUT: $RELEASE$TAG
 
 jobs:
   macos-arm:
@@ -20,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: $RELEASE$TAG
+          ref: $CHECKOUT
       - uses: pCYSl5EDgo/cat@master
         id: get-dart-version
         with:
@@ -40,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: $RELEASE$TAG
+          ref: $CHECKOUT
       - uses: pCYSl5EDgo/cat@master
         id: get-dart-version
         with:
@@ -60,7 +61,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: $RELEASE$TAG
+          ref: $CHECKOUT
       - uses: pCYSl5EDgo/cat@master
         id: get-dart-version
         with:
@@ -80,7 +81,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: $RELEASE$TAG
+          ref: $CHECKOUT
       - uses: pCYSl5EDgo/cat@master
         id: get-dart-version
         with:
