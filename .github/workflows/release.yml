@@ -106,6 +106,6 @@ jobs:
         working-directory: cli
       - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax.exe
       - run: powershell Compress-Archive cli/bin/stax.exe windows-x64.zip
-      - run: gh release upload $CHECKOUT windows-x64.zip
+      - run: gh release upload ${{ env.CHECKOUT }} windows-x64.zip
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
