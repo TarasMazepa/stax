@@ -1,9 +1,15 @@
 on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+        type: string
   release:
     types:
       - created
 
 env:
+  REF: ${{ github.event.release.tag_name ?? inputs.tag }}
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
@@ -15,6 +21,8 @@ jobs:
         os: [ ubuntu-latest, macos-latest, macos-13, windows-latest ]
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: $REF
       - uses: pCYSl5EDgo/cat@master
         id: get-dart-version
         with:
@@ -28,5 +36,5 @@ jobs:
         working-directory: cli
       - run: tar -czvf ${{ matrix.os }}_.tar.gz bin/stax
         working-directory: cli
-      - run: gh release upload ${{ github.event.release.tag_name }} ${{ matrix.os }}_.tar.gz
+      - run: gh release upload $REF ${{ matrix.os }}_.tar.gz
         working-directory: cli
