@@ -12,14 +12,13 @@ env:
   RELEASE: ${{ github.event.release.tag_name }}
   TAG: ${{ inputs.tag }}
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  CHECKOUT: $RELEASE$TAG
+  CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
 
 jobs:
   macos-arm:
     permissions: write-all
     runs-on: macos-latest
     steps:
-      - run: echo "CHECKOUT:'$CHECKOUT' TAG:'$TAG' RELEASE:'$RELEASE'"
       - uses: actions/checkout@v4
         with:
           ref: $CHECKOUT
