@@ -150,10 +150,8 @@ class GitLogAllNode {
   }
 
   GitLogAllNode? collapse([bool showAllBranches = false]) {
-    children = children
-        .map((x) => x.collapse(showAllBranches))
-        .whereNotNull()
-        .toList();
+    children =
+        children.map((x) => x.collapse(showAllBranches)).nonNulls.toList();
     final hasInterestingParts = (showAllBranches && line.partsHasRemoteRef) ||
         line.partsHasRemoteHead ||
         line.parts.any((x) =>
@@ -188,7 +186,7 @@ class GitLogAllNode {
         .map(
           (x) => x.find(predicate),
         )
-        .whereNotNull()
+        .nonNulls
         .firstOrNull;
   }
 
