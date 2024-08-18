@@ -33,7 +33,7 @@ jobs:
       - run: dart pub get
         working-directory: cli
       - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax
-      - run: zip cli/bin/stax macos-arm.zip
+      - run: zip macos-arm.zip cli/bin/stax
       - run: gh release upload $CHECKOUT macos-arm.zip
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
@@ -57,7 +57,7 @@ jobs:
       - run: dart pub get
         working-directory: cli
       - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax
-      - run: zip cli/bin/stax macos-x64.zip
+      - run: zip macos-x64.zip cli/bin/stax
       - run: gh release upload $CHECKOUT macos-x64.zip
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
@@ -81,7 +81,7 @@ jobs:
       - run: dart pub get
         working-directory: cli
       - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax
-      - run: zip cli/bin/stax linux-x64.zip
+      - run: zip linux-x64.zip cli/bin/stax
       - run: gh release upload $CHECKOUT linux-x64.zip
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
@@ -105,7 +105,7 @@ jobs:
       - run: dart pub get
         working-directory: cli
       - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax.exe
-      - run: zip cli/bin/stax.exe windows-x64.zip
+      - run: zip windows-x64.zip cli/bin/stax.exe
       - run: gh release upload $CHECKOUT windows-x64.zip
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
