@@ -19,6 +19,7 @@ jobs:
     permissions: write-all
     runs-on: macos-latest
     steps:
+      - run: echo "CHECKOUT:'$CHECKOUT' TAG:'$TAG' RELEASE:'$RELEASE'"
       - uses: actions/checkout@v4
         with:
           ref: $CHECKOUT
