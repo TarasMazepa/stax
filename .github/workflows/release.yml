@@ -12,7 +12,6 @@ env:
   RELEASE: ${{ github.event.release.tag_name }}
   TAG: ${{ inputs.tag }}
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
 
 jobs:
   macos-arm:
@@ -22,6 +21,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: $CHECKOUT
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
       - uses: pCYSl5EDgo/cat@master
         id: get-dart-version
         with:
@@ -33,7 +34,9 @@ jobs:
         working-directory: cli
       - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax
       - run: zip cli/bin/stax macos-arm.zip
-      - run: gh release upload $RELEASE$TAG macos-arm.zip
+      - run: gh release upload $CHECKOUT macos-arm.zip
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
 
   macos-x64:
     permissions: write-all
@@ -42,6 +45,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: $CHECKOUT
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
       - uses: pCYSl5EDgo/cat@master
         id: get-dart-version
         with:
@@ -53,7 +58,9 @@ jobs:
         working-directory: cli
       - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax
       - run: zip cli/bin/stax macos-x64.zip
-      - run: gh release upload $RELEASE$TAG macos-x64.zip
+      - run: gh release upload $CHECKOUT macos-x64.zip
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
 
   linux-x64:
     permissions: write-all
@@ -62,6 +69,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: $CHECKOUT
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
       - uses: pCYSl5EDgo/cat@master
         id: get-dart-version
         with:
@@ -73,7 +82,9 @@ jobs:
         working-directory: cli
       - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax
       - run: zip cli/bin/stax linux-x64.zip
-      - run: gh release upload $RELEASE$TAG linux-x64.zip
+      - run: gh release upload $CHECKOUT linux-x64.zip
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
 
   windows-x64:
     permissions: write-all
@@ -82,6 +93,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: $CHECKOUT
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
       - uses: pCYSl5EDgo/cat@master
         id: get-dart-version
         with:
@@ -93,4 +106,6 @@ jobs:
         working-directory: cli
       - run: dart compile exe cli/bin/cli.dart -o cli/bin/stax.exe
       - run: zip cli/bin/stax.exe windows-x64.zip
-      - run: gh release upload $RELEASE$TAG windows-x64.zip
+      - run: gh release upload $CHECKOUT windows-x64.zip
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
