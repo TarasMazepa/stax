@@ -15,3 +15,5 @@ jobs:
           path: DART_SDK_VERSION
       - run: choco install dart-sdk -y --version ${{ steps.get-dart-version.outputs.text }}
       - run: choco install stax --source . -y
+      - run: stax help
+      - run: stax doctor
