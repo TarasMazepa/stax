@@ -1,0 +1,17 @@
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  chocolatey-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: choco pack chocolatey/stax/stax.nuspec
+      - uses: pCYSl5EDgo/cat@master
+        id: get-dart-version
+        with:
+          path: DART_SDK_VERSION
+      - run: choco install dart-sdk -y --version ${{ steps.get-dart-version.outputs.text }}
+      - run: choco install stax --source . -y
