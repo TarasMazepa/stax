@@ -1,4 +1,5 @@
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
     paths:
@@ -18,6 +19,7 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/TarasMazepa/homebrew-stax/actions/workflows/update.yml/dispatches \
             -f "ref=main" -f "inputs[tag]=${{ steps.getversion.outputs.version }}"
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}
       - run: |
@@ -31,10 +33,7 @@ jobs:
           git checkout -b chocolatey-update-stax-to-$TAG
           git commit -a -m "Chocolatey update stax to $TAG"
           git push --set-upstream origin chocolatey-update-stax-to-$TAG
-        env:
-          TAG: ${{ steps.getversion.outputs.version }}
-          GH_TOKEN: ${{ secrets.PAT }}
-      - run: |
           gh pr merge $(gh pr create -B main -f) --auto --squash
         env:
+          TAG: ${{ steps.getversion.outputs.version }}
           GH_TOKEN: ${{ secrets.PAT }}
