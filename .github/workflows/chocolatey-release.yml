@@ -5,11 +5,13 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - id: getversion
-        run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
+      - uses: pCYSl5EDgo/cat@master
+        id: get-version
+        with:
+          path: VERSION
       - uses: actions/checkout@v4
         with:
-          ref: ${{ steps.getversion.outputs.version }}
+          ref: ${{ steps.get-version.outputs.text }}
       - run: choco pack chocolatey/stax/stax.nuspec
       - uses: pCYSl5EDgo/cat@master
         id: get-dart-version
