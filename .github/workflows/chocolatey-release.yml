@@ -9,7 +9,7 @@ jobs:
         run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
       - uses: actions/checkout@v4
         with:
-          ref: ${{ steps.getversion.outputs.text }}
+          ref: ${{ steps.getversion.outputs.version }}
       - run: choco pack chocolatey/stax/stax.nuspec
       - uses: pCYSl5EDgo/cat@master
         id: get-dart-version
