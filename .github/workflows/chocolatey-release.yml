@@ -5,13 +5,6 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pCYSl5EDgo/cat@master
-        id: get-version
-        with:
-          path: VERSION
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ steps.get-version.outputs.text }}
       - run: choco pack chocolatey/stax/stax.nuspec
       - uses: pCYSl5EDgo/cat@master
         id: get-dart-version
