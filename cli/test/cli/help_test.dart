@@ -42,10 +42,16 @@ Here are available commands:
       Flags:
          -a - show remote branches also
          --default-branch - assume different default branch
+ • move - Allows you to move around log tree.
+      Positional arguments:
+         arg1 - up (one up), down (one down), top (to the closest top parent that have at least two children or to the top most node), bottom (to the closest bottom parent that have at least two children or bottom most node), head (<remote>/head)
  • pull - Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
       Flags:
          -f - Force delete gone branches.
          -s - Skip deletion of gone branches.
+ • rebase - rebase tree of branches on top of main
+      Positional arguments:
+         opt1 - Optional argument for target, will default to <remote>/HEAD
  • version - Version of stax
 """);
     });

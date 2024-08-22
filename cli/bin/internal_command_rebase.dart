@@ -3,14 +3,12 @@ import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
 
 import 'internal_command.dart';
-import 'types_for_internal_command.dart';
 
 class InternalCommandRebase extends InternalCommand {
   InternalCommandRebase()
       : super(
           "rebase",
           "rebase tree of branches on top of main",
-          type: InternalCommandType.hidden,
           arguments: {
             "opt1":
                 "Optional argument for target, will default to <remote>/HEAD",
