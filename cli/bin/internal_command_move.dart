@@ -3,14 +3,12 @@ import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
 
 import 'internal_command.dart';
-import 'types_for_internal_command.dart';
 
 class InternalCommandMove extends InternalCommand {
   InternalCommandMove()
       : super(
           "move",
           "Allows you to move around log tree.",
-          type: InternalCommandType.hidden,
           arguments: {
             "arg1":
                 "up (one up), down (one down), top (to the closest top parent that have at least two children or to the top most node), bottom (to the closest bottom parent that have at least two children or bottom most node), head (<remote>/head)",
