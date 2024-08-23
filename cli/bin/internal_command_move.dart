@@ -4,6 +4,26 @@ import 'package:stax/context/context_git_log_all.dart';
 
 import 'internal_command.dart';
 
+sealed class MoveDirection {}
+
+class UpMoveDirection implements MoveDirection {
+  int index;
+
+  UpMoveDirection([this.index = 0]);
+}
+
+class TopMoveDirection implements MoveDirection {
+  int index;
+
+  TopMoveDirection([this.index = 0]);
+}
+
+class DownMoveDirection implements MoveDirection {}
+
+class BottomMoveDirection implements MoveDirection {}
+
+class HeadMoveDirection implements MoveDirection {}
+
 class InternalCommandMove extends InternalCommand {
   InternalCommandMove()
       : super(
@@ -19,6 +39,36 @@ class InternalCommandMove extends InternalCommand {
   void run(List<String> args, Context context) {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
+    }
+
+    final moveDirections = <MoveDirection>[];
+    for (var arg in args) {
+      final index = int.tryParse(arg);
+      if (index != null) {
+        final last = moveDirections.lastOrNull;
+        if (last is UpMoveDirection && last.index == 0) {
+          last.index = index;
+        } else if (last is TopMoveDirection && last.index == 0) {
+          last.index = index;
+        } else {
+          context.printParagraph(
+              "'$arg' index provided without leading 'up' or 'top' direction");
+          return;
+        }
+      } else if ("up".startsWith(arg)) {
+        moveDirections.add(UpMoveDirection());
+      } else if ("top".startsWith(arg)) {
+        moveDirections.add(TopMoveDirection());
+      } else if ("bottom".startsWith(arg)) {
+        moveDirections.add(BottomMoveDirection());
+      } else if ("down".startsWith(arg)) {
+        moveDirections.add(DownMoveDirection());
+      } else if ("head".startsWith(arg)) {
+        moveDirections.add(HeadMoveDirection());
+      } else {
+        context.printParagraph("Unknown direction provided '$arg'");
+        return;
+      }
     }
 
     final direction = args.elementAtOrNull(0);
