@@ -71,23 +71,9 @@ class InternalCommandMove extends InternalCommand {
       }
     }
 
-    final direction = args.elementAtOrNull(0);
-
-    if (direction == null) {
-      context.printToConsole("Direction wasn't provided.");
+    if (moveDirections.isEmpty) {
+      context.printParagraph("Direction wasn't provided.");
       return;
-    }
-
-    final rawIndex = args.elementAtOrNull(1);
-    final int? index;
-    if (rawIndex != null) {
-      index = int.tryParse(rawIndex);
-      if (index == null) {
-        context.printToConsole("Can't parse '$rawIndex' as int.");
-        return;
-      }
-    } else {
-      index = null;
     }
 
     final root = context.withSilence(true).gitLogAll().collapse();
@@ -102,6 +88,20 @@ class InternalCommandMove extends InternalCommand {
     if (current == null) {
       context.printToConsole("Can find current node.");
       return;
+    }
+
+    final direction = args.elementAt(0);
+
+    final rawIndex = args.elementAtOrNull(1);
+    final int? index;
+    if (rawIndex != null) {
+      index = int.tryParse(rawIndex);
+      if (index == null) {
+        context.printToConsole("Can't parse '$rawIndex' as int.");
+        return;
+      }
+    } else {
+      index = null;
     }
 
     GitLogAllNode? target = {
