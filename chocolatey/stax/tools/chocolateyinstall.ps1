@@ -2,12 +2,12 @@
 
 $toolsDir = "$( Split-Path -Parent $MyInvocation.MyCommand.Definition )"
 
-$tag = '0.9.19'
+$tag = '0.9.20'
 
 Install-ChocolateyZipPackage `
     -PackageName 'stax' `
     -Url "https://github.com/TarasMazepa/stax/archive/$tag.zip" `
-    -Checksum DB96B40EBA3447FD479C125B26076F40830342A0D49B51A7917031B86DAEBD9F `
+    -Checksum D5558CD419C8D46BDC958064CB97F963D1EA793866414C025906EC15033512ED `
     -ChecksumType SHA256 `
     -UnzipLocation "$toolsDir"
 
