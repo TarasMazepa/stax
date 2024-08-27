@@ -4,10 +4,6 @@ on:
     workflows: [".github/workflows/release.yml"]
     types:
       - completed
-  push:
-    branches: [ "main" ]
-    paths:
-      VERSION
 
 jobs:
   version-trigger:
