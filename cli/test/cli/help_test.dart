@@ -44,7 +44,7 @@ Here are available commands:
          --default-branch - assume different default branch
  • move - Allows you to move around log tree.
       Positional arguments:
-         arg1 - up (one up), down (one down), top (to the closest top parent that have at least two children or to the top most node), bottom (to the closest bottom parent that have at least two children or bottom most node), head (<remote>/head)
+         [arg]+ - up (one up, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), down (one down), top (to the closest top parent that have at least two children or to the top most node, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), bottom (to the closest bottom parent that have at least two children or bottom most node, will stop before any direct parent of <remote>/head), head (<remote>/head)
  • pull - Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
       Flags:
          -f - Force delete gone branches.
