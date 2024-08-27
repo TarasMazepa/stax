@@ -1,5 +1,9 @@
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: [".github/workflows/release.yml"]
+    types:
+      - completed
   push:
     branches: [ "main" ]
     paths:
