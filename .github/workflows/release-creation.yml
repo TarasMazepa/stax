@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - id: getversion
+      - id: get-version
         run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
       - uses: actions/github-script@v7
         with:
@@ -17,10 +17,10 @@ jobs:
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/${{ steps.getversion.outputs.version }}',
+              ref: 'refs/tags/${{ steps.get-version.outputs.version }}',
               sha: context.sha
             })
       - run: gh release create $TAG
         env:
           GH_TOKEN: ${{ secrets.PAT }}
-          TAG: ${{ steps.getversion.outputs.version }}
+          TAG: ${{ steps.get-version.outputs.version }}
