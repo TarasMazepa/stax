@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  binary:
+  live:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
