@@ -3,6 +3,7 @@ on:
     inputs:
       tag:
         required: true
+        description: Tag of the release
         type: string
   release:
     types:
@@ -14,7 +15,7 @@ env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  macos-arm:
+  release-binary-macos-arm:
     permissions: write-all
     runs-on: macos-latest
     steps:
@@ -42,7 +43,7 @@ jobs:
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
 
-  macos-x64:
+  release-binary-macos-x64:
     permissions: write-all
     runs-on: macos-13
     steps:
@@ -70,7 +71,7 @@ jobs:
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
 
-  linux-x64:
+  release-binary-linux-x64:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
@@ -98,7 +99,7 @@ jobs:
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
 
-  windows-x64:
+  release-binary-windows-x64:
     permissions: write-all
     runs-on: windows-latest
     steps:

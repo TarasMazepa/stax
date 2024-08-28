@@ -1,7 +1,7 @@
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: [".github/workflows/release.yml"]
+    workflows: [".github/workflows/release-binary.yml"]
     types:
       - completed
 
