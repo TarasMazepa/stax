@@ -28,9 +28,10 @@ jobs:
       - run: |
           git config --global user.name 'stax'
           git config --global user.email 'stax@staxforgit.com'
-          git checkout -b update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION
+          branch_name=update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION-$RANDOM
+          git checkout -b $branch_name
           git commit -a -m "Update dart sdk version for cli to $DART_SDK_VERSION"
-          git push --set-upstream origin update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION
+          git push --set-upstream origin $branch_name
           gh pr merge $(gh pr create -B main -f) --auto --squash
         env:
           GH_TOKEN: ${{ secrets.PAT }}
@@ -47,9 +48,10 @@ jobs:
       - run: |
           git checkout HEAD~
           sed -i "s+<dependency id='dart-sdk' version='.*' />+<dependency id='dart-sdk' version='$DART_SDK_VERSION' />+" ./chocolatey/stax/stax.nuspec
-          git checkout -b chocolatey-update-dart-sdk-to-$DART_SDK_VERSION
+          branch_name=chocolatey-update-dart-sdk-to-$DART_SDK_VERSION-$RANDOM
+          git checkout -b $branch_name
           git commit -a -m "Chocolatey update dart sdk to $DART_SDK_VERSION"
-          git push --set-upstream origin chocolatey-update-dart-sdk-to-$DART_SDK_VERSION
+          git push --set-upstream origin $branch_name
           gh pr merge $(gh pr create -B main -f) --auto --squash
         env:
           GH_TOKEN: ${{ secrets.PAT }}
