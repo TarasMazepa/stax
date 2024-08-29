@@ -10,8 +10,11 @@ import 'internal_command.dart';
 
 class InternalCommandAmend extends InternalCommand {
   InternalCommandAmend()
-      : super("amend", "Amends and pushes changes.",
-            flags: {}..addAll(ContextHandleAddAllFlag.description));
+      : super(
+          "amend",
+          "Amends and pushes changes.",
+          flags: {}..addAll(ContextHandleAddAllFlag.description),
+        );
 
   @override
   void run(final List<String> args, final Context context) {

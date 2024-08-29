@@ -30,7 +30,8 @@ class InternalCommandPull extends InternalCommand {
     final defaultBranch = context.getDefaultBranch();
     if (defaultBranch == null) {
       context.printToConsole(
-          "Can't do pull on default branch, as can't identify one.");
+        "Can't do pull on default branch, as can't identify one.",
+      );
       return;
     }
     bool needToSwitchBranches = currentBranch != defaultBranch;
@@ -52,9 +53,11 @@ class InternalCommandPull extends InternalCommand {
     if (result == null) return;
     InternalCommandDeleteGoneBranches().run(
       args
-          .where((x) =>
-              x == InternalCommandDeleteGoneBranches.forceDeleteFlag ||
-              x == InternalCommandDeleteGoneBranches.skipDeleteFlag)
+          .where(
+            (x) =>
+                x == InternalCommandDeleteGoneBranches.forceDeleteFlag ||
+                x == InternalCommandDeleteGoneBranches.skipDeleteFlag,
+          )
           .toList(),
       context,
     );

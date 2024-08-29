@@ -25,7 +25,8 @@ class Settings {
   }
 
   static final _file = File.fromUri(
-      path.toUri(path.join(applicationConfigHome("stax"), ".stax_config")));
+    path.toUri(path.join(applicationConfigHome("stax"), ".stax_config")),
+  );
 
   static final instance = _load();
 

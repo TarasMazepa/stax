@@ -9,10 +9,10 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
   static final String forceDeleteFlag = "-f";
   static final String skipDeleteFlag = "-s";
   static final forceDeleteFlagEntry = {
-    forceDeleteFlag: "Force delete gone branches."
+    forceDeleteFlag: "Force delete gone branches.",
   };
   static final skipDeleteFlagEntry = {
-    skipDeleteFlag: "Skip deletion of gone branches."
+    skipDeleteFlag: "Skip deletion of gone branches.",
   };
 
   InternalCommandDeleteGoneBranches()

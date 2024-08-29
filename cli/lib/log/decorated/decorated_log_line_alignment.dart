@@ -6,7 +6,10 @@ class DecoratedLogLineAlignment {
   final bool branchNameHasBrackets;
 
   DecoratedLogLineAlignment(
-      this.branchName, this.decoration, this.branchNameHasBrackets);
+    this.branchName,
+    this.decoration,
+    this.branchNameHasBrackets,
+  );
 
   DecoratedLogLineAlignment operator +(DecoratedLogLineAlignment other) {
     return DecoratedLogLineAlignment(

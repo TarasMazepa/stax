@@ -38,5 +38,5 @@ final List<InternalCommand> internalCommands = [
 ]..sort();
 
 final Map<String, InternalCommand> internalCommandRegistry = {
-  for (final entry in internalCommands) entry.name: entry
+  for (final entry in internalCommands) entry.name: entry,
 };

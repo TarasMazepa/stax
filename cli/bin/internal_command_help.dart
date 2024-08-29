@@ -8,11 +8,18 @@ import 'types_for_internal_command.dart';
 
 class InternalCommandHelp extends InternalCommand {
   InternalCommandHelp()
-      : super("help", "List of available commands.",
-            flags: {"-a": "Show all commands including hidden."});
+      : super(
+          "help",
+          "List of available commands.",
+          flags: {"-a": "Show all commands including hidden."},
+        );
 
-  void printEntries(Context context, String header,
-      List<MapEntry<String, String>>? entries, String indent) {
+  void printEntries(
+    Context context,
+    String header,
+    List<MapEntry<String, String>>? entries,
+    String indent,
+  ) {
     if (entries == null || entries.isEmpty) return;
     context.printToConsole("$indent$header:");
     for (var entry in entries) {
@@ -21,7 +28,11 @@ class InternalCommandHelp extends InternalCommand {
   }
 
   void printMapSorted(
-      Context context, String header, Map<String, String>? map, String indent) {
+    Context context,
+    String header,
+    Map<String, String>? map,
+    String indent,
+  ) {
     printEntries(
       context,
       header,
@@ -33,7 +44,11 @@ class InternalCommandHelp extends InternalCommand {
   }
 
   void printMap(
-      Context context, String header, Map<String, String>? map, String indent) {
+    Context context,
+    String header,
+    Map<String, String>? map,
+    String indent,
+  ) {
     printEntries(
       context,
       header,
@@ -46,7 +61,8 @@ class InternalCommandHelp extends InternalCommand {
   void run(final List<String> args, final Context context) {
     final showAll = args.contains("-a");
     final commandsToShow = internalCommands.where(
-        (element) => showAll || element.type == InternalCommandType.public);
+      (element) => showAll || element.type == InternalCommandType.public,
+    );
     printMapSorted(context, "Global flags", ContextHandleGlobalFlags.flags, "");
     context.printToConsole("Here are available commands:");
     for (final element in commandsToShow) {

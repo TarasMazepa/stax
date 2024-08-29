@@ -13,13 +13,14 @@ void main(List<String> arguments) {
       InternalCommandHelp().run([], context);
     case [final commandName, ...final args]:
       final command = internalCommandRegistry.entries.fold<InternalCommand?>(
-          null,
-          (previous, element) => element.key.startsWith(commandName)
-              ? element.key.length <=
-                      (previous?.name.length ?? element.key.length)
-                  ? element.value
-                  : previous
-              : previous);
+        null,
+        (previous, element) => element.key.startsWith(commandName)
+            ? element.key.length <=
+                    (previous?.name.length ?? element.key.length)
+                ? element.value
+                : previous
+            : previous,
+      );
       if (command == null) {
         context.printToConsole("Unknown command '$commandName'.");
       } else {

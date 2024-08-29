@@ -46,18 +46,22 @@ void main() {
       ];
 
       expect(
-          getSuccessFailMarkForDoctorOutput(
-              setup.runLiveStaxSync(["doctor"]).stdout),
-          expectedOutput);
+        getSuccessFailMarkForDoctorOutput(
+          setup.runLiveStaxSync(["doctor"]).stdout,
+        ),
+        expectedOutput,
+      );
 
       expectedOutput[3] = "X";
 
       setup.runSync("git", ["remote", "rm", "origin"]);
 
       expect(
-          getSuccessFailMarkForDoctorOutput(
-              setup.runLiveStaxSync(["doctor"]).stdout),
-          expectedOutput);
+        getSuccessFailMarkForDoctorOutput(
+          setup.runLiveStaxSync(["doctor"]).stdout,
+        ),
+        expectedOutput,
+      );
     });
   });
 }
