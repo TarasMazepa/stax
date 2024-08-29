@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:stax/command/internal_command.dart';
+import 'package:stax/command/sanitize_branch_name.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_cleanup_flags.dart';
 import 'package:stax/context/context_explain_to_user_no_staged_changes.dart';
@@ -7,9 +9,6 @@ import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
-
-import 'internal_command.dart';
-import 'sanitize_branch_name.dart';
 
 class InternalCommandCommit extends InternalCommand {
   static const prFlag = "--pr";

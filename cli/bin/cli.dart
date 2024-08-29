@@ -1,11 +1,12 @@
+import 'package:stax/command/internal_command.dart';
+import 'package:stax/command/internal_command_help.dart';
+import 'package:stax/command/internal_commands.dart';
+import 'package:stax/command/main_function_reference.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
 
-import 'internal_command.dart';
-import 'internal_command_help.dart';
-import 'internal_commands.dart';
-
 void main(List<String> arguments) {
+  mainFunctionReference = main;
   arguments = arguments.toList();
   final context = Context.implicit().handleGlobalFlags(arguments);
   switch (arguments) {

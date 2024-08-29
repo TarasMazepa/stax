@@ -1,10 +1,9 @@
+import 'package:stax/command/internal_command.dart';
+import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_fetch_with_prune.dart';
 import 'package:stax/context/context_git_is_current_branch_ahead_or_behind.dart';
 import 'package:stax/settings/settings.dart';
-
-import 'internal_command.dart';
-import 'types_for_internal_command.dart';
 
 class InternalCommandUpdatePrompt extends InternalCommand {
   InternalCommandUpdatePrompt()

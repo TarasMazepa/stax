@@ -1,10 +1,9 @@
 import 'dart:io';
 
+import 'package:stax/command/internal_command.dart';
+import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
-
-import 'internal_command.dart';
-import 'types_for_internal_command.dart';
 
 class InternalCommandUpdate extends InternalCommand {
   InternalCommandUpdate()

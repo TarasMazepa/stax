@@ -1,11 +1,10 @@
+import 'package:stax/command/internal_command.dart';
+import 'package:stax/command/internal_command_delete_gone_branches.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/external_command/extended_process_result.dart';
-
-import 'internal_command.dart';
-import 'internal_command_delete_gone_branches.dart';
 
 class InternalCommandPull extends InternalCommand {
   InternalCommandPull()

@@ -1,6 +1,5 @@
+import 'package:stax/command/sanitize_branch_name.dart';
 import 'package:test/test.dart';
-
-import '../bin/sanitize_branch_name.dart';
 
 void main() {
   test('no changes needed', () {

@@ -1,6 +1,5 @@
+import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
-
-import 'types_for_internal_command.dart';
 
 abstract class InternalCommand implements Comparable<InternalCommand> {
   final String name;
