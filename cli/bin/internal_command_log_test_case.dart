@@ -10,8 +10,11 @@ import 'types_for_internal_command.dart';
 
 class InternalCommandLogTestCase extends InternalCommand {
   InternalCommandLogTestCase()
-      : super("log-test-case", "shows test case for log command",
-            type: InternalCommandType.hidden);
+      : super(
+          "log-test-case",
+          "shows test case for log command",
+          type: InternalCommandType.hidden,
+        );
 
   @override
   void run(List<String> args, Context context) {

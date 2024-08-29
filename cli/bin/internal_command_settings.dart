@@ -6,8 +6,11 @@ import 'types_for_internal_command.dart';
 
 class InternalCommandSettings extends InternalCommand {
   InternalCommandSettings()
-      : super("settings", "View stax settings",
-            type: InternalCommandType.hidden);
+      : super(
+          "settings",
+          "View stax settings",
+          type: InternalCommandType.hidden,
+        );
 
   @override
   void run(final List<String> args, final Context context) {

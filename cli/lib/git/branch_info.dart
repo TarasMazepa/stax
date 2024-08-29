@@ -24,8 +24,17 @@ class BranchInfo {
   final int? behind;
   final String? remote;
 
-  BranchInfo(this.raw, this.current, this.name, this.commitHash,
-      this.commitMessage, this.gone, this.ahead, this.behind, this.remote);
+  BranchInfo(
+    this.raw,
+    this.current,
+    this.name,
+    this.commitHash,
+    this.commitMessage,
+    this.gone,
+    this.ahead,
+    this.behind,
+    this.remote,
+  );
 
   bool isValid() {
     return commitHash.length >= 5;
@@ -73,7 +82,7 @@ class BranchInfo {
         final splitPoint = remoteInfo[0].indexOf("/").toNullableIndexOfResult();
         final remoteNameParts = [
           remoteInfo[0].substring(0, splitPoint),
-          if (splitPoint != null) remoteInfo[0].substring(splitPoint + 1)
+          if (splitPoint != null) remoteInfo[0].substring(splitPoint + 1),
         ];
         if (remoteNameParts.length == 2 &&
             remoteNameParts[1] == name &&

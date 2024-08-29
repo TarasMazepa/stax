@@ -12,6 +12,7 @@ class InternalCommandVersion extends InternalCommand {
   @override
   void run(List<String> args, Context context) {
     context.printToConsole(
-        const String.fromEnvironment("version", defaultValue: "unknown"));
+      const String.fromEnvironment("version", defaultValue: "unknown"),
+    );
   }
 }

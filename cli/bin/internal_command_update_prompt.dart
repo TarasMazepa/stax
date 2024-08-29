@@ -8,11 +8,16 @@ import 'types_for_internal_command.dart';
 
 class InternalCommandUpdatePrompt extends InternalCommand {
   InternalCommandUpdatePrompt()
-      : super("update-prompt", "Asks about updating.",
-            type: InternalCommandType.hidden);
+      : super(
+          "update-prompt",
+          "Asks about updating.",
+          type: InternalCommandType.hidden,
+        );
 
   bool shouldAutoUpdateAfterExecutingCommand(
-      final List<String> args, Context context) {
+    final List<String> args,
+    Context context,
+  ) {
     final lastUpdatePrompt = Settings.instance.lastUpdatePrompt.get();
     final now = DateTime.now();
     final silenceDuration = Duration(days: 7);
@@ -28,13 +33,16 @@ class InternalCommandUpdatePrompt extends InternalCommand {
       }
     }
     bool answer = context.commandLineContinueQuestion(
-        "Stax will update after executing your command.");
+      "Stax will update after executing your command.",
+    );
     if (answer) {
       context.printToConsole(
-          "Thanks for supporting stax and updating it to latest version!");
+        "Thanks for supporting stax and updating it to latest version!",
+      );
     } else {
       context.printToConsole(
-          "Ok, will ask again in ${silenceDuration.inDays} day(s).");
+        "Ok, will ask again in ${silenceDuration.inDays} day(s).",
+      );
     }
     return answer;
   }

@@ -26,7 +26,8 @@ extension ContextHandleAddAllFlag on Context {
       if (areThereStagedChanges()) {
         selectedAddAll
             .askContinueQuestion(
-                "You already have some staged changes. Do you really want to proceed?")
+              "You already have some staged changes. Do you really want to proceed?",
+            )
             ?.announce("Adding changes, as per your request.")
             .runSync()
             .printNotEmptyResultFields();
@@ -40,7 +41,8 @@ extension ContextHandleAddAllFlag on Context {
       if (areThereNoStagedChanges()) {
         git.addEverything
             .askContinueQuestion(
-                "You do not have any staged changes. Do you want to add all?")
+              "You do not have any staged changes. Do you want to add all?",
+            )
             ?.announce("Adding all the changes, as per your request.")
             .runSync()
             .printNotEmptyResultFields();

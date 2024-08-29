@@ -6,8 +6,11 @@ import 'types_for_internal_command.dart';
 
 class InternalCommandMainBranch extends InternalCommand {
   InternalCommandMainBranch()
-      : super("main-branch", "Shows which branch stax considers to be main.",
-            type: InternalCommandType.hidden);
+      : super(
+          "main-branch",
+          "Shows which branch stax considers to be main.",
+          type: InternalCommandType.hidden,
+        );
 
   @override
   void run(final List<String> args, final Context context) {

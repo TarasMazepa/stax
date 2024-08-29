@@ -9,8 +9,13 @@ abstract class InternalCommand implements Comparable<InternalCommand> {
   final Map<String, String>? arguments;
   final Map<String, String>? flags;
 
-  const InternalCommand(this.name, this.description,
-      {this.type = InternalCommandType.public, this.arguments, this.flags});
+  const InternalCommand(
+    this.name,
+    this.description, {
+    this.type = InternalCommandType.public,
+    this.arguments,
+    this.flags,
+  });
 
   void run(final List<String> args, final Context context);
 

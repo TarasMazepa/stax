@@ -15,7 +15,7 @@ class InternalCommandLog extends InternalCommand {
           "Builds a tree of all branches.",
           flags: {
             defaultBranchFlag: "assume different default branch",
-            allBranchesFlag: "show remote branches also"
+            allBranchesFlag: "show remote branches also",
           },
         );
 

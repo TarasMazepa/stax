@@ -24,6 +24,8 @@ class CommitHashAndMessage {
   factory CommitHashAndMessage.parse(String line) {
     final splitPoint = line.indexOf(" ");
     return CommitHashAndMessage(
-        line.substring(0, splitPoint), line.substring(splitPoint + 1));
+      line.substring(0, splitPoint),
+      line.substring(splitPoint + 1),
+    );
   }
 }

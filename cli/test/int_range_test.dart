@@ -103,8 +103,8 @@ void main() {
   });
   test('illegal arguments IntRange(...)', () {
     expect(
-        () =>
-            IntRange(1, 0, RangeEdgeCondition.open, RangeEdgeCondition.closed),
-        throwsA(isException));
+      () => IntRange(1, 0, RangeEdgeCondition.open, RangeEdgeCondition.closed),
+      throwsA(isException),
+    );
   });
 }

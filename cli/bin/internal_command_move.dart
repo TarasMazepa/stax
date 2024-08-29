@@ -56,7 +56,8 @@ class InternalCommandMove extends InternalCommand {
           last.args.add(arg);
         } else {
           context.printParagraph(
-              "'$arg' index provided without leading 'up' or 'top' direction");
+            "'$arg' index provided without leading 'up' or 'top' direction",
+          );
           return;
         }
       } else if ("up".startsWith(arg)) {

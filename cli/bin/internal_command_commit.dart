@@ -17,23 +17,24 @@ class InternalCommandCommit extends InternalCommand {
 
   InternalCommandCommit()
       : super(
-            "commit",
-            "Creates a branch, commits, and pushes it to remote. "
-                "First argument is mandatory commit message. "
-                "Second argument is optional branch name, if not provided "
-                "branch name would be generated from commit message.",
-            flags: {
-              prFlag:
-                  "Opens PR creation page on your remote. Works only if you have GitHub as your remote.",
-              branchNameFlag:
-                  "Accepts branch name proposed by converting commit name to branch name.",
-            }..addAll(ContextHandleAddAllFlag.description),
-            arguments: {
-              "arg1":
-                  "Required commit message, usually enclosed in double quotes like this: \"Sample commit message\".",
-              "opt2":
-                  "Optional branch name, if not provided commit message would be converted to branch name.",
-            });
+          "commit",
+          "Creates a branch, commits, and pushes it to remote. "
+              "First argument is mandatory commit message. "
+              "Second argument is optional branch name, if not provided "
+              "branch name would be generated from commit message.",
+          flags: {
+            prFlag:
+                "Opens PR creation page on your remote. Works only if you have GitHub as your remote.",
+            branchNameFlag:
+                "Accepts branch name proposed by converting commit name to branch name.",
+          }..addAll(ContextHandleAddAllFlag.description),
+          arguments: {
+            "arg1":
+                "Required commit message, usually enclosed in double quotes like this: \"Sample commit message\".",
+            "opt2":
+                "Optional branch name, if not provided commit message would be converted to branch name.",
+          },
+        );
 
   @override
   void run(final List<String> args, final Context context) {
@@ -50,7 +51,8 @@ class InternalCommandCommit extends InternalCommand {
     context.cleanupFlags(args);
     if (args.isEmpty) {
       context.printToConsole(
-          "You need to provide commit message. Something like this: 'stax commit \"My new commit message\"'");
+        "You need to provide commit message. Something like this: 'stax commit \"My new commit message\"'",
+      );
       return;
     }
     final commitMessage = args[0];
@@ -58,14 +60,16 @@ class InternalCommandCommit extends InternalCommand {
     if (args.length == 1) {
       originalBranchName = args[0];
       context.printToConsole(
-          "Second parameter wasn't provided. Will convert commit message to new branch name.");
+        "Second parameter wasn't provided. Will convert commit message to new branch name.",
+      );
     } else {
       originalBranchName = args[1];
     }
     final resultingBranchName = sanitizeBranchName(originalBranchName);
     if (!acceptBranchName && originalBranchName != resultingBranchName) {
       if (!context.commandLineContinueQuestion(
-          "Branch name was sanitized to '$resultingBranchName'.")) return;
+        "Branch name was sanitized to '$resultingBranchName'.",
+      )) return;
     }
     context.printToConsole("Commit  message: '$commitMessage'");
     context.printToConsole("New branch name: '$resultingBranchName'");
@@ -78,7 +82,8 @@ class InternalCommandCommit extends InternalCommand {
         .exitCode;
     if (newBranchCheckoutExitCode != 0) {
       context.printParagraph(
-          "Looks like we can't create new branch with '$resultingBranchName' name. Please pick a different name.");
+        "Looks like we can't create new branch with '$resultingBranchName' name. Please pick a different name.",
+      );
       return;
     }
     final commitExitCode = context.git.commitWithMessage
@@ -89,7 +94,8 @@ class InternalCommandCommit extends InternalCommand {
         .exitCode;
     if (commitExitCode != 0) {
       context.printParagraph(
-          "See above git error. Additionally you can check `stax doctor` command output.");
+        "See above git error. Additionally you can check `stax doctor` command output.",
+      );
       return;
     }
     final pushExitCode = context.git.push
@@ -99,7 +105,8 @@ class InternalCommandCommit extends InternalCommand {
         .exitCode;
     if (pushExitCode != 0) {
       context.printParagraph(
-          "See above git error. Additionally you can check `stax doctor` command output.");
+        "See above git error. Additionally you can check `stax doctor` command output.",
+      );
       return;
     }
     if (createPr) {

@@ -29,12 +29,14 @@ class InternalCommandDoctor extends InternalCommand {
 
       final hasUserName = userName != null;
       context.printToConsole(
-          """[${boolToCheckmark(hasUserName)}] git config --get user.name # $userName""");
+        """[${boolToCheckmark(hasUserName)}] git config --get user.name # $userName""",
+      );
 
       if (!hasUserName) {
         context.printToConsole("""    X Set your git user name using:""");
         context.printToConsole(
-            """      git config --global user.name "<your preferred name>" """);
+          """      git config --global user.name "<your preferred name>" """,
+        );
       }
     }
 
@@ -54,12 +56,14 @@ class InternalCommandDoctor extends InternalCommand {
 
       final hasUserEmail = userEmail != null;
       context.printToConsole(
-          """[${boolToCheckmark(hasUserEmail)}] git config --get user.email # $userEmail""");
+        """[${boolToCheckmark(hasUserEmail)}] git config --get user.email # $userEmail""",
+      );
 
       if (!hasUserEmail) {
         context.printToConsole("""    X Set your git user email using:""");
         context.printToConsole(
-            """      git config --global user.email "<your preferred email>" """);
+          """      git config --global user.email "<your preferred email>" """,
+        );
       }
     }
 
@@ -79,12 +83,14 @@ class InternalCommandDoctor extends InternalCommand {
 
       final hasAutoSetupRemote = autoSetupRemote == "true";
       context.printToConsole(
-          """[${boolToCheckmark(hasAutoSetupRemote)}] git config --get push.autoSetupRemote # $hasAutoSetupRemote""");
+        """[${boolToCheckmark(hasAutoSetupRemote)}] git config --get push.autoSetupRemote # $hasAutoSetupRemote""",
+      );
 
       if (!hasAutoSetupRemote) {
         context.printToConsole("""    X Set git push.autoSetupRemote using:""");
         context.printToConsole(
-            """      git config --global push.autoSetupRemote true """);
+          """      git config --global push.autoSetupRemote true """,
+        );
       }
     }
 
@@ -104,12 +110,14 @@ class InternalCommandDoctor extends InternalCommand {
           .toList();
       final hasRemote = remotes.isNotEmpty;
       context.printToConsole(
-          """[${boolToCheckmark(hasRemote)}] git remote # ${hasRemote ? "remote(s): ${remotes.join(", ")}" : "no remotes"}""");
+        """[${boolToCheckmark(hasRemote)}] git remote # ${hasRemote ? "remote(s): ${remotes.join(", ")}" : "no remotes"}""",
+      );
 
       if (!hasRemote) {
         context.printToConsole("""    X Set at least one remote using:""");
         context.printToConsole(
-            """      git remote add origin <url to git repository>""");
+          """      git remote add origin <url to git repository>""",
+        );
       }
     }
 
@@ -118,12 +126,14 @@ class InternalCommandDoctor extends InternalCommand {
       String remote =
           ContextGitGetDefaultBranch.remotes?.firstOrNull ?? "<remote>";
       context.printToConsole(
-          """[${boolToCheckmark(defaultBranch != null)}] git rev-parse --abbrev-ref $remote/HEAD # ${defaultBranch ?? "not found"}""");
+        """[${boolToCheckmark(defaultBranch != null)}] git rev-parse --abbrev-ref $remote/HEAD # ${defaultBranch ?? "not found"}""",
+      );
 
       if (defaultBranch == null) {
         context.printToConsole("""    X Set default remote branch using:""");
         context.printToConsole(
-            """      git fetch -p ; git remote set-head $remote -a""");
+          """      git fetch -p ; git remote set-head $remote -a""",
+        );
       }
     }
   }

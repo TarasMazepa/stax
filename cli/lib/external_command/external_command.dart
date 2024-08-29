@@ -45,36 +45,42 @@ class ExternalCommand {
     return this;
   }
 
-  ExtendedProcessResult runSync(
-      {Map<String, String>? environment,
-      bool includeParentEnvironment = true,
-      bool runInShell = false,
-      Encoding? stdoutEncoding = systemEncoding,
-      Encoding? stderrEncoding = systemEncoding}) {
-    return Process.runSync(executable, arguments,
-            workingDirectory: context.workingDirectory,
-            environment: environment,
-            includeParentEnvironment: includeParentEnvironment,
-            runInShell: runInShell,
-            stdoutEncoding: stdoutEncoding,
-            stderrEncoding: stderrEncoding)
-        .extend(this);
+  ExtendedProcessResult runSync({
+    Map<String, String>? environment,
+    bool includeParentEnvironment = true,
+    bool runInShell = false,
+    Encoding? stdoutEncoding = systemEncoding,
+    Encoding? stderrEncoding = systemEncoding,
+  }) {
+    return Process.runSync(
+      executable,
+      arguments,
+      workingDirectory: context.workingDirectory,
+      environment: environment,
+      includeParentEnvironment: includeParentEnvironment,
+      runInShell: runInShell,
+      stdoutEncoding: stdoutEncoding,
+      stderrEncoding: stderrEncoding,
+    ).extend(this);
   }
 
-  Future<ExtendedProcessResult> run(
-      {Map<String, String>? environment,
-      bool includeParentEnvironment = true,
-      bool runInShell = false,
-      Encoding? stdoutEncoding = systemEncoding,
-      Encoding? stderrEncoding = systemEncoding}) {
-    return Process.run(executable, arguments,
-            workingDirectory: context.workingDirectory,
-            environment: environment,
-            includeParentEnvironment: includeParentEnvironment,
-            runInShell: runInShell,
-            stdoutEncoding: stdoutEncoding,
-            stderrEncoding: stderrEncoding)
-        .then((value) => value.extend(this));
+  Future<ExtendedProcessResult> run({
+    Map<String, String>? environment,
+    bool includeParentEnvironment = true,
+    bool runInShell = false,
+    Encoding? stdoutEncoding = systemEncoding,
+    Encoding? stderrEncoding = systemEncoding,
+  }) {
+    return Process.run(
+      executable,
+      arguments,
+      workingDirectory: context.workingDirectory,
+      environment: environment,
+      includeParentEnvironment: includeParentEnvironment,
+      runInShell: runInShell,
+      stdoutEncoding: stdoutEncoding,
+      stderrEncoding: stderrEncoding,
+    ).then((value) => value.extend(this));
   }
 
   @override

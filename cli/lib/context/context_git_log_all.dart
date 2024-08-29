@@ -126,19 +126,28 @@ class GitLogAllNode {
   List<GitLogAllNode> children = [];
 
   List<GitLogAllNode> get sortedChildren {
-    return children.sorted((a, b) => ComparisonChain()
-        .chainBoolReverse(a.isRemoteHeadReachable(), b.isRemoteHeadReachable())
-        .chain(() => (b.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ??
-                "")
-            .compareTo(
-                a.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ?? ""))
-        .chain(() => b.line.timestamp - a.line.timestamp)
-        .compare());
+    return children.sorted(
+      (a, b) => ComparisonChain()
+          .chainBoolReverse(
+            a.isRemoteHeadReachable(),
+            b.isRemoteHeadReachable(),
+          )
+          .chain(
+            () => (b.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ?? "")
+                .compareTo(
+              a.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ?? "",
+            ),
+          )
+          .chain(() => b.line.timestamp - a.line.timestamp)
+          .compare(),
+    );
   }
 
   factory GitLogAllNode.root(GitLogAllLine line) {
-    assert(line.parentCommitHash == null,
-        "To create root node line.parentCommitHash should be null");
+    assert(
+      line.parentCommitHash == null,
+      "To create root node line.parentCommitHash should be null",
+    );
     return GitLogAllNode(line, null);
   }
 
@@ -154,10 +163,12 @@ class GitLogAllNode {
         children.map((x) => x.collapse(showAllBranches)).nonNulls.toList();
     final hasInterestingParts = (showAllBranches && line.partsHasRemoteRef) ||
         line.partsHasRemoteHead ||
-        line.parts.any((x) =>
-            x.startsWith("refs/heads/") ||
-            x.startsWith("HEAD -> refs/heads/") ||
-            x == "HEAD");
+        line.parts.any(
+          (x) =>
+              x.startsWith("refs/heads/") ||
+              x.startsWith("HEAD -> refs/heads/") ||
+              x == "HEAD",
+        );
     if (!hasInterestingParts && children.length == 1) {
       children.first.parent = parent;
       return children.first;
@@ -208,7 +219,7 @@ class GitLogAllNode {
         parent: parent?.line.localBranchNames().firstOrNull ??
             parent?.line.remoteBranchNames().firstOrNull,
         node: line.localBranchNames().first,
-      )
+      ),
     ].followedBy(children.expand((x) => x.localBranchNamesInOrderForRebase()));
   }
 
@@ -255,14 +266,18 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
 
   @override
   List<GitLogAllNode> children(GitLogAllNode t) {
-    return t.children.sorted((a, b) => ComparisonChain()
-        .chainBoolReverse(isDefaultBranch(a), isDefaultBranch(b))
-        .chain(() => (b.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ??
-                "")
-            .compareTo(
-                a.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ?? ""))
-        .chain(() => b.line.timestamp - a.line.timestamp)
-        .compare());
+    return t.children.sorted(
+      (a, b) => ComparisonChain()
+          .chainBoolReverse(isDefaultBranch(a), isDefaultBranch(b))
+          .chain(
+            () => (b.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ?? "")
+                .compareTo(
+              a.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ?? "",
+            ),
+          )
+          .chain(() => b.line.timestamp - a.line.timestamp)
+          .compare(),
+    );
   }
 
   @override
