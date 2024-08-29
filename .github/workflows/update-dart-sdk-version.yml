@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: Homebrew/actions/setup-homebrew@master
       - run: |
-          new_dart_sdk_version="$(brew info dart --json | jq -r '.[0].versions.stable')"
+          new_dart_sdk_version="$(brew info dart-lang/dart/dart --json | jq -r '.[0].versions.stable')"
           echo $new_dart_sdk_version > DART_SDK_VERSION
           if ! git diff --quiet; then
             branch_name=update-dart-sdk-version-$new_dart_sdk_version-$RANDOM
