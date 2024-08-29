@@ -64,22 +64,6 @@ stax doctor
 [V] git config --get push.autoSetupRemote # true
 ```
 
-## v1 Roadmap
-
-| Feature                                            | Status |
-|----------------------------------------------------|--------|
-| [commit](#stax-commit)                             | ✅      |
-| [amend](#stax-amend)                               | ✅      |
-| [delete-gone-branches](#stax-delete-gone-branches) | ✅      |
-| [pull](#stax-pull)                                 | ✅      |
-| [log](#stax-log)                                   | ✅      |
-| [rebase](#stax-rebase)                             | ✅     |
-| [move](#stax-move)                               | ✅     |
-
-## v2 Roadmap
-
-It would be a UI tool that will implement all features from v1.
-
 ## What is stacking PRs git workflow?
 
 It is a way to reduce the burden of creating commits, branches, and PRs, so it doesn't consume much
@@ -186,3 +170,47 @@ Move has five directions:
 * https://ejoffe.github.io/spr/
 * https://stacked-git.github.io/
 * https://github.com/modularml/stack-pr
+
+## TODO
+
+```mermaid
+mindmap
+Todo
+  UI
+   Add initial console UI
+   add cd command (which will be the only way to select project)
+   add continuous stax log display
+
+  stax
+   allow flags to be grouped ( -a -b could be combined into -ab)
+   e2e test
+    create e2e tests roadmap
+    add more e2e tests
+   unit tests
+    create unit tests roadmap
+    add more e2e tests
+   add test coverage reporting
+   integration with gh tool (to create PRs and add automerge)
+   add update prompt (check VERSION file in repository, and offer to run choco update or brew update)
+
+  stax move
+   flag to ignore remote/head transition
+   flag to ignore multi children nodes
+
+  stax help
+   tell users that they can type only first letter of the commands
+   adds support for short and long versions of flags
+
+  stax amend
+   offer rebase
+
+  stax rebase
+   flag to prefer local changes
+
+  stax get
+   offer to delete existing local branch
+
+  stax squash
+   command which ensures that each branch only has one commit
+
+```
