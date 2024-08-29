@@ -23,7 +23,7 @@ jobs:
         working-directory: cli
       - run: dart format . -o none --set-exit-if-changed
         working-directory: cli
-      - run: dart analyze
+      - run: dart analyze --fatal-infos
         working-directory: cli
       - run: dart test
         working-directory: cli
