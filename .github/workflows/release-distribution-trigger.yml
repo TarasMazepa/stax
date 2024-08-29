@@ -6,7 +6,7 @@ on:
       - completed
 
 jobs:
-  version-trigger:
+  release-distribution-trigger:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
