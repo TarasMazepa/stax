@@ -229,7 +229,7 @@ class GitLogAllNode {
           (x) => x.remoteBranchNamesInOrderForCheckout(),
         )
         .cast<String?>()
-        .followedBy([line.remoteBranchNames().firstOrNull]).whereNotNull();
+        .followedBy([line.remoteBranchNames().firstOrNull]).nonNulls;
   }
 
   bool isRemoteHeadReachable() {
