@@ -1,8 +1,9 @@
 # Stax
 
-Stax is a tool that will help you to stack your PRs. 
+Stax is a tool that will help you to stack your PRs.
 
-The primary purpose is to make it easier to create smaller PRs. And reduce the amount of energy other people need to review them.
+The primary purpose is to make it easier to create smaller PRs. And reduce the amount of energy other people need to
+review them.
 
 ## Installation
 
@@ -148,10 +149,14 @@ Rebase tree of nodes on top of the <remote>/head or reference provided as first 
 ### stax move
 
 Move has five directions:
-* `up` — one node up. You can optionally specify the index of the child node (as represented in the log command); the default is 0.
+
+* `up` — one node up. You can optionally specify the index of the child node (as represented in the log command); the
+  default is 0.
 * `down` — one node up
-* `top` — to the topmost node, but stop on the first node with more than one child. Optionally you can specify an index of the child node (as represented in log command), default is 0.
-* `bottom` — to the bottommost node, but stop on the first node that has more than one child, or stop before the node that had <remote>/head as a child.
+* `top` — to the topmost node, but stop on the first node with more than one child. Optionally you can specify an index
+  of the child node (as represented in log command), default is 0.
+* `bottom` — to the bottommost node, but stop on the first node that has more than one child, or stop before the node
+  that had <remote>/head as a child.
 * `head` — moves to the <remote>/head
 
 # Videos
@@ -173,44 +178,39 @@ Move has five directions:
 
 ## TODO
 
-```mermaid
-mindmap
-Todo
-  UI
-   Add initial console UI
-   add cd command (which will be the only way to select project)
-   add continuous stax log display
+* UI
+    * Add initial console UI
+    * add cd command (which will be the only way to select project)
+    * add continuous stax log display
 
-  stax
-   allow flags to be grouped ( -a -b could be combined into -ab)
-   e2e test
-    create e2e tests roadmap
-    add more e2e tests
-   unit tests
-    create unit tests roadmap
-    add more e2e tests
-   add test coverage reporting
-   integration with gh tool (to create PRs and add automerge)
-   add update prompt (check VERSION file in repository, and offer to run choco update or brew update)
+* stax
+    * allow flags to be grouped ( -a -b could be combined into -ab)
+    * e2e test
+        * create e2e tests roadmap
+        * add more e2e tests
+    * unit tests
+        * create unit tests roadmap
+        * add more e2e tests
+    * add test coverage reporting
+    * integration with gh tool (to create PRs and add automerge)
+    * add update prompt (check VERSION file in repository, and offer to run choco update or brew update)
 
-  stax move
-   flag to ignore remote/head transition
-   flag to ignore multi children nodes
+* stax move
+  * flag to ignore remote/head transition
+  * flag to ignore multi children nodes
 
-  stax help
-   tell users that they can type only first letter of the commands
-   adds support for short and long versions of flags
+* stax help
+  * tell users that they can type only first letter of the commands
+  * adds support for short and long versions of flags
 
-  stax amend
-   offer rebase
+* stax amend
+  * offer rebase
 
-  stax rebase
-   flag to prefer local changes
+* stax rebase
+  * flag to prefer local changes
 
-  stax get
-   offer to delete existing local branch
+* stax get
+  * offer to delete existing local branch
 
-  stax squash
-   command which ensures that each branch only has one commit
-
-```
+* stax squash
+  * command which ensures that each branch only has one commit
