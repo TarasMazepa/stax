@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: Homebrew/actions/setup-homebrew@master
       - run: |
           new_dart_sdk_version="$(brew info dart --json | jq -r '.[0].versions.stable')"
           echo $new_dart_sdk_version > DART_SDK_VERSION
