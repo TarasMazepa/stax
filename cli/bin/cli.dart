@@ -28,11 +28,4 @@ void main(List<String> arguments) {
         command.run(args, context);
       }
   }
-  if (arguments.contains("--old-style-installation")) {
-    context.printParagraph("""You are using old style installation. Check
-
-https://github.com/TarasMazepa/stax?tab=readme-ov-file#installation
-
-for most up to date installation instructions for your OS.""");
-  }
 }
