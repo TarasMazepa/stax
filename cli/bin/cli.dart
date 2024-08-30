@@ -13,19 +13,24 @@ void main(List<String> arguments) {
     case []:
       InternalCommandHelp().run([], context);
     case [final commandName, ...final args]:
-      final command = internalCommandRegistry.entries.fold<InternalCommand?>(
+      final command = internalCommands.fold<InternalCommand?>(
         null,
-        (previous, element) => element.key.startsWith(commandName)
-            ? element.key.length <=
-                    (previous?.name.length ?? element.key.length)
-                ? element.value
-                : previous
-            : previous,
+        (current, element) => switch (element.name) {
+          String()
+              when current == null && element.name.startsWith(commandName) =>
+            element,
+          String()
+              when current != null &&
+                  element.name.startsWith(commandName) &&
+                  current.name.length > element.name.length =>
+            element,
+          _ => current,
+        },
       );
       if (command == null) {
-        context.printToConsole("Unknown command '$commandName'.");
-      } else {
-        command.run(args, context);
+        context.printParagraph("Unknown command '$commandName'.");
+        return;
       }
+      command.run(args, context);
   }
 }
