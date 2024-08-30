@@ -36,7 +36,3 @@ final List<InternalCommand> internalCommands = [
   InternalCommandUpdatePrompt(),
   InternalCommandVersion(),
 ]..sort();
-
-final Map<String, InternalCommand> internalCommandRegistry = {
-  for (final entry in internalCommands) entry.name: entry,
-};

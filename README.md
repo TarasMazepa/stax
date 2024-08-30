@@ -194,6 +194,7 @@ Move has five directions:
     * add test coverage reporting
     * integration with gh tool (to create PRs and add automerge)
     * add update prompt (check VERSION file in repository, and offer to run choco update or brew update)
+    * add hint that will explain short version of command names, add ability to hide it
 
 * stax move
   * flag to ignore remote/head transition
