@@ -1,3 +1,4 @@
+import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_delete_gone_branches.dart';
 import 'package:stax/context/context.dart';
@@ -11,9 +12,10 @@ class InternalCommandPull extends InternalCommand {
       : super(
           "pull",
           "Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.",
-          flags: {}
-            ..addAll(InternalCommandDeleteGoneBranches.forceDeleteFlagEntry)
-            ..addAll(InternalCommandDeleteGoneBranches.skipDeleteFlagEntry),
+          flags: (<String, String>{}
+                ..addAll(InternalCommandDeleteGoneBranches.forceDeleteFlagEntry)
+                ..addAll(InternalCommandDeleteGoneBranches.skipDeleteFlagEntry))
+              .toFlags(),
         );
 
   @override

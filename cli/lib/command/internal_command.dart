@@ -1,3 +1,4 @@
+import 'package:stax/command/flag.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 
@@ -6,7 +7,7 @@ abstract class InternalCommand implements Comparable<InternalCommand> {
   final String description;
   final InternalCommandType type;
   final Map<String, String>? arguments;
-  final Map<String, String>? flags;
+  final List<Flag>? flags;
 
   const InternalCommand(
     this.name,

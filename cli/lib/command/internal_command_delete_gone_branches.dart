@@ -1,3 +1,4 @@
+import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_fetch_with_prune.dart';
@@ -18,9 +19,10 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
       : super(
           "delete-gone-branches",
           "Deletes local branches with gone remotes.",
-          flags: {}
-            ..addAll(forceDeleteFlagEntry)
-            ..addAll(skipDeleteFlagEntry),
+          flags: (<String, String>{}
+                ..addAll(forceDeleteFlagEntry)
+                ..addAll(skipDeleteFlagEntry))
+              .toFlags(),
         );
 
   @override
