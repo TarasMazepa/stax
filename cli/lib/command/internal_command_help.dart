@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_commands.dart';
 import 'package:stax/command/types_for_internal_command.dart';
@@ -10,13 +11,13 @@ class InternalCommandHelp extends InternalCommand {
       : super(
           "help",
           "List of available commands.",
-          flags: {"-a": "Show all commands including hidden."},
+          flags: {"-a": "Show all commands including hidden."}.toFlags(),
         );
 
-  void printEntries(
+  void printIndented(
     Context context,
     String header,
-    List<MapEntry<String, String>>? entries,
+    Iterable<MapEntry<String, String>>? entries,
     String indent,
   ) {
     if (entries == null || entries.isEmpty) return;
@@ -26,32 +27,18 @@ class InternalCommandHelp extends InternalCommand {
     }
   }
 
-  void printMapSorted(
+  void printIndentedSorted(
     Context context,
     String header,
-    Map<String, String>? map,
+    Iterable<MapEntry<String, String>>? entries,
     String indent,
   ) {
-    printEntries(
+    printIndented(
       context,
       header,
-      map?.entries.sortedBy(
+      entries?.sortedBy(
         (x) => x.key.replaceAll("-", ""),
       ),
-      indent,
-    );
-  }
-
-  void printMap(
-    Context context,
-    String header,
-    Map<String, String>? map,
-    String indent,
-  ) {
-    printEntries(
-      context,
-      header,
-      map?.entries.toList(),
       indent,
     );
   }
@@ -62,13 +49,30 @@ class InternalCommandHelp extends InternalCommand {
     final commandsToShow = internalCommands.where(
       (element) => showAll || element.type == InternalCommandType.public,
     );
-    printMapSorted(context, "Global flags", ContextHandleGlobalFlags.flags, "");
+    printIndentedSorted(
+      context,
+      "Global flags",
+      ContextHandleGlobalFlags.flags.entries,
+      "",
+    );
     context.printToConsole("Here are available commands:");
     for (final element in commandsToShow) {
       context.printToConsole(" • ${element.name} - ${element.description}");
 
-      printMap(context, "Positional arguments", element.arguments, "      ");
-      printMapSorted(context, "Flags", element.flags, "      ");
+      printIndented(
+        context,
+        "Positional arguments",
+        element.arguments?.entries.toList(),
+        "      ",
+      );
+      printIndentedSorted(
+        context,
+        "Flags",
+        element.flags?.map(
+          (e) => MapEntry([e.short, e.long].nonNulls.join(", "), e.description),
+        ),
+        "      ",
+      );
     }
   }
 }
