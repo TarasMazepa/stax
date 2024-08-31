@@ -1,3 +1,4 @@
+import 'package:stax/command/flag.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
 
@@ -5,6 +6,24 @@ extension ContextHandleAddAllFlag on Context {
   static final String addEverythingFlag = "-A";
   static final String addAllFlag = "-a";
   static final String updateAllFlag = "-u";
+
+  static final List<Flag> flags = [
+    Flag(
+      short: addEverythingFlag,
+      description:
+          "Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.",
+    ),
+    Flag(
+      short: addAllFlag,
+      description:
+          "Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.",
+    ),
+    Flag(
+      short: updateAllFlag,
+      description:
+          "Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.",
+    ),
+  ];
 
   static Map<String, String> get description => {
         addEverythingFlag:

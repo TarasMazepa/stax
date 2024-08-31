@@ -1,4 +1,3 @@
-import 'package:stax/command/flag.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_explain_to_user_no_staged_changes.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
@@ -14,9 +13,7 @@ class InternalCommandAmend extends InternalCommand {
       : super(
           "amend",
           "Amends and pushes changes.",
-          flags: (<String, String>{}
-                ..addAll(ContextHandleAddAllFlag.description))
-              .toFlags(),
+          flags: [...ContextHandleAddAllFlag.flags],
         );
 
   @override

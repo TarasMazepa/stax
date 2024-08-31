@@ -14,10 +14,16 @@ class InternalCommandLog extends InternalCommand {
       : super(
           "log",
           "Builds a tree of all branches.",
-          flags: {
-            defaultBranchFlag: "assume different default branch",
-            allBranchesFlag: "show remote branches also",
-          }.toFlags(),
+          flags: [
+            Flag(
+              long: defaultBranchFlag,
+              description: "assume different default branch",
+            ),
+            Flag(
+              short: allBranchesFlag,
+              description: "show remote branches also",
+            ),
+          ],
         );
 
   @override

@@ -11,7 +11,12 @@ class InternalCommandHelp extends InternalCommand {
       : super(
           "help",
           "List of available commands.",
-          flags: {"-a": "Show all commands including hidden."}.toFlags(),
+          flags: [
+            Flag(
+              short: "-a",
+              description: "Show all commands including hidden.",
+            ),
+          ],
         );
 
   void printIndented(
