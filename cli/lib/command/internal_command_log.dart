@@ -33,8 +33,14 @@ class InternalCommandLog extends InternalCommand {
     }
     context = context.withSilence(true);
 
-    final defaultBranch =
-        args.elementAtOrNull(args.indexOf(defaultBranchFlag.long!) + 1);
+    final String? defaultBranch;
+
+    try {
+      defaultBranch = defaultBranchFlag.getFlagValue(args);
+    } catch (e) {
+      print(e);
+      return;
+    }
 
     final showAllBranches = allBranchesFlag.hasFlag(args);
 

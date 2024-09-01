@@ -1,3 +1,5 @@
+import 'package:stax/nullable_index_of.dart';
+
 class Flag {
   final String? short;
   final String? long;
@@ -37,5 +39,29 @@ class Flag {
           return false;
         }(),
     };
+  }
+
+  String? getFlagValue(List<String> args) {
+    if (long != null) {
+      final index = args.indexOf(long!).toNullableIndexOfResult();
+      if (index != null) {
+        final valueIndex = index + 1;
+        if (args.length <= valueIndex) {
+          throw Exception("Value wasn't provided for '$long' flag.");
+        }
+        return args[valueIndex];
+      }
+    }
+    if (short != null) {
+      final index = args.indexOf(short!).toNullableIndexOfResult();
+      if (index != null) {
+        final valueIndex = index + 1;
+        if (args.length <= valueIndex) {
+          throw Exception("Value wasn't provided for '$short' flag.");
+        }
+        return args[valueIndex];
+      }
+    }
+    return null;
   }
 }
