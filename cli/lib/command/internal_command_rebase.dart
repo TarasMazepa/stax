@@ -1,3 +1,4 @@
+import 'package:stax/command/flag.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
@@ -5,6 +6,17 @@ import 'package:stax/context/context_git_log_all.dart';
 import 'internal_command.dart';
 
 class InternalCommandRebase extends InternalCommand {
+  static final theirsFlag = Flag(
+    short: "-m",
+    long: "--prefer-moving",
+    description: "Prefer moving changes on conflict.",
+  );
+  static final oursFlag = Flag(
+    short: "-b",
+    long: "--prefer-base",
+    description: "Prefer base changes on conflict.",
+  );
+
   InternalCommandRebase()
       : super(
           "rebase",
@@ -13,11 +25,30 @@ class InternalCommandRebase extends InternalCommand {
             "opt1":
                 "Optional argument for target, will default to <remote>/HEAD",
           },
+          flags: [
+            theirsFlag,
+            oursFlag,
+          ],
         );
 
   @override
   void run(List<String> args, Context context) {
     if (context.handleNotInsideGitWorkingTree()) {
+      return;
+    }
+
+    final hasTheirsFlag = theirsFlag.hasFlag(args);
+    final hasOursFlag = oursFlag.hasFlag(args);
+
+    if (hasTheirsFlag && hasOursFlag) {
+      context.printParagraph("""You have used two conflicting flags:
+${[
+        theirsFlag,
+        oursFlag,
+      ].map(
+                (e) => "  $e",
+              ).join("\n")}
+""");
       return;
     }
 
@@ -57,7 +88,12 @@ class InternalCommandRebase extends InternalCommand {
 
     for (var node in current.localBranchNamesInOrderForRebase()) {
       final exitCode = context.git.rebase
-          .args([/* */changeParentOnce ? rebaseOnto : node.parent!, node.node])
+          .args([
+            if (hasTheirsFlag) ...["-X", "theirs"],
+            if (hasOursFlag) ...["-X", "ours"],
+            if (changeParentOnce) rebaseOnto else node.parent!,
+            node.node,
+          ])
           .announce()
           .runSync()
           .printNotEmptyResultFields()

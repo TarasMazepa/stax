@@ -64,4 +64,9 @@ class Flag {
     }
     return null;
   }
+
+  @override
+  String toString() {
+    return "${[short, long].nonNulls.join(", ")} - $description";
+  }
 }
