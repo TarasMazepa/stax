@@ -57,7 +57,7 @@ class InternalCommandRebase extends InternalCommand {
 
     for (var node in current.localBranchNamesInOrderForRebase()) {
       final exitCode = context.git.rebase
-          .args([changeParentOnce ? rebaseOnto : node.parent!, node.node])
+          .args([/**/changeParentOnce ? rebaseOnto : node.parent!, node.node])
           .announce()
           .runSync()
           .printNotEmptyResultFields()
