@@ -1,5 +1,6 @@
 import 'package:stax/command/flag.dart';
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_assert_no_conflicting_flags.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
 
@@ -40,15 +41,10 @@ class InternalCommandRebase extends InternalCommand {
     final hasTheirsFlag = theirsFlag.hasFlag(args);
     final hasOursFlag = oursFlag.hasFlag(args);
 
-    if (hasTheirsFlag && hasOursFlag) {
-      context.printParagraph("""You have used two conflicting flags:
-${[
-        theirsFlag,
-        oursFlag,
-      ].map(
-                (e) => "  $e",
-              ).join("\n")}
-""");
+    if (context.assertNoConflictingFlags(
+      [hasTheirsFlag, hasOursFlag],
+      [theirsFlag, oursFlag],
+    )) {
       return;
     }
 
