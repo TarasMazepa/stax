@@ -24,7 +24,11 @@ class ExtendedProcessResult {
   get stdout => processResult.stdout;
 
   ExtendedProcessResult? assertSuccessfulExitCode() {
-    return exitCode == 0 ? this : null;
+    return isSuccess() ? this : null;
+  }
+
+  bool isSuccess() {
+    return exitCode == 0;
   }
 
   ExtendedProcessResult printNotEmptyResultFields() {
