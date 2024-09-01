@@ -12,8 +12,16 @@ import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
 
 class InternalCommandCommit extends InternalCommand {
-  static const prFlag = "--pr";
-  static const branchNameFlag = "-b";
+  static final prFlag = Flag(
+    long: "--pr",
+    description:
+        "Opens PR creation page on your remote. Works only if you have GitHub as your remote.",
+  );
+  static final branchNameFlag = Flag(
+    short: "-b",
+    description:
+        "Accepts branch name proposed by converting commit name to branch name.",
+  );
 
   InternalCommandCommit()
       : super(
@@ -23,16 +31,8 @@ class InternalCommandCommit extends InternalCommand {
               "Second argument is optional branch name, if not provided "
               "branch name would be generated from commit message.",
           flags: [
-            Flag(
-              long: prFlag,
-              description:
-                  "Opens PR creation page on your remote. Works only if you have GitHub as your remote.",
-            ),
-            Flag(
-              short: branchNameFlag,
-              description:
-                  "Accepts branch name proposed by converting commit name to branch name.",
-            ),
+            prFlag,
+            branchNameFlag,
             ...ContextHandleAddAllFlag.flags,
           ],
           arguments: {
@@ -49,8 +49,8 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
     context.handleAddAllFlag(args);
-    final createPr = args.remove(prFlag);
-    final acceptBranchName = args.remove(branchNameFlag);
+    final createPr = args.remove(prFlag.long);
+    final acceptBranchName = args.remove(branchNameFlag.short);
     if (context.areThereNoStagedChanges()) {
       context.explainToUserNoStagedChanges();
       return;

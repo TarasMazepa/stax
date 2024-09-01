@@ -7,22 +7,22 @@ import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 import 'internal_command.dart';
 
 class InternalCommandLog extends InternalCommand {
-  static final String defaultBranchFlag = "--default-branch";
-  static final String allBranchesFlag = "-a";
+  static final Flag defaultBranchFlag = Flag(
+    long: "--default-branch",
+    description: "assume different default branch",
+  );
+  static final Flag allBranchesFlag = Flag(
+    short: "-a",
+    description: "show remote branches also",
+  );
 
   InternalCommandLog()
       : super(
           "log",
           "Builds a tree of all branches.",
           flags: [
-            Flag(
-              long: defaultBranchFlag,
-              description: "assume different default branch",
-            ),
-            Flag(
-              short: allBranchesFlag,
-              description: "show remote branches also",
-            ),
+            defaultBranchFlag,
+            allBranchesFlag,
           ],
         );
 
@@ -34,9 +34,9 @@ class InternalCommandLog extends InternalCommand {
     context = context.withSilence(true);
 
     final defaultBranch =
-        args.elementAtOrNull(args.indexOf(defaultBranchFlag) + 1);
+        args.elementAtOrNull(args.indexOf(defaultBranchFlag.long!) + 1);
 
-    final showAllBranches = args.remove(allBranchesFlag);
+    final showAllBranches = args.remove(allBranchesFlag.short);
 
     print(
       materializeDecoratedLogLines(

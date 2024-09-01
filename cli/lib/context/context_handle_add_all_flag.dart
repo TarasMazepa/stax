@@ -3,41 +3,32 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
 
 extension ContextHandleAddAllFlag on Context {
-  static final String addEverythingFlag = "-A";
-  static final String addAllFlag = "-a";
-  static final String updateAllFlag = "-u";
+  static final Flag addEverythingFlag = Flag(
+    short: "-A",
+    description:
+        "Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.",
+  );
+  static final Flag addAllFlag = Flag(
+    short: "-a",
+    description:
+        "Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.",
+  );
+  static final Flag updateAllFlag = Flag(
+    short: "-u",
+    description:
+        "Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.",
+  );
 
   static final List<Flag> flags = [
-    Flag(
-      short: addEverythingFlag,
-      description:
-          "Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.",
-    ),
-    Flag(
-      short: addAllFlag,
-      description:
-          "Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.",
-    ),
-    Flag(
-      short: updateAllFlag,
-      description:
-          "Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.",
-    ),
+    addEverythingFlag,
+    addAllFlag,
+    updateAllFlag,
   ];
 
-  static Map<String, String> get description => {
-        addEverythingFlag:
-            "Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.",
-        addAllFlag:
-            "Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.",
-        updateAllFlag:
-            "Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.",
-      };
-
   void handleAddAllFlag(List<String> args) {
-    final hasAddEverything = args.remove(addEverythingFlag);
-    final hasAddAll = args.remove(addAllFlag);
-    final hasUpdateAll = args.remove(updateAllFlag);
+    final hasAddEverything = args.remove(addEverythingFlag.short);
+    final hasAddAll = args.remove(addAllFlag.short);
+    final hasUpdateAll = args.remove(updateAllFlag.short);
     if (hasAddEverything || hasAddAll || hasUpdateAll) {
       final selectedAddAll = hasAddEverything
           ? git.addEverything
