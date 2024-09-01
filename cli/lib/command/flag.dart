@@ -18,6 +18,21 @@ class Flag {
         );
 
   bool hasFlag(List<String> args) {
-    return args.remove(short) || args.remove(long);
+    return switch (0) {
+      0 when long != null && args.remove(long) => true,
+      0 when short != null && args.remove(short) => true,
+      0
+          when short != null &&
+              args.any(
+                (element) => switch (0) {
+                  0 when element.length < 2 => false,
+                  0 when element[0] != "-" => false,
+                  0 when element[1] == "-" => false,
+                  _ => element.contains(short![1]),
+                },
+              ) =>
+        true,
+      _ => false,
+    };
   }
 }
