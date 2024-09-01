@@ -201,7 +201,6 @@ Move has five directions:
 
 * stax help
   * tell users that they can type only first letter of the commands
-  * adds support for short and long versions of flags
 
 * stax amend
   * offer rebase
