@@ -25,7 +25,7 @@ Here are available commands:
          -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
          -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
          -b - Accepts branch name proposed by converting commit name to branch name.
-         --pr - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
+         -p, --pr - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
          -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
  • delete-gone-branches - Deletes local branches with gone remotes.
       Flags:
