@@ -184,7 +184,6 @@ Move has five directions:
     * add continuous stax log display
 
 * stax
-    * allow flags to be grouped ( -a -b could be combined into -ab)
     * e2e test
         * create e2e tests roadmap
         * add more e2e tests
