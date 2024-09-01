@@ -26,9 +26,9 @@ extension ContextHandleAddAllFlag on Context {
   ];
 
   void handleAddAllFlag(List<String> args) {
-    final hasAddEverything = args.remove(addEverythingFlag.short);
-    final hasAddAll = args.remove(addAllFlag.short);
-    final hasUpdateAll = args.remove(updateAllFlag.short);
+    final hasAddEverything = addEverythingFlag.hasFlag(args);
+    final hasAddAll = addAllFlag.hasFlag(args);
+    final hasUpdateAll = updateAllFlag.hasFlag(args);
     if (hasAddEverything || hasAddAll || hasUpdateAll) {
       final selectedAddAll = hasAddEverything
           ? git.addEverything

@@ -16,4 +16,8 @@ class Flag {
           long == null || (long.startsWith("--") && long.length > 2),
           "Long should have format '--xxx', where xxx is a long name of the flag",
         );
+
+  bool hasFlag(List<String> args) {
+    return args.remove(short) || args.remove(long);
+  }
 }
