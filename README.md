@@ -210,3 +210,6 @@ Move has five directions:
 
 * stax squash
   * command which ensures that each branch only has one commit
+
+* homebrew-stax
+  * add test for installing stax on arm64 linux
