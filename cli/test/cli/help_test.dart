@@ -52,6 +52,9 @@ Here are available commands:
  • rebase - rebase tree of branches on top of main
       Positional arguments:
          opt1 - Optional argument for target, will default to <remote>/HEAD
+      Flags:
+         -b, --prefer-base - Prefer base changes on conflict.
+         -m, --prefer-moving - Prefer moving changes on conflict.
  • version - Version of stax
 """);
     });
