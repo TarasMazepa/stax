@@ -196,14 +196,11 @@ Move has five directions:
     * add hint that will explain short version of command names, add ability to hide it
 
 * stax move
-  * flag to ignore remote/head transition
+  * flag to ignore <remote>/HEAD transition
   * flag to ignore multi children nodes
 
 * stax help
   * tell users that they can type only first letter of the commands
-
-* stax amend
-  * offer rebase
 
 * stax squash
   * command which ensures that each branch only has one commit
