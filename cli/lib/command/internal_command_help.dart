@@ -7,15 +7,15 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
 
 class InternalCommandHelp extends InternalCommand {
+  static final showAllFlag =
+      Flag(short: "-a", description: "Show all commands including hidden.");
+
   InternalCommandHelp()
       : super(
           "help",
           "List of available commands.",
           flags: [
-            Flag(
-              short: "-a",
-              description: "Show all commands including hidden.",
-            ),
+            showAllFlag,
           ],
         );
 
@@ -50,7 +50,7 @@ class InternalCommandHelp extends InternalCommand {
 
   @override
   void run(final List<String> args, final Context context) {
-    final showAll = args.contains("-a");
+    final showAll = args.contains(showAllFlag.short);
     final commandsToShow = internalCommands.where(
       (element) => showAll || element.type == InternalCommandType.public,
     );
