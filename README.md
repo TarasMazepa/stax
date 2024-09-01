@@ -206,9 +206,6 @@ Move has five directions:
 * stax amend
   * offer rebase
 
-* stax rebase
-  * flag to prefer local changes
-
 * stax get
   * offer to delete existing local branch
 
