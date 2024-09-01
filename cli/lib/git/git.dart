@@ -10,7 +10,6 @@ class Git {
   late final branchCurrent = branch.arg("--show-current");
   late final branchDelete = branch.arg("-D");
   late final branchVv = branch.arg("-vv");
-  late final branchVvContains = branch.args(["-vv", "--contains"]);
   late final checkout = rawEc("git checkout");
   late final checkoutDetach = checkout.arg("--detach");
   late final checkoutNewBranch = checkout.arg("-b");
