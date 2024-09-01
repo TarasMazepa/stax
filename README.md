@@ -205,9 +205,6 @@ Move has five directions:
 * stax amend
   * offer rebase
 
-* stax get
-  * offer to delete existing local branch
-
 * stax squash
   * command which ensures that each branch only has one commit
 

@@ -12,6 +12,7 @@ class Git {
   late final branchVv = branch.arg("-vv");
   late final branchVvContains = branch.args(["-vv", "--contains"]);
   late final checkout = rawEc("git checkout");
+  late final checkoutDetach = checkout.arg("--detach");
   late final checkoutNewBranch = checkout.arg("-b");
   late final clone = rawEc("git clone");
   late final commit = rawEc("git commit");
@@ -28,6 +29,7 @@ class Git {
   late final logTimestampOne = log.args(["--format=format:%ct", "-1"]);
   late final mergeBase = rawEc("git merge-base");
   late final pull = rawEc("git pull");
+  late final pullForce = pull.arg("--force");
   late final push = rawEc("git push");
   late final pushForce = push.arg("--force");
   late final rebase = rawEc("git rebase");
@@ -41,6 +43,7 @@ class Git {
   late final revParseIsInsideWorkTree = revParse.arg("--is-inside-work-tree");
   late final revParseShort = revParse.arg("--short");
   late final revParseShowTopLevel = revParse.arg("--show-toplevel");
+  late final revParseVerify = revParse.arg("--verify");
   late final showBranch = rawEc("git show-branch");
   late final showBranchSha1Name = showBranch.arg("--sha1-name");
   late final status = rawEc("git status");
