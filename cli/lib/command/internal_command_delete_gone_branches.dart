@@ -44,8 +44,8 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
         .args(branchesToDelete)
         .askContinueQuestion(
           "Local branches with gone remotes that would be deleted:\n${branchesToDelete.map((e) => "   • $e").join("\n")}\n",
-          assumeYes: args.contains(forceDeleteFlag.short),
-          assumeNo: args.contains(skipDeleteFlag.short),
+          assumeYes: forceDeleteFlag.hasFlag(args),
+          assumeNo: skipDeleteFlag.hasFlag(args),
         )
         ?.announce("Deleting branches.")
         .runSync()

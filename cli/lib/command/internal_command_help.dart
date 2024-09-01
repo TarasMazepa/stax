@@ -50,7 +50,7 @@ class InternalCommandHelp extends InternalCommand {
 
   @override
   void run(final List<String> args, final Context context) {
-    final showAll = args.contains(showAllFlag.short);
+    final showAll = showAllFlag.hasFlag(args);
     final commandsToShow = internalCommands.where(
       (element) => showAll || element.type == InternalCommandType.public,
     );

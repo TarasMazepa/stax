@@ -36,7 +36,7 @@ class InternalCommandLog extends InternalCommand {
     final defaultBranch =
         args.elementAtOrNull(args.indexOf(defaultBranchFlag.long!) + 1);
 
-    final showAllBranches = args.remove(allBranchesFlag.short);
+    final showAllBranches = allBranchesFlag.hasFlag(args);
 
     print(
       materializeDecoratedLogLines(

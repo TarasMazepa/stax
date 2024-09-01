@@ -49,8 +49,8 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
     context.handleAddAllFlag(args);
-    final createPr = args.remove(prFlag.long);
-    final acceptBranchName = args.remove(branchNameFlag.short);
+    final createPr = prFlag.hasFlag(args);
+    final acceptBranchName = branchNameFlag.hasFlag(args);
     if (context.areThereNoStagedChanges()) {
       context.explainToUserNoStagedChanges();
       return;
