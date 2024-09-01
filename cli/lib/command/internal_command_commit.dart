@@ -13,6 +13,7 @@ import 'package:stax/context/context_handle_add_all_flag.dart';
 
 class InternalCommandCommit extends InternalCommand {
   static final prFlag = Flag(
+    short: "-p",
     long: "--pr",
     description:
         "Opens PR creation page on your remote. Works only if you have GitHub as your remote.",
