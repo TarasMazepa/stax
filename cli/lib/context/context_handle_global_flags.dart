@@ -1,16 +1,16 @@
 import 'package:stax/context/context.dart';
 
 extension ContextHandleGlobalFlags on Context {
-  static final _silentFlag = "--silent";
-  static final _loudFlag = "--loud";
-  static final _acceptAllFlag = "--accept-all";
-  static final _declineAllFlag = "--decline-all";
+  static final _silentFlag = '--silent';
+  static final _loudFlag = '--loud';
+  static final _acceptAllFlag = '--accept-all';
+  static final _declineAllFlag = '--decline-all';
 
   static Map<String, String> get flags => {
-        _silentFlag: "Removes all output except user prompts.",
-        _loudFlag: "Force all the output.",
-        _acceptAllFlag: "Accept all the user prompts automatically.",
-        _declineAllFlag: "Decline all the user prompts automatically.",
+        _silentFlag: 'Removes all output except user prompts.',
+        _loudFlag: 'Force all the output.',
+        _acceptAllFlag: 'Accept all the user prompts automatically.',
+        _declineAllFlag: 'Decline all the user prompts automatically.',
       };
 
   Context handleGlobalFlags(List<String> args) {

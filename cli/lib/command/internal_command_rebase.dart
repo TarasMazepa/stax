@@ -8,23 +8,23 @@ import 'internal_command.dart';
 
 class InternalCommandRebase extends InternalCommand {
   static final theirsFlag = Flag(
-    short: "-m",
-    long: "--prefer-moving",
-    description: "Prefer moving changes on conflict.",
+    short: '-m',
+    long: '--prefer-moving',
+    description: 'Prefer moving changes on conflict.',
   );
   static final oursFlag = Flag(
-    short: "-b",
-    long: "--prefer-base",
-    description: "Prefer base changes on conflict.",
+    short: '-b',
+    long: '--prefer-base',
+    description: 'Prefer base changes on conflict.',
   );
 
   InternalCommandRebase()
       : super(
-          "rebase",
-          "rebase tree of branches on top of main",
+          'rebase',
+          'rebase tree of branches on top of main',
           arguments: {
-            "opt1":
-                "Optional argument for target, will default to <remote>/HEAD",
+            'opt1':
+                'Optional argument for target, will default to <remote>/HEAD',
           },
           flags: [
             theirsFlag,
@@ -58,7 +58,7 @@ class InternalCommandRebase extends InternalCommand {
     final current = root.findCurrent();
 
     if (current == null) {
-      context.printToConsole("Can find current branch.");
+      context.printToConsole('Can find current branch.');
       return;
     }
 
@@ -74,7 +74,7 @@ class InternalCommandRebase extends InternalCommand {
     }
 
     if (current == targetNode) {
-      context.printToConsole("Nothing to rebase.");
+      context.printToConsole('Nothing to rebase.');
       return;
     }
 
@@ -85,8 +85,8 @@ class InternalCommandRebase extends InternalCommand {
     for (var node in current.localBranchNamesInOrderForRebase()) {
       final exitCode = context.git.rebase
           .args([
-            if (hasTheirsFlag) ...["-X", "theirs"],
-            if (hasOursFlag) ...["-X", "ours"],
+            if (hasTheirsFlag) ...['-X', 'theirs'],
+            if (hasOursFlag) ...['-X', 'ours'],
             if (changeParentOnce) rebaseOnto else node.parent!,
             node.node,
           ])
@@ -96,7 +96,7 @@ class InternalCommandRebase extends InternalCommand {
           .exitCode;
       changeParentOnce = false;
       if (exitCode != 0) {
-        context.printParagraph("Rebase failed");
+        context.printParagraph('Rebase failed');
         return;
       }
       context.git.pushForce.announce().runSync().printNotEmptyResultFields();

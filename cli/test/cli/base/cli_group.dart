@@ -26,10 +26,10 @@ void cliGroup(
       retry: retry, () {
     setUp(() {
       setup.setUp();
-      setup.runSync("git", ["config", "--global", "user.name", "stax"]);
+      setup.runSync('git', ['config', '--global', 'user.name', 'stax']);
       setup.runSync(
-        "git",
-        ["config", "--global", "user.email", "stax@staxforgit.com"],
+        'git',
+        ['config', '--global', 'user.email', 'stax@staxforgit.com'],
       );
     });
     tearDown(() {

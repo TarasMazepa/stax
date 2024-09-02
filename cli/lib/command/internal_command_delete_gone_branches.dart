@@ -7,18 +7,18 @@ import 'package:stax/git/branch_info.dart';
 
 class InternalCommandDeleteGoneBranches extends InternalCommand {
   static final forceDeleteFlag = Flag(
-    short: "-f",
-    description: "Force delete gone branches.",
+    short: '-f',
+    description: 'Force delete gone branches.',
   );
   static final skipDeleteFlag = Flag(
-    short: "-s",
-    description: "Skip deletion of gone branches.",
+    short: '-s',
+    description: 'Skip deletion of gone branches.',
   );
 
   InternalCommandDeleteGoneBranches()
       : super(
-          "delete-gone-branches",
-          "Deletes local branches with gone remotes.",
+          'delete-gone-branches',
+          'Deletes local branches with gone remotes.',
           flags: [forceDeleteFlag, skipDeleteFlag],
         );
 
@@ -29,7 +29,7 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
     }
     context.fetchWithPrune();
     final branchesToDelete = context.git.branchVv
-        .announce("Checking if any remote branches are gone.")
+        .announce('Checking if any remote branches are gone.')
         .runSync()
         .printNotEmptyResultFields()
         .parseBranchInfo()
@@ -37,7 +37,7 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
         .map((e) => e.name)
         .toList();
     if (branchesToDelete.isEmpty) {
-      context.printToConsole("No local branches with gone remotes.");
+      context.printToConsole('No local branches with gone remotes.');
       return;
     }
     context.git.branchDelete
@@ -47,7 +47,7 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
           assumeYes: forceDeleteFlag.hasFlag(args),
           assumeNo: skipDeleteFlag.hasFlag(args),
         )
-        ?.announce("Deleting branches.")
+        ?.announce('Deleting branches.')
         .runSync()
         .printNotEmptyResultFields();
   }

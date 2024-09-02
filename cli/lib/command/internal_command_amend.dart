@@ -12,27 +12,27 @@ import 'internal_command.dart';
 
 class InternalCommandAmend extends InternalCommand {
   static final rebaseFlag = Flag(
-    short: "-r",
-    long: "--rebase",
+    short: '-r',
+    long: '--rebase',
     description: "Runs 'stax rebase' afterwards on all children branches.",
   );
   static final rebaseTheirsFlag = Flag(
-    short: "-m",
-    long: "--rebase-prefer-moving",
+    short: '-m',
+    long: '--rebase-prefer-moving',
     description:
         "Runs 'stax rebase ${InternalCommandRebase.theirsFlag.long}' afterwards on all children branches.",
   );
   static final rebaseOursFlag = Flag(
-    short: "-b",
-    long: "--rebase-prefer-base",
+    short: '-b',
+    long: '--rebase-prefer-base',
     description:
         "Runs 'stax rebase ${InternalCommandRebase.oursFlag.long}' afterwards on all children branches.",
   );
 
   InternalCommandAmend()
       : super(
-          "amend",
-          "Amends and pushes changes.",
+          'amend',
+          'Amends and pushes changes.',
           flags: [...ContextHandleAddAllFlag.flags],
         );
 
@@ -57,11 +57,11 @@ class InternalCommandAmend extends InternalCommand {
     )) return;
 
     context.git.commitAmendNoEdit
-        .announce("Amending changes to a commit.")
+        .announce('Amending changes to a commit.')
         .runSync()
         .printNotEmptyResultFields();
     context.git.pushForce
-        .announce("Force pushing to a remote.")
+        .announce('Force pushing to a remote.')
         .runSync()
         .printNotEmptyResultFields();
 

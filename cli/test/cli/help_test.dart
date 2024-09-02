@@ -4,9 +4,9 @@ import 'package:test/scaffolding.dart';
 import 'base/cli_group.dart';
 
 void main() {
-  cliGroup("help", (setup) {
-    test("help", () {
-      expect(setup.runLiveStaxSync(["help"]).stdout, """Global flags:
+  cliGroup('help', (setup) {
+    test('help', () {
+      expect(setup.runLiveStaxSync(['help']).stdout, """Global flags:
    --accept-all - Accept all the user prompts automatically.
    --decline-all - Decline all the user prompts automatically.
    --loud - Force all the output.

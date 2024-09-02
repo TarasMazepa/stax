@@ -9,8 +9,8 @@ import 'package:stax/external_command/extended_process_result.dart';
 class InternalCommandPull extends InternalCommand {
   InternalCommandPull()
       : super(
-          "pull",
-          "Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.",
+          'pull',
+          'Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.',
           flags: [
             InternalCommandDeleteGoneBranches.skipDeleteFlag,
             InternalCommandDeleteGoneBranches.forceDeleteFlag,
@@ -46,7 +46,7 @@ class InternalCommandPull extends InternalCommand {
       if (result == null) return;
     }
     result = context.git.pull
-        .announce("Pulling new changes.")
+        .announce('Pulling new changes.')
         .runSync()
         .printNotEmptyResultFields()
         .assertSuccessfulExitCode();

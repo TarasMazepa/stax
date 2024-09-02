@@ -97,10 +97,10 @@ class Context {
   }
 
   void printParagraph(Object? object) {
-    printToConsole("""
+    printToConsole('''
 
 $object
-""");
+''');
   }
 
   bool commandLineContinueQuestion(String questionContext) {
@@ -118,8 +118,8 @@ $object
     }
     final includeSpace = questionContext.isNotEmpty &&
         questionContext[questionContext.length - 1] != '\n';
-    if (includeSpace) questionContext += " ";
-    print("${questionContext}Continue y/N? ");
+    if (includeSpace) questionContext += ' ';
+    print('${questionContext}Continue y/N? ');
     final response = stdin.readLineSync();
     return response == 'y' || response == 'Y';
   }

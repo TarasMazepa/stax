@@ -36,7 +36,7 @@ String sanitizeBranchName(String branchNameCandidate) {
   final substituteCharacter = String.fromCharCode(CodeUnits.dash);
 
   bool wasSpecialSymbol = false;
-  String result = "";
+  String result = '';
   for (var codeUnit in branchNameCandidate.codeUnits) {
     if (wasSpecialSymbol) {
       if (isLetterOrNumber(codeUnit)) {

@@ -13,34 +13,34 @@ import 'package:stax/context/context_handle_add_all_flag.dart';
 
 class InternalCommandCommit extends InternalCommand {
   static final prFlag = Flag(
-    short: "-p",
-    long: "--pr",
+    short: '-p',
+    long: '--pr',
     description:
-        "Opens PR creation page on your remote. Works only if you have GitHub as your remote.",
+        'Opens PR creation page on your remote. Works only if you have GitHub as your remote.',
   );
   static final branchNameFlag = Flag(
-    short: "-b",
+    short: '-b',
     description:
-        "Accepts branch name proposed by converting commit name to branch name.",
+        'Accepts branch name proposed by converting commit name to branch name.',
   );
 
   InternalCommandCommit()
       : super(
-          "commit",
-          "Creates a branch, commits, and pushes it to remote. "
-              "First argument is mandatory commit message. "
-              "Second argument is optional branch name, if not provided "
-              "branch name would be generated from commit message.",
+          'commit',
+          'Creates a branch, commits, and pushes it to remote. '
+              'First argument is mandatory commit message. '
+              'Second argument is optional branch name, if not provided '
+              'branch name would be generated from commit message.',
           flags: [
             prFlag,
             branchNameFlag,
             ...ContextHandleAddAllFlag.flags,
           ],
           arguments: {
-            "arg1":
-                "Required commit message, usually enclosed in double quotes like this: \"Sample commit message\".",
-            "opt2":
-                "Optional branch name, if not provided commit message would be converted to branch name.",
+            'arg1':
+                'Required commit message, usually enclosed in double quotes like this: "Sample commit message".',
+            'opt2':
+                'Optional branch name, if not provided commit message would be converted to branch name.',
           },
         );
 
@@ -84,7 +84,7 @@ class InternalCommandCommit extends InternalCommand {
     final previousBranch = createPr ? context.getCurrentBranch() : null;
     final newBranchCheckoutExitCode = context.git.checkoutNewBranch
         .arg(resultingBranchName)
-        .announce("Creating new branch.")
+        .announce('Creating new branch.')
         .runSync()
         .printNotEmptyResultFields()
         .exitCode;
@@ -96,24 +96,24 @@ class InternalCommandCommit extends InternalCommand {
     }
     final commitExitCode = context.git.commitWithMessage
         .arg(commitMessage)
-        .announce("Committing")
+        .announce('Committing')
         .runSync()
         .printNotEmptyResultFields()
         .exitCode;
     if (commitExitCode != 0) {
       context.printParagraph(
-        "See above git error. Additionally you can check `stax doctor` command output.",
+        'See above git error. Additionally you can check `stax doctor` command output.',
       );
       return;
     }
     final pushExitCode = context.git.push
-        .announce("Pushing")
+        .announce('Pushing')
         .runSync()
         .printNotEmptyResultFields()
         .exitCode;
     if (pushExitCode != 0) {
       context.printParagraph(
-        "See above git error. Additionally you can check `stax doctor` command output.",
+        'See above git error. Additionally you can check `stax doctor` command output.',
       );
       return;
     }
@@ -125,23 +125,23 @@ class InternalCommandCommit extends InternalCommand {
           .stdout
           .toString()
           .trim()
-          .replaceFirstMapped(RegExp(r"git@(.*):"), (m) => "https://${m[1]}/");
+          .replaceFirstMapped(RegExp(r'git@(.*):'), (m) => 'https://${m[1]}/');
       final newPrUrl =
-          "${remoteUrl.substring(0, remoteUrl.length - 4)}/compare/$previousBranch...$resultingBranchName?expand=1";
+          '${remoteUrl.substring(0, remoteUrl.length - 4)}/compare/$previousBranch...$resultingBranchName?expand=1';
       final openCommand = () {
         if (Platform.isWindows) {
           return [
-            "PowerShell",
-            "-Command",
-            """& {Start-Process "$newPrUrl"}""",
+            'PowerShell',
+            '-Command',
+            '''& {Start-Process "$newPrUrl"}''',
           ];
         }
-        return ["open", newPrUrl];
+        return ['open', newPrUrl];
       }();
 
       context
           .command(openCommand)
-          .announce("Opening PR in browser window")
+          .announce('Opening PR in browser window')
           .runSync()
           .printNotEmptyResultFields();
     }

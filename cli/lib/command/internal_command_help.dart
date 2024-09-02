@@ -8,12 +8,12 @@ import 'package:stax/context/context_handle_global_flags.dart';
 
 class InternalCommandHelp extends InternalCommand {
   static final showAllFlag =
-      Flag(short: "-a", description: "Show all commands including hidden.");
+      Flag(short: '-a', description: 'Show all commands including hidden.');
 
   InternalCommandHelp()
       : super(
-          "help",
-          "List of available commands.",
+          'help',
+          'List of available commands.',
           flags: [
             showAllFlag,
           ],
@@ -26,9 +26,9 @@ class InternalCommandHelp extends InternalCommand {
     String indent,
   ) {
     if (entries == null || entries.isEmpty) return;
-    context.printToConsole("$indent$header:");
+    context.printToConsole('$indent$header:');
     for (var entry in entries) {
-      context.printToConsole("$indent   ${entry.key} - ${entry.value}");
+      context.printToConsole('$indent   ${entry.key} - ${entry.value}');
     }
   }
 
@@ -42,7 +42,7 @@ class InternalCommandHelp extends InternalCommand {
       context,
       header,
       entries?.sortedBy(
-        (x) => x.key.replaceAll("-", ""),
+        (x) => x.key.replaceAll('-', ''),
       ),
       indent,
     );
@@ -56,30 +56,30 @@ class InternalCommandHelp extends InternalCommand {
     );
     printIndentedSorted(
       context,
-      "Global flags",
+      'Global flags',
       ContextHandleGlobalFlags.flags.entries,
-      "",
+      '',
     );
-    context.printToConsole("Here are available commands:");
+    context.printToConsole('Here are available commands:');
     context.printToConsole(
       "Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.",
     );
     for (final element in commandsToShow) {
-      context.printToConsole(" • ${element.name} - ${element.description}");
+      context.printToConsole(' • ${element.name} - ${element.description}');
 
       printIndented(
         context,
-        "Positional arguments",
+        'Positional arguments',
         element.arguments?.entries.toList(),
-        "      ",
+        '      ',
       );
       printIndentedSorted(
         context,
-        "Flags",
+        'Flags',
         element.flags?.map(
-          (e) => MapEntry([e.short, e.long].nonNulls.join(", "), e.description),
+          (e) => MapEntry([e.short, e.long].nonNulls.join(', '), e.description),
         ),
-        "      ",
+        '      ',
       );
     }
   }

@@ -6,8 +6,8 @@ import 'package:stax/context/context_git_get_default_branch.dart';
 class InternalCommandMainBranch extends InternalCommand {
   InternalCommandMainBranch()
       : super(
-          "main-branch",
-          "Shows which branch stax considers to be main.",
+          'main-branch',
+          'Shows which branch stax considers to be main.',
           type: InternalCommandType.hidden,
         );
 

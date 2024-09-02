@@ -19,21 +19,21 @@ class CliTestSetup {
   );
 
   factory CliTestSetup.create(bool bundle) {
-    final stackTraceLine = StackTrace.current.toString().split("\n")[2];
-    final left = stackTraceLine.indexOf("(") + 1;
+    final stackTraceLine = StackTrace.current.toString().split('\n')[2];
+    final left = stackTraceLine.indexOf('(') + 1;
     final right =
-        stackTraceLine.lastIndexOf(":", stackTraceLine.lastIndexOf(":") - 1);
+        stackTraceLine.lastIndexOf(':', stackTraceLine.lastIndexOf(':') - 1);
     final uri = Uri.parse(stackTraceLine.substring(left, right));
     final fileName = uri.toFilePath();
     final repoRoot = uri.replace(
-      path: uri.path.substring(0, uri.path.indexOf("/cli/test/cli/")),
+      path: uri.path.substring(0, uri.path.indexOf('/cli/test/cli/')),
     );
     randomValue() {
-      return "${DateTime.now().microsecondsSinceEpoch}${random.nextDouble()}";
+      return '${DateTime.now().microsecondsSinceEpoch}${random.nextDouble()}';
     }
 
     final testRepo =
-        repoRoot.replace(path: "${repoRoot.path}/cli/.test/${randomValue()}");
+        repoRoot.replace(path: '${repoRoot.path}/cli/.test/${randomValue()}');
     final liveStax = repoRoot.replace(
       path: "${repoRoot.path}/dev/stax${Platform.isWindows ? ".bat" : ""}",
     );
@@ -43,7 +43,7 @@ class CliTestSetup {
           ? fileName.replaceRange(
               fileName.length - 4 /* Length of 'dart' filename extension*/,
               fileName.length,
-              "bundle",
+              'bundle',
             )
           : null,
       testRepo.toFilePath(),
@@ -92,6 +92,6 @@ class CliTestSetup {
 
   @override
   String toString() {
-    return "$testFile $bundleFile $testRepoPath $liveStaxPath";
+    return '$testFile $bundleFile $testRepoPath $liveStaxPath';
   }
 }

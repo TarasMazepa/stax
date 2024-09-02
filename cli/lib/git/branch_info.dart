@@ -5,7 +5,7 @@ extension ParseBranchInfoOnExtendedProcessResult on ExtendedProcessResult {
   List<BranchInfo> parseBranchInfo() {
     return stdout
         .toString()
-        .split("\n")
+        .split('\n')
         .where((e) => e.isNotEmpty)
         .map(BranchInfo.parse)
         .where((e) => e.isValid())
@@ -46,7 +46,7 @@ class BranchInfo {
     int? nameEndIndex;
     int i;
     for (i = 3; i < raw.length; i++) {
-      if (raw[i] == " ") {
+      if (raw[i] == ' ') {
         nameEndIndex = i;
         break;
       }
@@ -58,7 +58,7 @@ class BranchInfo {
     final commitHashStartIndex = i;
     int? commitHashEndIndex;
     for (; i < raw.length; i++) {
-      if (raw[i] == " ") {
+      if (raw[i] == ' ') {
         commitHashEndIndex = i;
         break;
       }
@@ -72,14 +72,14 @@ class BranchInfo {
     int? ahead;
     int? behind;
     String? remote;
-    if (raw[i] == "[") {
+    if (raw[i] == '[') {
       i++;
       final clothingBracketIndex =
-          raw.indexOf("]", i).toNullableIndexOfResult();
+          raw.indexOf(']', i).toNullableIndexOfResult();
       if (clothingBracketIndex != null) {
         commitMessageStarIndex = clothingBracketIndex + 2;
-        final remoteInfo = raw.substring(i, clothingBracketIndex).split(":");
-        final splitPoint = remoteInfo[0].indexOf("/").toNullableIndexOfResult();
+        final remoteInfo = raw.substring(i, clothingBracketIndex).split(':');
+        final splitPoint = remoteInfo[0].indexOf('/').toNullableIndexOfResult();
         final remoteNameParts = [
           remoteInfo[0].substring(0, splitPoint),
           if (splitPoint != null) remoteInfo[0].substring(splitPoint + 1),
@@ -89,16 +89,16 @@ class BranchInfo {
             remoteInfo.length == 2) {
           remote = remoteInfo[0];
           final remoteMarkers =
-              remoteInfo[1].split(",").map((e) => e.trim()).toList();
-          gone = remoteMarkers.contains("gone");
+              remoteInfo[1].split(',').map((e) => e.trim()).toList();
+          gone = remoteMarkers.contains('gone');
           parsePrefixed(String prefix) => remoteMarkers
               .where((e) => e.startsWith(prefix))
-              .map((e) => e.split(" "))
+              .map((e) => e.split(' '))
               .where((e) => e.length == 2)
               .map((e) => int.tryParse(e[1]))
               .firstOrNull;
-          ahead = parsePrefixed("ahead ");
-          behind = parsePrefixed("behind ");
+          ahead = parsePrefixed('ahead ');
+          behind = parsePrefixed('behind ');
         }
       } else {
         commitMessageStarIndex = afterCommitHashSpaces;
