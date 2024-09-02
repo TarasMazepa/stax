@@ -4,17 +4,17 @@ import 'package:stax/context/context_git_are_there_staged_changes.dart';
 
 extension ContextHandleAddAllFlag on Context {
   static final Flag addEverythingFlag = Flag(
-    short: "-A",
+    short: '-A',
     description:
         "Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.",
   );
   static final Flag addAllFlag = Flag(
-    short: "-a",
+    short: '-a',
     description:
         "Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.",
   );
   static final Flag updateAllFlag = Flag(
-    short: "-u",
+    short: '-u',
     description:
         "Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.",
   );
@@ -36,14 +36,14 @@ extension ContextHandleAddAllFlag on Context {
       if (areThereStagedChanges()) {
         selectedAddAll
             .askContinueQuestion(
-              "You already have some staged changes. Do you really want to proceed?",
+              'You already have some staged changes. Do you really want to proceed?',
             )
-            ?.announce("Adding changes, as per your request.")
+            ?.announce('Adding changes, as per your request.')
             .runSync()
             .printNotEmptyResultFields();
       } else {
         selectedAddAll
-            .announce("Adding changes, as per your request.")
+            .announce('Adding changes, as per your request.')
             .runSync()
             .printNotEmptyResultFields();
       }
@@ -51,9 +51,9 @@ extension ContextHandleAddAllFlag on Context {
       if (areThereNoStagedChanges()) {
         git.addEverything
             .askContinueQuestion(
-              "You do not have any staged changes. Do you want to add all?",
+              'You do not have any staged changes. Do you want to add all?',
             )
-            ?.announce("Adding all the changes, as per your request.")
+            ?.announce('Adding all the changes, as per your request.')
             .runSync()
             .printNotEmptyResultFields();
       }

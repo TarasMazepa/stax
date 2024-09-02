@@ -3,7 +3,7 @@ import 'package:stax/context/context.dart';
 extension ContextGitAreThereStagedChanges on Context {
   bool areThereStagedChanges() {
     return git.diffCachedQuiet
-            .announce("Checking if there are staged changes.")
+            .announce('Checking if there are staged changes.')
             .runSync()
             .exitCode !=
         0;

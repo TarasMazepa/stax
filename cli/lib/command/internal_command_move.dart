@@ -28,11 +28,11 @@ class HeadMoveDirection extends MoveDirection {}
 class InternalCommandMove extends InternalCommand {
   InternalCommandMove()
       : super(
-          "move",
+          'move',
           "Allows you to move around log tree. Note: you can type any amount of first letters to specify direction. 'h' instead of 'head', 't' for 'top, 'd' for down, 'u' for 'up', 'b' for 'bottom'",
           arguments: {
-            "[arg]+":
-                "up (one up, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), down (one down), top (to the closest top parent that have at least two children or to the top most node, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), bottom (to the closest bottom parent that have at least two children or bottom most node, will stop before any direct parent of <remote>/head), head (<remote>/head)",
+            '[arg]+':
+                'up (one up, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), down (one down), top (to the closest top parent that have at least two children or to the top most node, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), bottom (to the closest bottom parent that have at least two children or bottom most node, will stop before any direct parent of <remote>/head), head (<remote>/head)',
           },
         );
 
@@ -59,15 +59,15 @@ class InternalCommandMove extends InternalCommand {
           );
           return;
         }
-      } else if ("up".startsWith(arg)) {
+      } else if ('up'.startsWith(arg)) {
         moveDirections.add(UpMoveDirection()..args.add(arg));
-      } else if ("top".startsWith(arg)) {
+      } else if ('top'.startsWith(arg)) {
         moveDirections.add(TopMoveDirection()..args.add(arg));
-      } else if ("bottom".startsWith(arg)) {
+      } else if ('bottom'.startsWith(arg)) {
         moveDirections.add(BottomMoveDirection()..args.add(arg));
-      } else if ("down".startsWith(arg)) {
+      } else if ('down'.startsWith(arg)) {
         moveDirections.add(DownMoveDirection()..args.add(arg));
-      } else if ("head".startsWith(arg)) {
+      } else if ('head'.startsWith(arg)) {
         moveDirections.add(HeadMoveDirection()..args.add(arg));
       } else {
         context.printParagraph("Unknown direction provided '$arg'");
@@ -90,7 +90,7 @@ class InternalCommandMove extends InternalCommand {
     final current = root.findCurrent();
 
     if (current == null) {
-      context.printToConsole("Can find current node.");
+      context.printToConsole('Can find current node.');
       return;
     }
 
@@ -140,7 +140,7 @@ class InternalCommandMove extends InternalCommand {
     }
 
     if (target == current) {
-      context.printToConsole("Looks like you are already there.");
+      context.printToConsole('Looks like you are already there.');
       return;
     }
 

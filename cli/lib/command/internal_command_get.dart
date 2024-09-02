@@ -7,10 +7,10 @@ import 'internal_command.dart';
 class InternalCommandGet extends InternalCommand {
   InternalCommandGet()
       : super(
-          "get",
-          "checkout all child branches",
+          'get',
+          'checkout all child branches',
           arguments: {
-            "arg1": "name of the remote ref",
+            'arg1': 'name of the remote ref',
           },
         );
 
@@ -23,12 +23,12 @@ class InternalCommandGet extends InternalCommand {
     final targetRef = args.elementAtOrNull(0);
 
     if (targetRef == null) {
-      context.printToConsole("Please specify remote ref");
+      context.printToConsole('Please specify remote ref');
       return;
     }
 
     context.git.fetchWithPrune
-        .announce("Fetching latest changes from the remote")
+        .announce('Fetching latest changes from the remote')
         .runSync()
         .printNotEmptyResultFields();
 
@@ -44,7 +44,7 @@ class InternalCommandGet extends InternalCommand {
     }
 
     for (String branch in targetNode.remoteBranchNamesInOrderForCheckout().map(
-          (x) => x.substring(x.indexOf("/") + 1),
+          (x) => x.substring(x.indexOf('/') + 1),
         )) {
       final exists = context.git.revParseVerify
           .arg(branch)

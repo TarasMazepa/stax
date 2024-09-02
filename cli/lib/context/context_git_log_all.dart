@@ -7,15 +7,15 @@ extension GitLogAllOnContext on Context {
   GitLogAllNode gitLogAll() {
     final lines = git.log
         .args([
-          "--decorate=full",
-          "--format=%h %ct %p %d",
-          "--all",
+          '--decorate=full',
+          '--format=%h %ct %p %d',
+          '--all',
         ])
         .runSync()
         .printNotEmptyResultFields()
         .stdout
         .toString()
-        .split("\n")
+        .split('\n')
         .where((x) => x.isNotEmpty)
         .map((x) => GitLogAllLine.parse(x))
         .sorted((a, b) => a.timestamp - b.timestamp);
@@ -27,7 +27,7 @@ extension GitLogAllOnContext on Context {
     int oldLength = 0;
     while (lines.isNotEmpty) {
       if (lines.length == oldLength) {
-        print("Omitting $oldLength nodes");
+        print('Omitting $oldLength nodes');
         break;
       }
       oldLength = lines.length;
@@ -54,13 +54,13 @@ class GitLogAllLine {
   final String? parentCommitHash;
   final List<String> parts;
   late final bool partsHasRemoteHead = parts.any(
-    (x) => x.startsWith("refs/remotes/") && x.endsWith("/HEAD"),
+    (x) => x.startsWith('refs/remotes/') && x.endsWith('/HEAD'),
   );
   late final bool partsHasRemoteRef = parts.any(
-    (x) => x.startsWith("refs/remotes/"),
+    (x) => x.startsWith('refs/remotes/'),
   );
   late final bool isCurrent = parts.any(
-    (x) => x.startsWith("HEAD -> ") || x == "HEAD",
+    (x) => x.startsWith('HEAD -> ') || x == 'HEAD',
   );
 
   GitLogAllLine(
@@ -71,20 +71,20 @@ class GitLogAllLine {
   );
 
   factory GitLogAllLine.parse(String line) {
-    final parts = line.split("  ").where((x) => x.isNotEmpty).toList();
-    final firstParts = parts[0].split(" ").where((x) => x.isNotEmpty).toList();
+    final parts = line.split('  ').where((x) => x.isNotEmpty).toList();
+    final firstParts = parts[0].split(' ').where((x) => x.isNotEmpty).toList();
     return GitLogAllLine(
       firstParts.first,
       int.parse(firstParts[1]),
       firstParts.elementAtOrNull(2),
       parts.length > 1
           ? parts.last
-              .replaceAll("(", "")
-              .replaceAll(")", "")
-              .split(", ")
+              .replaceAll('(', '')
+              .replaceAll(')', '')
+              .split(', ')
               .map((x) => x.trim())
               .where((x) => x.isNotEmpty)
-              .whereNot((x) => x.startsWith("tag: "))
+              .whereNot((x) => x.startsWith('tag: '))
               .toList()
           : [],
     );
@@ -92,19 +92,19 @@ class GitLogAllLine {
 
   Iterable<String> remoteBranchNames() {
     return parts
-        .where((x) => x.startsWith("refs/remotes/"))
-        .map((x) => x.replaceFirst("refs/remotes/", ""));
+        .where((x) => x.startsWith('refs/remotes/'))
+        .map((x) => x.replaceFirst('refs/remotes/', ''));
   }
 
   Iterable<String> localBranchNamesAndHead() {
     return parts
-        .map((x) => x.replaceFirst("HEAD -> ", ""))
-        .where((x) => x.startsWith("refs/heads/") || x == "HEAD")
-        .map((x) => x.replaceFirst("refs/heads/", ""));
+        .map((x) => x.replaceFirst('HEAD -> ', ''))
+        .where((x) => x.startsWith('refs/heads/') || x == 'HEAD')
+        .map((x) => x.replaceFirst('refs/heads/', ''));
   }
 
   Iterable<String> localBranchNames() {
-    return localBranchNamesAndHead().whereNot((x) => x == "HEAD");
+    return localBranchNamesAndHead().whereNot((x) => x == 'HEAD');
   }
 
   String branchNameOrCommitHash() {
@@ -133,9 +133,9 @@ class GitLogAllNode {
             b.isRemoteHeadReachable(),
           )
           .chain(
-            () => (b.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ?? "")
+            () => (b.line.parts.firstOrNull?.replaceFirst('HEAD -> ', '') ?? '')
                 .compareTo(
-              a.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ?? "",
+              a.line.parts.firstOrNull?.replaceFirst('HEAD -> ', '') ?? '',
             ),
           )
           .chain(() => b.line.timestamp - a.line.timestamp)
@@ -146,7 +146,7 @@ class GitLogAllNode {
   factory GitLogAllNode.root(GitLogAllLine line) {
     assert(
       line.parentCommitHash == null,
-      "To create root node line.parentCommitHash should be null",
+      'To create root node line.parentCommitHash should be null',
     );
     return GitLogAllNode(line, null);
   }
@@ -165,9 +165,9 @@ class GitLogAllNode {
         line.partsHasRemoteHead ||
         line.parts.any(
           (x) =>
-              x.startsWith("refs/heads/") ||
-              x.startsWith("HEAD -> refs/heads/") ||
-              x == "HEAD",
+              x.startsWith('refs/heads/') ||
+              x.startsWith('HEAD -> refs/heads/') ||
+              x == 'HEAD',
         );
     if (!hasInterestingParts && children.length == 1) {
       children.first.parent = parent;
@@ -239,7 +239,7 @@ class GitLogAllNode {
 
   @override
   String toString() {
-    return "${line.commitHash} ${line.timestamp}"
+    return '${line.commitHash} ${line.timestamp}'
         "${parent?.line.commitHash == null ? "" : " ${parent?.line.commitHash}"}"
         "${line.parts.isEmpty ? "" : " ${line.parts.join(" ")}"}";
   }
@@ -261,7 +261,7 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
       if (showAllBranches || t.line.partsHasRemoteHead)
         ...t.line.remoteBranchNames(),
       ...t.line.localBranchNamesAndHead(),
-    ].join(", ");
+    ].join(', ');
   }
 
   @override
@@ -270,9 +270,9 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
       (a, b) => ComparisonChain()
           .chainBoolReverse(isDefaultBranch(a), isDefaultBranch(b))
           .chain(
-            () => (b.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ?? "")
+            () => (b.line.parts.firstOrNull?.replaceFirst('HEAD -> ', '') ?? '')
                 .compareTo(
-              a.line.parts.firstOrNull?.replaceFirst("HEAD -> ", "") ?? "",
+              a.line.parts.firstOrNull?.replaceFirst('HEAD -> ', '') ?? '',
             ),
           )
           .chain(() => b.line.timestamp - a.line.timestamp)

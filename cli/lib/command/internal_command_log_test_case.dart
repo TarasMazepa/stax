@@ -10,8 +10,8 @@ import 'package:stax/external_command/external_command.dart';
 class InternalCommandLogTestCase extends InternalCommand {
   InternalCommandLogTestCase()
       : super(
-          "log-test-case",
-          "shows test case for log command",
+          'log-test-case',
+          'shows test case for log command',
           type: InternalCommandType.hidden,
         );
 
@@ -19,17 +19,17 @@ class InternalCommandLogTestCase extends InternalCommand {
   void run(List<String> args, Context context) {
     for (final commandText
         in CommitTreeForTestCase.fromCompacted(args[0]).getTargetCommands()) {
-      ExternalCommand command = context.command(commandText.split(" "));
-      if (command.parts[0] == "stax") {
+      ExternalCommand command = context.command(commandText.split(' '));
+      if (command.parts[0] == 'stax') {
         mainFunctionReference(command.parts.sublist(1));
-      } else if (Platform.isWindows && command.parts[0] == "echo") {
+      } else if (Platform.isWindows && command.parts[0] == 'echo') {
         context
-            .command(["powershell", "-c", ...command.parts])
+            .command(['powershell', '-c', ...command.parts])
             .runSync()
             .printNotEmptyResultFields();
-      } else if (command.parts[0] == "echo") {
+      } else if (command.parts[0] == 'echo') {
         context
-            .command(["touch", ...command.parts.sublist(1)])
+            .command(['touch', ...command.parts.sublist(1)])
             .runSync()
             .printNotEmptyResultFields();
       } else {

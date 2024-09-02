@@ -7,7 +7,7 @@ extension ContextGitLogOneLineNoDecorateSingleBranch on Context {
         .runSync()
         .stdout
         .toString()
-        .split("\n")
+        .split('\n')
         .map((x) => x.trim())
         .where((x) => x.isNotEmpty)
         .map(CommitHashAndMessage.parse)
@@ -22,7 +22,7 @@ class CommitHashAndMessage {
   CommitHashAndMessage(this.hash, this.message);
 
   factory CommitHashAndMessage.parse(String line) {
-    final splitPoint = line.indexOf(" ");
+    final splitPoint = line.indexOf(' ');
     return CommitHashAndMessage(
       line.substring(0, splitPoint),
       line.substring(splitPoint + 1),
