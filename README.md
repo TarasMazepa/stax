@@ -202,9 +202,6 @@ Move has five directions:
 * stax help
   * tell users that they can type only first letter of the commands
 
-* stax amend
-  * offer rebase
-
 * stax squash
   * command which ensures that each branch only has one commit
 
