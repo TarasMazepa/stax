@@ -195,7 +195,7 @@ Move has five directions:
     * add update prompt (check VERSION file in repository, and offer to run choco update or brew update)
 
 * stax move
-  * flag to ignore remote/head transition
+  * flag to ignore <remote>/HEAD transition
   * flag to ignore multi children nodes
 
 * stax help
