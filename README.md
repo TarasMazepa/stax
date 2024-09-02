@@ -175,6 +175,9 @@ Move has five directions:
 * https://ejoffe.github.io/spr/
 * https://stacked-git.github.io/
 * https://github.com/modularml/stack-pr
+* https://github.com/VirtusLab/git-machete
+* https://github.com/arxanas/git-branchless
+* https://github.com/gitext-rs/git-stack
 
 ## TODO
 
