@@ -12,7 +12,7 @@ jobs:
       - id: get-version
         run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
       - run: |
-          sed -i "s+defaultValue: ".*",+defaultValue: "${{ steps.get-version.outputs.version }}",+" ./cli/lib/command/internal_command_version.dart
+          sed -i "s+defaultValue: '.*',+defaultValue: '${{ steps.get-version.outputs.version }}',+" ./cli/lib/command/internal_command_version.dart
           git config --global user.name 'stax'
           git config --global user.email 'stax@staxforgit.com'
           branch_name=update-cli/lib/command/internal_command_version.dart-to-have-${{ steps.get-version.outputs.version }}-as-a-default-version-$RANDOM
