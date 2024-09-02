@@ -198,9 +198,6 @@ Move has five directions:
   * flag to ignore <remote>/HEAD transition
   * flag to ignore multi children nodes
 
-* stax help
-  * tell users that they can type only first letter of the commands
-
 * stax squash
   * command which ensures that each branch only has one commit
 
