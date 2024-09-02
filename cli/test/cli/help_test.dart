@@ -12,6 +12,7 @@ void main() {
    --loud - Force all the output.
    --silent - Removes all output except user prompts.
 Here are available commands:
+Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.
  • amend - Amends and pushes changes.
       Flags:
          -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
@@ -42,7 +43,7 @@ Here are available commands:
       Flags:
          -a - show remote branches also
          --default-branch - assume different default branch
- • move - Allows you to move around log tree.
+ • move - Allows you to move around log tree. Note: you can type any amount of first letters to specify direction. 'h' instead of 'head', 't' for 'top, 'd' for down, 'u' for 'up', 'b' for 'bottom'
       Positional arguments:
          [arg]+ - up (one up, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), down (one down), top (to the closest top parent that have at least two children or to the top most node, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), bottom (to the closest bottom parent that have at least two children or bottom most node, will stop before any direct parent of <remote>/head), head (<remote>/head)
  • pull - Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.

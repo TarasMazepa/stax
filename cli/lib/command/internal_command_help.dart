@@ -61,6 +61,9 @@ class InternalCommandHelp extends InternalCommand {
       "",
     );
     context.printToConsole("Here are available commands:");
+    context.printToConsole(
+      "Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.",
+    );
     for (final element in commandsToShow) {
       context.printToConsole(" • ${element.name} - ${element.description}");
 
