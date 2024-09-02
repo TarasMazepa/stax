@@ -22,4 +22,3 @@ jobs:
           gh pr merge $(gh pr create -B main -f) --auto --squash
         env:
           GH_TOKEN: ${{ secrets.PAT }}
-
