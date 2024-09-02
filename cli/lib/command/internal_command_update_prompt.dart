@@ -66,7 +66,9 @@ class InternalCommandUpdatePrompt extends InternalCommand {
           "Run following command to update:",
         );
         context.printParagraph(
-          Platform.isWindows ? "choco upgrade stax" : "brew upgrade stax",
+          Platform.isWindows
+              ? "choco upgrade stax"
+              : "brew update ; brew upgrade stax",
         );
         return;
       }
