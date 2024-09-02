@@ -177,7 +177,6 @@ Move has five directions:
 * https://graphite.dev/
 * https://sapling-scm.com/
 * https://stacked-git.github.io/
-* https://stacked-git.github.io/
 
 ## TODO
 

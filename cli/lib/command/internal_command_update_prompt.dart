@@ -24,11 +24,13 @@ class InternalCommandUpdatePrompt extends InternalCommand {
       }
     }
 
-    final localVersion = parseVersion(InternalCommandVersion.version);
+    final localVersionRaw = InternalCommandVersion.version;
+
+    final localVersion = parseVersion(localVersionRaw);
 
     if (localVersion == null) {
       context.printToConsole(
-        "Can't parse own version '${InternalCommandVersion.version}'",
+        "Can't parse own version '$localVersionRaw'",
       );
       return;
     }
@@ -42,21 +44,26 @@ class InternalCommandUpdatePrompt extends InternalCommand {
     ))
         .body;
 
-    final remoteVersion = parseVersion(
-      RegExp(
-        Platform.isWindows ? r"Version>(.*)</" : r"version '(.*)'",
-      ).firstMatch(responseBody)?.group(1),
-    );
+    final remoteVersionRaw = RegExp(
+      Platform.isWindows ? r"Version>(.*)</" : r"version '(.*)'",
+    ).firstMatch(responseBody)?.group(1);
+
+    final remoteVersion = parseVersion(remoteVersionRaw);
 
     if (remoteVersion == null) {
-      context.printToConsole("Can't parse latest online version");
+      context.printToConsole(
+        "Can't parse latest online version '$remoteVersionRaw'",
+      );
       return;
     }
+
+    context.printToConsole("Current version: $localVersionRaw");
+    context.printToConsole("Latest  version: $remoteVersionRaw");
 
     for (int i = 0; i < remoteVersion.length; i++) {
       if (remoteVersion[i] > localVersion[i]) {
         context.printToConsole(
-          "New stax version is available - ${remoteVersion.join(".")}. Run following command to update:",
+          "Run following command to update:",
         );
         context.printParagraph(
           Platform.isWindows ? "choco upgrade stax" : "brew upgrade stax",
