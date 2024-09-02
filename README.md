@@ -165,19 +165,19 @@ Move has five directions:
 
 [Checking out stacking workflow](https://www.youtube.com/watch?v=zoqbYxW3saY)
 
-## Alternatives
+## Alternatives (alphabetical order)
 
-* https://sapling-scm.com/
-* https://graphite.dev/
-* https://stacked-git.github.io/
-* https://github.com/ezyang/ghstack
-* https://www.git-town.com/
 * https://ejoffe.github.io/spr/
-* https://stacked-git.github.io/
-* https://github.com/modularml/stack-pr
+* https://git-town.com/
 * https://github.com/VirtusLab/git-machete
 * https://github.com/arxanas/git-branchless
+* https://github.com/ezyang/ghstack
 * https://github.com/gitext-rs/git-stack
+* https://github.com/modularml/stack-pr
+* https://graphite.dev/
+* https://sapling-scm.com/
+* https://stacked-git.github.io/
+* https://stacked-git.github.io/
 
 ## TODO
 
