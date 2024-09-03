@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
+import 'package:ui/stax_ui.dart';
+
+const double fontSize = 16;
 
 void main() {
   runApp(
@@ -9,24 +11,7 @@ void main() {
         useMaterial3: true,
         fontFamily: 'ProtoNerd',
       ),
-      home: const Scaffold(
-        backgroundColor: Colors.black,
-        body: Row(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  Flexible(
-                    child: SelectableText('Text12'),
-                  ),
-                  TextField(),
-                ],
-              ),
-            ),
-            SelectableText('Text2'),
-          ],
-        ),
-      ),
+      home: StaxUi(),
     ),
   );
 }
