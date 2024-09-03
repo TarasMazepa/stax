@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ui/main.dart';
 
 class StaxUi extends StatefulWidget {
@@ -11,7 +12,8 @@ class StaxUi extends StatefulWidget {
 }
 
 class StaxUiState extends State<StaxUi> {
-  String logText = '';
+  String logText =
+      'cd to any folder under git version control to see \'stax log\'';
   String consoleText = '';
   late TextEditingController controller = TextEditingController();
 
@@ -19,41 +21,57 @@ class StaxUiState extends State<StaxUi> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Container(
-        padding: const EdgeInsets.all(8),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  const Spacer(),
-                  SingleChildScrollView(
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: SelectableText(
-                        consoleText,
-                        style: const TextStyle(
-                          fontSize: fontSize,
+      body: CallbackShortcuts(
+        bindings: {
+          LogicalKeySet(LogicalKeyboardKey.enter): () {
+            setState(() {
+              consoleText += '\n${controller.text}';
+              controller.clear();
+            });
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Column(
+                  children: [
+                    const Spacer(),
+                    SingleChildScrollView(
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: SelectableText(
+                          consoleText,
+                          style: const TextStyle(
+                            fontSize: fontSize,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  TextField(
-                    controller: controller,
-                    style: const TextStyle(
-                      fontSize: fontSize,
+                    TextField(
+                      controller: controller,
+                      style: const TextStyle(
+                        fontSize: fontSize,
+                      ),
                     ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                child: SelectableText(
+                  logText,
+                  style: const TextStyle(
+                    fontSize: fontSize,
                   ),
-                ],
+                ),
               ),
-            ),
-            SelectableText(
-              logText,
-              style: const TextStyle(
-                fontSize: fontSize,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
