@@ -61,7 +61,7 @@ class InternalCommandUpdatePrompt extends InternalCommand {
     context.printToConsole('Latest  version: $remoteVersionRaw');
 
     for (int i = 0; i < remoteVersion.length; i++) {
-      if (remoteVersion[i] > localVersion[i]) {
+      if (remoteVersion[i] > (localVersion.elementAtOrNull(i) ?? 0)) {
         context.printToConsole(
           'Run following command to update:',
         );
