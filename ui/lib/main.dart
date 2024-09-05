@@ -11,7 +11,7 @@ void main() {
         useMaterial3: true,
         fontFamily: 'ProtoNerd',
       ),
-      home: StaxUi(),
+      home: const StaxUi(),
     ),
   );
 }
