@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  dart-test:
+  cli-dart-test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -19,13 +19,11 @@ jobs:
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: ${{ steps.get-dart-version.outputs.text }}
-      - run: dart pub get
-        working-directory: cli
+      - run: flutter pub get
+        working-directory: ui
       - run: dart format . -o none --set-exit-if-changed
-        working-directory: cli
-      - run: dart analyze --fatal-infos
-        working-directory: cli
-      - run: dart test
-        working-directory: cli
-      - run: dart compile exe bin/cli.dart
-        working-directory: cli
+        working-directory: ui
+      - run: flutter analyze --fatal-infos
+        working-directory: ui
+      - run: flutter test
+        working-directory: ui

@@ -1,0 +1,25 @@
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  cli-jobs:
+    live:
+      runs-on: ${{ matrix.os }}
+      strategy:
+        matrix:
+          os: [ ubuntu-latest, macos-latest, macos-13, windows-latest ]
+      steps:
+        - uses: actions/checkout@v4
+        - uses: pCYSl5EDgo/cat@master
+          id: get-dart-version
+          with:
+            path: DART_SDK_VERSION
+        - uses: dart-lang/setup-dart@v1
+          with:
+            sdk: ${{ steps.get-dart-version.outputs.text }}
+        - run: dart pub get
+          working-directory: cli
+        - run: ./stax help
+        - run: ./stax doctor
