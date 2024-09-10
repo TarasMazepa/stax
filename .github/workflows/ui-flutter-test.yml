@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  cli-dart-test:
+  ui-flutter-test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -13,12 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pCYSl5EDgo/cat@master
-        id: get-dart-version
+        id: get-flutter-version
         with:
-          path: DART_SDK_VERSION
-      - uses: dart-lang/setup-dart@v1
+          path: FLUTTER_VERSION
+      - uses: flutter-actions/setup-flutter@v3
         with:
-          sdk: ${{ steps.get-dart-version.outputs.text }}
+          version: ${{ steps.get-flutter-version.outputs.text }}
       - run: flutter pub get
         working-directory: ui
       - run: dart format . -o none --set-exit-if-changed
