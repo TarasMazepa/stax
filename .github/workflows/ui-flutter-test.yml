@@ -16,6 +16,7 @@ jobs:
         id: get-flutter-version
         with:
           path: FLUTTER_VERSION
+          trim: true
       - uses: flutter-actions/setup-flutter@v3
         with:
           version: ${{ steps.get-flutter-version.outputs.text }}
