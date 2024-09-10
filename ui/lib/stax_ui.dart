@@ -28,7 +28,7 @@ class StaxUiState extends State<StaxUi> {
               consoleText += '\n${controller.text}';
               controller.clear();
             });
-          }
+          },
         },
         child: Container(
           padding: const EdgeInsets.all(8),
