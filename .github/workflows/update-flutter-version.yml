@@ -1,0 +1,27 @@
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 6 * * *"
+
+jobs:
+  update-dart-sdk-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Homebrew/actions/setup-homebrew@master
+      - run: |
+          brew tap leoafarias/fvm
+          brew install fvm
+          new_flutter_version="$(fvm api releases -c --limit=1 --filter-channel stable | jq -r '.versions[0].version')"
+          echo $new_flutter_version > FLUTTER_VERSION
+          if ! git diff --quiet; then
+            branch_name=update-flutter-version-$new_flutter_version-$RANDOM
+            git config --global user.name 'stax'
+            git config --global user.email 'stax@staxforgit.com'
+            git checkout -b $branch_name
+            git commit -a -m "Update flutter version to $new_flutter_version"
+            git push --set-upstream origin $branch_name
+            gh pr merge $(gh pr create -B main -f) --auto --squash
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
