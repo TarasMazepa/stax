@@ -2,7 +2,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      DART_SDK_VERSION
+      - DART_SDK_VERSION
 
 jobs:
   dart-sdk-version-trigger:
@@ -13,7 +13,7 @@ jobs:
       - id: get-dart-version
         run: echo "dart_sdk_version=$(cat DART_SDK_VERSION)" >> $GITHUB_OUTPUT
       - run: |
-          sed -i "s+sdk: ^.*+sdk: ^$DART_SDK_VERSION+" ./cli/pubspec.yaml
+          sed -i "s+sdk: .*+sdk: $DART_SDK_VERSION+" ./cli/pubspec.yaml ./ui/pubspec.yaml
         env:
           DART_SDK_VERSION: ${{ steps.get-dart-version.outputs.dart_sdk_version }}
       - uses: dart-lang/setup-dart@v1
