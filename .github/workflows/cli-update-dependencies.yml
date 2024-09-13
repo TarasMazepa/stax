@@ -4,7 +4,7 @@ on:
     - cron: "25 12 * * *"
 
 jobs:
-  update-dependencies:
+  cli-update-dependencies:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,11 +27,11 @@ jobs:
         working-directory: cli
       - run: |
           if ! git diff --quiet; then
-            branch_name=update-dependencies-$RANDOM
+            branch_name=cli-update-dependencies-$RANDOM
             git config --global user.name 'stax'
             git config --global user.email 'stax@staxforgit.com'
             git checkout -b $branch_name
-            git commit -a -m "Update dependencies"
+            git commit -a -m "Cli update dependencies"
             git push --set-upstream origin $branch_name
             gh pr merge $(gh pr create -B main -f) --auto --squash
           fi
