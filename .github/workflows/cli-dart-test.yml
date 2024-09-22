@@ -25,6 +25,9 @@ jobs:
         working-directory: cli
       - run: dart analyze --fatal-infos
         working-directory: cli
+      - run: |
+          git config --global user.name 'stax'
+          git config --global user.email 'stax@staxforgit.com'
       - run: dart test
         working-directory: cli
       - run: dart compile exe bin/cli.dart
