@@ -203,5 +203,9 @@ Move has five directions:
 * stax squash
   * command which ensures that each branch only has one commit
 
+* stax commit
+  * perform `git fetch -p` before and target new commit to local branches only
+  * offer `stax rebase -m` in case when one of the child branches are gone
+
 * homebrew-stax
   * add test for installing stax on arm64 linux
