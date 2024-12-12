@@ -59,9 +59,7 @@ class InternalCommandAmend extends InternalCommand {
     if (context.assertNoConflictingFlags(
       [hasRebaseFlag, hasRebaseTheirsFlag, hasRebaseOursFlag],
       [rebaseFlag, rebaseTheirsFlag, rebaseOursFlag],
-    )) {
-      return;
-    }
+    )) return;
 
     context.git.commitAmendNoEdit
         .announce('Amending changes to a commit.')
