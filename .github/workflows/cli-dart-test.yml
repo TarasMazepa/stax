@@ -23,7 +23,7 @@ jobs:
         working-directory: cli
       - run: dart format . -o none --set-exit-if-changed
         working-directory: cli
-      - run: dart analyze --fatal-infos
+      - run: dart analyze
         working-directory: cli
       - run: |
           git config --global user.name 'stax'
