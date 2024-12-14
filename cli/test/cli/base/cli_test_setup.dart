@@ -1,42 +1,50 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:stax/context/context.dart';
-import 'package:uuid/data.dart';
-import 'package:uuid/rng.dart';
-import 'package:uuid/uuid.dart';
 
 class CliTestSetup {
-  static final uuid = Uuid(goptions: GlobalOptions(MathRNG()));
-
+  static final random = Random(DateTime.now().microsecondsSinceEpoch);
   final String testFile;
   final String? bundleFile;
   final String testRepoPath;
   final String liveStaxPath;
 
   CliTestSetup(
-      this.testFile, this.bundleFile, this.testRepoPath, this.liveStaxPath);
+    this.testFile,
+    this.bundleFile,
+    this.testRepoPath,
+    this.liveStaxPath,
+  );
 
   factory CliTestSetup.create(bool bundle) {
-    final stackTraceLine = StackTrace.current.toString().split("\n")[2];
-    final left = stackTraceLine.indexOf("(") + 1;
+    final stackTraceLine = StackTrace.current.toString().split('\n')[2];
+    final left = stackTraceLine.indexOf('(') + 1;
     final right =
-        stackTraceLine.lastIndexOf(":", stackTraceLine.lastIndexOf(":") - 1);
+        stackTraceLine.lastIndexOf(':', stackTraceLine.lastIndexOf(':') - 1);
     final uri = Uri.parse(stackTraceLine.substring(left, right));
     final fileName = uri.toFilePath();
     final repoRoot = uri.replace(
-        path: uri.path.substring(0, uri.path.indexOf("/cli/test/cli/")));
+      path: uri.path.substring(0, uri.path.indexOf('/cli/test/cli/')),
+    );
+    randomValue() {
+      return '${DateTime.now().microsecondsSinceEpoch}${random.nextDouble()}';
+    }
+
     final testRepo =
-        repoRoot.replace(path: "${repoRoot.path}/cli/.test/${uuid.v8g()}");
+        repoRoot.replace(path: '${repoRoot.path}/cli/.test/${randomValue()}');
     final liveStax = repoRoot.replace(
-        path: "${repoRoot.path}/dev/stax${Platform.isWindows ? ".bat" : ""}");
+      path: "${repoRoot.path}/dev/stax${Platform.isWindows ? ".bat" : ""}",
+    );
     return CliTestSetup(
       fileName,
       bundle
           ? fileName.replaceRange(
               fileName.length - 4 /* Length of 'dart' filename extension*/,
               fileName.length,
-              "bundle")
+              'bundle',
+            )
           : null,
       testRepo.toFilePath(),
       liveStax.toFilePath(),
@@ -84,6 +92,6 @@ class CliTestSetup {
 
   @override
   String toString() {
-    return "$testFile $bundleFile $testRepoPath $liveStaxPath";
+    return '$testFile $bundleFile $testRepoPath $liveStaxPath';
   }
 }

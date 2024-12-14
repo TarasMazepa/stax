@@ -24,16 +24,20 @@ class ExtendedProcessResult {
   get stdout => processResult.stdout;
 
   ExtendedProcessResult? assertSuccessfulExitCode() {
-    return exitCode == 0 ? this : null;
+    return isSuccess() ? this : null;
+  }
+
+  bool isSuccess() {
+    return exitCode == 0;
   }
 
   ExtendedProcessResult printNotEmptyResultFields() {
-    if (exitCode != 0) context.printToConsole("ExitCode: $exitCode");
+    if (exitCode != 0) context.printToConsole('ExitCode: $exitCode');
     if (stdout.toString().trim().isNotEmpty) {
-      context.printToConsole("Stdout:\n$stdout");
+      context.printToConsole('Stdout:\n$stdout');
     }
     if (stderr.toString().trim().isNotEmpty) {
-      context.printToConsole("Stderr:\n$stderr");
+      context.printToConsole('Stderr:\n$stderr');
     }
     return this;
   }

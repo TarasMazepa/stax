@@ -8,7 +8,7 @@ class IntRange {
 
   IntRange(this.start, this.end, this.startCondition, this.endCondition) {
     if (start > end) {
-      throw Exception("start ($start) is bigger than end ($end)");
+      throw Exception('start ($start) is bigger than end ($end)');
     }
   }
 

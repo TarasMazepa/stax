@@ -7,11 +7,11 @@ import 'package:path/path.dart' as path;
 
 class Settings {
   static Settings _load() {
-    dynamic error = Exception("Unknown error");
+    dynamic error = Exception('Unknown error');
     for (int i = 0; i < 3; i++) {
       if (!_file.existsSync()) {
         _file.createSync(recursive: true);
-        _file.writeAsStringSync("{}", flush: true);
+        _file.writeAsStringSync('{}', flush: true);
       }
       try {
         final map = jsonDecode(_file.readAsStringSync());
@@ -25,14 +25,15 @@ class Settings {
   }
 
   static final _file = File.fromUri(
-      path.toUri(path.join(applicationConfigHome("stax"), ".stax_config")));
+    path.toUri(path.join(applicationConfigHome('stax'), '.stax_config')),
+  );
 
   static final instance = _load();
 
   final Map<String, dynamic> settings;
 
   late final DateTimeSetting lastUpdatePrompt =
-      DateTimeSetting("last_update_prompt", DateTime.now(), this);
+      DateTimeSetting('last_update_prompt', DateTime.now(), this);
 
   Settings(this.settings);
 

@@ -22,15 +22,17 @@ List<DecoratedLogLine> _produceDecoratedLogLine<T>(
           !adapter.isDefaultBranch(children.first))
       ? 1
       : 0;
-  final point = adapter.isCurrent(root) ? "x" : "o";
+  final point = adapter.isCurrent(root) ? 'x' : 'o';
   return children
-      .expandIndexed((i, e) => _produceDecoratedLogLine(e, adapter)
-          .map((e) => e.withIndent("  " * emptyIndent + "| " * i)))
+      .expandIndexed(
+    (i, e) => _produceDecoratedLogLine(e, adapter)
+        .map((e) => e.withIndent('  ' * emptyIndent + '| ' * i)),
+  )
       .followedBy([
     DecoratedLogLine(
       adapter.branchName(root),
       "$point${"-┘" * (children.length - 1 + emptyIndent)}",
-    )
+    ),
   ]).toList();
 }
 

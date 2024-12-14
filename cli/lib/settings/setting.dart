@@ -7,8 +7,13 @@ class Setting<T> {
   final T Function(String) _fromStringConverter;
   final String Function(T) _toStringConverter;
 
-  Setting(this._name, this._defaultValue, this._settings,
-      this._fromStringConverter, this._toStringConverter);
+  Setting(
+    this._name,
+    this._defaultValue,
+    this._settings,
+    this._fromStringConverter,
+    this._toStringConverter,
+  );
 
   T get() {
     final raw = _settings[_name];

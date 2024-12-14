@@ -6,7 +6,7 @@ import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 
 class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
   static final _alphabet =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
   static const initialCommitId = 0;
 
   final List<int> indexes;
@@ -83,9 +83,10 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
   }
 
   factory CommitTreeForTestCase.fromCompacted(
-      String compactedWithMainAndCurrentIds) {
+    String compactedWithMainAndCurrentIds,
+  ) {
     final indexes = <int>[];
-    final parts = compactedWithMainAndCurrentIds.split("_");
+    final parts = compactedWithMainAndCurrentIds.split('_');
     final compacted = parts.first;
     for (int i = 0; i < compacted.length; i++) {
       final char = compacted[i];
@@ -95,74 +96,84 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
       }
       indexes.add(index);
     }
-    final mainId = int.tryParse(parts.elementAtOrNull(1) ?? "") ?? 0;
-    final currentId = int.tryParse(parts.elementAtOrNull(2) ?? "") ?? 0;
+    final mainId = int.tryParse(parts.elementAtOrNull(1) ?? '') ?? 0;
+    final currentId = int.tryParse(parts.elementAtOrNull(2) ?? '') ?? 0;
     return CommitTreeForTestCase(indexes, mainId, currentId);
   }
 
-  factory CommitTreeForTestCase.random(int length,
-      [int? mainId, int? currentId]) {
+  factory CommitTreeForTestCase.random(
+    int length, [
+    int? mainId,
+    int? currentId,
+  ]) {
     final random = Random();
     final indexes = <int>[];
     for (int i = 0; i < length; i++) {
       indexes.add(random.nextInt(i + 1));
     }
-    return CommitTreeForTestCase(indexes, mainId ?? random.nextInt(length),
-        currentId ?? random.nextInt(length));
+    return CommitTreeForTestCase(
+      indexes,
+      mainId ?? random.nextInt(length),
+      currentId ?? random.nextInt(length),
+    );
   }
 
   String toUmlString() {
-    String result = "";
+    String result = '';
     void addToResult(String string) {
-      result += "$string\n";
+      result += '$string\n';
     }
 
-    String nodeName(int id) => "(${commitName(id)})";
+    String nodeName(int id) => '(${commitName(id)})';
     if (length == 0) {
       addToResult(nodeName(initialCommitId));
     } else {
       indexes.forEachIndexed((index, element) {
-        addToResult("${nodeName(element)} -up-> ${nodeName(index + 1)}");
+        addToResult('${nodeName(element)} -up-> ${nodeName(index + 1)}');
       });
     }
-    addToResult("note bottom of ${nodeName(initialCommitId)}");
+    addToResult('note bottom of ${nodeName(initialCommitId)}');
     getTargetCommands().forEach(addToResult);
-    getTargetOutput().forEach((element) => addToResult("\"\"$element\"\""));
-    addToResult("end note");
+    getTargetOutput().forEach((element) => addToResult('""$element""'));
+    addToResult('end note');
     return result.trim();
   }
 
   List<String> getTargetCommands() {
-    String previousValue = "";
+    String previousValue = '';
     bool haveSeenNonCheckout = false;
     List<String> gitLines(int id) => [
           "echo '${commitName(id)}' > ${commitName(id)}",
-          "stax commit -a --accept-all ${commitName(id)}",
-          ..._children(id).expand((element) => [
-                ...gitLines(element),
-                "git checkout ${commitName(id)}",
-              ])
+          'stax commit -a --accept-all ${commitName(id)}',
+          ..._children(id).expand(
+            (element) => [
+              ...gitLines(element),
+              'git checkout ${commitName(id)}',
+            ],
+          ),
         ];
 
-    return ["git init"]
-        .followedBy(gitLines(initialCommitId)
-            .reversed
-            .whereIndexed((index, element) {
-              if (haveSeenNonCheckout) return true;
-              if (!element.startsWith("git checkout")) {
-                return haveSeenNonCheckout = true;
-              }
-              return false;
-            })
-            .where((element) {
-              final result = !(previousValue.startsWith("git checkout") &&
-                  element.startsWith("git checkout"));
-              previousValue = element;
-              return result;
-            })
-            .toList()
-            .reversed
-            .followedBy(["git checkout ${commitName(currentId)}"]))
+    return ['git init']
+        .followedBy(
+          gitLines(initialCommitId)
+              .reversed
+              .whereIndexed((index, element) {
+                if (haveSeenNonCheckout) return true;
+                if (!element.startsWith('git checkout')) {
+                  return haveSeenNonCheckout = true;
+                }
+                return false;
+              })
+              .where((element) {
+                final result = !(previousValue.startsWith('git checkout') &&
+                    element.startsWith('git checkout'));
+                previousValue = element;
+                return result;
+              })
+              .toList()
+              .reversed
+              .followedBy(['git checkout ${commitName(currentId)}']),
+        )
         .toList();
   }
 
@@ -172,15 +183,15 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
 
   @override
   String toString() {
-    return "mainId:$mainId currentId:$currentId indexes:$indexes compacted:$compacted";
+    return 'mainId:$mainId currentId:$currentId indexes:$indexes compacted:$compacted';
   }
 
   String compactedWithMainAndCurrentId() {
-    return "${compacted}_${mainId}_$currentId";
+    return '${compacted}_${mainId}_$currentId';
   }
 
   String commitName(int commitId) {
-    return "${compactedWithMainAndCurrentId()}_$commitId";
+    return '${compactedWithMainAndCurrentId()}_$commitId';
   }
 
   @override
@@ -191,7 +202,8 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
   bool isDefaultBranchOrHasDefaultBranchAsAChild(int id) {
     return isDefaultBranch(id) ||
         _children(id).any(
-            (element) => isDefaultBranchOrHasDefaultBranchAsAChild(element));
+          (element) => isDefaultBranchOrHasDefaultBranchAsAChild(element),
+        );
   }
 
   int sortingValue(int id) {
@@ -201,17 +213,22 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
   List<int> _children(int id) {
     return indexes
         .expandIndexed<int>(
-            (index, element) => element == id ? [index + 1] : [])
+          (index, element) => element == id ? [index + 1] : [],
+        )
         .toList();
   }
 
   @override
   List<int> children(int id) {
-    return _children(id).sorted((a, b) => ComparisonChain()
-        .chainBoolReverse(isDefaultBranchOrHasDefaultBranchAsAChild(a),
-            isDefaultBranchOrHasDefaultBranchAsAChild(b))
-        .chain(() => branchName(b).compareTo(branchName(a)))
-        .compare());
+    return _children(id).sorted(
+      (a, b) => ComparisonChain()
+          .chainBoolReverse(
+            isDefaultBranchOrHasDefaultBranchAsAChild(a),
+            isDefaultBranchOrHasDefaultBranchAsAChild(b),
+          )
+          .chain(() => branchName(b).compareTo(branchName(a)))
+          .compare(),
+    );
   }
 
   @override

@@ -1,0 +1,59 @@
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - DART_SDK_VERSION
+
+jobs:
+  dart-sdk-version-trigger:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: get-dart-version
+        run: echo "dart_sdk_version=$(cat DART_SDK_VERSION)" >> $GITHUB_OUTPUT
+      - run: |
+          sed -i "s+sdk: ^.*+sdk: ^$DART_SDK_VERSION+" ./cli/pubspec.yaml ./ui/pubspec.yaml
+        env:
+          DART_SDK_VERSION: ${{ steps.get-dart-version.outputs.dart_sdk_version }}
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ steps.get-dart-version.outputs.dart_sdk_version }}
+      - run: dart pub get
+        working-directory: cli
+      - run: dart test
+        working-directory: cli
+      - run: dart analyze
+        working-directory: cli
+      - run: |
+          git config --global user.name 'stax'
+          git config --global user.email 'stax@staxforgit.com'
+          branch_name=update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION-$RANDOM
+          git checkout -b $branch_name
+          git commit -a -m "Update dart sdk version for cli to $DART_SDK_VERSION"
+          git push --set-upstream origin $branch_name
+          gh pr merge $(gh pr create -B main -f) --auto --squash
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
+          DART_SDK_VERSION: ${{ steps.get-dart-version.outputs.dart_sdk_version }}
+      - run: |
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/TarasMazepa/homebrew-stax/actions/workflows/update.yml/dispatches \
+            -f "ref=main" -f "inputs[dart_sdk_version]=${{ steps.get-dart-version.outputs.dart_sdk_version }}"
+        env:
+          GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}
+      - run: |
+          git checkout HEAD~
+          sed -i "s+<dependency id='dart-sdk' version='.*' />+<dependency id='dart-sdk' version='$DART_SDK_VERSION' />+" ./chocolatey/stax/stax.nuspec
+          branch_name=chocolatey-update-dart-sdk-to-$DART_SDK_VERSION-$RANDOM
+          git checkout -b $branch_name
+          git commit -a -m "Chocolatey update dart sdk to $DART_SDK_VERSION"
+          git push --set-upstream origin $branch_name
+          gh pr merge $(gh pr create -B main -f) --auto --squash
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
+          DART_SDK_VERSION: ${{ steps.get-dart-version.outputs.dart_sdk_version }}

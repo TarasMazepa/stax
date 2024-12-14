@@ -1,0 +1,40 @@
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [".github/workflows/release-binary.yml"]
+    types:
+      - completed
+
+jobs:
+  release-distribution-trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: get-version
+        run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
+      - run: |
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/TarasMazepa/homebrew-stax/actions/workflows/update.yml/dispatches \
+            -f "ref=main" -f "inputs[tag]=${{ steps.get-version.outputs.version }}"
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}
+      - run: |
+          sed -i "s+<version>.*</version>+<version>$TAG</version>+" ./chocolatey/stax/stax.nuspec
+          sed -i "s+$tag = '.*'+$tag = '$TAG'+" ./chocolatey/stax/tools/chocolateyinstall.ps1
+          checksum=$(curl -sL https://github.com/TarasMazepa/stax/archive/$TAG.zip | sha256sum | sed 's/  -//')
+          checksumUpper=${checksum^^}
+          sed -i "s+-Checksum .*+-Checksum $checksumUpper \`+" ./chocolatey/stax/tools/chocolateyinstall.ps1
+          git config --global user.name 'stax'
+          git config --global user.email 'stax@staxforgit.com'
+          branch_name=chocolatey-update-stax-to-$TAG-$RANDOM
+          git checkout -b $branch_name
+          git commit -a -m "Chocolatey update stax to $TAG"
+          git push --set-upstream origin $branch_name
+          gh pr merge $(gh pr create -B main -f) --auto --squash
+        env:
+          TAG: ${{ steps.get-version.outputs.version }}
+          GH_TOKEN: ${{ secrets.PAT }}

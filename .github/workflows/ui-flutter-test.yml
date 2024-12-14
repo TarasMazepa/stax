@@ -1,0 +1,30 @@
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  ui-flutter-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, macos-13, windows-latest ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pCYSl5EDgo/cat@master
+        id: get-flutter-version
+        with:
+          path: FLUTTER_VERSION
+          trim: true
+      - uses: flutter-actions/setup-flutter@v4
+        with:
+          version: ${{ steps.get-flutter-version.outputs.text }}
+      - run: flutter pub get
+        working-directory: ui
+      - run: dart format . -o none --set-exit-if-changed
+        working-directory: ui
+      - run: flutter analyze --fatal-infos
+        working-directory: ui
+      - run: flutter test
+        working-directory: ui

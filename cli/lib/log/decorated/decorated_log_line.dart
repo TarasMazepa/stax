@@ -23,12 +23,12 @@ class DecoratedLogLine {
   }
 
   String decorateToString(DecoratedLogLineAlignment alignment) {
-    String result = "";
+    String result = '';
     result += decoration;
-    result += " " * (alignment.decoration - decoration.length);
-    result += " ";
+    result += ' ' * (alignment.decoration - decoration.length);
+    result += ' ';
     if (alignment.branchNameHasBrackets && !branchNameHasBrackets) {
-      result += " $branchName";
+      result += ' $branchName';
     } else {
       result += branchName;
     }
@@ -37,6 +37,6 @@ class DecoratedLogLine {
 
   @override
   String toString() {
-    return "$decoration $branchName";
+    return '$decoration $branchName';
   }
 }

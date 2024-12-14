@@ -1,40 +1,55 @@
 # Stax
 
-Stax is a tool that will help you a bit with day-to-day stax-like git workflow. You can read more
-about it here https://www.stacking.dev/
+Stax is a tool that will help you to stack your PRs.
 
-Main purpose is to make it easier to create smaller PRs. And reduce amount of energy other people
-need to review them.
+The primary purpose is to make it easier to create smaller PRs. And reduce the amount of energy other people need to
+review them.
 
 ## Installation
 
-### MacOS/Linux/WSL on Windows/ChromeOS
+### MacOS
 
-Homebrew is a package manager that works on MacOS and Linux systems.
+[Homebrew](https://brew.sh/) is a package manager for MacOS.
 
-#### Install brew
-
-##### MacOS
-
-```
+```shell
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-##### Linux/WSL on Windows/ChromeOS
+Install stax
 
-See https://docs.brew.sh/Homebrew-on-Linux
-
-#### Install stax
-
-```
+```shell
 brew install TarasMazepa/stax/stax
 ```
 
 ### Windows
 
-Clone this repo and put the path to the repo into your PATH variable.
+[Chocolatey](https://chocolatey.org/) is a package manager for Windows.
 
-Let me know if you need some help. Create a ticket on the repo.
+Follow [this guide](https://docs.chocolatey.org/en-us/choco/setup/) to install chocolatey.
+
+Install stax
+
+```powershell
+choco install stax
+```
+
+### Linux/WSL on Windows/ChromeOS
+
+Homebrew is a package manager for MacOS that also [works on Linux systems](https://docs.brew.sh/Homebrew-on-Linux).
+
+```shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Install stax
+
+```shell
+brew install TarasMazepa/stax/stax
+```
+
+### Alternative
+
+Clone this repo and put the path to the repo into your PATH variable.
 
 ## stax doctor
 
@@ -45,51 +60,18 @@ stax doctor
 ```
 
 ```
-[V] git config --get user.name # TarasMazepa
+[V] git config --get user.name # Taras Mazepa
 [V] git config --get user.email # 6552358+TarasMazepa@users.noreply.github.com
 [V] git config --get push.autoSetupRemote # true
+[V] git remote # remote(s): origin
+[V] git rev-parse --abbrev-ref origin/HEAD # main
 ```
 
-Stax will give you advice on how to configure everything.
-
-```
-stax doctor
-```
-
-```
-[X] git config --get user.name # null
-    X Set your git user name using:
-      git config --global user.name "<your preferred name>"
-[X] git config --get user.email # null
-    X Set your git user email using:
-      git config --global user.email "<your preferred email>"
-[X] git config --get push.autoSetupRemote # false
-    X Set git push.autoSetupRemote using:
-      git config --global push.autoSetupRemote true
-```
-
-## v1 Roadmap
-
-| Feature                                            | Status |
-|----------------------------------------------------|--------|
-| [commit](#stax-commit)                             | ✅      |
-| [amend](#stax-amend)                               | ✅      |
-| [delete-gone-branches](#stax-delete-gone-branches) | ✅      |
-| [pull](#stax-pull)                                 | ✅      |
-| [log](#stax-log)                                   | ✅      |
-| [rebase](#stax-rebase)                             | 🚧     |
-| move                                               | 🚧     |
-| squash                                             | 🔲     |
-
-## v2 Roadmap
-
-Would be an UI tool that will implement all features from v1.
-
-## What is stax-like git workflow?
+## What is stacking PRs git workflow?
 
 It is a way to reduce the burden of creating commits, branches, and PRs, so it doesn't consume much
-of your time. As a result, you can start creating more PRs with smaller changes in them and have
-them reviewed easier and faster at the same time catching more bugs.
+of your time. As a result, you can start creating more PRs with smaller changes and have
+them reviewed easier and faster while catching more bugs.
 
 ## Commands
 
@@ -125,17 +107,9 @@ Date:   Fri Sep 8 14:58:04 2023 -0700
 You can see that a branch with `two-in-one-commit-name-and-branch-name` name was created as well as
 a commit with the same name `two-in-one-commit-name-and-branch-name`.
 
-#### -a flag
-
-Adds all the files to staging area
-
-#### --pr flag
-
-Redirects you to a create PR page
-
 ### stax amend
 
-Amends to the current commit and force pushes branch
+Amends to the current commit and force pushes the branch
 
 ![stax amend diagram](https://github.com/TarasMazepa/stax/assets/6552358/c3025256-2e4f-4c8f-95c1-095ab9b8b514)
 
@@ -145,14 +119,14 @@ stax amend
 
 ### stax delete-gone-branches
 
-Deletes local branches with gone remotes. Useful when you are using `stax-commit` which pushes all
-the branches. So once they are merged and deleted from the remote you can clean up local branches.
+Deletes local branches with gone remotes. It is useful when you are using `stax-commit`, which pushes all
+the branches. So once they are merged and deleted from the remote, you can clean up local branches.
 
 ![stax delete-gone-branches diagram](https://github.com/TarasMazepa/stax/assets/6552358/55be3cf5-3667-4568-a8b0-785f623ec680)
 
 ### stax pull
 
-Switching to main branch, pull all the changes, deleting gone branches and switching to original
+Switching to the main branch, pulling all the changes, deleting gone branches, and switching to the original
 branch.
 
 ![stax pull diagram](https://github.com/TarasMazepa/stax/assets/6552358/581b2384-2cce-4e78-9be2-76241e0f6c8e)
@@ -172,19 +146,68 @@ o-┘
 
 ### stax rebase
 
-> [!NOTE]
-> Under construction
-
-Rebase tree of nodes on top of the <remote>/head.
+Rebase tree of nodes on top of the <remote>/head or reference provided as first positional argument.
 
 ### stax move
 
-> [!NOTE]
-> Under construction
+Move has five directions:
 
-Allows user to move between log nodes. It supports "up", "down", "top", "bottom", and "head"
-directions.
+* `up` — one node up. You can optionally specify the index of the child node (as represented in the log command); the
+  default is 0.
+* `down` — one node up
+* `top` — to the topmost node, but stop on the first node with more than one child. Optionally you can specify an index
+  of the child node (as represented in log command), default is 0.
+* `bottom` — to the bottommost node, but stop on the first node that has more than one child, or stop before the node
+  that had <remote>/head as a child.
+* `head` — moves to the <remote>/head
 
-# Alternatives
+# Videos
 
-Here you will see list of alternatives to stax.
+[Why stack pull request?](https://youtu.be/gJu0oseqaqs)
+
+[Checking out stacking workflow](https://www.youtube.com/watch?v=zoqbYxW3saY)
+
+## Alternatives (alphabetical order)
+
+* https://ejoffe.github.io/spr/
+* https://git-town.com/
+* https://github.com/VirtusLab/git-machete
+* https://github.com/arxanas/git-branchless
+* https://github.com/ezyang/ghstack
+* https://github.com/gitext-rs/git-stack
+* https://github.com/modularml/stack-pr
+* https://graphite.dev/
+* https://sapling-scm.com/
+* https://stacked-git.github.io/
+
+## TODO
+
+* UI
+    * Add initial console UI
+    * add cd command (which will be the only way to select project)
+    * add continuous stax log display
+
+* stax
+    * e2e test
+        * create e2e tests roadmap
+        * add more e2e tests
+    * unit tests
+        * create unit tests roadmap
+        * add more e2e tests
+    * add test coverage reporting
+    * integration with gh tool (to create PRs and add automerge)
+    * add update prompt (check VERSION file in repository, and offer to run choco update or brew update)
+
+* stax move
+  * flag to ignore <remote>/HEAD transition
+  * flag to ignore multi children nodes
+
+* stax squash
+  * command which ensures that each branch only has one commit
+
+* stax commit
+  * perform `git fetch -p` before and target new commit to local branches only
+  * offer `stax rebase -m` in case when one of the child branches are gone
+
+* homebrew-stax
+  * add test for installing stax on arm64 linux

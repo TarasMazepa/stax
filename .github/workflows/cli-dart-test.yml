@@ -1,0 +1,34 @@
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  cli-dart-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, macos-13, windows-latest ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pCYSl5EDgo/cat@master
+        id: get-dart-version
+        with:
+          path: DART_SDK_VERSION
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ steps.get-dart-version.outputs.text }}
+      - run: dart pub get
+        working-directory: cli
+      - run: dart format . -o none --set-exit-if-changed
+        working-directory: cli
+      - run: dart analyze
+        working-directory: cli
+      - run: |
+          git config --global user.name 'stax'
+          git config --global user.email 'stax@staxforgit.com'
+      - run: dart test
+        working-directory: cli
+      - run: dart compile exe bin/cli.dart
+        working-directory: cli

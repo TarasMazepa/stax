@@ -1,0 +1,129 @@
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+        description: Tag of the release
+        type: string
+  release:
+    types:
+      - created
+
+env:
+  RELEASE: ${{ github.event.release.tag_name }}
+  TAG: ${{ inputs.tag }}
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  release-binary-macos-arm:
+    permissions: write-all
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CHECKOUT }}
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
+      - uses: pCYSl5EDgo/cat@master
+        id: get-dart-version
+        with:
+          path: DART_SDK_VERSION
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ steps.get-dart-version.outputs.text }}
+      - run: dart pub get
+        working-directory: cli
+      - uses: pCYSl5EDgo/cat@master
+        id: get-stax-version
+        with:
+          path: VERSION
+      - run: dart compile exe cli/bin/cli.dart -o stax -Dversion=${{ steps.get-stax-version.outputs.text }}
+      - run: zip macos-arm.zip stax
+      - run: gh release upload $CHECKOUT macos-arm.zip
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
+
+  release-binary-macos-x64:
+    permissions: write-all
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CHECKOUT }}
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
+      - uses: pCYSl5EDgo/cat@master
+        id: get-dart-version
+        with:
+          path: DART_SDK_VERSION
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ steps.get-dart-version.outputs.text }}
+      - run: dart pub get
+        working-directory: cli
+      - uses: pCYSl5EDgo/cat@master
+        id: get-stax-version
+        with:
+          path: VERSION
+      - run: dart compile exe cli/bin/cli.dart -o stax -Dversion=${{ steps.get-stax-version.outputs.text }}
+      - run: zip macos-x64.zip stax
+      - run: gh release upload $CHECKOUT macos-x64.zip
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
+
+  release-binary-linux-x64:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CHECKOUT }}
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
+      - uses: pCYSl5EDgo/cat@master
+        id: get-dart-version
+        with:
+          path: DART_SDK_VERSION
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ steps.get-dart-version.outputs.text }}
+      - run: dart pub get
+        working-directory: cli
+      - uses: pCYSl5EDgo/cat@master
+        id: get-stax-version
+        with:
+          path: VERSION
+      - run: dart compile exe cli/bin/cli.dart -o stax -Dversion=${{ steps.get-stax-version.outputs.text }}
+      - run: zip linux-x64.zip stax
+      - run: gh release upload $CHECKOUT linux-x64.zip
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
+
+  release-binary-windows-x64:
+    permissions: write-all
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CHECKOUT }}
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
+      - uses: pCYSl5EDgo/cat@master
+        id: get-dart-version
+        with:
+          path: DART_SDK_VERSION
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ steps.get-dart-version.outputs.text }}
+      - run: dart pub get
+        working-directory: cli
+      - uses: pCYSl5EDgo/cat@master
+        id: get-stax-version
+        with:
+          path: VERSION
+          trim: true
+      - run: dart compile exe -o stax.exe "-Dversion=${{ steps.get-stax-version.outputs.text }}" cli/bin/cli.dart
+      - run: powershell Compress-Archive stax.exe windows-x64.zip
+      - run: gh release upload ${{ env.CHECKOUT }} windows-x64.zip
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}

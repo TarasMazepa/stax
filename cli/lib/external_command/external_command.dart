@@ -11,7 +11,7 @@ class ExternalCommand {
   ExternalCommand(this.parts, this.context);
 
   ExternalCommand.raw(String command, this.context)
-      : parts = command.split(" ");
+      : parts = command.split(' ');
 
   String get executable => parts[0];
 
@@ -36,49 +36,55 @@ class ExternalCommand {
   }
 
   ExternalCommand announce([String? announcement]) {
-    context.printToConsole("");
-    if (announcement != null) context.printToConsole("# $announcement");
+    context.printToConsole('');
+    if (announcement != null) context.printToConsole('# $announcement');
     String path = context.workingDirectory != null
-        ? "[${context.workingDirectory}] "
-        : "";
-    context.printToConsole("$path> ${toString()}");
+        ? '[${context.workingDirectory}] '
+        : '';
+    context.printToConsole('$path> ${toString()}');
     return this;
   }
 
-  ExtendedProcessResult runSync(
-      {Map<String, String>? environment,
-      bool includeParentEnvironment = true,
-      bool runInShell = false,
-      Encoding? stdoutEncoding = systemEncoding,
-      Encoding? stderrEncoding = systemEncoding}) {
-    return Process.runSync(executable, arguments,
-            workingDirectory: context.workingDirectory,
-            environment: environment,
-            includeParentEnvironment: includeParentEnvironment,
-            runInShell: runInShell,
-            stdoutEncoding: stdoutEncoding,
-            stderrEncoding: stderrEncoding)
-        .extend(this);
+  ExtendedProcessResult runSync({
+    Map<String, String>? environment,
+    bool includeParentEnvironment = true,
+    bool runInShell = false,
+    Encoding? stdoutEncoding = systemEncoding,
+    Encoding? stderrEncoding = systemEncoding,
+  }) {
+    return Process.runSync(
+      executable,
+      arguments,
+      workingDirectory: context.workingDirectory,
+      environment: environment,
+      includeParentEnvironment: includeParentEnvironment,
+      runInShell: runInShell,
+      stdoutEncoding: stdoutEncoding,
+      stderrEncoding: stderrEncoding,
+    ).extend(this);
   }
 
-  Future<ExtendedProcessResult> run(
-      {Map<String, String>? environment,
-      bool includeParentEnvironment = true,
-      bool runInShell = false,
-      Encoding? stdoutEncoding = systemEncoding,
-      Encoding? stderrEncoding = systemEncoding}) {
-    return Process.run(executable, arguments,
-            workingDirectory: context.workingDirectory,
-            environment: environment,
-            includeParentEnvironment: includeParentEnvironment,
-            runInShell: runInShell,
-            stdoutEncoding: stdoutEncoding,
-            stderrEncoding: stderrEncoding)
-        .then((value) => value.extend(this));
+  Future<ExtendedProcessResult> run({
+    Map<String, String>? environment,
+    bool includeParentEnvironment = true,
+    bool runInShell = false,
+    Encoding? stdoutEncoding = systemEncoding,
+    Encoding? stderrEncoding = systemEncoding,
+  }) {
+    return Process.run(
+      executable,
+      arguments,
+      workingDirectory: context.workingDirectory,
+      environment: environment,
+      includeParentEnvironment: includeParentEnvironment,
+      runInShell: runInShell,
+      stdoutEncoding: stdoutEncoding,
+      stderrEncoding: stderrEncoding,
+    ).then((value) => value.extend(this));
   }
 
   @override
   String toString() {
-    return parts.map((e) => e.contains(" ") ? "\"$e\"" : e).join(" ");
+    return parts.map((e) => e.contains(' ') ? '"$e"' : e).join(' ');
   }
 }

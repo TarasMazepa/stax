@@ -5,7 +5,7 @@ extension ContextGitIsInsideWorkTree on Context {
     return withSilence(true)
             .git
             .revParseIsInsideWorkTree
-            .announce("Checking if inside git work tree.")
+            .announce('Checking if inside git work tree.')
             .runSync()
             .assertSuccessfulExitCode() !=
         null;
@@ -16,7 +16,7 @@ extension ContextGitIsInsideWorkTree on Context {
   }
 
   void explainToUserNotInsideGitWorkTree() {
-    printParagraph("You are not inside git work tree.");
+    printParagraph('You are not inside git work tree.');
   }
 
   bool handleNotInsideGitWorkingTree() {
