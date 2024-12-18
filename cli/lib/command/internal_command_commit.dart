@@ -134,7 +134,7 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
 
-    if (createPr) {
+    if (prUrl != null) {
       final openCommand = () {
         if (Platform.isWindows) {
           return [
