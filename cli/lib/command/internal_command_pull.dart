@@ -11,9 +11,6 @@ class InternalCommandPull extends InternalCommand {
       : super(
           'pull',
           'Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.',
-          arguments: {
-            'opt1': 'Optional target branch, will default to <remote>/HEAD',
-          },
           flags: [
             InternalCommandDeleteGoneBranches.skipDeleteFlag,
             InternalCommandDeleteGoneBranches.forceDeleteFlag,
@@ -30,8 +27,7 @@ class InternalCommandPull extends InternalCommand {
       return;
     }
     final currentBranch = context.getCurrentBranch();
-    final targetBranch = args.elementAtOrNull(0);
-    final defaultBranch = targetBranch ?? context.getDefaultBranch();
+    final defaultBranch = context.getDefaultBranch();
     if (defaultBranch == null) {
       context.printToConsole(
         "Can't do pull on default branch, as can't identify one.",
