@@ -94,29 +94,8 @@ class InternalCommandCommit extends InternalCommand {
       );
       return;
     }
-    final commitExitCode = context.git.commitWithMessage
-        .arg(commitMessage)
-        .announce('Committing')
-        .runSync()
-        .printNotEmptyResultFields()
-        .exitCode;
-    if (commitExitCode != 0) {
-      context.printParagraph(
-        'See above git error. Additionally you can check `stax doctor` command output.',
-      );
-      return;
-    }
-    final pushExitCode = context.git.push
-        .announce('Pushing')
-        .runSync()
-        .printNotEmptyResultFields()
-        .exitCode;
-    if (pushExitCode != 0) {
-      context.printParagraph(
-        'See above git error. Additionally you can check `stax doctor` command output.',
-      );
-      return;
-    }
+
+    String? prUrl;
     if (createPr) {
       final remote = context.git.remote.runSync().stdout.toString().trim();
       final remoteUrl = context.git.remoteGetUrl
@@ -126,17 +105,45 @@ class InternalCommandCommit extends InternalCommand {
           .toString()
           .trim()
           .replaceFirstMapped(RegExp(r'git@(.*):'), (m) => 'https://${m[1]}/');
-      final newPrUrl =
+      prUrl =
           '${remoteUrl.substring(0, remoteUrl.length - 4)}/compare/$previousBranch...$resultingBranchName?expand=1';
+    }
+
+    final commitExitCode = context.git.commitWithMessage
+        .arg(commitMessage)
+        .announce('Committing')
+        .runSync()
+        .printNotEmptyResultFields()
+        .exitCode;
+    if (commitExitCode != 0) {
+      context.printParagraph(
+        'See above git error. Additionally you can check `stax doctor` command output.${prUrl != null ? '\nPR URL would have been: $prUrl' : ''}',
+      );
+      return;
+    }
+
+    final pushExitCode = context.git.push
+        .announce('Pushing')
+        .runSync()
+        .printNotEmptyResultFields()
+        .exitCode;
+    if (pushExitCode != 0) {
+      context.printParagraph(
+        'See above git error. Additionally you can check `stax doctor` command output.${prUrl != null ? '\nPR URL would have been: $prUrl' : ''}',
+      );
+      return;
+    }
+
+    if (prUrl != null) {
       final openCommand = () {
         if (Platform.isWindows) {
           return [
             'PowerShell',
             '-Command',
-            '''& {Start-Process "$newPrUrl"}''',
+            '''& {Start-Process "$prUrl"}''',
           ];
         }
-        return ['open', newPrUrl];
+        return ['open', prUrl!];
       }();
 
       context
