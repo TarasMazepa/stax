@@ -16,6 +16,7 @@ import 'package:stax/command/internal_command_terminal.dart';
 import 'package:stax/command/internal_command_update.dart';
 import 'package:stax/command/internal_command_update_prompt.dart';
 import 'package:stax/command/internal_command_version.dart';
+import 'package:stax/command/internal_command_pr_creation.dart';
 
 final List<InternalCommand> internalCommands = [
   InternalCommandAmend(),
@@ -35,4 +36,5 @@ final List<InternalCommand> internalCommands = [
   InternalCommandUpdate(),
   InternalCommandUpdatePrompt(),
   InternalCommandVersion(),
+  InternalCommandPrCreation(),
 ]..sort();
