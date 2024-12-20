@@ -97,7 +97,12 @@ class InternalCommandCommit extends InternalCommand {
 
     String? prUrl;
     if (createPr) {
-      final remote = context.git.remote.runSync().stdout.toString().split('\n')[0].trim();
+      final remote = context.git.remote
+          .runSync()
+          .stdout
+          .toString()
+          .split('\n')[0]
+          .trim()
       final remoteUrl = context.git.remoteGetUrl
           .arg(remote)
           .runSync()
