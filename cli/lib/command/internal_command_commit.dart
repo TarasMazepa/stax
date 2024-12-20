@@ -102,7 +102,7 @@ class InternalCommandCommit extends InternalCommand {
           .stdout
           .toString()
           .split('\n')[0]
-          .trim()
+          .trim();
       final remoteUrl = context.git.remoteGetUrl
           .arg(remote)
           .runSync()
