@@ -5,6 +5,7 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
+import 'package:stax/context/context_git_log_all.dart';
 
 class InternalCommandPrCreation extends InternalCommand {
   InternalCommandPrCreation()
@@ -25,9 +26,22 @@ class InternalCommandPrCreation extends InternalCommand {
       return;
     }
 
-    final defaultBranch = context.getDefaultBranch();
-    if (defaultBranch == null) {
-      context.printToConsole("Can't determine default branch.");
+    final root = context.withSilence(true).gitLogAll().collapse();
+    if (root == null) {
+      context.printToConsole("Can't build branch tree.");
+      return;
+    }
+
+    final current = root.findCurrent();
+    if (current == null) {
+      context.printToConsole("Can't find current branch in the tree.");
+      return;
+    }
+
+    final targetBranch = current.parent?.line.branchNameOrCommitHash() ??
+        context.getDefaultBranch();
+    if (targetBranch == null) {
+      context.printToConsole("Can't determine target branch.");
       return;
     }
 
@@ -51,7 +65,7 @@ class InternalCommandPrCreation extends InternalCommand {
     }
 
     final newPrUrl =
-        '${remoteUrl.substring(0, remoteUrl.length - 4)}/compare/$defaultBranch...$currentBranch?expand=1';
+        '${remoteUrl.substring(0, remoteUrl.length - 4)}/compare/$targetBranch...$currentBranch?expand=1';
 
     final openCommand = () {
       if (Platform.isWindows) {
