@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/sanitize_branch_name.dart';
@@ -78,7 +76,9 @@ class InternalCommandCommit extends InternalCommand {
     if (!acceptBranchName && originalBranchName != resultingBranchName) {
       if (!context.commandLineContinueQuestion(
         "Branch name was sanitized to '$resultingBranchName'.",
-      )) return;
+      )) {
+        return;
+      }
     }
     context.printToConsole("Commit  message: '$commitMessage'");
     context.printToConsole("New branch name: '$resultingBranchName'");
