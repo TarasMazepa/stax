@@ -10,6 +10,7 @@ import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
+import 'package:stax/context/context_open_pr_url.dart';
 
 class InternalCommandCommit extends InternalCommand {
   static final prFlag = Flag(
@@ -118,32 +119,7 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
     if (createPr) {
-      final remote = context.git.remote.runSync().stdout.toString().trim();
-      final remoteUrl = context.git.remoteGetUrl
-          .arg(remote)
-          .runSync()
-          .stdout
-          .toString()
-          .trim()
-          .replaceFirstMapped(RegExp(r'git@(.*):'), (m) => 'https://${m[1]}/');
-      final newPrUrl =
-          '${remoteUrl.substring(0, remoteUrl.length - 4)}/compare/$previousBranch...$resultingBranchName?expand=1';
-      final openCommand = () {
-        if (Platform.isWindows) {
-          return [
-            'PowerShell',
-            '-Command',
-            '''& {Start-Process "$newPrUrl"}''',
-          ];
-        }
-        return ['open', newPrUrl];
-      }();
-
-      context
-          .command(openCommand)
-          .announce('Opening PR in browser window')
-          .runSync()
-          .printNotEmptyResultFields();
+      context.openPrUrl(previousBranch!, resultingBranchName);
     }
   }
 }
