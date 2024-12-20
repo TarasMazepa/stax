@@ -135,5 +135,70 @@ class InternalCommandDoctor extends InternalCommand {
         );
       }
     }
+
+    // Check gh CLI installation and authentication
+    {
+      bool ghExists;
+      try {
+        ghExists = context
+            .withSilence(true)
+            .command(['gh', '--version'])
+            .announce('Checking if GitHub CLI is installed.')
+            .runSync()
+            .isSuccess();
+      } catch (e) {
+        ghExists = false;
+      }
+
+      context.printToConsole(
+        '''[${boolToCheckmark(ghExists)}] gh --version # ${ghExists ? "installed" : "not found"}''',
+      );
+
+      if (!ghExists) {
+        context.printToConsole('''    X Install GitHub CLI using:''');
+        context.printToConsole(
+          '''      gh not installed''',
+        );
+        return;
+      }
+
+      final isAuthenticated = context
+          .withSilence(true)
+          .command(['gh', 'auth', 'status'])
+          .announce('Checking if GitHub CLI is authenticated.')
+          .runSync()
+          .isSuccess();
+
+      context.printToConsole(
+        '''[${boolToCheckmark(isAuthenticated)}] gh auth status # ${isAuthenticated ? "authenticated" : "not authenticated"}''',
+      );
+
+      if (!isAuthenticated) {
+        context.printToConsole('''    X Authenticate GitHub CLI using:''');
+        context.printToConsole(
+          '''      gh auth login''',
+        );
+        return;
+      }
+
+      if (context.isInsideWorkTree()) {
+        final canAccessRepo = context
+            .withSilence(true)
+            .command(['gh', 'repo', 'view'])
+            .announce('Checking if GitHub CLI can access repository.')
+            .runSync()
+            .isSuccess();
+
+        context.printToConsole(
+          '''[${boolToCheckmark(canAccessRepo)}] gh repo view # ${canAccessRepo ? "has access" : "no access"}''',
+        );
+
+        if (!canAccessRepo) {
+          context.printToConsole(
+            '''    X Ensure you have access to this repository on GitHub''',
+          );
+        }
+      }
+    }
   }
 }
