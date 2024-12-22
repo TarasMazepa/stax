@@ -87,9 +87,7 @@ class InternalCommandCommit extends InternalCommand {
       );
       return;
     }
-    context.printParagraph(
-      "Branch '$resultingBranchName' already exists but points to a different commit. Please choose a different branch name.",
-    );
+
     context.printToConsole("Commit  message: '$commitMessage'");
     context.printToConsole("New branch name: '$resultingBranchName'");
     final previousBranch = createPr ? context.getCurrentBranch() : null;
