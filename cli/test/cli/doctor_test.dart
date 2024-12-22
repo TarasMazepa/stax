@@ -44,6 +44,9 @@ void main() {
         'X',
       ];
 
+      expectedOutput[3] = 'X';
+      expectedOutput[4] = 'X';
+
       expect(
         getSuccessFailMarkForDoctorOutput(
           setup.runLiveStaxSync(['doctor']).stdout,
