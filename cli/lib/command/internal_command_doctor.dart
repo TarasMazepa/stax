@@ -135,5 +135,71 @@ class InternalCommandDoctor extends InternalCommand {
         );
       }
     }
+
+    // Check gh CLI installation and authentication
+    {
+      String? ghVersion;
+      try {
+        ghVersion = context
+            .withSilence(true)
+            .command(['gh', '--version'])
+            .announce('Checking if GitHub CLI is installed.')
+            .runSync()
+            .stdout
+            .toString();
+      } catch (e) {
+        ghVersion = null;
+      }
+
+      context.printToConsole(
+        '''[${boolToCheckmark(ghVersion?.isNotEmpty == true)}] gh --version # $ghVersion''',
+      );
+
+      if (ghVersion?.isNotEmpty != true) {
+        context.printToConsole('''    X Install GitHub CLI using:''');
+        context.printToConsole(
+          '''      https://github.com/cli/cli#installation''',
+        );
+        return;
+      }
+
+      final isAuthenticated = context
+          .withSilence(true)
+          .command(['gh', 'auth', 'status'])
+          .announce('Checking if GitHub CLI is authenticated.')
+          .runSync()
+          .isSuccess();
+
+      context.printToConsole(
+        '''[${boolToCheckmark(isAuthenticated)}] gh auth status # ${isAuthenticated ? "authenticated" : "not authenticated"}''',
+      );
+
+      if (!isAuthenticated) {
+        context.printToConsole('''    X Authenticate GitHub CLI using:''');
+        context.printToConsole(
+          '''      gh auth login''',
+        );
+        return;
+      }
+
+      if (context.isInsideWorkTree()) {
+        final canAccessRepo = context
+            .withSilence(true)
+            .command(['gh', 'repo', 'view'])
+            .announce('Checking if GitHub CLI can access repository.')
+            .runSync()
+            .isSuccess();
+
+        context.printToConsole(
+          '''[${boolToCheckmark(canAccessRepo)}] gh repo view # ${canAccessRepo ? "has access" : "no access"}''',
+        );
+
+        if (!canAccessRepo) {
+          context.printToConsole(
+            '''    X Ensure you have access to this repository on GitHub''',
+          );
+        }
+      }
+    }
   }
 }
