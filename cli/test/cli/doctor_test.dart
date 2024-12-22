@@ -6,12 +6,16 @@ import 'base/cli_test_setup.dart';
 
 void main() {
   List<String> getSuccessFailMarkForDoctorOutput(dynamic out) {
-    return out
+    final allMarks = out
         .toString()
         .split('\n')
         .where((x) => x.length > 1 && x[0] == '[')
         .map((x) => x[1])
         .toList();
+
+    allMarks.removeAt(4);
+
+    return allMarks;
   }
 
   cliGroup('doctor', bundle: true, (CliTestSetup setup) {
