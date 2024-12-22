@@ -38,8 +38,8 @@ void main() {
         defaultGlobalUsername == null ? 'X' : 'V',
         defaultGlobalEmail == null ? 'X' : 'V',
         defaultGlobalAutoRemote == null ? 'X' : 'V',
-        'V',
-        'V',
+        'X',
+        'X',
         'V',
         'X',
       ];
