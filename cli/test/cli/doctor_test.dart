@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:stax/string_empty_to_null.dart';
 import 'package:test/test.dart';
 
@@ -16,6 +18,31 @@ void main() {
 
   cliGroup('doctor', bundle: true, (CliTestSetup setup) {
     test('doctor', () {
+      String? mockGhVersion;
+      // Create mock files for platform-specific commands
+      if (Platform.isWindows) {
+        try {
+          setup.runSync('echo', ['@echo 2.40.1', '>', 'gh.bat']);
+          mockGhVersion = '2.40.1';
+        } catch (e) {
+          mockGhVersion = null;
+        }
+      } else {
+        try {
+          setup.runSync('touch', ['gh']);
+          setup.runSync('chmod', ['+x', 'gh']);
+          setup.runSync('echo', ['echo "2.40.1"', '>', 'gh']);
+          mockGhVersion = '2.40.1';
+        } catch (e) {
+          mockGhVersion = null;
+        }
+      }
+      // Add mock gh to PATH
+      final path = setup.testRepoPath;
+      final originalPath = Platform.environment['PATH'];
+      final pathSeparator = Platform.isWindows ? ';' : ':';
+      Platform.environment['PATH'] = '$path$pathSeparator$originalPath';
+
       final defaultGlobalUsername = setup
           .runSync('git', ['config', '--get', 'user.name'])
           .stdout
@@ -40,12 +67,9 @@ void main() {
         defaultGlobalAutoRemote == null ? 'X' : 'V',
         'X',
         'X',
-        'V',
+        mockGhVersion != null ? 'V' : 'X',
         'X',
       ];
-
-      expectedOutput[3] = 'X';
-      expectedOutput[4] = 'X';
 
       expect(
         getSuccessFailMarkForDoctorOutput(
