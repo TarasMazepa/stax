@@ -1,10 +1,13 @@
 import 'package:stax/context/context.dart';
 
 extension ContextGitIsBranchCreated on Context {
-  bool isBranchCreated(String branchName) {
-    return git.revParseVerify
+  bool isBranchCreatedAndPointingAtCommit(
+    String branchName,
+    String commitMessage,
+  ) {
+    return git.branchCurrent
         .arg(branchName)
-        .announce('Checking if branch exists.')
+        .announce('Checking if branch exists and points at commit.')
         .runSync()
         .printNotEmptyResultFields()
         .isSuccess();

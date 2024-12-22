@@ -11,7 +11,6 @@ import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_is_branch_created.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
-import 'package:stax/context/context_git_is_branch_pointing_at_commit.dart';
 
 class InternalCommandCommit extends InternalCommand {
   static final prFlag = Flag(
@@ -81,21 +80,16 @@ class InternalCommandCommit extends InternalCommand {
         "Branch name was sanitized to '$resultingBranchName'.",
       )) return;
     }
-    if (context.isBranchCreated(resultingBranchName)) {
-      if (context.isBranchPointingAtCommit(
-        resultingBranchName,
-        commitMessage,
-      )) {
-        context.printToConsole(
-          "Branch '$resultingBranchName' already exists and is pointing to a commit with message '$commitMessage'",
-        );
-        return;
-      }
-      context.printParagraph(
-        "Branch '$resultingBranchName' already exists but points to a different commit. Please choose a different branch name.",
+    if (context.isBranchCreatedAndPointingAtCommit(
+        resultingBranchName, commitMessage)) {
+      context.printToConsole(
+        "Branch '$resultingBranchName' already exists and is pointing to a commit with message '$commitMessage'",
       );
       return;
     }
+    context.printParagraph(
+      "Branch '$resultingBranchName' already exists but points to a different commit. Please choose a different branch name.",
+    );
     context.printToConsole("Commit  message: '$commitMessage'");
     context.printToConsole("New branch name: '$resultingBranchName'");
     final previousBranch = createPr ? context.getCurrentBranch() : null;
