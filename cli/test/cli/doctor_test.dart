@@ -39,7 +39,7 @@ void main() {
         defaultGlobalEmail == null ? 'X' : 'V',
         defaultGlobalAutoRemote == null ? 'X' : 'V',
         'V',
-        'X',
+        'V',
         'V',
         'X',
       ];
@@ -50,8 +50,6 @@ void main() {
         ),
         expectedOutput,
       );
-
-      expectedOutput[3] = 'X';
 
       setup.runSync('git', ['remote', 'rm', 'origin']);
 
