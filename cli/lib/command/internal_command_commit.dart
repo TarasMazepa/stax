@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/sanitize_branch_name.dart';
@@ -10,6 +8,7 @@ import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
+import 'package:stax/context/context_open_pr_url.dart';
 
 class InternalCommandCommit extends InternalCommand {
   static final prFlag = Flag(
@@ -77,7 +76,9 @@ class InternalCommandCommit extends InternalCommand {
     if (!acceptBranchName && originalBranchName != resultingBranchName) {
       if (!context.commandLineContinueQuestion(
         "Branch name was sanitized to '$resultingBranchName'.",
-      )) return;
+      )) {
+        return;
+      }
     }
     context.printToConsole("Commit  message: '$commitMessage'");
     context.printToConsole("New branch name: '$resultingBranchName'");
@@ -135,23 +136,8 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
 
-    if (prUrl != null) {
-      final openCommand = () {
-        if (Platform.isWindows) {
-          return [
-            'PowerShell',
-            '-Command',
-            '''& {Start-Process "$prUrl"}''',
-          ];
-        }
-        return ['open', prUrl!];
-      }();
-
-      context
-          .command(openCommand)
-          .announce('Opening PR in browser window')
-          .runSync()
-          .printNotEmptyResultFields();
+    if (createPr) {
+      context.openPrUrl(previousBranch!, resultingBranchName);
     }
   }
 }
