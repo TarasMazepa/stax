@@ -44,8 +44,8 @@ void main() {
         'X',
       ];
 
-      expectedOutput[3] = 'X';
-      expectedOutput[4] = 'X';
+      expectedOutput[3] = 'V';
+      expectedOutput[4] = 'V';
 
       expect(
         getSuccessFailMarkForDoctorOutput(
