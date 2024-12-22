@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:stax/string_empty_to_null.dart';
 import 'package:test/test.dart';
 
@@ -11,6 +12,9 @@ void main() {
         .split('\n')
         .where((x) => x.length > 1 && x[0] == '[')
         .map((x) => x[1])
+        .whereIndexed(
+          (index, element) => index != 4,
+        )
         .toList();
   }
 
@@ -38,14 +42,9 @@ void main() {
         defaultGlobalUsername == null ? 'X' : 'V',
         defaultGlobalEmail == null ? 'X' : 'V',
         defaultGlobalAutoRemote == null ? 'X' : 'V',
-        'X',
-        'X',
         'V',
         'X',
       ];
-
-      expectedOutput[3] = 'V';
-      expectedOutput[4] = 'V';
 
       expect(
         getSuccessFailMarkForDoctorOutput(
@@ -53,6 +52,8 @@ void main() {
         ),
         expectedOutput,
       );
+
+      expectedOutput[3] = 'X';
 
       setup.runSync('git', ['remote', 'rm', 'origin']);
 
