@@ -14,7 +14,7 @@ void main() {
         .toList();
 
     allMarks.removeAt(4);
-    allMarks.removeAt(5);
+    allMarks.removeAt(4);
 
     return allMarks;
   }
