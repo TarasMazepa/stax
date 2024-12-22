@@ -13,10 +13,9 @@ void main() {
         .map((x) => x[1])
         .toList();
 
-    return [
-      ...allMarks.sublist(0, 4),
-      ...allMarks.sublist(5),
-    ];
+    allMarks.removeAt(4);
+
+    return allMarks;
   }
 
   cliGroup('doctor', bundle: true, (CliTestSetup setup) {
