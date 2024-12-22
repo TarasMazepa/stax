@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:stax/string_empty_to_null.dart';
 import 'package:test/test.dart';
 
@@ -12,9 +11,6 @@ void main() {
         .split('\n')
         .where((x) => x.length > 1 && x[0] == '[')
         .map((x) => x[1])
-        .whereIndexed(
-          (index, element) => index != 4,
-        )
         .toList();
   }
 
@@ -43,6 +39,8 @@ void main() {
         defaultGlobalEmail == null ? 'X' : 'V',
         defaultGlobalAutoRemote == null ? 'X' : 'V',
         'V',
+        'V',
+        'X',
       ];
 
       expect(
@@ -53,6 +51,7 @@ void main() {
       );
 
       expectedOutput[3] = 'X';
+      expectedOutput[4] = 'X';
 
       setup.runSync('git', ['remote', 'rm', 'origin']);
 

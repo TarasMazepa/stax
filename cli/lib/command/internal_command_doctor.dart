@@ -138,26 +138,27 @@ class InternalCommandDoctor extends InternalCommand {
 
     // Check gh CLI installation and authentication
     {
-      bool ghExists;
+      String? ghVersion;
       try {
-        ghExists = context
+        ghVersion = context
             .withSilence(true)
             .command(['gh', '--version'])
             .announce('Checking if GitHub CLI is installed.')
             .runSync()
-            .isSuccess();
+            .stdout
+            .toString();
       } catch (e) {
-        ghExists = false;
+        ghVersion = null;
       }
 
       context.printToConsole(
-        '''[${boolToCheckmark(ghExists)}] gh --version # ${ghExists ? "installed" : "not found"}''',
+        '''[${boolToCheckmark(ghVersion?.isNotEmpty == true)}] gh --version # $ghVersion''',
       );
 
-      if (!ghExists) {
+      if (ghVersion?.isNotEmpty != true) {
         context.printToConsole('''    X Install GitHub CLI using:''');
         context.printToConsole(
-          '''      gh not installed''',
+          '''      https://github.com/cli/cli#installation''',
         );
         return;
       }
