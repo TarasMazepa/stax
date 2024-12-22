@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:stax/string_empty_to_null.dart';
 import 'package:test/test.dart';
 
@@ -7,15 +6,17 @@ import 'base/cli_test_setup.dart';
 
 void main() {
   List<String> getSuccessFailMarkForDoctorOutput(dynamic out) {
-    return out
+    final allMarks = out
         .toString()
         .split('\n')
         .where((x) => x.length > 1 && x[0] == '[')
         .map((x) => x[1])
-        .whereIndexed(
-          (index, element) => index != 4,
-        )
         .toList();
+
+    return [
+      ...allMarks.sublist(0, 4),
+      ...allMarks.sublist(5),
+    ];
   }
 
   cliGroup('doctor', bundle: true, (CliTestSetup setup) {
