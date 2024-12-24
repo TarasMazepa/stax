@@ -10,6 +10,7 @@ import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
+import 'package:stax/settings/settings.dart';
 
 class InternalCommandCommit extends InternalCommand {
   static final prFlag = Flag(
@@ -74,23 +75,30 @@ class InternalCommandCommit extends InternalCommand {
       originalBranchName = args[1];
     }
     final resultingBranchName = sanitizeBranchName(originalBranchName);
-    if (!acceptBranchName && originalBranchName != resultingBranchName) {
+
+    // Add branch prefix if configured
+    final branchPrefix = Settings.instance.settings['branch_prefix'];
+    final prefixedBranchName = branchPrefix != null && branchPrefix.isNotEmpty
+        ? '$branchPrefix$resultingBranchName'
+        : resultingBranchName;
+
+    if (!acceptBranchName && originalBranchName != prefixedBranchName) {
       if (!context.commandLineContinueQuestion(
-        "Branch name was sanitized to '$resultingBranchName'.",
+        "Branch name was modified to '$prefixedBranchName'.",
       )) return;
     }
     context.printToConsole("Commit  message: '$commitMessage'");
-    context.printToConsole("New branch name: '$resultingBranchName'");
+    context.printToConsole("New branch name: '$prefixedBranchName'");
     final previousBranch = createPr ? context.getCurrentBranch() : null;
     final newBranchCheckoutExitCode = context.git.checkoutNewBranch
-        .arg(resultingBranchName)
+        .arg(prefixedBranchName)
         .announce('Creating new branch.')
         .runSync()
         .printNotEmptyResultFields()
         .exitCode;
     if (newBranchCheckoutExitCode != 0) {
       context.printParagraph(
-        "Looks like we can't create new branch with '$resultingBranchName' name. Please pick a different name.",
+        "Looks like we can't create new branch with '$prefixedBranchName' name. Please pick a different name.",
       );
       return;
     }
@@ -107,7 +115,7 @@ class InternalCommandCommit extends InternalCommand {
           .trim()
           .replaceFirstMapped(RegExp(r'git@(.*):'), (m) => 'https://${m[1]}/');
       prUrl =
-          '${remoteUrl.substring(0, remoteUrl.length - 4)}/compare/$previousBranch...$resultingBranchName?expand=1';
+          '${remoteUrl.substring(0, remoteUrl.length - 4)}/compare/$previousBranch...$prefixedBranchName?expand=1';
     }
 
     final commitExitCode = context.git.commitWithMessage
