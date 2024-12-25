@@ -1,5 +1,6 @@
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_get_pr_url.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
@@ -41,6 +42,12 @@ class InternalCommandPrCreation extends InternalCommand {
         context.getDefaultBranch();
     if (targetBranch == null) {
       context.printToConsole("Can't determine target branch.");
+      return;
+    }
+
+    final prUrl = context.getPrUrl(targetBranch, currentBranch);
+    if (prUrl == null) {
+      context.printToConsole("Can't generate PR URL.");
       return;
     }
 
