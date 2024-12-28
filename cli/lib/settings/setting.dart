@@ -16,12 +16,13 @@ class Setting<T> {
   );
 
   T get() {
-    final raw = _settings.settings[_name];
+    final raw = _settings[_name];
     if (raw == null) return _defaultValue;
     return _fromStringConverter(raw);
   }
 
   void set(T t) {
-    _settings.setSetting(_name, _toStringConverter(t));
+    _settings[_name] = _toStringConverter(t);
+    _settings.save();
   }
 }

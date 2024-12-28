@@ -1,41 +1,52 @@
 import 'dart:convert';
 import 'dart:io';
 
-class Settings {
-  static Settings? _instance;
-  static Settings get instance => _instance ??= Settings._();
+import 'package:cli_util/cli_util.dart';
+import 'package:stax/settings/date_time_setting.dart';
+import 'package:path/path.dart' as path;
 
-  final Map<String, String> settings = {};
-  final File _settingsFile = File(
-    '${Platform.environment['HOME'] ?? Platform.environment['USERPROFILE']}/.stax/settings.json',
+class Settings {
+  static Settings _load() {
+    dynamic error = Exception('Unknown error');
+    for (int i = 0; i < 3; i++) {
+      if (!_file.existsSync()) {
+        _file.createSync(recursive: true);
+        _file.writeAsStringSync('{}', flush: true);
+      }
+      try {
+        final map = jsonDecode(_file.readAsStringSync());
+        return Settings(map);
+      } catch (e) {
+        _file.deleteSync();
+        error = e;
+      }
+    }
+    throw error;
+  }
+
+  static final _file = File.fromUri(
+    path.toUri(path.join(applicationConfigHome('stax'), '.stax_config')),
   );
 
-  Settings._() {
-    _loadSettings();
+  static final instance = _load();
+
+  final Map<String, dynamic> settings;
+
+  late final DateTimeSetting lastUpdatePrompt =
+      DateTimeSetting('last_update_prompt', DateTime.now(), this);
+
+  Settings(this.settings);
+
+  String? operator [](String key) {
+    final value = settings[key];
+    return value is String ? value : null;
   }
 
-  void _loadSettings() {
-    if (_settingsFile.existsSync()) {
-      final jsonString = _settingsFile.readAsStringSync();
-      final Map<String, dynamic> jsonMap = json.decode(jsonString);
-      settings.addAll(Map<String, String>.from(jsonMap));
-    }
-  }
-
-  void _saveSettings() {
-    if (!_settingsFile.existsSync()) {
-      _settingsFile.parent.createSync(recursive: true);
-    }
-    _settingsFile.writeAsStringSync(json.encode(settings));
-  }
-
-  void setSetting(String key, String value) {
+  void operator []=(String key, String? value) {
     settings[key] = value;
-    _saveSettings();
   }
 
-  void removeSetting(String key) {
-    settings.remove(key);
-    _saveSettings();
+  void save() {
+    _file.writeAsStringSync(jsonEncode(settings), flush: true);
   }
 }

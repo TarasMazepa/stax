@@ -27,7 +27,7 @@ class InternalCommandSettings extends InternalCommand {
       // Display all settings
       context.printToConsole('Available settings:');
       for (final setting in availableSettings.entries) {
-        final currentValue = Settings.instance.settings[setting.key];
+        final currentValue = Settings.instance[setting.key];
         context.printToConsole(
           '${setting.key}: ${currentValue ?? "<not set>"}'
           '\n  ${setting.value}',
@@ -49,13 +49,12 @@ class InternalCommandSettings extends InternalCommand {
 
     final newValue = args.length > 1 ? args[1] : null;
 
+    Settings.instance[settingName] = newValue;
+    Settings.instance.save();
+
     if (newValue == null) {
-      // Clear setting
-      Settings.instance.removeSetting(settingName);
       context.printToConsole('Cleared setting: $settingName');
     } else {
-      // Set new value
-      Settings.instance.setSetting(settingName, newValue);
       context.printToConsole('Updated setting: $settingName = $newValue');
     }
   }
