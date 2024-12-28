@@ -75,12 +75,8 @@ class InternalCommandCommit extends InternalCommand {
       originalBranchName = args[1];
     }
     final resultingBranchName = sanitizeBranchName(originalBranchName);
-
-    // Add branch prefix if configured
-    final branchPrefix = Settings.instance.settings['branch_prefix'];
-    final prefixedBranchName = branchPrefix != null && branchPrefix.isNotEmpty
-        ? '$branchPrefix$resultingBranchName'
-        : resultingBranchName;
+    final prefixedBranchName =
+        Settings.instance.branchPrefix.value + resultingBranchName;
 
     if (!acceptBranchName && originalBranchName != prefixedBranchName) {
       if (!context.commandLineContinueQuestion(
