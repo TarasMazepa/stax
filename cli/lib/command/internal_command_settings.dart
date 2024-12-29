@@ -33,23 +33,27 @@ class InternalCommandSettings extends InternalCommand {
     }
 
     final subcommand = args[0];
-    if (subcommand != 'set') {
-      context.printToConsole(
-        'Unknown subcommand: $subcommand\n'
-        'Available subcommand: set',
-      );
-      return;
+    switch (subcommand) {
+      case 'set':
+        _handleSet(args.skip(1).toList(), context);
+      default:
+        context.printToConsole(
+          'Unknown subcommand: $subcommand\n'
+          'Available subcommand: set',
+        );
     }
+  }
 
-    if (args.length < 3) {
+  void _handleSet(List<String> args, Context context) {
+    if (args.length < 2) {
       context.printToConsole(
         'Usage: stax settings set <setting_name> <value>',
       );
       return;
     }
 
-    final settingName = args[1];
-    final newValue = args[2];
+    final settingName = args[0];
+    final newValue = args[1];
 
     if (!availableSettings.containsKey(settingName)) {
       context.printToConsole(
