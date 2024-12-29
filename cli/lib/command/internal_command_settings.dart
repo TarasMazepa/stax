@@ -14,9 +14,8 @@ class InternalCommandSettings extends InternalCommand {
           'View or modify stax settings',
           type: InternalCommandType.hidden,
           arguments: {
-            'arg1': 'Subcommand (set)',
-            'opt2': 'Setting name (for set)',
-            'opt3': 'New value (for set)',
+            'arg1': 'Subcommand (set, clear)',
+            'opt2': 'Setting name',
           },
         );
 
@@ -27,7 +26,8 @@ class InternalCommandSettings extends InternalCommand {
 
     if (args.isEmpty) {
       context.printToConsole(
-        'Usage: stax settings set <setting_name> <value>',
+        'Usage: stax settings <subcommand>\n'
+        'Available subcommands: set, clear',
       );
       return;
     }
@@ -36,10 +36,12 @@ class InternalCommandSettings extends InternalCommand {
     switch (subcommand) {
       case 'set':
         _handleSet(args.skip(1).toList(), context);
+      case 'clear':
+        _handleClear(args.skip(1).toList(), context);
       default:
         context.printToConsole(
           'Unknown subcommand: $subcommand\n'
-          'Available subcommand: set',
+          'Available subcommands: set, clear',
         );
     }
   }
@@ -66,5 +68,28 @@ class InternalCommandSettings extends InternalCommand {
     Settings.instance[settingName] = newValue;
     Settings.instance.save();
     context.printToConsole('Updated setting: $settingName = $newValue');
+  }
+
+  void _handleClear(List<String> args, Context context) {
+    if (args.isEmpty) {
+      context.printToConsole(
+        'Usage: stax settings clear <setting_name>',
+      );
+      return;
+    }
+
+    final settingName = args[0];
+
+    if (!availableSettings.containsKey(settingName)) {
+      context.printToConsole(
+        'Unknown setting: $settingName\n'
+        'Available settings: ${availableSettings.keys.join(", ")}',
+      );
+      return;
+    }
+
+    Settings.instance[settingName] = null;
+    Settings.instance.save();
+    context.printToConsole('Cleared setting: $settingName');
   }
 }
