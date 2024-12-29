@@ -14,7 +14,7 @@ class InternalCommandSettings extends InternalCommand {
           'View or modify stax settings',
           type: InternalCommandType.hidden,
           arguments: {
-            'arg1': 'Subcommand (set)',
+            'arg1': 'Subcommand (set, show)',
             'opt2': 'Setting name (for set)',
             'opt3': 'New value (for set)',
           },
@@ -27,29 +27,36 @@ class InternalCommandSettings extends InternalCommand {
 
     if (args.isEmpty) {
       context.printToConsole(
-        'Usage: stax settings set <setting_name> <value>',
+        'Usage: stax settings <subcommand>\n'
+        'Available subcommands: set, show',
       );
       return;
     }
 
     final subcommand = args[0];
-    if (subcommand != 'set') {
-      context.printToConsole(
-        'Unknown subcommand: $subcommand\n'
-        'Available subcommand: set',
-      );
-      return;
+    switch (subcommand) {
+      case 'set':
+        _handleSet(args.skip(1).toList(), context);
+      case 'show':
+        _handleShow(context);
+      default:
+        context.printToConsole(
+          'Unknown subcommand: $subcommand\n'
+          'Available subcommands: set, show',
+        );
     }
+  }
 
-    if (args.length < 3) {
+  void _handleSet(List<String> args, Context context) {
+    if (args.length < 2) {
       context.printToConsole(
         'Usage: stax settings set <setting_name> <value>',
       );
       return;
     }
 
-    final settingName = args[1];
-    final newValue = args[2];
+    final settingName = args[0];
+    final newValue = args[1];
 
     if (!availableSettings.containsKey(settingName)) {
       context.printToConsole(
@@ -62,5 +69,16 @@ class InternalCommandSettings extends InternalCommand {
     Settings.instance[settingName] = newValue;
     Settings.instance.save();
     context.printToConsole('Updated setting: $settingName = $newValue');
+  }
+
+  void _handleShow(Context context) {
+    context.printToConsole('Current settings:');
+    for (final setting in availableSettings.entries) {
+      final currentValue = Settings.instance[setting.key];
+      context.printToConsole(
+        '${setting.key}: ${currentValue ?? "<not set>"}\n'
+        '  ${setting.value}',
+      );
+    }
   }
 }
