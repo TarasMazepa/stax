@@ -139,7 +139,8 @@ class InternalCommandCommit extends InternalCommand {
     }
 
     if (prUrl != null) {
-      context.openInBrowser(prUrl)
+      context
+          .openInBrowser(prUrl)
           .announce('Opening PR in browser window')
           .runSync()
           .printNotEmptyResultFields();
