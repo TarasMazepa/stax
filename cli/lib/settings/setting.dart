@@ -6,6 +6,7 @@ class Setting<T> {
   final Settings _settings;
   final T Function(String) _fromStringConverter;
   final String Function(T) _toStringConverter;
+  final String description;
 
   Setting(
     this._name,
@@ -13,6 +14,7 @@ class Setting<T> {
     this._settings,
     this._fromStringConverter,
     this._toStringConverter,
+    this.description,
   );
 
   T get() {
@@ -25,4 +27,7 @@ class Setting<T> {
     _settings[_name] = _toStringConverter(t);
     _settings.save();
   }
+
+  T get value => get();
+  String get name => _name;
 }

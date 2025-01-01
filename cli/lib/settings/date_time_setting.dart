@@ -8,5 +8,6 @@ class DateTimeSetting extends Setting<DateTime> {
           settings,
           DateTime.parse,
           (x) => x.toIso8601String(),
+          'Last time update was prompted',
         );
 }
