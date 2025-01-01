@@ -40,6 +40,7 @@ class Settings {
     'branch_prefix',
     '', // Default empty string
     this,
+    'Prefix to add to all new branch names (e.g., "feature/")',
   );
 
   Settings(this.settings);

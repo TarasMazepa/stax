@@ -4,9 +4,9 @@ import 'package:stax/context/context.dart';
 import 'package:stax/settings/settings.dart';
 
 class InternalCommandSettings extends InternalCommand {
-  static const availableSettings = {
-    'branch_prefix': 'Prefix to add to all new branch names (e.g., "feature/")',
-  };
+  final availableSettings = [
+    Settings.instance.branchPrefix,
+  ];
 
   InternalCommandSettings()
       : super(
@@ -22,49 +22,25 @@ class InternalCommandSettings extends InternalCommand {
 
   @override
   void run(final List<String> args, final Context context) {
-    // Initialize settings
-    Settings.instance.branchPrefix;
-
-    if (args.isEmpty) {
-      context.printToConsole(
-        'Usage: stax settings set <setting_name> <value>',
-      );
-      return;
-    }
-
-    final subcommand = args[0];
-    switch (subcommand) {
-      case 'set':
-        _handleSet(args.skip(1).toList(), context);
+    switch (args) {
+      case ['set', final name, final value]:
+        final command = availableSettings.firstWhere(
+          (x) => x.name == name,
+          orElse: () => availableSettings[0],
+        );
+        if (command.name != name) {
+          context.printToConsole(
+            'Unknown setting: $name\n'
+            'Available settings: ${availableSettings.map((s) => '${s.name} - ${s.description}').join(", ")}',
+          );
+          return;
+        }
+        command.set(value);
+        context.printToConsole('Updated setting: $name = $value');
       default:
         context.printToConsole(
-          'Unknown subcommand: $subcommand\n'
-          'Available subcommand: set',
+          'Usage: stax settings set <setting_name> <value>',
         );
     }
-  }
-
-  void _handleSet(List<String> args, Context context) {
-    if (args.length < 2) {
-      context.printToConsole(
-        'Usage: stax settings set <setting_name> <value>',
-      );
-      return;
-    }
-
-    final settingName = args[0];
-    final newValue = args[1];
-
-    if (!availableSettings.containsKey(settingName)) {
-      context.printToConsole(
-        'Unknown setting: $settingName\n'
-        'Available settings: ${availableSettings.keys.join(", ")}',
-      );
-      return;
-    }
-
-    Settings.instance[settingName] = newValue;
-    Settings.instance.save();
-    context.printToConsole('Updated setting: $settingName = $newValue');
   }
 }
