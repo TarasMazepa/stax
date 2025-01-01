@@ -43,6 +43,8 @@ void main() {
         defaultGlobalEmail == null ? 'X' : 'V',
         defaultGlobalAutoRemote == null ? 'X' : 'V',
         'V',
+        'V',
+        'X',
       ];
 
       expect(
