@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cli_util/cli_util.dart';
 import 'package:stax/settings/date_time_setting.dart';
 import 'package:path/path.dart' as path;
+import 'package:stax/settings/string_setting.dart';
 
 class Settings {
   static Settings _load() {
@@ -34,6 +35,13 @@ class Settings {
 
   late final DateTimeSetting lastUpdatePrompt =
       DateTimeSetting('last_update_prompt', DateTime.now(), this);
+
+  late final StringSetting branchPrefix = StringSetting(
+    'branch_prefix',
+    '', // Default empty string
+    this,
+    'Prefix to add to all new branch names (e.g., "feature/")',
+  );
 
   Settings(this.settings);
 
