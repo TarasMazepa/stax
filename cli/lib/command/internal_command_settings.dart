@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
@@ -6,7 +7,10 @@ import 'package:stax/settings/settings.dart';
 class InternalCommandSettings extends InternalCommand {
   final availableSettings = [
     Settings.instance.branchPrefix,
-  ];
+  ].sortedBy((setting) => setting.name);
+  final availableSubCommands = [
+    'set',
+  ].sorted();
 
   InternalCommandSettings()
       : super(
@@ -23,24 +27,26 @@ class InternalCommandSettings extends InternalCommand {
   @override
   void run(final List<String> args, final Context context) {
     switch (args) {
-      case ['set', final name, final value]:
-        final command = availableSettings.firstWhere(
-          (x) => x.name == name,
-          orElse: () => availableSettings[0],
-        );
-        if (command.name != name) {
-          context.printToConsole(
-            'Unknown setting: $name\n'
-            'Available settings: ${availableSettings.map((s) => '${s.name} - ${s.description}').join(", ")}',
-          );
-          return;
-        }
-        command.set(value);
+      case ['set', final name, final value]
+          when availableSettings.any((setting) => setting.name == name):
+        availableSettings.firstWhere((x) => x.name == name).set(value);
         context.printToConsole('Updated setting: $name = $value');
+      case ['set', final name, _]:
+        context
+            .printToConsole('''set: unknown setting '$name'. Available settings:
+${availableSettings.map((setting) => " • ${setting.name}").join("\n")}''');
+      case ['set', ...]:
+        context
+            .printToConsole('Usage: stax settings set <setting_name> <value>');
+      case [final subCommand, ...]:
+        context.printToConsole(
+            '''Unknown sub-command '$subCommand'. Available sub-commands:
+${availableSubCommands.map((subCommand) => " • $subCommand").join("\n")}''');
+      case []:
       default:
         context.printToConsole(
-          'Usage: stax settings set <setting_name> <value>',
-        );
+            '''Please provide sub-command. Available sub-commands:
+${availableSubCommands.map((subCommand) => " • $subCommand").join("\n")}''');
     }
   }
 }
