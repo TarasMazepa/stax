@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/sanitize_branch_name.dart';
@@ -11,6 +9,7 @@ import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
 import 'package:stax/context/context_get_pr_url.dart';
+import 'package:stax/context/context_open_in_browser.dart';
 import 'package:stax/settings/settings.dart';
 
 class InternalCommandCommit extends InternalCommand {
@@ -131,19 +130,8 @@ class InternalCommandCommit extends InternalCommand {
     }
 
     if (prUrl != null) {
-      final openCommand = () {
-        if (Platform.isWindows) {
-          return [
-            'PowerShell',
-            '-Command',
-            '''& {Start-Process "$prUrl"}''',
-          ];
-        }
-        return ['open', prUrl!];
-      }();
-
       context
-          .command(openCommand)
+          .openInBrowser(prUrl)
           .announce('Opening PR in browser window')
           .runSync()
           .printNotEmptyResultFields();
