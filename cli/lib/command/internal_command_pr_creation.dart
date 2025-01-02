@@ -5,7 +5,7 @@ import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
-import 'package:stax/context/context_open_pr_url.dart';
+import 'package:stax/context/context_open_in_browser.dart';
 
 class InternalCommandPrCreation extends InternalCommand {
   InternalCommandPrCreation()
@@ -51,6 +51,10 @@ class InternalCommandPrCreation extends InternalCommand {
       return;
     }
 
-    context.openPrUrl(targetBranch, currentBranch);
+    context
+        .openInBrowser(prUrl)
+        .announce('Opening PR creation page in browser')
+        .runSync()
+        .printNotEmptyResultFields();
   }
 }
