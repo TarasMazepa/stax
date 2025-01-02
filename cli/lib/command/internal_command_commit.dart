@@ -8,7 +8,8 @@ import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
-import 'package:stax/context/context_open_pr_url.dart';
+import 'package:stax/context/context_get_pr_url.dart';
+import 'package:stax/context/context_open_in_browser.dart';
 import 'package:stax/settings/settings.dart';
 
 class InternalCommandCommit extends InternalCommand {
@@ -100,17 +101,7 @@ class InternalCommandCommit extends InternalCommand {
 
     String? prUrl;
     if (createPr) {
-      final remote =
-          context.git.remote.runSync().stdout.toString().split('\n')[0].trim();
-      final remoteUrl = context.git.remoteGetUrl
-          .arg(remote)
-          .runSync()
-          .stdout
-          .toString()
-          .trim()
-          .replaceFirstMapped(RegExp(r'git@(.*):'), (m) => 'https://${m[1]}/');
-      prUrl =
-          '${remoteUrl.substring(0, remoteUrl.length - 4)}/compare/$previousBranch...$prefixedBranchName?expand=1';
+      prUrl = context.getPrUrl(previousBranch!, prefixedBranchName);
     }
 
     final commitExitCode = context.git.commitWithMessage
@@ -138,8 +129,12 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
 
-    if (createPr) {
-      context.openPrUrl(previousBranch!, resultingBranchName);
+    if (prUrl != null) {
+      context
+          .openInBrowser(prUrl)
+          .announce('Opening PR in browser window')
+          .runSync()
+          .printNotEmptyResultFields();
     }
   }
 }
