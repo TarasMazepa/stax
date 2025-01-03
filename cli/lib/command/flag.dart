@@ -19,6 +19,8 @@ class Flag {
           "Long should have format '--xxx', where xxx is a long name of the flag",
         );
 
+  String get shortOrLong => (short ?? long)!;
+
   bool hasFlag(List<String> args) {
     return switch (0) {
       0 when long != null && args.remove(long) => true,
