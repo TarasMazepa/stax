@@ -29,6 +29,10 @@ class InternalCommandPull extends InternalCommand {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }
+    final hasSkipDeleteFlag =
+        InternalCommandDeleteGoneBranches.skipDeleteFlag.hasFlag(args);
+    final hasForceDeleteFlag =
+        InternalCommandDeleteGoneBranches.forceDeleteFlag.hasFlag(args);
     final currentBranch = context.getCurrentBranch();
     final targetBranch = args.elementAtOrNull(0);
     final defaultBranch = targetBranch ?? context.getDefaultBranch();
@@ -56,13 +60,12 @@ class InternalCommandPull extends InternalCommand {
         .assertSuccessfulExitCode();
     if (result == null) return;
     InternalCommandDeleteGoneBranches().run(
-      args
-          .where(
-            (x) =>
-                x == InternalCommandDeleteGoneBranches.forceDeleteFlag.short ||
-                x == InternalCommandDeleteGoneBranches.skipDeleteFlag.short,
-          )
-          .toList(),
+      [
+        if (hasSkipDeleteFlag)
+          InternalCommandDeleteGoneBranches.skipDeleteFlag.shortOrLong,
+        if (hasForceDeleteFlag)
+          InternalCommandDeleteGoneBranches.forceDeleteFlag.shortOrLong,
+      ],
       context,
     );
     if (needToSwitchBranches && currentBranch != null) {
