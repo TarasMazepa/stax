@@ -33,12 +33,16 @@ class Settings {
 
   final Map<String, dynamic> settings;
 
-  late final DateTimeSetting lastUpdatePrompt =
-      DateTimeSetting('last_update_prompt', DateTime.now(), this);
+  late final DateTimeSetting lastUpdatePrompt = DateTimeSetting(
+    'last_update_prompt',
+    DateTime.now(),
+    this,
+    'Last time update was prompted',
+  );
 
   late final StringSetting branchPrefix = StringSetting(
     'branch_prefix',
-    '', // Default empty string
+    '',
     this,
     'Prefix to add to all new branch names (e.g., "feature/")',
   );
