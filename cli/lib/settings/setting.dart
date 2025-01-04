@@ -27,5 +27,8 @@ class Setting<T> {
     _settings.save();
   }
 
-  T get value => get();
+  void clear() {
+    _settings[name] = null;
+    _settings.save();
+  }
 }

@@ -10,6 +10,7 @@ class InternalCommandSettings extends InternalCommand {
   ].sortedBy((setting) => setting.name);
   final availableSubCommands = [
     'set',
+    'clear',
   ].sorted();
 
   InternalCommandSettings()
@@ -18,8 +19,8 @@ class InternalCommandSettings extends InternalCommand {
           'View or modify stax settings',
           type: InternalCommandType.hidden,
           arguments: {
-            'arg1': 'Subcommand (set)',
-            'opt2': 'Setting name (for set)',
+            'arg1': 'Subcommand (set, clear)',
+            'opt2': 'Setting name (for set/clear)',
             'opt3': 'New value (for set)',
           },
         );
@@ -31,17 +32,37 @@ class InternalCommandSettings extends InternalCommand {
           when availableSettings.any((setting) => setting.name == name):
         availableSettings.firstWhere((x) => x.name == name).value = value;
         context.printToConsole('Updated setting: $name = $value');
+
+      case ['clear', final name]
+          when availableSettings.any((setting) => setting.name == name):
+        final setting = availableSettings.firstWhere((x) => x.name == name);
+        setting.clear();
+        context.printToConsole(
+          'Cleared setting: ${setting.name} = ${setting.value}',
+        );
+
       case ['set', final name, _]:
         context
             .printToConsole('''set: unknown setting '$name'. Available settings:
 ${availableSettings.map((setting) => " • ${setting.name}").join("\n")}''');
+
+      case ['clear', final name]:
+        context.printToConsole(
+            '''clear: unknown setting '$name'. Available settings:
+${availableSettings.map((setting) => " • ${setting.name}").join("\n")}''');
+
       case ['set', ...]:
         context
             .printToConsole('Usage: stax settings set <setting_name> <value>');
+
+      case ['clear', ...]:
+        context.printToConsole('Usage: stax settings clear <setting_name>');
+
       case [final subCommand, ...]:
         context.printToConsole(
             '''Unknown sub-command '$subCommand'. Available sub-commands:
 ${availableSubCommands.map((subCommand) => " • $subCommand").join("\n")}''');
+
       case []:
       default:
         context.printToConsole(
