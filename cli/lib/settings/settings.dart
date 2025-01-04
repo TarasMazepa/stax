@@ -2,30 +2,33 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cli_util/cli_util.dart';
-import 'package:stax/settings/date_time_setting.dart';
 import 'package:path/path.dart' as path;
+import 'package:stax/settings/date_time_setting.dart';
 import 'package:stax/settings/string_setting.dart';
 
 class Settings {
   static Settings _load() {
+    return Settings(_loadJsonFile(_globalConfigFile));
+  }
+
+  static Map<String, dynamic> _loadJsonFile(File file) {
     dynamic error = Exception('Unknown error');
     for (int i = 0; i < 3; i++) {
-      if (!_file.existsSync()) {
-        _file.createSync(recursive: true);
-        _file.writeAsStringSync('{}', flush: true);
+      if (!file.existsSync()) {
+        file.createSync(recursive: true);
+        file.writeAsStringSync('{}', flush: true);
       }
       try {
-        final map = jsonDecode(_file.readAsStringSync());
-        return Settings(map);
+        return jsonDecode(file.readAsStringSync());
       } catch (e) {
-        _file.deleteSync();
+        file.deleteSync();
         error = e;
       }
     }
     throw error;
   }
 
-  static final _file = File.fromUri(
+  static final _globalConfigFile = File.fromUri(
     path.toUri(path.join(applicationConfigHome('stax'), '.stax_config')),
   );
 
@@ -33,12 +36,16 @@ class Settings {
 
   final Map<String, dynamic> settings;
 
-  late final DateTimeSetting lastUpdatePrompt =
-      DateTimeSetting('last_update_prompt', DateTime.now(), this);
+  late final DateTimeSetting lastUpdatePrompt = DateTimeSetting(
+    'last_update_prompt',
+    DateTime.now(),
+    this,
+    'Last time update was prompted',
+  );
 
   late final StringSetting branchPrefix = StringSetting(
     'branch_prefix',
-    '', // Default empty string
+    '',
     this,
     'Prefix to add to all new branch names (e.g., "feature/")',
   );
@@ -55,6 +62,6 @@ class Settings {
   }
 
   void save() {
-    _file.writeAsStringSync(jsonEncode(settings), flush: true);
+    _globalConfigFile.writeAsStringSync(jsonEncode(settings), flush: true);
   }
 }

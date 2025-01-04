@@ -29,7 +29,7 @@ class InternalCommandSettings extends InternalCommand {
     switch (args) {
       case ['set', final name, final value]
           when availableSettings.any((setting) => setting.name == name):
-        availableSettings.firstWhere((x) => x.name == name).set(value);
+        availableSettings.firstWhere((x) => x.name == name).value = value;
         context.printToConsole('Updated setting: $name = $value');
       case ['set', final name, _]:
         context

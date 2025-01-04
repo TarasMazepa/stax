@@ -1,13 +1,18 @@
 import 'package:stax/settings/setting.dart';
+import 'package:stax/settings/settings.dart';
 
 class DateTimeSetting extends Setting<DateTime> {
-  DateTimeSetting(name, defaultValue, settings)
-      : super(
+  DateTimeSetting(
+    String name,
+    DateTime defaultValue,
+    Settings settings,
+    String description,
+  ) : super(
           name,
           defaultValue,
           settings,
           DateTime.parse,
           (x) => x.toIso8601String(),
-          'Last time update was prompted',
+          description,
         );
 }
