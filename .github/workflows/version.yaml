@@ -1,0 +1,67 @@
+name: Check Version File And Publish
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  detect-changes:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Fetch all history
+      run: git fetch --prune --unshallow
+
+    - name: Detect Version Change and Publish New Version
+      id: extract-version
+      run: |
+        if (git diff --name-only HEAD^..HEAD -- VERSION | Where-Object { $_ -eq 'VERSION' }) {
+          # Install Chocolatey
+          Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+          choco source add -n=github-packages -s="https://nuget.pkg.github.com/tarasmazepa/index.json" -u "tarasmazepa" -p ${{ secrets.CHOCO }}
+
+          # Get the new version
+          $NEW_VERSION = Get-Content VERSION
+
+          # Configure git user
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+          # Update version for Chocoleaty
+          (Get-Content -Path 'chocolatey/stax/stax.nuspec') -replace '<version>[0-9.]*</version>', "<version>$NEW_VERSION</version>" | Set-Content -Path 'chocolatey/stax/stax.nuspec' -Encoding UTF8
+
+          git add chocolatey/stax/stax.nuspec
+          git commit -m "Changes version to $NEW_VERSION in stax.nuspec"
+          git push origin HEAD:main
+
+          # Pack & Publish Chocoleaty to Github Packages
+          cd chocolatey/stax
+          $packageOutput = choco pack
+          $packageName = $packageOutput.Split(' ')[11] 
+          $finalPackageName = $packageName.Trim("'")
+
+          echo "Package Name: $finalPackageName"
+
+          choco push "$finalPackageName" --source "https://nuget.pkg.github.com/tarasmazepa" --api-key ${{ secrets.CHOCO }}
+
+          # Clone the homebrew-stax repository
+          git clone https://github.com/tarasmazepa/homebrew-stax.git
+          cd homebrew-stax
+
+          # Update the version in Formula/stax.rb
+
+          (Get-Content -Path 'Formula/stax.rb' -Raw) -replace 'version "[0-9.]+"', "version `"$NEW_VERSION`"" | Set-Content -Path 'Formula/stax.rb' -Encoding UTF8
+
+          git add Formula/stax.rb
+          git commit -m "Changes version to $NEW_VERSION"
+
+          # Push the changes back to homebrew-stax repo using a PAT
+          git push https://${{ secrets.PAT }}@github.com/tarasmazepa/homebrew-stax.git HEAD:main
+        } else {
+          echo "No changes in the VERSION file."
+          exit 0
+        }
+
