@@ -26,6 +26,4 @@ class Setting<T> {
     _settings[name] = _toStringConverter(newValue);
     _settings.save();
   }
-
-  T get value => get();
 }

@@ -10,6 +10,7 @@ class InternalCommandSettings extends InternalCommand {
   ].sortedBy((setting) => setting.name);
   final availableSubCommands = [
     'set',
+    'show',
   ].sorted();
 
   InternalCommandSettings()
@@ -18,7 +19,7 @@ class InternalCommandSettings extends InternalCommand {
           'View or modify stax settings',
           type: InternalCommandType.hidden,
           arguments: {
-            'arg1': 'Subcommand (set)',
+            'arg1': 'Subcommand (set, show)',
             'opt2': 'Setting name (for set)',
             'opt3': 'New value (for set)',
           },
@@ -27,6 +28,11 @@ class InternalCommandSettings extends InternalCommand {
   @override
   void run(final List<String> args, final Context context) {
     switch (args) {
+      case ['show']:
+        context.printToConsole('Current settings:');
+        for (final setting in availableSettings) {
+          context.printToConsole(' • ${setting.name} = ${setting.value}');
+        }
       case ['set', final name, final value]
           when availableSettings.any((setting) => setting.name == name):
         availableSettings.firstWhere((x) => x.name == name).value = value;
