@@ -1,28 +1,29 @@
 import 'package:stax/settings/settings.dart';
 
 class Setting<T> {
-  final String _name;
+  final String name;
+  final String description;
   final T _defaultValue;
   final Settings _settings;
   final T Function(String) _fromStringConverter;
   final String Function(T) _toStringConverter;
 
   Setting(
-    this._name,
+    this.name,
     this._defaultValue,
     this._settings,
     this._fromStringConverter,
     this._toStringConverter,
+    this.description,
   );
 
-  T get() {
-    final raw = _settings[_name];
-    if (raw == null) return _defaultValue;
-    return _fromStringConverter(raw);
-  }
+  T get value => switch (_settings[name]) {
+        null => _defaultValue,
+        final raw => _fromStringConverter(raw)
+      };
 
-  void set(T t) {
-    _settings[_name] = _toStringConverter(t);
+  set value(T newValue) {
+    _settings[name] = _toStringConverter(newValue);
     _settings.save();
   }
 

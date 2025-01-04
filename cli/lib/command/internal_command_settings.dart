@@ -1,12 +1,16 @@
+import 'package:collection/collection.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/settings/settings.dart';
 
 class InternalCommandSettings extends InternalCommand {
-  static const availableSettings = {
-    'branch_prefix': 'Prefix to add to all new branch names (e.g., "feature/")',
-  };
+  final availableSettings = [
+    Settings.instance.branchPrefix,
+  ].sortedBy((setting) => setting.name);
+  final availableSubCommands = [
+    'set',
+  ].sorted();
 
   InternalCommandSettings()
       : super(
@@ -14,7 +18,7 @@ class InternalCommandSettings extends InternalCommand {
           'View or modify stax settings',
           type: InternalCommandType.hidden,
           arguments: {
-            'arg1': 'Subcommand (set, show)',
+            'arg1': 'Subcommand (set)',
             'opt2': 'Setting name (for set)',
             'opt3': 'New value (for set)',
           },
@@ -22,63 +26,27 @@ class InternalCommandSettings extends InternalCommand {
 
   @override
   void run(final List<String> args, final Context context) {
-    // Initialize settings
-    Settings.instance.branchPrefix;
-
-    if (args.isEmpty) {
-      context.printToConsole(
-        'Usage: stax settings <subcommand>\n'
-        'Available subcommands: set, show',
-      );
-      return;
-    }
-
-    final subcommand = args[0];
-    switch (subcommand) {
-      case 'set':
-        _handleSet(args.skip(1).toList(), context);
-      case 'show':
-        _handleShow(context);
+    switch (args) {
+      case ['set', final name, final value]
+          when availableSettings.any((setting) => setting.name == name):
+        availableSettings.firstWhere((x) => x.name == name).value = value;
+        context.printToConsole('Updated setting: $name = $value');
+      case ['set', final name, _]:
+        context
+            .printToConsole('''set: unknown setting '$name'. Available settings:
+${availableSettings.map((setting) => " • ${setting.name}").join("\n")}''');
+      case ['set', ...]:
+        context
+            .printToConsole('Usage: stax settings set <setting_name> <value>');
+      case [final subCommand, ...]:
+        context.printToConsole(
+            '''Unknown sub-command '$subCommand'. Available sub-commands:
+${availableSubCommands.map((subCommand) => " • $subCommand").join("\n")}''');
+      case []:
       default:
         context.printToConsole(
-          'Unknown subcommand: $subcommand\n'
-          'Available subcommands: set, show',
-        );
-    }
-  }
-
-  void _handleSet(List<String> args, Context context) {
-    if (args.length < 2) {
-      context.printToConsole(
-        'Usage: stax settings set <setting_name> <value>',
-      );
-      return;
-    }
-
-    final settingName = args[0];
-    final newValue = args[1];
-
-    if (!availableSettings.containsKey(settingName)) {
-      context.printToConsole(
-        'Unknown setting: $settingName\n'
-        'Available settings: ${availableSettings.keys.join(", ")}',
-      );
-      return;
-    }
-
-    Settings.instance[settingName] = newValue;
-    Settings.instance.save();
-    context.printToConsole('Updated setting: $settingName = $newValue');
-  }
-
-  void _handleShow(Context context) {
-    context.printToConsole('Current settings:');
-    for (final setting in availableSettings.entries) {
-      final currentValue = Settings.instance[setting.key];
-      context.printToConsole(
-        '${setting.key}: ${currentValue ?? "<not set>"}\n'
-        '  ${setting.value}',
-      );
+            '''Please provide sub-command. Available sub-commands:
+${availableSubCommands.map((subCommand) => " • $subCommand").join("\n")}''');
     }
   }
 }
