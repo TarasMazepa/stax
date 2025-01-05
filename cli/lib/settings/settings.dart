@@ -50,6 +50,13 @@ class Settings {
     'Prefix to add to all new branch names (e.g., "feature/")',
   );
 
+  late final StringSetting defaultBranch = StringSetting(
+    'default_branch',
+    '',
+    this,
+    'Override for default branch (empty means use <remote>/HEAD)',
+  );
+
   Settings(this.settings);
 
   String? operator [](String key) {
