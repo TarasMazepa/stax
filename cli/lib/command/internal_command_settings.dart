@@ -32,8 +32,12 @@ class InternalCommandSettings extends InternalCommand {
       case ['show']:
         context.printToConsole('Current settings:');
         for (final setting in availableSettings) {
-          context.printToConsole(" • ${setting.name} = '${setting.value}'");
+          context.printToConsole(
+            " • ${setting.name} = '${setting.value}' # ${setting.description}",
+          );
         }
+      case ['show', ...]:
+        context.printToConsole("'show' doesn't have arguments");
       case ['set', final name, final value]
           when availableSettings.any((setting) => setting.name == name):
         availableSettings.firstWhere((x) => x.name == name).value = value;
