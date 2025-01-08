@@ -22,10 +22,6 @@ class InternalCommandPull extends InternalCommand {
 
   @override
   void run(List<String> args, Context context) {
-    /**
-     * TODO:
-     *  - Warn about deleting branch on which user was originally
-     */
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }
@@ -44,36 +40,42 @@ class InternalCommandPull extends InternalCommand {
     }
     bool needToSwitchBranches = currentBranch != defaultBranch;
     ExtendedProcessResult? result;
-    if (needToSwitchBranches) {
-      result = context.git.checkout
-          .arg(defaultBranch)
-          .announce("Switching to default branch '$defaultBranch'.")
+
+    try {
+      if (needToSwitchBranches) {
+        result = context.git.checkout
+            .arg(defaultBranch)
+            .announce("Switching to default branch '$defaultBranch'.")
+            .runSync()
+            .printNotEmptyResultFields()
+            .assertSuccessfulExitCode();
+        if (result == null) return;
+      }
+
+      result = context.git.pull
+          .announce('Pulling new changes.')
           .runSync()
           .printNotEmptyResultFields()
           .assertSuccessfulExitCode();
-      if (result == null) return;
-    }
-    result = context.git.pull
-        .announce('Pulling new changes.')
-        .runSync()
-        .printNotEmptyResultFields()
-        .assertSuccessfulExitCode();
-    if (result == null) return;
-    InternalCommandDeleteGoneBranches().run(
-      [
-        if (hasSkipDeleteFlag)
-          InternalCommandDeleteGoneBranches.skipDeleteFlag.shortOrLong,
-        if (hasForceDeleteFlag)
-          InternalCommandDeleteGoneBranches.forceDeleteFlag.shortOrLong,
-      ],
-      context,
-    );
-    if (needToSwitchBranches && currentBranch != null) {
-      context.git.checkout
-          .arg(currentBranch)
-          .announce("Switching back to original branch '$currentBranch'.")
-          .runSync()
-          .printNotEmptyResultFields();
+      if (result == null) throw Exception('Pull failed');
+
+      InternalCommandDeleteGoneBranches().run(
+        [
+          if (hasSkipDeleteFlag)
+            InternalCommandDeleteGoneBranches.skipDeleteFlag.shortOrLong,
+          if (hasForceDeleteFlag)
+            InternalCommandDeleteGoneBranches.forceDeleteFlag.shortOrLong,
+        ],
+        context,
+      );
+    } finally {
+      if (needToSwitchBranches && currentBranch != null) {
+        context.git.checkout
+            .arg(currentBranch)
+            .announce("Switching back to original branch '$currentBranch'.")
+            .runSync()
+            .printNotEmptyResultFields();
+      }
     }
   }
 }
