@@ -26,4 +26,9 @@ class Setting<T> {
     _settings[name] = _toStringConverter(newValue);
     _settings.save();
   }
+
+  void clear() {
+    _settings[name] = null;
+    _settings.save();
+  }
 }
