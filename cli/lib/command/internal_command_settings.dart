@@ -32,7 +32,13 @@ class InternalCommandSettings extends InternalCommand {
           when availableSettings.any((setting) => setting.name == name):
         availableSettings.firstWhere((x) => x.name == name).value = value;
         context.printToConsole('Updated setting: $name = $value');
-
+      case ['set', final name, _]:
+        context
+            .printToConsole('''set: unknown setting '$name'. Available settings:
+${availableSettings.map((setting) => " • ${setting.name}").join("\n")}''');
+      case ['set', ...]:
+        context
+            .printToConsole('Usage: stax settings set <setting_name> <value>');
       case ['clear', final name]
           when availableSettings.any((setting) => setting.name == name):
         final setting = availableSettings.firstWhere((x) => x.name == name);
@@ -41,19 +47,10 @@ class InternalCommandSettings extends InternalCommand {
           'Cleared setting: ${setting.name} = ${setting.value}',
         );
 
-      case ['set', final name, _]:
-        context
-            .printToConsole('''set: unknown setting '$name'. Available settings:
-${availableSettings.map((setting) => " • ${setting.name}").join("\n")}''');
-
       case ['clear', final name]:
         context.printToConsole(
             '''clear: unknown setting '$name'. Available settings:
 ${availableSettings.map((setting) => " • ${setting.name}").join("\n")}''');
-
-      case ['set', ...]:
-        context
-            .printToConsole('Usage: stax settings set <setting_name> <value>');
 
       case ['clear', ...]:
         context.printToConsole('Usage: stax settings clear <setting_name>');
