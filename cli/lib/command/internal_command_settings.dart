@@ -7,10 +7,12 @@ import 'package:stax/settings/settings.dart';
 class InternalCommandSettings extends InternalCommand {
   final availableSettings = [
     Settings.instance.branchPrefix,
+    Settings.instance.defaultBranch,
   ].sortedBy((setting) => setting.name);
   final availableSubCommands = [
     'set',
     'clear',
+    'show',
   ].sorted();
 
   InternalCommandSettings()
@@ -19,8 +21,8 @@ class InternalCommandSettings extends InternalCommand {
           'View or modify stax settings',
           type: InternalCommandType.hidden,
           arguments: {
-            'arg1': 'Subcommand (set, clear)',
-            'opt2': 'Setting name (for set/clear)',
+            'arg1': 'Subcommand (show, set,clear)',
+            'opt2': 'Setting name (for show/set/clear)',
             'opt3': 'New value (for set)',
           },
         );
@@ -28,6 +30,15 @@ class InternalCommandSettings extends InternalCommand {
   @override
   void run(final List<String> args, final Context context) {
     switch (args) {
+      case ['show']:
+        context.printToConsole('Current settings:');
+        for (final setting in availableSettings) {
+          context.printToConsole(
+            " • ${setting.name} = '${setting.value}' # ${setting.description}",
+          );
+        }
+      case ['show', ...]:
+        context.printToConsole("'show' doesn't have arguments");
       case ['set', final name, final value]
           when availableSettings.any((setting) => setting.name == name):
         availableSettings.firstWhere((x) => x.name == name).value = value;
