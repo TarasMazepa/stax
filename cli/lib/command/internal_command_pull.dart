@@ -40,35 +40,21 @@ class InternalCommandPull extends InternalCommand {
     }
     bool needToSwitchBranches = currentBranch != defaultBranch;
     ExtendedProcessResult? result;
-
-    try {
-      if (needToSwitchBranches) {
-        result = context.git.checkout
-            .arg(defaultBranch)
-            .announce("Switching to default branch '$defaultBranch'.")
-            .runSync()
-            .printNotEmptyResultFields()
-            .assertSuccessfulExitCode();
-        if (result == null) return;
-      }
-
-      result = context.git.pull
-          .announce('Pulling new changes.')
+    if (needToSwitchBranches) {
+      result = context.git.checkout
+          .arg(defaultBranch)
+          .announce("Switching to default branch '$defaultBranch'.")
           .runSync()
           .printNotEmptyResultFields()
           .assertSuccessfulExitCode();
-      if (result == null) throw Exception('Pull failed');
-
-      InternalCommandDeleteGoneBranches().run(
-        [
-          if (hasSkipDeleteFlag)
-            InternalCommandDeleteGoneBranches.skipDeleteFlag.shortOrLong,
-          if (hasForceDeleteFlag)
-            InternalCommandDeleteGoneBranches.forceDeleteFlag.shortOrLong,
-        ],
-        context,
-      );
-    } finally {
+      if (result == null) return;
+    }
+    result = context.git.pull
+        .announce('Pulling new changes.')
+        .runSync()
+        .printNotEmptyResultFields()
+        .assertSuccessfulExitCode();
+    if (result == null) {
       if (needToSwitchBranches && currentBranch != null) {
         context.git.checkout
             .arg(currentBranch)
@@ -76,6 +62,24 @@ class InternalCommandPull extends InternalCommand {
             .runSync()
             .printNotEmptyResultFields();
       }
+      return;
+    }
+
+    InternalCommandDeleteGoneBranches().run(
+      [
+        if (hasSkipDeleteFlag)
+          InternalCommandDeleteGoneBranches.skipDeleteFlag.shortOrLong,
+        if (hasForceDeleteFlag)
+          InternalCommandDeleteGoneBranches.forceDeleteFlag.shortOrLong,
+      ],
+      context,
+    );
+    if (needToSwitchBranches && currentBranch != null) {
+      context.git.checkout
+          .arg(currentBranch)
+          .announce("Switching back to original branch '$currentBranch'.")
+          .runSync()
+          .printNotEmptyResultFields();
     }
   }
 }
