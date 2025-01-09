@@ -2,7 +2,6 @@ import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command_rebase.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_assert_no_conflicting_flags.dart';
-import 'package:stax/context/context_explain_to_user_no_staged_changes.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
@@ -28,6 +27,14 @@ class InternalCommandAmend extends InternalCommand {
     description:
         "Runs 'stax rebase ${InternalCommandRebase.oursFlag.long}' afterwards on all children branches.",
   );
+  static final forcePushFlag = Flag(
+    short: '-f',
+    description: 'Force push without asking if no changes to amend.',
+  );
+  static final skipPushFlag = Flag(
+    short: '-s',
+    description: 'Skip force push without asking if no changes to amend.',
+  );
 
   InternalCommandAmend()
       : super(
@@ -38,6 +45,8 @@ class InternalCommandAmend extends InternalCommand {
             rebaseFlag,
             rebaseOursFlag,
             rebaseTheirsFlag,
+            forcePushFlag,
+            skipPushFlag,
           ],
         );
 
@@ -47,28 +56,56 @@ class InternalCommandAmend extends InternalCommand {
       return;
     }
     context.handleAddAllFlag(args);
-    if (context.areThereNoStagedChanges()) {
-      context.explainToUserNoStagedChanges();
-      return;
-    }
 
     final hasRebaseFlag = rebaseFlag.hasFlag(args);
     final hasRebaseTheirsFlag = rebaseTheirsFlag.hasFlag(args);
     final hasRebaseOursFlag = rebaseOursFlag.hasFlag(args);
+    final hasForcePushFlag = forcePushFlag.hasFlag(args);
+    final hasSkipPushFlag = skipPushFlag.hasFlag(args);
 
     if (context.assertNoConflictingFlags(
       [hasRebaseFlag, hasRebaseTheirsFlag, hasRebaseOursFlag],
       [rebaseFlag, rebaseTheirsFlag, rebaseOursFlag],
     )) return;
 
-    context.git.commitAmendNoEdit
-        .announce('Amending changes to a commit.')
-        .runSync()
-        .printNotEmptyResultFields();
-    context.git.pushForce
-        .announce('Force pushing to a remote.')
-        .runSync()
-        .printNotEmptyResultFields();
+    if (context.assertNoConflictingFlags(
+      [hasForcePushFlag, hasSkipPushFlag],
+      [forcePushFlag, skipPushFlag],
+    )) return;
+
+    final hasChanges = !context.areThereNoStagedChanges();
+
+    if (hasChanges) {
+      context.git.commitAmendNoEdit
+          .announce('Amending changes to a commit.')
+          .runSync()
+          .printNotEmptyResultFields();
+      context.git.pushForce
+          .announce('Force pushing to a remote.')
+          .runSync()
+          .printNotEmptyResultFields();
+    } else {
+      context.printToConsole('No changes to amend.');
+
+      if (hasSkipPushFlag) {
+        context.printToConsole('Skipping force push as requested.');
+      } else if (hasForcePushFlag) {
+        context.git.pushForce
+            .announce('Force pushing to a remote.')
+            .runSync()
+            .printNotEmptyResultFields();
+      } else {
+        final shouldForcePush = context.commandLineContinueQuestion(
+          'Would you like to force push anyway?',
+        );
+        if (shouldForcePush) {
+          context.git.pushForce
+              .announce('Force pushing to a remote.')
+              .runSync()
+              .printNotEmptyResultFields();
+        }
+      }
+    }
 
     if (hasRebaseFlag || hasRebaseTheirsFlag || hasRebaseOursFlag) {
       InternalCommandRebase().run(
