@@ -38,3 +38,13 @@ final List<InternalCommand> internalCommands = [
   InternalCommandVersion(),
   InternalCommandPrCreation(),
 ]..sort();
+
+InternalCommand? findCommand(String name) {
+  var command = internalCommands
+      .where((cmd) => cmd.name == name || cmd.shortName == name)
+      .firstOrNull;
+
+  if (command != null) return command;
+
+  return internalCommands.where((cmd) => cmd.name.startsWith(name)).firstOrNull;
+}

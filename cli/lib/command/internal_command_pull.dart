@@ -11,6 +11,7 @@ class InternalCommandPull extends InternalCommand {
       : super(
           'pull',
           'Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.',
+          shortName: 'p',
           arguments: {
             'opt1': 'Optional target branch, will default to <remote>/HEAD',
           },
