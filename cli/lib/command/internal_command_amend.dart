@@ -29,10 +29,12 @@ class InternalCommandAmend extends InternalCommand {
   );
   static final forcePushFlag = Flag(
     short: '-f',
+    long: '--force',
     description: 'Force push without asking if no changes to amend.',
   );
   static final skipPushFlag = Flag(
     short: '-s',
+    long: '--skip',
     description: 'Skip force push without asking if no changes to amend.',
   );
 
