@@ -18,8 +18,10 @@ Note: you can type first letter or couple of first letters instead of full comma
          -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
          -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
          -b, --rebase-prefer-base - Runs 'stax rebase --prefer-base' afterwards on all children branches.
+         -f, --force - Force push without asking if no changes to amend.
          -m, --rebase-prefer-moving - Runs 'stax rebase --prefer-moving' afterwards on all children branches.
          -r, --rebase - Runs 'stax rebase' afterwards on all children branches.
+         -s, --skip - Skip force push without asking if no changes to amend.
          -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
  • commit - Creates a branch, commits, and pushes it to remote. First argument is mandatory commit message. Second argument is optional branch name, if not provided branch name would be generated from commit message.
       Positional arguments:
