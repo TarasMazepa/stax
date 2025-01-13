@@ -22,10 +22,6 @@ class InternalCommandPull extends InternalCommand {
 
   @override
   void run(List<String> args, Context context) {
-    /**
-     * TODO:
-     *  - Warn about deleting branch on which user was originally
-     */
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }
@@ -58,7 +54,17 @@ class InternalCommandPull extends InternalCommand {
         .runSync()
         .printNotEmptyResultFields()
         .assertSuccessfulExitCode();
-    if (result == null) return;
+    if (result == null) {
+      if (needToSwitchBranches && currentBranch != null) {
+        context.git.checkout
+            .arg(currentBranch)
+            .announce("Switching back to original branch '$currentBranch'.")
+            .runSync()
+            .printNotEmptyResultFields();
+      }
+      return;
+    }
+
     InternalCommandDeleteGoneBranches().run(
       [
         if (hasSkipDeleteFlag)
