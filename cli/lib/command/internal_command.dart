@@ -4,6 +4,7 @@ import 'package:stax/context/context.dart';
 
 abstract class InternalCommand implements Comparable<InternalCommand> {
   final String name;
+  final String? shortName;
   final String description;
   final InternalCommandType type;
   final Map<String, String>? arguments;
@@ -12,6 +13,7 @@ abstract class InternalCommand implements Comparable<InternalCommand> {
   const InternalCommand(
     this.name,
     this.description, {
+    this.shortName,
     this.type = InternalCommandType.public,
     this.arguments,
     this.flags,

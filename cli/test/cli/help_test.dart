@@ -18,8 +18,10 @@ Note: you can type first letter or couple of first letters instead of full comma
          -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
          -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
          -b, --rebase-prefer-base - Runs 'stax rebase --prefer-base' afterwards on all children branches.
+         -f, --force - Force push without asking if no changes to amend.
          -m, --rebase-prefer-moving - Runs 'stax rebase --prefer-moving' afterwards on all children branches.
          -r, --rebase - Runs 'stax rebase' afterwards on all children branches.
+         -s, --skip - Skip force push without asking if no changes to amend.
          -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
  • commit - Creates a branch, commits, and pushes it to remote. First argument is mandatory commit message. Second argument is optional branch name, if not provided branch name would be generated from commit message.
       Positional arguments:
@@ -49,13 +51,13 @@ Note: you can type first letter or couple of first letters instead of full comma
  • move - Allows you to move around log tree. Note: you can type any amount of first letters to specify direction. 'h' instead of 'head', 't' for 'top, 'd' for down, 'u' for 'up', 'b' for 'bottom'
       Positional arguments:
          [arg]+ - up (one up, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), down (one down), top (to the closest top parent that have at least two children or to the top most node, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), bottom (to the closest bottom parent that have at least two children or bottom most node, will stop before any direct parent of <remote>/head), head (<remote>/head)
- • pr - Creates a pull request.
  • pull - Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
       Positional arguments:
          opt1 - Optional target branch, will default to <remote>/HEAD
       Flags:
          -f - Force delete gone branches.
          -s - Skip deletion of gone branches.
+ • pull-request - Creates a pull request.
  • rebase - rebase tree of branches on top of main
       Positional arguments:
          opt1 - Optional argument for target, will default to <remote>/HEAD
