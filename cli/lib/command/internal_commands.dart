@@ -9,6 +9,7 @@ import 'package:stax/command/internal_command_log.dart';
 import 'package:stax/command/internal_command_log_test_case.dart';
 import 'package:stax/command/internal_command_main_branch.dart';
 import 'package:stax/command/internal_command_move.dart';
+import 'package:stax/command/internal_command_pr_creation.dart';
 import 'package:stax/command/internal_command_pull.dart';
 import 'package:stax/command/internal_command_rebase.dart';
 import 'package:stax/command/internal_command_settings.dart';
@@ -16,7 +17,6 @@ import 'package:stax/command/internal_command_terminal.dart';
 import 'package:stax/command/internal_command_update.dart';
 import 'package:stax/command/internal_command_update_prompt.dart';
 import 'package:stax/command/internal_command_version.dart';
-import 'package:stax/command/internal_command_pr_creation.dart';
 
 final List<InternalCommand> internalCommands = [
   InternalCommandAmend(),
@@ -29,6 +29,7 @@ final List<InternalCommand> internalCommands = [
   InternalCommandLogTestCase(),
   InternalCommandMainBranch(),
   InternalCommandMove(),
+  InternalCommandPrCreation(),
   InternalCommandPull(),
   InternalCommandRebase(),
   InternalCommandSettings(),
@@ -36,15 +37,4 @@ final List<InternalCommand> internalCommands = [
   InternalCommandUpdate(),
   InternalCommandUpdatePrompt(),
   InternalCommandVersion(),
-  InternalCommandPrCreation(),
 ]..sort();
-
-InternalCommand? findCommand(String name) {
-  var command = internalCommands
-      .where((cmd) => cmd.name == name || cmd.shortName == name)
-      .firstOrNull;
-
-  if (command != null) return command;
-
-  return internalCommands.where((cmd) => cmd.name.startsWith(name)).firstOrNull;
-}
