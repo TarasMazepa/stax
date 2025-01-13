@@ -12,7 +12,16 @@ void main(List<String> arguments) {
     case []:
       InternalCommandHelp().run([], context);
     case [final commandName, ...final args]:
-      final command = findCommand(commandName);
+      final command = internalCommands
+              .where(
+                (command) =>
+                    command.name == commandName ||
+                    command.shortName == commandName,
+              )
+              .firstOrNull ??
+          internalCommands
+              .where((command) => command.name.startsWith(commandName))
+              .firstOrNull;
       if (command == null) {
         context.printParagraph("Unknown command '$commandName'.");
         return;
