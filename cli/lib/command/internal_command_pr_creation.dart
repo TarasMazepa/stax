@@ -10,8 +10,9 @@ import 'package:stax/context/context_open_in_browser.dart';
 class InternalCommandPrCreation extends InternalCommand {
   InternalCommandPrCreation()
       : super(
-          'pr',
+          'pull-request',
           'Creates a pull request.',
+          shortName: 'pr',
         );
 
   @override
