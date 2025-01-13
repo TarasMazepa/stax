@@ -87,7 +87,7 @@ class InternalCommandAmend extends InternalCommand {
           .runSync()
           .printNotEmptyResultFields();
     } else {
-      context.printToConsole('No changes to amend.');
+      context.explainToUserNoStagedChanges();
 
       if (hasSkipPushFlag) {
         context.printToConsole('Skipping force push as requested.');
