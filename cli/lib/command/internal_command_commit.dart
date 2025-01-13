@@ -111,6 +111,20 @@ class InternalCommandCommit extends InternalCommand {
         .printNotEmptyResultFields()
         .exitCode;
     if (commitExitCode != 0) {
+      if (previousBranch != null) {
+        context.git.checkout
+            .arg(previousBranch)
+            .announce('Switching back to original branch')
+            .runSync()
+            .printNotEmptyResultFields();
+      }
+
+      context.git.branchDelete
+          .arg(prefixedBranchName)
+          .announce('Deleting created branch')
+          .runSync()
+          .printNotEmptyResultFields();
+
       context.printParagraph(
         'See above git error. Additionally you can check `stax doctor` command output.${prUrl != null ? '\nPR URL would have been: $prUrl' : ''}',
       );
