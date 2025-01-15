@@ -3,3 +3,4 @@
 /.stax_settings_backup
 /node_modules
 **/node_modules/
+**/.env
