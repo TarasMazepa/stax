@@ -1,3 +1,5 @@
 /.idea
 /.stax_settings
 /.stax_settings_backup
+/node_modules
+**/node_modules/
