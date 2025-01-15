@@ -3,14 +3,19 @@ import 'package:stax/map_on_string.dart';
 import 'package:stax/on_empty_on_iterable.dart';
 import 'package:stax/once.dart';
 import 'package:stax/settings/settings.dart';
+import 'package:stax/settings/repository_settings.dart';
 
 extension ContextGitGetDefaultBranch on Context {
   static List<String>? remotes;
   static String? defaultBranch;
 
   String? getDefaultBranch() {
-    final override = Settings.instance.defaultBranch.value;
-    if (override.isNotEmpty) return override;
+    final repoSettings = RepositorySettings.getInstanceFromContext(this);
+    final repoOverride = repoSettings?.defaultBranch.value;
+    if (repoOverride?.isNotEmpty == true) return repoOverride;
+
+    final globalOverride = Settings.instance.defaultBranch.value;
+    if (globalOverride.isNotEmpty) return globalOverride;
 
     if (defaultBranch != null) return defaultBranch;
     final complainAboutEmptyOnce = Once();
