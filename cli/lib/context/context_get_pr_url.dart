@@ -1,10 +1,11 @@
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_git_get_default_remote.dart';
 
 extension ContextGetPrUrl on Context {
   String? getPrUrl(String targetBranch, String currentBranch) {
-    final remote = git.remote.runSync().stdout.toString().split('\n')[0].trim();
-    if (remote.isEmpty) return null;
-
+    final remote = getDefaultRemote();
+    if (remote == null) return null;
+    print('remote: $remote');
     final remoteUrl = git.remoteGetUrl
         .arg(remote)
         .runSync()
