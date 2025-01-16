@@ -1,3 +1,4 @@
+name: version-to-cli-sync.yml
 on:
   push:
     branches: [ "main" ]

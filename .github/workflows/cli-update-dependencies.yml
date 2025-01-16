@@ -1,3 +1,4 @@
+name: cli-update-dependencies.yml
 on:
   workflow_dispatch:
   schedule:

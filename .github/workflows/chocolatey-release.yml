@@ -1,3 +1,4 @@
+name: chocolatey-release.yml
 on:
   workflow_dispatch:
 jobs:

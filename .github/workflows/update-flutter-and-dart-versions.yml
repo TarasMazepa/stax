@@ -1,3 +1,4 @@
+name: update-flutter-and-dart-versions.yml
 on:
   workflow_dispatch:
   schedule:
