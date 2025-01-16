@@ -10,6 +10,7 @@ class InternalCommandSettings extends InternalCommand {
   final globalSettings = [
     Settings.instance.branchPrefix,
     Settings.instance.defaultBranch,
+    Settings.instance.defaultRemote,
   ].sortedBy((setting) => setting.name);
 
   final availableSubCommands = [
