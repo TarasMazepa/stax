@@ -1,3 +1,4 @@
+name: cli-live.yml
 on:
   push:
     branches: [ "main" ]

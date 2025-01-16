@@ -1,3 +1,4 @@
+name: release-binary.yml
 on:
   workflow_dispatch:
     inputs:

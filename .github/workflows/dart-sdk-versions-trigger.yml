@@ -1,3 +1,4 @@
+name: dart-sdk-versions-trigger.yml
 on:
   workflow_dispatch:
   push:
