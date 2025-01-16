@@ -95,7 +95,7 @@ class InternalCommandDoctor extends InternalCommand {
     }
 
     if (context.isInsideWorkTree()) {
-      final remote = context.getDefaultRemote();
+      final remote = context.getPreferredRemote();
       final hasRemote = remote != null;
       context.printToConsole(
         """[${boolToCheckmark(hasRemote)}] git remote # ${hasRemote ? "remote(s): $remote" : "no remotes"}""",

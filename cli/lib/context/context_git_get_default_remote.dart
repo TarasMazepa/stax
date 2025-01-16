@@ -1,12 +1,17 @@
+import 'package:collection/collection.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/settings/settings.dart';
 
-extension ContextGitGetDefaultRemote on Context {
-  String? getDefaultRemote() {
+extension ContextGitGetPreferredRemote on Context {
+  static String? _preferredRemote;
+
+  String? getPreferredRemote() {
     final override = Settings.instance.defaultRemote.value;
     if (override.isNotEmpty) return override;
 
-    return withSilence(true)
+    if (_preferredRemote != null) return _preferredRemote;
+
+    final remotes = withSilence(true)
         .git
         .remote
         .announce('Getting remotes.')
@@ -17,6 +22,11 @@ extension ContextGitGetDefaultRemote on Context {
         .split('\n')
         .map((e) => e.trim())
         .where((e) => e.isNotEmpty)
-        .firstOrNull;
+        .toList();
+
+    _preferredRemote =
+        remotes.firstWhereOrNull((x) => x == 'origin') ?? remotes.firstOrNull;
+
+    return _preferredRemote;
   }
 }
