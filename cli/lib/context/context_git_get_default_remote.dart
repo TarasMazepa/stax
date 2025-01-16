@@ -9,12 +9,11 @@ extension ContextGitGetDefaultRemote on Context {
     return withSilence(true)
         .git
         .remote
-        .announce('Getting default remote.')
+        .announce('Getting remotes.')
         .runSync()
         .printNotEmptyResultFields()
         .stdout
         .toString()
-        .trim()
         .split('\n')
         .map((e) => e.trim())
         .where((e) => e.isNotEmpty)

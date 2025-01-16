@@ -5,7 +5,6 @@ extension ContextGetPrUrl on Context {
   String? getPrUrl(String targetBranch, String currentBranch) {
     final remote = getDefaultRemote();
     if (remote == null) return null;
-    print('remote: $remote');
     final remoteUrl = git.remoteGetUrl
         .arg(remote)
         .runSync()
