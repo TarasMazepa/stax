@@ -57,6 +57,13 @@ class Settings {
     'Override for default branch (empty means use <remote>/HEAD)',
   );
 
+  late final StringSetting defaultRemote = StringSetting(
+    'default_remote',
+    '',
+    this,
+    'Override for default remote (empty means use first available remote)',
+  );
+
   Settings(this.settings);
 
   String? operator [](String key) {
