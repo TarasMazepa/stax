@@ -3,6 +3,7 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/string_empty_to_null.dart';
+import 'package:stax/context/context_git_get_default_remote.dart';
 
 class InternalCommandDoctor extends InternalCommand {
   InternalCommandDoctor()
@@ -94,22 +95,10 @@ class InternalCommandDoctor extends InternalCommand {
     }
 
     if (context.isInsideWorkTree()) {
-      final remotes = context
-          .withSilence(true)
-          .git
-          .remote
-          .announce('Checking if git repository has remote.')
-          .runSync()
-          .printNotEmptyResultFields()
-          .stdout
-          .toString()
-          .trim()
-          .split('\n')
-          .where((x) => x.isNotEmpty)
-          .toList();
-      final hasRemote = remotes.isNotEmpty;
+      final remote = context.getDefaultRemote();
+      final hasRemote = remote != null;
       context.printToConsole(
-        """[${boolToCheckmark(hasRemote)}] git remote # ${hasRemote ? "remote(s): ${remotes.join(", ")}" : "no remotes"}""",
+        """[${boolToCheckmark(hasRemote)}] git remote # ${hasRemote ? "remote(s): $remote" : "no remotes"}""",
       );
 
       if (!hasRemote) {
