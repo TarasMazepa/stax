@@ -50,7 +50,7 @@ class RepositorySettings {
 
   final Map<String, dynamic> settings;
 
-  RepositorySettings(super.settings, this.repositoryRoot);
+  RepositorySettings(this.settings, this.repositoryRoot);
 
   String? operator [](String key) {
     final value = settings[key];
