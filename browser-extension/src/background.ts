@@ -1,12 +1,7 @@
 import browser from "webextension-polyfill";
 
-console.log("Background script loaded");
+console.log("Hello from the background!");
 
 browser.runtime.onInstalled.addListener((details) => {
   console.log("Extension installed:", details);
-});
-
-// Listen for messages from content script
-browser.runtime.onMessage.addListener(async (message, sender) => {
-  
 });

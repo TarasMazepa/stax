@@ -17,20 +17,5 @@
   "background": {
     "{{chrome}}.service_worker": "src/background.ts",
     "{{firefox}}.scripts": ["src/background.ts"]
-  },
-  "permissions": [
-    "identity",
-    "storage"
-  ],
-  "host_permissions": [
-    "https://github.com/*",
-    "https://api.github.com/*",
-    "http://localhost:3000/*"
-  ],
-  "content_scripts": [
-    {
-      "matches": ["https://github.com/*"],
-      "js": ["src/contentScript.ts"]
-    }
-  ]
+  }
 }
