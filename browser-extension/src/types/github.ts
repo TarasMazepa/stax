@@ -24,4 +24,4 @@ export interface AuthState {
   token: string | null;
   user: GitHubUser | null;
   customDomain: string;
-} 
+}
