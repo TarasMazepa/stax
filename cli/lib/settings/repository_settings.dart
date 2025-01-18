@@ -59,7 +59,6 @@ class RepositorySettings {
     settings[key] = value;
   }
 
-  @override
   void save() {
     _getConfigFile(repositoryRoot)
         .writeAsStringSync(jsonEncode(settings), flush: true);
