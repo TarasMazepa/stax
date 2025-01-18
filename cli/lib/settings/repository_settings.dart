@@ -48,6 +48,8 @@ class RepositorySettings {
 
   final String repositoryRoot;
 
+  final Map<String, dynamic> settings;
+
   RepositorySettings(super.settings, this.repositoryRoot);
 
   String? operator [](String key) {
