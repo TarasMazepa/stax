@@ -10,7 +10,6 @@ import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
 import 'package:stax/context/context_open_in_browser.dart';
-import 'package:stax/settings/repository_settings.dart';
 import 'package:stax/settings/settings.dart';
 
 class InternalCommandCommit extends InternalCommand {
@@ -76,19 +75,13 @@ class InternalCommandCommit extends InternalCommand {
       originalBranchName = args[1];
     }
     final resultingBranchName = sanitizeBranchName(originalBranchName);
-    final repoSettings = RepositorySettings.getInstanceFromContext(context);
-    final repoPrefix = repoSettings?.branchPrefix.value;
-    final prefix = repoPrefix?.isNotEmpty == true
-        ? repoPrefix
-        : Settings.instance.branchPrefix.value;
-    final prefixedBranchName = prefix! + resultingBranchName;
+    final prefixedBranchName =
+        Settings.instance.branchPrefix.value + resultingBranchName;
 
     if (!acceptBranchName && originalBranchName != prefixedBranchName) {
       if (!context.commandLineContinueQuestion(
         "Branch name was modified to '$prefixedBranchName'.",
-      )) {
-        return;
-      }
+      )) return;
     }
     context.printToConsole("Commit  message: '$commitMessage'");
     context.printToConsole("New branch name: '$prefixedBranchName'");
