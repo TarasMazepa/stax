@@ -3,10 +3,9 @@ import 'dart:io';
 
 import 'package:path/path.dart' as path;
 import 'package:stax/context/context_git_get_repository_root.dart';
-import 'package:stax/settings/settings.dart';
 import 'package:stax/context/context.dart';
 
-class RepositorySettings extends Settings {
+class RepositorySettings {
   static RepositorySettings? _instance;
 
   static RepositorySettings? getInstanceFromContext(Context context) {
@@ -51,13 +50,11 @@ class RepositorySettings extends Settings {
 
   RepositorySettings(super.settings, this.repositoryRoot);
 
-  @override
   String? operator [](String key) {
     final value = settings[key];
     return value is String ? value : null;
   }
 
-  @override
   void operator []=(String key, String? value) {
     settings[key] = value;
   }
