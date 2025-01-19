@@ -74,19 +74,66 @@ export class GitHubService {
     return response.json();
   }
 
-  static async getPullRequests(owner: string, repo: string): Promise<GitHubPR[]> {
+  static async getPullRequests(owner: string, repo: string, options: {
+    state?: 'open' | 'closed' | 'all';
+    sort?: 'created' | 'updated' | 'popularity' | 'long-running';
+    direction?: 'asc' | 'desc';
+    per_page?: number;
+    page?: number;
+  } = {}): Promise<GitHubPR[]> {
     const authState = await this.getAuthState();
     if (!authState.token) throw new Error('Not authenticated');
 
+    const params = new URLSearchParams({
+      state: options.state || 'open',
+      sort: options.sort || 'created',
+      direction: options.direction || 'desc',
+      per_page: options.per_page?.toString() || '30',
+      page: options.page?.toString() || '1'
+    });
+
     const response = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/pulls?state=open`,
+      `https://api.github.com/repos/${owner}/${repo}/pulls?${params}`,
       {
         headers: {
           Authorization: `Bearer ${authState.token}`,
+          Accept: 'application/vnd.github.v3+json',
         },
       }
     );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch pull requests: ${response.statusText}`);
+    }
+
     return response.json();
+  }
+
+  static async getAllPullRequests(owner: string, repo: string, options: {
+    state?: 'open' | 'closed' | 'all';
+    sort?: 'created' | 'updated' | 'popularity' | 'long-running';
+    direction?: 'asc' | 'desc';
+  } = {}): Promise<GitHubPR[]> {
+    const allPRs: GitHubPR[] = [];
+    let page = 1;
+    const PER_PAGE = 100; // Maximum allowed by GitHub API
+
+    while (true) {
+      const prs = await this.getPullRequests(owner, repo, {
+        ...options,
+        per_page: PER_PAGE,
+        page: page
+      });
+
+      if (prs.length === 0) break;
+      
+      allPRs.push(...prs);
+      
+      if (prs.length < PER_PAGE) break;
+      page++;
+    }
+
+    return allPRs;
   }
 
   private static async getAccessToken(code: string): Promise<string> {
@@ -111,5 +158,17 @@ export class GitHubService {
 
     const data = await response.json();
     return data.access_token;
+  }
+
+  static async getCurrentUserPRs(owner: string, repo: string): Promise<GitHubPR[]> {
+    const authState = await this.getAuthState();
+    if (!authState.token || !authState.user) {
+      throw new Error('Not authenticated');
+    }
+
+    return this.getAllPullRequests(owner, repo, {
+      state: 'open',
+      sort: 'updated',
+    });
   }
 }
