@@ -11,6 +11,7 @@ import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
 import 'package:stax/context/context_open_in_browser.dart';
 import 'package:stax/settings/settings.dart';
+import 'package:stax/context/context_gh_create_pr.dart';
 
 class InternalCommandCommit extends InternalCommand {
   static final prFlag = Flag(
@@ -81,7 +82,9 @@ class InternalCommandCommit extends InternalCommand {
     if (!acceptBranchName && originalBranchName != prefixedBranchName) {
       if (!context.commandLineContinueQuestion(
         "Branch name was modified to '$prefixedBranchName'.",
-      )) return;
+      )) {
+        return;
+      }
     }
     context.printToConsole("Commit  message: '$commitMessage'");
     context.printToConsole("New branch name: '$prefixedBranchName'");
@@ -97,11 +100,6 @@ class InternalCommandCommit extends InternalCommand {
         "Looks like we can't create new branch with '$prefixedBranchName' name. Please pick a different name.",
       );
       return;
-    }
-
-    String? prUrl;
-    if (createPr) {
-      prUrl = context.getPrUrl(previousBranch!, prefixedBranchName);
     }
 
     final commitExitCode = context.git.commitWithMessage
@@ -126,7 +124,7 @@ class InternalCommandCommit extends InternalCommand {
           .printNotEmptyResultFields();
 
       context.printParagraph(
-        'See above git error. Additionally you can check `stax doctor` command output.${prUrl != null ? '\nPR URL would have been: $prUrl' : ''}',
+        'See above git error. Additionally you can check `stax doctor` command output.',
       );
       return;
     }
@@ -138,9 +136,26 @@ class InternalCommandCommit extends InternalCommand {
         .exitCode;
     if (pushExitCode != 0) {
       context.printParagraph(
-        'See above git error. Additionally you can check `stax doctor` command output.${prUrl != null ? '\nPR URL would have been: $prUrl' : ''}',
+        'See above git error. Additionally you can check `stax doctor` command output.',
       );
       return;
+    }
+
+    String? prUrl;
+    if (createPr) {
+      context.printToConsole('Creating PR using GitHub CLI');
+      prUrl = context.createPrWithGhCli(
+        title: commitMessage,
+        baseBranch: previousBranch!,
+        headBranch: prefixedBranchName,
+      );
+
+      if (prUrl == null) {
+        context.printToConsole(
+          'Failed to create PR with gh CLI, falling back to browser',
+        );
+        prUrl = context.getPrUrl(previousBranch, prefixedBranchName);
+      }
     }
 
     if (prUrl != null) {
