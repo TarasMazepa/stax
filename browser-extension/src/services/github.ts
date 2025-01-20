@@ -1,7 +1,7 @@
 import browser from 'webextension-polyfill';
 import { AuthState, GitHubUser, GitHubPR } from '../types/github';
 
-const CLIENT_ID = 'Ov23liRH5JuqKVVIJg5q'; // You'll need to register your app on GitHub
+const CLIENT_ID = 'Ov23liRH5JuqKVVIJg5q';
 const REDIRECT_URL = browser.identity.getRedirectURL();
 
 export class GitHubService {
@@ -18,7 +18,6 @@ export class GitHubService {
     const state = Math.random().toString(36).substring(7);
     const authUrl = new URL('https://github.com/login/oauth/authorize');
     
-    // Add required OAuth parameters
     authUrl.searchParams.append('client_id', CLIENT_ID);
     authUrl.searchParams.append('redirect_uri', REDIRECT_URL);
     authUrl.searchParams.append('state', state);
@@ -43,7 +42,6 @@ export class GitHubService {
         throw new Error('State mismatch - possible CSRF attack');
       }
 
-      // Exchange code for token using a proxy server
       const token = await this.getAccessToken(code);
       const user = await this.getCurrentUser(token);
 
@@ -53,7 +51,6 @@ export class GitHubService {
 
     } catch (error) {
       console.error('Login failed:', error);
-      // Add more descriptive error message
       if (error instanceof Error) {
         throw new Error(`GitHub authentication failed: ${error.message}`);
       }
@@ -90,17 +87,16 @@ export class GitHubService {
   }
 
   private static async getAccessToken(code: string): Promise<string> {
-    // Point to local proxy server
-    const tokenEndpoint = 'http://localhost:3000/token';
-    
-    const response = await fetch(tokenEndpoint, {
+    const response = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
       headers: {
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        code,
         client_id: CLIENT_ID,
+        client_secret: '06ea62b08c8b168f4a7dce732e979a023dd66886', 
+        code,
         redirect_uri: REDIRECT_URL,
       }),
     });
