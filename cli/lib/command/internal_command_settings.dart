@@ -6,12 +6,12 @@ import 'package:stax/settings/setting.dart';
 import 'package:stax/settings/settings.dart';
 
 class InternalCommandSettings extends InternalCommand {
-  final List<Setting> availableSettings = [
+  late final List<Setting> availableSettings = [
     Settings.instance.branchPrefix,
     Settings.instance.defaultBranch,
     Settings.instance.defaultRemote,
   ].sortedBy((setting) => setting.name);
-  final availableSubCommands = [
+  late final availableSubCommands = [
     'set',
     'clear',
     'show',
