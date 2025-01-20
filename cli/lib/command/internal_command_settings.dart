@@ -35,23 +35,28 @@ class InternalCommandSettings extends InternalCommand {
         availableSettings.any((setting) => setting.name == name);
     Setting getSettingByName(String name) =>
         availableSettings.firstWhere((x) => x.name == name);
+    void printAvailableSettings() {
+      for (final setting in availableSettings) {
+        context.printToConsole(
+          " • ${setting.name} = '${setting.value}' # ${setting.description}",
+        );
+      }
+    }
+
     switch (args) {
       case ['show']:
         context.printToConsole('Current settings:');
-        for (final setting in availableSettings) {
-          context.printToConsole(
-            " • ${setting.name} = '${setting.value}' # ${setting.description}",
-          );
-        }
+        printAvailableSettings();
       case ['show', ...]:
         context.printToConsole("'show' doesn't have arguments");
       case ['set', final name, final value] when isSettingAvailable(name):
         getSettingByName(name).value = value;
-        context.printToConsole('Updated setting: $name = $value');
+        context.printToConsole("Updated setting: $name = '$value'");
       case ['set', final name, _]:
-        context
-            .printToConsole('''set: unknown setting '$name'. Available settings:
-${availableSettings.map((setting) => " • ${setting.name}").join("\n")}''');
+        context.printToConsole(
+          "set: unknown setting '$name'. Available settings:",
+        );
+        printAvailableSettings();
       case ['set', ...]:
         context
             .printToConsole('Usage: stax settings set <setting_name> <value>');
@@ -64,9 +69,9 @@ ${availableSettings.map((setting) => " • ${setting.name}").join("\n")}''');
 
       case ['clear', final name]:
         context.printToConsole(
-            '''clear: unknown setting '$name'. Available settings:
-${availableSettings.map((setting) => " • ${setting.name}").join("\n")}''');
-
+          "clear: unknown setting '$name'. Available settings:",
+        );
+        printAvailableSettings();
       case ['clear', ...]:
         context.printToConsole('Usage: stax settings clear <setting_name>');
 
