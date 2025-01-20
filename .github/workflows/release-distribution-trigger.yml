@@ -1,3 +1,4 @@
+name: release-distribution-trigger.yml
 on:
   workflow_dispatch:
   workflow_run:

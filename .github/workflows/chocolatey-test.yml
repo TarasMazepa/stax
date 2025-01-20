@@ -1,3 +1,4 @@
+name: chocolatey-test.yml
 on:
   push:
     branches: [ "main" ]

@@ -1,3 +1,4 @@
+name: ui-flutter-test.yml
 on:
   push:
     branches: [ "main" ]

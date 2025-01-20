@@ -1,3 +1,4 @@
+name: cli-dart-test.yml
 on:
   push:
     branches: [ "main" ]

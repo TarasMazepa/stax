@@ -1,6 +1,8 @@
+import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_help.dart';
 import 'package:stax/command/internal_commands.dart';
 import 'package:stax/command/main_function_reference.dart';
+import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
 
@@ -19,11 +21,21 @@ void main(List<String> arguments) {
                     command.shortName == commandName,
               )
               .firstOrNull ??
-          internalCommands
-              .where((command) => command.name.startsWith(commandName))
-              .firstOrNull;
+          internalCommands.fold<InternalCommand?>(
+            null,
+            (current, command) => switch (command) {
+              _ when !command.name.startsWith(commandName) => current,
+              _ when current == null => command,
+              _ when current.name.length > command.name.length => command,
+              _ when current.name.length < command.name.length => current,
+              _ when current.type.isHidden && command.type.isPublic => command,
+              _ => current,
+            },
+          );
       if (command == null) {
-        context.printParagraph("Unknown command '$commandName'.");
+        context.printParagraph(
+          "Unknown command or prefix of a command '$commandName'.",
+        );
         return;
       }
       command.run(args, context);
