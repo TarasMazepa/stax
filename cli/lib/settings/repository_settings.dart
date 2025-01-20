@@ -4,12 +4,10 @@ import 'package:stax/context/context_git_get_repository_root.dart';
 import 'package:stax/settings/base_settings.dart';
 
 class RepositorySettings extends BaseSettings {
-  static RepositorySettings? _instance;
-
-  static RepositorySettings? getInstanceFromContext(Context context) {
+  static RepositorySettings? load(Context context) {
     final root = context.getRepositoryRoot();
     if (root == null) return null;
-    return _instance ??= RepositorySettings(
+    return RepositorySettings(
       path.join(
         Uri.parse(root).toFilePath(),
         '.git/info/stax/settings.json',
