@@ -26,6 +26,3 @@ dist-ssr
 # Config files
 .webextrc
 .webextrc.*
-
-# Environment variables
-.env

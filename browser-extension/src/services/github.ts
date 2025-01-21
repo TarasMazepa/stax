@@ -1,7 +1,8 @@
 import browser from 'webextension-polyfill';
 import { AuthState, GitHubUser, GitHubPR } from '../types/github';
 
-const CLIENT_ID = 'Ov23liRH5JuqKVVIJg5q';
+const CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID;
+const CLIENT_SECRET = import.meta.env.VITE_GITHUB_CLIENT_SECRET;
 const REDIRECT_URL = browser.identity.getRedirectURL();
 
 export class GitHubService {
@@ -95,7 +96,7 @@ export class GitHubService {
       },
       body: JSON.stringify({
         client_id: CLIENT_ID,
-        client_secret: '06ea62b08c8b168f4a7dce732e979a023dd66886', 
+        client_secret: CLIENT_SECRET,
         code,
         redirect_uri: REDIRECT_URL,
       }),
