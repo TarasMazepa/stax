@@ -9,22 +9,27 @@ async function injectPRList() {
   container.id = 'stax-pr-list';
   container.className = 'stax-pr-container';  
   
-  const sidebar = document.querySelector('.Layout-sidebar');
+  const sidebar = document.querySelector('.gh-header-show');
   if (!sidebar) return;
   
-  sidebar.insertBefore(container, sidebar.firstChild);
+  sidebar.appendChild(container);
   
   try {
     const [owner, repo] = window.location.pathname.split('/').filter(Boolean).slice(0, 2);
+    const authState = await browser.runtime.sendMessage({ type: 'GET_AUTH_STATE' });
+    if (!authState?.user?.login) {
+      throw new Error('User not authenticated');
+    }
     
     const prs = await GitHubContentService.getAllPullRequests(owner, repo, {
       state: 'open',
       sort: 'updated'
     });
 
-    console.log('prs', prs);
+    // Filter PRs for current user
+    const userPRs = prs.filter(pr => pr.user.login === authState.user.login);
     
-    renderPRList(container, prs);
+    renderPRList(container, userPRs);
   } catch (error) {
     console.error('Failed to load PRs:', error);
     container.innerHTML = `
@@ -40,17 +45,20 @@ function renderPRList(container: HTMLElement, prs: GitHubPR[]) {
   style.textContent = `
     .stax-pr-container {
       margin-bottom: 16px;
-      background-color: #1b1b4d;
-      border: 1px solid red;
-      border-radius: 6px;
-      font-size: 12px;
+      background-color: #22272e;
+      border: 1px solid #444c56;
+      border-radius: 8px;
+      font-size: 13px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
     
     .stax-pr-header {
-      padding: 8px 16px;
+      padding: 12px 16px;
       font-weight: 600;
-      border-bottom: 1px solid var(--color-border-default);
-      background-color: var(--color-canvas-subtle);
+      border-bottom: 1px solid #444c56;
+      background-color: #2d333b;
+      border-radius: 8px 8px 0 0;
+      color: #adbac7;
     }
     
     .stax-pr-list {
@@ -60,25 +68,34 @@ function renderPRList(container: HTMLElement, prs: GitHubPR[]) {
     }
     
     .stax-pr-item {
-      padding: 8px 16px;
-      border-bottom: 1px solid var(--color-border-muted);
+      padding: 12px 16px;
+      border-bottom: 1px solid #444c56;
+      transition: background-color 0.2s ease;
+    }
+    
+    .stax-pr-item:hover {
+      background-color: #2d333b;
     }
     
     .stax-pr-item:last-child {
       border-bottom: none;
+      border-radius: 0 0 8px 8px;
     }
     
     .stax-pr-link {
-      color: var(--color-fg-default);
+      color: #adbac7;
       text-decoration: none;
+      display: block;
     }
     
     .stax-pr-link:hover {
-      color: var(--color-accent-fg);
+      color: #539bf5;
     }
     
     .stax-pr-number {
-      color: var(--color-fg-muted);
+      color: #768390;
+      margin-right: 8px;
+      font-weight: 500;
     }
   `;
   document.head.appendChild(style);
