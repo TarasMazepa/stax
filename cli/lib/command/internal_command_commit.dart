@@ -102,6 +102,14 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
 
+    late final backupPrUrl =
+        createPr ? context.getPrUrl(previousBranch!, prefixedBranchName) : null;
+    informAboutPrUrlIfNeeded() {
+      if (backupPrUrl != null) {
+        context.printParagraph('PR URL would have been: $backupPrUrl');
+      }
+    }
+
     final commitExitCode = context.git.commitWithMessage
         .arg(commitMessage)
         .announce('Committing')
@@ -126,6 +134,7 @@ class InternalCommandCommit extends InternalCommand {
       context.printParagraph(
         'See above git error. Additionally you can check `stax doctor` command output.',
       );
+      informAboutPrUrlIfNeeded();
       return;
     }
 
@@ -138,6 +147,7 @@ class InternalCommandCommit extends InternalCommand {
       context.printParagraph(
         'See above git error. Additionally you can check `stax doctor` command output.',
       );
+      informAboutPrUrlIfNeeded();
       return;
     }
 
@@ -145,17 +155,12 @@ class InternalCommandCommit extends InternalCommand {
     if (createPr) {
       context.printToConsole('Creating PR using GitHub CLI');
       prUrl = context.createPrWithGhCli(
-        title: commitMessage,
-        baseBranch: previousBranch!,
-        headBranch: prefixedBranchName,
+        commitMessage,
+        previousBranch!,
+        prefixedBranchName,
       );
 
-      if (prUrl == null) {
-        context.printToConsole(
-          'Failed to create PR with gh CLI, falling back to browser',
-        );
-        prUrl = context.getPrUrl(previousBranch, prefixedBranchName);
-      }
+      prUrl ??= backupPrUrl;
     }
 
     if (prUrl != null) {
