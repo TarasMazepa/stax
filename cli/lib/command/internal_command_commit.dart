@@ -11,6 +11,7 @@ import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
 import 'package:stax/context/context_open_in_browser.dart';
 import 'package:stax/settings/settings.dart';
+import 'package:stax/context/context_gh_create_pr.dart';
 
 class InternalCommandCommit extends InternalCommand {
   static final prFlag = Flag(
@@ -81,7 +82,9 @@ class InternalCommandCommit extends InternalCommand {
     if (!acceptBranchName && originalBranchName != prefixedBranchName) {
       if (!context.commandLineContinueQuestion(
         "Branch name was modified to '$prefixedBranchName'.",
-      )) return;
+      )) {
+        return;
+      }
     }
     context.printToConsole("Commit  message: '$commitMessage'");
     context.printToConsole("New branch name: '$prefixedBranchName'");
@@ -99,9 +102,12 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
 
-    String? prUrl;
-    if (createPr) {
-      prUrl = context.getPrUrl(previousBranch!, prefixedBranchName);
+    late final backupPrUrl =
+        createPr ? context.getPrUrl(previousBranch!, prefixedBranchName) : null;
+    informAboutPrUrlIfNeeded() {
+      if (backupPrUrl != null) {
+        context.printParagraph('PR URL would have been: $backupPrUrl');
+      }
     }
 
     final commitExitCode = context.git.commitWithMessage
@@ -126,8 +132,9 @@ class InternalCommandCommit extends InternalCommand {
           .printNotEmptyResultFields();
 
       context.printParagraph(
-        'See above git error. Additionally you can check `stax doctor` command output.${prUrl != null ? '\nPR URL would have been: $prUrl' : ''}',
+        'See above git error. Additionally you can check `stax doctor` command output.',
       );
+      informAboutPrUrlIfNeeded();
       return;
     }
 
@@ -138,9 +145,22 @@ class InternalCommandCommit extends InternalCommand {
         .exitCode;
     if (pushExitCode != 0) {
       context.printParagraph(
-        'See above git error. Additionally you can check `stax doctor` command output.${prUrl != null ? '\nPR URL would have been: $prUrl' : ''}',
+        'See above git error. Additionally you can check `stax doctor` command output.',
       );
+      informAboutPrUrlIfNeeded();
       return;
+    }
+
+    String? prUrl;
+    if (createPr) {
+      context.printToConsole('Creating PR using GitHub CLI');
+      prUrl = context.createPrWithGhCli(
+        commitMessage,
+        previousBranch!,
+        prefixedBranchName,
+      );
+
+      prUrl ??= backupPrUrl;
     }
 
     if (prUrl != null) {
