@@ -1,13 +1,12 @@
 {
-  "name": "browser-extension",
+  "name": "stax-browser-extension",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "server": "node server/server.js",
-    "dev:all": "concurrently \"npm run dev\" \"npm run server\""
+    "dev:all": "npm run dev"
   },
   "dependencies": {
     "react": "^18.2.0",
