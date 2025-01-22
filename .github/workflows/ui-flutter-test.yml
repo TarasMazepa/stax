@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: pCYSl5EDgo/cat@master
+      - uses: 0xmalvee/github-action-cat@dev
         id: get-flutter-version
         with:
           path: FLUTTER_VERSION
@@ -29,3 +29,5 @@ jobs:
         working-directory: ui
       - run: flutter test
         working-directory: ui
+
+        
