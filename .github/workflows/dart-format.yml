@@ -1,9 +1,9 @@
-name: format-dart.yml
+name: dart-format.yml
 on:
   workflow_dispatch:
 
 jobs:
-  format-dart:
+  dart-format:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
