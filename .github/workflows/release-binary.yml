@@ -25,7 +25,7 @@ jobs:
           ref: ${{ env.CHECKOUT }}
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
-      - uses: pCYSl5EDgo/cat@master
+      - uses: TarasMazepa/github-action-cat@master
         id: get-dart-version
         with:
           path: DART_SDK_VERSION
@@ -34,7 +34,7 @@ jobs:
           sdk: ${{ steps.get-dart-version.outputs.text }}
       - run: dart pub get
         working-directory: cli
-      - uses: pCYSl5EDgo/cat@master
+      - uses: TarasMazepa/github-action-cat@master
         id: get-stax-version
         with:
           path: VERSION
@@ -53,7 +53,7 @@ jobs:
           ref: ${{ env.CHECKOUT }}
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
-      - uses: pCYSl5EDgo/cat@master
+      - uses: TarasMazepa/github-action-cat@master
         id: get-dart-version
         with:
           path: DART_SDK_VERSION
@@ -62,7 +62,7 @@ jobs:
           sdk: ${{ steps.get-dart-version.outputs.text }}
       - run: dart pub get
         working-directory: cli
-      - uses: pCYSl5EDgo/cat@master
+      - uses: TarasMazepa/github-action-cat@master
         id: get-stax-version
         with:
           path: VERSION
@@ -81,7 +81,7 @@ jobs:
           ref: ${{ env.CHECKOUT }}
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
-      - uses: pCYSl5EDgo/cat@master
+      - uses: TarasMazepa/github-action-cat@master
         id: get-dart-version
         with:
           path: DART_SDK_VERSION
@@ -90,7 +90,7 @@ jobs:
           sdk: ${{ steps.get-dart-version.outputs.text }}
       - run: dart pub get
         working-directory: cli
-      - uses: pCYSl5EDgo/cat@master
+      - uses: TarasMazepa/github-action-cat@master
         id: get-stax-version
         with:
           path: VERSION
@@ -109,7 +109,7 @@ jobs:
           ref: ${{ env.CHECKOUT }}
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
-      - uses: pCYSl5EDgo/cat@master
+      - uses: TarasMazepa/github-action-cat@master
         id: get-dart-version
         with:
           path: DART_SDK_VERSION
@@ -118,7 +118,7 @@ jobs:
           sdk: ${{ steps.get-dart-version.outputs.text }}
       - run: dart pub get
         working-directory: cli
-      - uses: pCYSl5EDgo/cat@master
+      - uses: TarasMazepa/github-action-cat@master
         id: get-stax-version
         with:
           path: VERSION
