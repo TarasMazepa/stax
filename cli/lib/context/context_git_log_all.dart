@@ -159,10 +159,13 @@ class GitLogAllNode {
   }
 
   GitLogAllNode? collapse([bool showAllBranches = false]) {
+    List<GitLogAllNode> newChildren = [];
     for (int i = 0; i < children.length; i++) {
-      children[i] = children[i].collapse(showAllBranches);
+      final child = children[i].collapse(showAllBranches);
+      if (child == null) continue;
+      newChildren.add(child);
     }
-    children.nonNulls.toList();
+    children = newChildren;
     final hasInterestingParts = (showAllBranches && line.partsHasRemoteRef) ||
         line.partsHasRemoteHead ||
         line.parts.any(
