@@ -162,7 +162,7 @@ class GitLogAllNode {
     if (depth < 0) return this;
     List<GitLogAllNode> newChildren = [];
     for (int i = 0; i < children.length; i++) {
-      GitLogAllNode child = null, newChild = children[i];
+      GitLogAllNode? child = null, newChild = children[i];
       while (newChild != null && child != newChild) {
         child = newChild;
         newChild = child.collapse(showAllBranches, depth - 1);
