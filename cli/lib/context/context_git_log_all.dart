@@ -158,10 +158,15 @@ class GitLogAllNode {
     return children.last;
   }
 
-  GitLogAllNode? collapse([bool showAllBranches = false]) {
+  GitLogAllNode? collapse([bool showAllBranches = false, int depth = 1000]) {
+    if (depth < 0) return this;
     List<GitLogAllNode> newChildren = [];
     for (int i = 0; i < children.length; i++) {
-      final child = children[i].collapse(showAllBranches);
+      GitLogAllNode child = null, newChild = children[i];
+      while (newChild != null && child != newChild) {
+        child = newChild;
+        newChild = child.collapse(showAllBranches, depth - 1);
+      }
       if (child == null) continue;
       newChildren.add(child);
     }
