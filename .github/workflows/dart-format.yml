@@ -1,0 +1,30 @@
+name: dart-format.yml
+on:
+  workflow_dispatch:
+
+jobs:
+  dart-format:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: TarasMazepa/github-action-cat@master
+        id: get-dart-version
+        with:
+          path: DART_SDK_VERSION
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ steps.get-dart-version.outputs.text }}
+      - run: dart format .
+      - run: |
+          if ! git diff --quiet; then
+            branch_name=format-dart-$RANDOM
+            git config --global user.name 'stax'
+            git config --global user.email 'stax@staxforgit.com'
+            git checkout -b $branch_name
+            git commit -a -m "Format dart code"
+            git push --set-upstream origin $branch_name
+            gh pr merge $(gh pr create -B main -f) --auto --squash
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.PAT }} 
