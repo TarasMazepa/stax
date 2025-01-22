@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: pCYSl5EDgo/cat@master
+      - uses: TarasMazepa/github-action-cat@master
         id: get-dart-version
         with:
           path: DART_SDK_VERSION
