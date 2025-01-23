@@ -3,7 +3,6 @@ import { AuthState, GitHubUser, GitHubPR } from '../types/github';
 
 const CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.VITE_GITHUB_CLIENT_SECRET;
-const REDIRECT_URL = browser.identity.getRedirectURL();
 
 export class GitHubService {
     private static async getAuthState(): Promise<AuthState> {
@@ -20,7 +19,6 @@ export class GitHubService {
         const authUrl = new URL('https://github.com/login/oauth/authorize');
 
         authUrl.searchParams.append('client_id', CLIENT_ID);
-        authUrl.searchParams.append('redirect_uri', REDIRECT_URL);
         authUrl.searchParams.append('state', state);
         authUrl.searchParams.append('scope', 'repo user');
         authUrl.searchParams.append('response_type', 'code');
@@ -145,7 +143,6 @@ export class GitHubService {
                 client_id: CLIENT_ID,
                 client_secret: CLIENT_SECRET,
                 code,
-                redirect_uri: REDIRECT_URL,
             }),
         });
 
