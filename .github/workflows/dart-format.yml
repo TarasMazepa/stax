@@ -1,11 +1,10 @@
-name: cli-update-dependencies.yml
+name: dart-format.yml
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "25 12 * * *"
 
 jobs:
-  cli-update-dependencies:
+  dart-format:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,28 +15,16 @@ jobs:
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: ${{ steps.get-dart-version.outputs.text }}
-      - run: dart pub upgrade
-        working-directory: cli
-      - run: dart pub get
-        working-directory: cli
-      - run: |
-          git config --global user.name 'stax'
-          git config --global user.email 'stax@staxforgit.com'
-      - run: dart test
-        working-directory: cli
-      - run: dart analyze
-        working-directory: cli
-      - run: dart compile exe bin/cli.dart
-        working-directory: cli
+      - run: dart format .
       - run: |
           if ! git diff --quiet; then
-            branch_name=cli-update-dependencies-$RANDOM
+            branch_name=format-dart-$RANDOM
             git config --global user.name 'stax'
             git config --global user.email 'stax@staxforgit.com'
             git checkout -b $branch_name
-            git commit -a -m "Cli update dependencies"
+            git commit -a -m "Format dart code"
             git push --set-upstream origin $branch_name
             gh pr merge $(gh pr create -B main -f) --auto --squash
           fi
         env:
-          GH_TOKEN: ${{ secrets.PAT }}
+          GH_TOKEN: ${{ secrets.PAT }} 

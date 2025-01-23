@@ -5,44 +5,44 @@ import { GitHubPR } from './types/github';
 console.log('Content script loaded');
 
 async function injectPRList() {
-  const container = document.createElement('div');
-  container.id = 'stax-pr-list';
-  container.className = 'stax-pr-container';  
-  
-  const sidebar = document.querySelector('.gh-header-show');
-  if (!sidebar) return;
-  
-  sidebar.appendChild(container);
-  
-  try {
-    const [owner, repo] = window.location.pathname.split('/').filter(Boolean).slice(0, 2);
-    const authState = await browser.runtime.sendMessage({ type: 'GET_AUTH_STATE' });
-    if (!authState?.user?.login) {
-      throw new Error('User not authenticated');
-    }
-    
-    const prs = await GitHubContentService.getAllPullRequests(owner, repo, {
-      state: 'open',
-      sort: 'updated'
-    });
+    const container = document.createElement('div');
+    container.id = 'stax-pr-list';
+    container.className = 'stax-pr-container';
 
-    // Filter PRs for current user
-    const userPRs = prs.filter(pr => pr.user.login === authState.user.login);
-    
-    renderPRList(container, userPRs);
-  } catch (error) {
-    console.error('Failed to load PRs:', error);
-    container.innerHTML = `
+    const sidebar = document.querySelector('.gh-header-show');
+    if (!sidebar) return;
+
+    sidebar.appendChild(container);
+
+    try {
+        const [owner, repo] = window.location.pathname.split('/').filter(Boolean).slice(0, 2);
+        const authState = await browser.runtime.sendMessage({ type: 'GET_AUTH_STATE' });
+        if (!authState?.user?.login) {
+            throw new Error('User not authenticated');
+        }
+
+        const prs = await GitHubContentService.getAllPullRequests(owner, repo, {
+            state: 'open',
+            sort: 'updated'
+        });
+
+        // Filter PRs for current user
+        const userPRs = prs.filter(pr => pr.user.login === authState.user.login);
+
+        renderPRList(container, userPRs);
+    } catch (error) {
+        console.error('Failed to load PRs:', error);
+        container.innerHTML = `
       <div class="flash flash-error">
         Failed to load pull requests. Please ensure you're logged in.
       </div>
     `;
-  }
+    }
 }
 
 function renderPRList(container: HTMLElement, prs: GitHubPR[]) {
-  const style = document.createElement('style');
-  style.textContent = `
+    const style = document.createElement('style');
+    style.textContent = `
     .stax-pr-container {
       margin-bottom: 16px;
       background-color: #22272e;
@@ -98,9 +98,9 @@ function renderPRList(container: HTMLElement, prs: GitHubPR[]) {
       font-weight: 500;
     }
   `;
-  document.head.appendChild(style);
-  
-  container.innerHTML = `
+    document.head.appendChild(style);
+
+    container.innerHTML = `
     <div class="stax-pr-header">
       Your Pull Requests
     </div>
@@ -118,36 +118,36 @@ function renderPRList(container: HTMLElement, prs: GitHubPR[]) {
 }
 
 function isPRPage() {
-  const path = window.location.pathname;
-  return /^\/[^/]+\/[^/]+\/pull\/\d+/.test(path);
+    const path = window.location.pathname;
+    return /^\/[^/]+\/[^/]+\/pull\/\d+/.test(path);
 }
 
 
 async function init() {
-  try {
-    const authState = await browser.runtime.sendMessage({ type: 'GET_AUTH_STATE' });
-    if (authState?.token && isPRPage()) {
-      injectPRList();
+    try {
+        const authState = await browser.runtime.sendMessage({ type: 'GET_AUTH_STATE' });
+        if (authState?.token && isPRPage()) {
+            injectPRList();
+        }
+    } catch (error) {
+        console.error('Error initializing content script:', error);
     }
-  } catch (error) {
-    console.error('Error initializing content script:', error);
-  }
 }
 
 
 let currentPath = window.location.pathname;
 const observer = new MutationObserver(() => {
-  if (currentPath !== window.location.pathname) {
-    currentPath = window.location.pathname;
-    if (isPRPage()) {
-      injectPRList();
+    if (currentPath !== window.location.pathname) {
+        currentPath = window.location.pathname;
+        if (isPRPage()) {
+            injectPRList();
+        }
     }
-  }
 });
 
 observer.observe(document.body, {
-  childList: true,
-  subtree: true
+    childList: true,
+    subtree: true
 });
 
 init();

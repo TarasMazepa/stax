@@ -1,10 +1,10 @@
-import 'package:stax/settings/settings.dart';
+import 'package:stax/settings/base_settings.dart';
 
 class Setting<T> {
   final String name;
   final String description;
   final T _defaultValue;
-  final Settings _settings;
+  final BaseSettings _settings;
   final T Function(String) _fromStringConverter;
   final String Function(T) _toStringConverter;
 

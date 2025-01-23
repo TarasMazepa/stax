@@ -158,9 +158,19 @@ class GitLogAllNode {
     return children.last;
   }
 
-  GitLogAllNode? collapse([bool showAllBranches = false]) {
-    children =
-        children.map((x) => x.collapse(showAllBranches)).nonNulls.toList();
+  GitLogAllNode? collapse([bool showAllBranches = false, int depth = 1000]) {
+    if (depth < 0) return this;
+    List<GitLogAllNode> newChildren = [];
+    for (int i = 0; i < children.length; i++) {
+      GitLogAllNode? child = null, newChild = children[i];
+      while (newChild != null && child != newChild) {
+        child = newChild;
+        newChild = child.collapse(showAllBranches, depth - 1);
+      }
+      if (newChild == null) continue;
+      newChildren.add(newChild);
+    }
+    children = newChildren;
     final hasInterestingParts = (showAllBranches && line.partsHasRemoteRef) ||
         line.partsHasRemoteHead ||
         line.parts.any(
