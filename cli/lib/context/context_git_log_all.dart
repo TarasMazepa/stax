@@ -167,8 +167,8 @@ class GitLogAllNode {
         child = newChild;
         newChild = child.collapse(showAllBranches, depth - 1);
       }
-      if (child == null) continue;
-      newChildren.add(child);
+      if (newChild == null) continue;
+      newChildren.add(newChild);
     }
     children = newChildren;
     final hasInterestingParts = (showAllBranches && line.partsHasRemoteRef) ||
