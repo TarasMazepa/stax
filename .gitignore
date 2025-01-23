@@ -2,4 +2,3 @@
 /.stax_settings
 /.stax_settings_backup
 **/node_modules
-**/.env

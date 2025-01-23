@@ -1,0 +1,28 @@
+name: browser-extension-build
+on:
+  pull_request:
+
+jobs:
+  browser-extension-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: browser-extension/package-lock.json
+
+      - run: npm ci
+        working-directory: browser-extension
+
+      - run: npm run build
+        working-directory: browser-extension
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: browser-extension-dist
+          path: browser-extension/dist
+          retention-days: 7
