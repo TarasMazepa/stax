@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill';
-import { AuthState, GitHubUser, GitHubPR } from '../types/github';
+import { AuthState, GitHubUser, GitHubPR, HostConfig } from '../types/github';
 
 const CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.VITE_GITHUB_CLIENT_SECRET;
@@ -15,8 +15,10 @@ export class GitHubService {
     }
 
     static async login(): Promise<AuthState> {
+        const domain = await this.getDomain();
         const state = Math.random().toString(36).substring(7);
-        const authUrl = new URL('https://github.com/login/oauth/authorize');
+        console.log('domain', domain);
+        const authUrl = new URL(`${domain}/login/oauth/authorize`);
 
         authUrl.searchParams.append('client_id', CLIENT_ID);
         authUrl.searchParams.append('state', state);
@@ -61,10 +63,42 @@ export class GitHubService {
         await this.setAuthState({ token: null, user: null, customDomain: 'github.com' });
     }
 
-    static async getCurrentUser(token: string): Promise<GitHubUser> {
-        const response = await fetch('https://api.github.com/user', {
+    private static async getActiveHost(): Promise<HostConfig | null> {
+        const { hosts } = await browser.storage.local.get(['hosts']);
+        if (!hosts) return null;
+
+        return hosts.find((h: HostConfig) => h.active) || null;
+    }
+
+    private static async getApiUrl(): Promise<string> {
+        const host = await this.getActiveHost();
+        console.log('host apiUrl', host?.apiUrl);
+        return host?.apiUrl || 'https://api.github.com';
+    }
+
+    private static async getDomain(): Promise<string> {
+        const host = await this.getActiveHost();
+        console.log('host domain', host?.domain);
+        return host?.domain || 'https://github.com';
+    }
+
+    private static async getAuthToken(): Promise<string | null> {
+        const host = await this.getActiveHost();
+        if (host?.pat) {
+            return host.pat;
+        }
+        const authState = await this.getAuthState();
+        return authState.token;
+    }
+
+    static async getCurrentUser(token?: string): Promise<GitHubUser> {
+        const apiUrl = await this.getApiUrl();
+        const authToken = token || await this.getAuthToken();
+        if (!authToken) throw new Error('No authentication token available');
+
+        const response = await fetch(`${apiUrl}/user`, {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${authToken}`,
             },
         });
         return response.json();
@@ -77,9 +111,10 @@ export class GitHubService {
         per_page?: number;
         page?: number;
     } = {}): Promise<GitHubPR[]> {
-        const authState = await this.getAuthState();
-        if (!authState.token) throw new Error('Not authenticated');
-
+        const authToken = await this.getAuthToken();
+        if (!authToken) throw new Error('Not authenticated');
+        
+        const apiUrl = await this.getApiUrl();
         const params = new URLSearchParams({
             state: options.state || 'open',
             sort: options.sort || 'created',
@@ -87,12 +122,12 @@ export class GitHubService {
             per_page: options.per_page?.toString() || '30',
             page: options.page?.toString() || '1'
         });
-
+        console.log('apiUrl', apiUrl);
         const response = await fetch(
-            `https://api.github.com/repos/${owner}/${repo}/pulls?${params}`,
+            `${apiUrl}/repos/${owner}/${repo}/pulls?${params}`,
             {
                 headers: {
-                    Authorization: `Bearer ${authState.token}`,
+                    Authorization: `Bearer ${authToken}`,
                     Accept: 'application/vnd.github.v3+json',
                 },
             }
@@ -133,7 +168,9 @@ export class GitHubService {
     }
 
     private static async getAccessToken(code: string): Promise<string> {
-        const response = await fetch('https://github.com/login/oauth/access_token', {
+        const domain = await this.getDomain();
+        console.log('domain', domain);
+        const response = await fetch(`${domain}/login/oauth/access_token`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -155,10 +192,8 @@ export class GitHubService {
     }
 
     static async getCurrentUserPRs(owner: string, repo: string): Promise<GitHubPR[]> {
-        const authState = await this.getAuthState();
-        if (!authState.token || !authState.user) {
-            throw new Error('Not authenticated');
-        }
+        const authToken = await this.getAuthToken();
+        if (!authToken) throw new Error('Not authenticated');
 
         return this.getAllPullRequests(owner, repo, {
             state: 'open',

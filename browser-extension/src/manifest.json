@@ -22,15 +22,14 @@
   "permissions": [
     "identity",
     "storage"
-  ],
+  ], 
   "host_permissions": [
     "https://github.com/*",
-    "https://api.github.com/*",
-    "http://localhost:3000/*"
+    "https://api.github.com/*"
   ],
   "content_scripts": [
     {
-      "matches": ["https://github.com/*"],
+      "matches": ["<all_urls>"],
       "js": ["src/contentScript.ts"]
     }
   ]

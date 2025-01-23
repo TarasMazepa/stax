@@ -4,12 +4,35 @@
 
 html,
 body {
-  width: 300px;
-  height: 400px;
+  width: 400px;
+  height: 600px;
   padding: 0;
   margin: 0;
+  background-color: rgb(36, 36, 36);
+  overflow-x: hidden;
 }
 
 body {
   background-color: rgb(36, 36, 36);
+}
+
+.popup-container {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #4a5568 #2d3748;
+}
+
+.popup-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.popup-container::-webkit-scrollbar-track {
+  background: #2d3748;
+  border-radius: 4px;
+}
+
+.popup-container::-webkit-scrollbar-thumb {
+  background: #4a5568;
+  border-radius: 4px;
 }

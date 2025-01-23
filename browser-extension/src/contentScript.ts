@@ -1,6 +1,6 @@
 import browser from 'webextension-polyfill';
 import { GitHubContentService } from './services/github-content';
-import { GitHubPR } from './types/github';
+import { GitHubPR, HostConfig } from './types/github';
 
 console.log('Content script loaded');
 
@@ -16,20 +16,13 @@ async function injectPRList() {
 
     try {
         const [owner, repo] = window.location.pathname.split('/').filter(Boolean).slice(0, 2);
-        const authState = await browser.runtime.sendMessage({ type: 'GET_AUTH_STATE' });
-        if (!authState?.user?.login) {
-            throw new Error('User not authenticated');
-        }
 
         const prs = await GitHubContentService.getAllPullRequests(owner, repo, {
             state: 'open',
             sort: 'updated'
         });
 
-        // Filter PRs for current user
-        const userPRs = prs.filter(pr => pr.user.login === authState.user.login);
-
-        renderPRList(container, userPRs);
+        renderPRList(container, prs);
     } catch (error) {
         console.error('Failed to load PRs:', error);
         container.innerHTML = `
@@ -122,25 +115,38 @@ function isPRPage() {
     return /^\/[^/]+\/[^/]+\/pull\/\d+/.test(path);
 }
 
+async function shouldInject(): Promise<boolean> {
+    const currentHost = window.location.host;
+    if (currentHost === 'github.com') {
+      return true;
+    }
+
+    const { hosts } = await browser.storage.local.get(['hosts']);
+    if (!hosts) return false;
+
+    return hosts.some((h: HostConfig) => h.active && (h.domain.includes(currentHost)));
+}
 
 async function init() {
     try {
-        const authState = await browser.runtime.sendMessage({ type: 'GET_AUTH_STATE' });
-        if (authState?.token && isPRPage()) {
-            injectPRList();
+        const token = await GitHubContentService.getAuthToken();
+        if (token && isPRPage()) {
+            if (await shouldInject()) {
+              console.log('Injecting PR list');
+                injectPRList();
+            }
         }
     } catch (error) {
         console.error('Error initializing content script:', error);
     }
 }
 
-
 let currentPath = window.location.pathname;
 const observer = new MutationObserver(() => {
     if (currentPath !== window.location.pathname) {
         currentPath = window.location.pathname;
         if (isPRPage()) {
-            injectPRList();
+            init();
         }
     }
 });

@@ -1,10 +1,10 @@
 import browser from 'webextension-polyfill';
-import { GitHubPR } from '../types/github';
+import { GitHubPR, HostConfig } from '../types/github';
 
 export class GitHubContentService {
-  private static async getAuthToken(): Promise<string | null> {
-    const response = await browser.runtime.sendMessage({ type: 'GET_AUTH_STATE' });
-    return response?.token || null;
+  public static async getAuthToken(): Promise<string | null> {
+    const token = await browser.runtime.sendMessage({ type: 'GET_TOKEN' });
+    return token || null;
   }
 
   static async getPullRequests(owner: string, repo: string, options: {
