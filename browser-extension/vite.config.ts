@@ -8,7 +8,7 @@ const manifestKey = {
 
 function generateManifest() {
   const manifest = readJsonFile("src/manifest.json");
-  const pkg = readJsonFile("package-lock.json");
+  const pkg = readJsonFile("package.json");
   return {
     name: pkg.name,
     description: pkg.description,
