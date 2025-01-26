@@ -16,7 +16,8 @@ class Context {
 
   late final Git git = Git(this);
   late final Settings settings = Settings();
-  late final RepositorySettings? repositorySettings = RepositorySettings.load(this);
+  late final RepositorySettings? repositorySettings =
+      RepositorySettings.load(this);
 
   Context.implicit() : this(false, null, false, false, false);
 
