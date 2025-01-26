@@ -5,13 +5,12 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_cleanup_flags.dart';
 import 'package:stax/context/context_explain_to_user_no_staged_changes.dart';
 import 'package:stax/context/context_get_pr_url.dart';
+import 'package:stax/context/context_gh_create_pr.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
 import 'package:stax/context/context_open_in_browser.dart';
-import 'package:stax/settings/settings.dart';
-import 'package:stax/context/context_gh_create_pr.dart';
 
 class InternalCommandCommit extends InternalCommand {
   static final prFlag = Flag(
@@ -77,7 +76,7 @@ class InternalCommandCommit extends InternalCommand {
     }
     final resultingBranchName = sanitizeBranchName(originalBranchName);
     final prefixedBranchName =
-        Settings.instance.branchPrefix.value + resultingBranchName;
+        context.settings.branchPrefix.value + resultingBranchName;
 
     if (!acceptBranchName && originalBranchName != prefixedBranchName) {
       if (!context.commandLineContinueQuestion(

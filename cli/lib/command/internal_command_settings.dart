@@ -3,14 +3,8 @@ import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/settings/setting.dart';
-import 'package:stax/settings/settings.dart';
 
 class InternalCommandSettings extends InternalCommand {
-  late final List<Setting> availableSettings = [
-    Settings.instance.branchPrefix,
-    Settings.instance.defaultBranch,
-    Settings.instance.defaultRemote,
-  ].sortedBy((setting) => setting.name);
   late final availableSubCommands = [
     'set',
     'clear',
@@ -31,6 +25,11 @@ class InternalCommandSettings extends InternalCommand {
 
   @override
   void run(final List<String> args, final Context context) {
+    late final List<Setting> availableSettings = [
+      context.settings.branchPrefix,
+      context.settings.defaultBranch,
+      context.settings.defaultRemote,
+    ].sortedBy((setting) => setting.name);
     bool isSettingAvailable(String name) =>
         availableSettings.any((setting) => setting.name == name);
     Setting getSettingByName(String name) =>
