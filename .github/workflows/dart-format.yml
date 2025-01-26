@@ -24,7 +24,7 @@ jobs:
             git checkout -b $branch_name
             git commit -a -m "Format dart code"
             git push --set-upstream origin $branch_name
-            gh pr merge $(gh pr create -B main -f) --auto --squash
+            gh pr merge $(gh pr create -B ${{ github.event.pull_request.base.ref }} -f) --auto --squash
           fi
         env:
           GH_TOKEN: ${{ secrets.PAT }} 
