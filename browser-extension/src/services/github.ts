@@ -7,11 +7,11 @@ const CLIENT_SECRET = import.meta.env.VITE_GITHUB_CLIENT_SECRET;
 export class GitHubService {
     private static async getAuthState(): Promise<AuthState> {
         const result = await browser.storage.local.get(['authState']);
-        return result.authState || { token: null, user: null, customDomain: 'github.com' };
+        return result.authState || {token: null, user: null, customDomain: 'github.com'};
     }
 
     private static async setAuthState(state: AuthState): Promise<void> {
-        await browser.storage.local.set({ authState: state });
+        await browser.storage.local.set({authState: state});
     }
 
     static async login(): Promise<AuthState> {
@@ -44,7 +44,7 @@ export class GitHubService {
             const token = await this.getAccessToken(code);
             const user = await this.getCurrentUser(token);
 
-            const authState = { token, user, customDomain: 'github.com' };
+            const authState = {token, user, customDomain: 'github.com'};
             await this.setAuthState(authState);
             return authState;
 
@@ -58,7 +58,7 @@ export class GitHubService {
     }
 
     static async logout(): Promise<void> {
-        await this.setAuthState({ token: null, user: null, customDomain: 'github.com' });
+        await this.setAuthState({token: null, user: null, customDomain: 'github.com'});
     }
 
     static async getCurrentUser(token: string): Promise<GitHubUser> {

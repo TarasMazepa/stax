@@ -22,7 +22,7 @@ export default function Popup() {
     const loadAuthState = async () => {
         try {
             const state = await browser.storage.local.get(['authState']);
-            setAuthState(state.authState || { token: null, user: null, customDomain: 'github.com' });
+            setAuthState(state.authState || {token: null, user: null, customDomain: 'github.com'});
         } catch (err) {
             setError('Failed to load auth state');
         } finally {

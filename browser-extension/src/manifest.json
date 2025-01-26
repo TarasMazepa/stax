@@ -17,7 +17,9 @@
   },
   "background": {
     "{{chrome}}.service_worker": "src/background.ts",
-    "{{firefox}}.scripts": ["src/background.ts"]
+    "{{firefox}}.scripts": [
+      "src/background.ts"
+    ]
   },
   "permissions": [
     "identity",
@@ -30,8 +32,12 @@
   ],
   "content_scripts": [
     {
-      "matches": ["https://github.com/*"],
-      "js": ["src/contentScript.ts"]
+      "matches": [
+        "https://github.com/*"
+      ],
+      "js": [
+        "src/contentScript.ts"
+      ]
     }
   ]
 }

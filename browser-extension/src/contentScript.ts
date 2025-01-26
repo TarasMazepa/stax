@@ -16,7 +16,7 @@ async function injectPRList() {
 
     try {
         const [owner, repo] = window.location.pathname.split('/').filter(Boolean).slice(0, 2);
-        const authState = await browser.runtime.sendMessage({ type: 'GET_AUTH_STATE' });
+        const authState = await browser.runtime.sendMessage({type: 'GET_AUTH_STATE'});
         if (!authState?.user?.login) {
             throw new Error('User not authenticated');
         }
@@ -125,7 +125,7 @@ function isPRPage() {
 
 async function init() {
     try {
-        const authState = await browser.runtime.sendMessage({ type: 'GET_AUTH_STATE' });
+        const authState = await browser.runtime.sendMessage({type: 'GET_AUTH_STATE'});
         if (authState?.token && isPRPage()) {
             injectPRList();
         }
