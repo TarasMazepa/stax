@@ -4,6 +4,7 @@ import 'package:stax/context/context_git_get_repository_root.dart';
 import 'package:stax/external_command/external_command.dart';
 import 'package:stax/file_path_dir_on_uri.dart';
 import 'package:stax/git/git.dart';
+import 'package:stax/settings/settings.dart';
 
 class Context {
   final bool silent;
@@ -13,6 +14,7 @@ class Context {
   final bool declineAll;
 
   late final Git git = Git(this);
+  late final Settings settings = Settings();
 
   Context.implicit() : this(false, null, false, false, false);
 

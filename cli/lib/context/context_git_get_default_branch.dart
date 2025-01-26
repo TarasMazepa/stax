@@ -2,14 +2,13 @@ import 'package:stax/context/context.dart';
 import 'package:stax/map_on_string.dart';
 import 'package:stax/on_empty_on_iterable.dart';
 import 'package:stax/once.dart';
-import 'package:stax/settings/settings.dart';
 
 extension ContextGitGetDefaultBranch on Context {
   static List<String>? remotes;
   static String? defaultBranch;
 
   String? getDefaultBranch() {
-    final override = Settings.instance.defaultBranch.value;
+    final override = settings.defaultBranch.value;
     if (override.isNotEmpty) return override;
 
     if (defaultBranch != null) return defaultBranch;

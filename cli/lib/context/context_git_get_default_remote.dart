@@ -1,12 +1,11 @@
 import 'package:collection/collection.dart';
 import 'package:stax/context/context.dart';
-import 'package:stax/settings/settings.dart';
 
 extension ContextGitGetPreferredRemote on Context {
   static String? _preferredRemote;
 
   String? getPreferredRemote() {
-    final override = Settings.instance.defaultRemote.value;
+    final override = settings.defaultRemote.value;
     if (override.isNotEmpty) return override;
 
     if (_preferredRemote != null) return _preferredRemote;
