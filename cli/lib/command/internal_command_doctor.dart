@@ -1,9 +1,9 @@
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
+import 'package:stax/context/context_git_get_default_remote.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/string_empty_to_null.dart';
-import 'package:stax/context/context_git_get_default_remote.dart';
 
 class InternalCommandDoctor extends InternalCommand {
   InternalCommandDoctor()
