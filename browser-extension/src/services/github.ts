@@ -1,10 +1,12 @@
 import browser from 'webextension-polyfill';
-import { AuthState, GitHubUser, GitHubPR } from '../types/github';
+import { AuthState, GitHubPR, GitHubUser } from '../types/github';
 
 const CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.VITE_GITHUB_CLIENT_SECRET;
+const PRS_PER_PAGE: number = 100;
 
 export class GitHubService {
+
     private static async getAuthState(): Promise<AuthState> {
         const result = await browser.storage.local.get(['authState']);
         return result.authState || {token: null, user: null, customDomain: 'github.com'};
@@ -75,22 +77,16 @@ export class GitHubService {
         return response.json();
     }
 
-    static async getPullRequests(owner: string, repo: string, options: {
-        state?: 'open' | 'closed' | 'all';
-        sort?: 'created' | 'updated' | 'popularity' | 'long-running';
-        direction?: 'asc' | 'desc';
-        per_page?: number;
-        page?: number;
-    } = {}): Promise<GitHubPR[]> {
+    static async getPullRequests(owner: string, repo: string, page: number = 1): Promise<GitHubPR[]> {
         const token = await this.getAuthToken();
         if (!token) throw new Error('Not authenticated');
 
         const params = new URLSearchParams({
-            state: options.state || 'open',
-            sort: options.sort || 'created',
-            direction: options.direction || 'desc',
-            per_page: options.per_page?.toString() || '30',
-            page: options.page?.toString() || '1'
+            state: 'open',
+            sort: 'updated',
+            direction: 'desc',
+            per_page: PRS_PER_PAGE.toString(),
+            page: page.toString(),
         });
 
         const response = await fetch(
@@ -110,27 +106,18 @@ export class GitHubService {
         return response.json();
     }
 
-    static async getAllPullRequests(owner: string, repo: string, options: {
-        state?: 'open' | 'closed' | 'all';
-        sort?: 'created' | 'updated' | 'popularity' | 'long-running';
-        direction?: 'asc' | 'desc';
-    } = {}): Promise<GitHubPR[]> {
+    static async getAllPullRequests(owner: string, repo: string): Promise<GitHubPR[]> {
         const allPRs: GitHubPR[] = [];
         let page = 1;
-        const PER_PAGE = 100;
 
         while (true) {
-            const prs = await this.getPullRequests(owner, repo, {
-                ...options,
-                per_page: PER_PAGE,
-                page: page
-            });
+            const prs = await this.getPullRequests(owner, repo, page);
 
             if (prs.length === 0) break;
 
             allPRs.push(...prs);
 
-            if (prs.length < PER_PAGE) break;
+            if (prs.length < PRS_PER_PAGE) break;
             page++;
         }
 
@@ -165,9 +152,6 @@ export class GitHubService {
             throw new Error('Not authenticated');
         }
 
-        return this.getAllPullRequests(owner, repo, {
-            state: 'open',
-            sort: 'updated',
-        });
+        return this.getAllPullRequests(owner, repo);
     }
 }
