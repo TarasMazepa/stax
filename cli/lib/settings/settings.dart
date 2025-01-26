@@ -5,8 +5,6 @@ import 'package:stax/settings/date_time_setting.dart';
 import 'package:stax/settings/string_setting.dart';
 
 class Settings extends BaseSettings {
-  static final instance = Settings();
-
   late final DateTimeSetting lastUpdatePrompt = DateTimeSetting(
     'last_update_prompt',
     DateTime.now(),
