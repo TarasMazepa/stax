@@ -14,6 +14,11 @@ export class GitHubService {
         await browser.storage.local.set({authState: state});
     }
 
+    private static async getAuthToken(): Promise<string | null> {
+        const response = await browser.runtime.sendMessage({type: 'GET_AUTH_STATE'});
+        return response?.token || null;
+    }
+
     static async login(): Promise<AuthState> {
         const state = Math.random().toString(36).substring(7);
         const authUrl = new URL('https://github.com/login/oauth/authorize');
@@ -77,8 +82,8 @@ export class GitHubService {
         per_page?: number;
         page?: number;
     } = {}): Promise<GitHubPR[]> {
-        const authState = await this.getAuthState();
-        if (!authState.token) throw new Error('Not authenticated');
+        const token = await this.getAuthToken();
+        if (!token) throw new Error('Not authenticated');
 
         const params = new URLSearchParams({
             state: options.state || 'open',
@@ -92,7 +97,7 @@ export class GitHubService {
             `https://api.github.com/repos/${owner}/${repo}/pulls?${params}`,
             {
                 headers: {
-                    Authorization: `Bearer ${authState.token}`,
+                    Authorization: `Bearer ${token}`,
                     Accept: 'application/vnd.github.v3+json',
                 },
             }
@@ -112,7 +117,7 @@ export class GitHubService {
     } = {}): Promise<GitHubPR[]> {
         const allPRs: GitHubPR[] = [];
         let page = 1;
-        const PER_PAGE = 100; // Maximum allowed by GitHub API
+        const PER_PAGE = 100;
 
         while (true) {
             const prs = await this.getPullRequests(owner, repo, {

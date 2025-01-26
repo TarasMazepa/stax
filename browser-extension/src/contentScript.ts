@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill';
-import { GitHubContentService } from './services/github-content';
+import { GitHubService } from './services/github';
 import { GitHubPR } from './types/github';
 
 console.log('Content script loaded');
@@ -21,7 +21,7 @@ async function injectPRList() {
             throw new Error('User not authenticated');
         }
 
-        const prs = await GitHubContentService.getAllPullRequests(owner, repo, {
+        const prs = await GitHubService.getAllPullRequests(owner, repo, {
             state: 'open',
             sort: 'updated'
         });
