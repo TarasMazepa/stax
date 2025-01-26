@@ -21,10 +21,7 @@ async function injectPRList() {
             throw new Error('User not authenticated');
         }
 
-        const prs = await GitHubService.getAllPullRequests(owner, repo, {
-            state: 'open',
-            sort: 'updated'
-        });
+        const prs = await GitHubService.getAllPullRequests(owner, repo);
 
         // Filter PRs for current user
         const userPRs = prs.filter(pr => pr.user.login === authState.user.login);
