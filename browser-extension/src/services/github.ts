@@ -81,16 +81,19 @@ export class GitHubService {
         const token = await this.getAuthToken();
         if (!token) throw new Error('Not authenticated');
 
+        const authState = await this.getAuthState();
+        if (!authState.user?.login) throw new Error('User not authenticated');
+
         const params = new URLSearchParams({
-            state: 'open',
+            q: `repo:${owner}/${repo} is:pr author:${authState.user.login}`,
             sort: 'updated',
-            direction: 'desc',
+            order: 'desc',
             per_page: PRS_PER_PAGE.toString(),
             page: page.toString(),
         });
 
         const response = await fetch(
-            `https://api.github.com/repos/${owner}/${repo}/pulls?${params}`,
+            `https://api.github.com/search/issues?${params}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -103,7 +106,8 @@ export class GitHubService {
             throw new Error(`Failed to fetch pull requests: ${response.statusText}`);
         }
 
-        return response.json();
+        const data = await response.json();
+        return data.items;
     }
 
     static async getAllPullRequests(owner: string, repo: string): Promise<GitHubPR[]> {

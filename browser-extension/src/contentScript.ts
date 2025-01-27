@@ -23,10 +23,7 @@ async function injectPRList() {
 
         const prs = await GitHubService.getAllPullRequests(owner, repo);
 
-        // Filter PRs for current user
-        const userPRs = prs.filter(pr => pr.user.login === authState.user.login);
-
-        renderPRList(container, userPRs);
+        renderPRList(container, prs);
     } catch (error) {
         console.error('Failed to load PRs:', error);
         container.innerHTML = `
