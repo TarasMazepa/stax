@@ -38,13 +38,11 @@ export class GitHubService {
 
             const url = new URL(responseUrl);
             const code = url.searchParams.get('code');
-            const returnedState = url.searchParams.get('state');
-
             if (!code) {
                 throw new Error('No authorization code received');
             }
 
-            if (state !== returnedState) {
+            if (state !== url.searchParams.get('state')) {
                 throw new Error('State mismatch - possible CSRF attack');
             }
 
