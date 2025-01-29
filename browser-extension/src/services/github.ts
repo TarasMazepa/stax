@@ -12,8 +12,9 @@ export class GitHubService {
         return result.authState || {token: null, user: null, customDomain: 'github.com'};
     }
 
-    private static async setAuthState(state: AuthState): Promise<void> {
+    private static async setAuthState(state: AuthState): Promise<AuthState> {
         await browser.storage.local.set({authState: state});
+        return state;
     }
 
     private static async getAuthToken(): Promise<string | null> {
@@ -31,13 +32,13 @@ export class GitHubService {
         authUrl.searchParams.append('response_type', 'code');
 
         try {
-            const responseUrl = await browser.identity.launchWebAuthFlow({
+            const url = await browser.identity.launchWebAuthFlow({
                 url: authUrl.toString(),
                 interactive: true
-            });
+            }).then(rawUrl => new URL(rawUrl))
 
-            const url = new URL(responseUrl);
             const code = url.searchParams.get('code');
+
             if (!code) {
                 throw new Error('No authorization code received');
             }
@@ -49,10 +50,7 @@ export class GitHubService {
             const token = await this.getAccessToken(code);
             const user = await this.getCurrentUser(token);
 
-            const authState = {token, user, customDomain: 'github.com'};
-            await this.setAuthState(authState);
-            return authState;
-
+            return await this.setAuthState({token, user, customDomain: 'github.com'});
         } catch (error) {
             console.error('Login failed:', error);
             if (error instanceof Error) {
