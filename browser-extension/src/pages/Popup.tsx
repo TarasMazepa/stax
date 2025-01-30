@@ -17,7 +17,7 @@ export default function Popup() {
         });
 
         loadAuthState();
-    }, []);
+    });
 
     const loadAuthState = async () => {
         try {
