@@ -30,10 +30,11 @@ class InternalCommandSettings extends InternalCommand {
 
   @override
   void run(final List<String> args, final Context context) {
-    late final List<Setting> availableSettings = [
+    late final List<Setting> availableSettings = <Setting>[
       context.settings.branchPrefix,
       context.settings.defaultBranch,
       context.settings.defaultRemote,
+      context.settings.demo,
     ].sortedBy((setting) => setting.name);
     bool isSettingAvailable(String name) =>
         availableSettings.any((setting) => setting.name == name);
@@ -105,11 +106,11 @@ class InternalCommandSettings extends InternalCommand {
           context.printToConsole("Setting '$name' is not a list setting");
         }
 
-      case ['add', final name, ...]:
+      case ['add', ...]:
         context
             .printToConsole('Usage: stax settings add <setting_name> <value>');
 
-      case ['remove', final name, ...]:
+      case ['remove', ...]:
         context.printToConsole(
           'Usage: stax settings remove <setting_name> <value>',
         );

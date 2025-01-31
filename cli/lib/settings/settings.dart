@@ -3,8 +3,11 @@ import 'package:path/path.dart' as path;
 import 'package:stax/settings/base_settings.dart';
 import 'package:stax/settings/date_time_setting.dart';
 import 'package:stax/settings/string_setting.dart';
+import 'package:stax/settings/key_value_list_setting.dart';
 
 class Settings extends BaseSettings {
+  static final instance = Settings();
+
   late final DateTimeSetting lastUpdatePrompt = DateTimeSetting(
     'last_update_prompt',
     DateTime.now(),
@@ -31,6 +34,13 @@ class Settings extends BaseSettings {
     '',
     this,
     'Override for default remote (empty means use first available remote)',
+  );
+
+  late final KeyValueListSetting demo = KeyValueListSetting(
+    'demo',
+    [],
+    this,
+    'List of remote repository mappings',
   );
 
   Settings()
