@@ -3,12 +3,17 @@ import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/settings/setting.dart';
+import 'package:stax/settings/pair.dart';
+import 'package:stax/settings/base_list_setting.dart';
+import 'package:stax/settings/key_value_list_setting.dart';
 
 class InternalCommandSettings extends InternalCommand {
   late final availableSubCommands = [
     'set',
     'clear',
     'show',
+    'add',
+    'remove',
   ].sorted();
 
   InternalCommandSettings()
@@ -17,9 +22,9 @@ class InternalCommandSettings extends InternalCommand {
           'View or modify stax settings',
           type: InternalCommandType.hidden,
           arguments: {
-            'arg1': 'Subcommand (show, set,clear)',
-            'opt2': 'Setting name (for show/set/clear)',
-            'opt3': 'New value (for set)',
+            'arg1': 'Subcommand (show, set, clear, add, remove)',
+            'opt2': 'Setting name',
+            'opt3': 'Value (for set/add/remove)',
           },
         );
 
@@ -73,6 +78,41 @@ class InternalCommandSettings extends InternalCommand {
         printAvailableSettings();
       case ['clear', ...]:
         context.printToConsole('Usage: stax settings clear <setting_name>');
+
+      case ['add', final name, final value] when isSettingAvailable(name):
+        final setting = getSettingByName(name);
+        if (setting is BaseListSetting) {
+          if (setting is KeyValueListSetting) {
+            setting.add(Pair.parseString(value));
+          } else {
+            setting.add(value);
+          }
+          context.printToConsole("Added '$value' to setting: $name");
+        } else {
+          context.printToConsole("Setting '$name' is not a list setting");
+        }
+
+      case ['remove', final name, final value] when isSettingAvailable(name):
+        final setting = getSettingByName(name);
+        if (setting is BaseListSetting) {
+          if (setting is KeyValueListSetting) {
+            setting.remove(Pair.parseString(value));
+          } else {
+            setting.remove(value);
+          }
+          context.printToConsole("Removed '$value' from setting: $name");
+        } else {
+          context.printToConsole("Setting '$name' is not a list setting");
+        }
+
+      case ['add', final name, ...]:
+        context
+            .printToConsole('Usage: stax settings add <setting_name> <value>');
+
+      case ['remove', final name, ...]:
+        context.printToConsole(
+          'Usage: stax settings remove <setting_name> <value>',
+        );
 
       case [final subCommand, ...]:
         context.printToConsole(
