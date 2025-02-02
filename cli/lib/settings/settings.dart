@@ -2,12 +2,10 @@ import 'package:cli_util/cli_util.dart';
 import 'package:path/path.dart' as path;
 import 'package:stax/settings/base_settings.dart';
 import 'package:stax/settings/date_time_setting.dart';
-import 'package:stax/settings/string_setting.dart';
 import 'package:stax/settings/key_value_list_setting.dart';
+import 'package:stax/settings/string_setting.dart';
 
 class Settings extends BaseSettings {
-  static final instance = Settings();
-
   late final DateTimeSetting lastUpdatePrompt = DateTimeSetting(
     'last_update_prompt',
     DateTime.now(),
