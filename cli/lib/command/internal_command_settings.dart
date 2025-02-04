@@ -2,10 +2,10 @@ import 'package:collection/collection.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
-import 'package:stax/settings/setting.dart';
-import 'package:stax/settings/pair.dart';
 import 'package:stax/settings/base_list_setting.dart';
 import 'package:stax/settings/key_value_list_setting.dart';
+import 'package:stax/settings/pair.dart';
+import 'package:stax/settings/setting.dart';
 
 class InternalCommandSettings extends InternalCommand {
   late final availableSubCommands = [
@@ -55,7 +55,7 @@ class InternalCommandSettings extends InternalCommand {
       case ['show', ...]:
         context.printToConsole("'show' doesn't have arguments");
       case ['set', final name, final value] when isSettingAvailable(name):
-        getSettingByName(name).value = value;
+        getSettingByName(name).rawValue = value;
         context.printToConsole("Updated setting: $name = '$value'");
       case ['set', final name, _]:
         context.printToConsole(

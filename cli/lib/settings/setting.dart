@@ -17,13 +17,21 @@ class Setting<T> {
     this.description,
   );
 
+  String get rawValue => _settings[name] ?? _toStringConverter(_defaultValue);
+
   T get value => switch (_settings[name]) {
         null => _defaultValue,
         final raw => _fromStringConverter(raw)
       };
 
   set value(T newValue) {
-    _settings[name] = _toStringConverter(newValue);
+    rawValue = _toStringConverter(newValue);
+  }
+
+  set rawValue(String newValue) {
+    final check = _toStringConverter(_fromStringConverter(newValue));
+    if (check != newValue) throw Exception("'$newValue' != '$check'");
+    _settings[name] = newValue;
     _settings.save();
   }
 
