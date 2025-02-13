@@ -11,6 +11,7 @@ import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
 import 'package:stax/context/context_open_in_browser.dart';
+import 'package:stax/context/context_git_get_default_branch.dart';
 
 class InternalCommandCommit extends InternalCommand {
   static final prFlag = Flag(
@@ -87,7 +88,30 @@ class InternalCommandCommit extends InternalCommand {
     }
     context.printToConsole("Commit  message: '$commitMessage'");
     context.printToConsole("New branch name: '$prefixedBranchName'");
-    final previousBranch = createPr ? context.getCurrentBranch() : null;
+
+    String? previousBranch;
+    if (createPr) {
+      previousBranch = context.getCurrentBranch();
+
+      if (previousBranch == null) {
+        final remoteRefs = context.git.branchRemoteContainsHead
+            .runSync()
+            .stdout
+            .toString()
+            .split('\n')
+            .map((line) => line.trim())
+            .where((line) => line.isNotEmpty)
+            .map((ref) => ref.replaceFirst('origin/', ''))
+            .toList();
+
+        if (remoteRefs.isNotEmpty) {
+          previousBranch = remoteRefs.first;
+        } else {
+          previousBranch = context.getDefaultBranch();
+        }
+      }
+    }
+
     final newBranchCheckoutExitCode = context.git.checkoutNewBranch
         .arg(prefixedBranchName)
         .announce('Creating new branch.')
