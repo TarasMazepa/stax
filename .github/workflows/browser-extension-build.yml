@@ -1,6 +1,7 @@
 name: browser-extension-build
 on:
   pull_request:
+  workflow_dispatch:
 
 jobs:
   browser-extension-build:
