@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:stax/settings/base_list_setting.dart';
 import 'package:stax/settings/settings.dart';
 
@@ -20,6 +21,7 @@ class KeyValueListSetting extends BaseListSetting<MapEntry<String, String>> {
         );
 
   void addKeyValue(String key, String value) {
+    removeByKey(key);
     add(MapEntry(key, value));
   }
 
@@ -29,10 +31,9 @@ class KeyValueListSetting extends BaseListSetting<MapEntry<String, String>> {
 
   String? getValue(String key) {
     return value
-        .firstWhere(
+        .firstWhereOrNull(
           (entry) => entry.key == key,
-          orElse: () => const MapEntry('', ''),
         )
-        .value;
+        ?.value;
   }
 }
