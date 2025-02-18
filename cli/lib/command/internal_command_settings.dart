@@ -3,12 +3,15 @@ import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/settings/setting.dart';
+import 'package:stax/settings/base_list_setting.dart';
+import 'package:stax/settings/key_value_list_setting.dart';
 
 class InternalCommandSettings extends InternalCommand {
   late final availableSubCommands = [
     'set',
     'clear',
     'show',
+    'add',
   ].sorted();
 
   InternalCommandSettings()
@@ -25,10 +28,12 @@ class InternalCommandSettings extends InternalCommand {
 
   @override
   void run(final List<String> args, final Context context) {
-    late final List<Setting> availableSettings = [
+    late final List<Setting> availableSettings = <Setting>[
       context.settings.branchPrefix,
       context.settings.defaultBranch,
       context.settings.defaultRemote,
+      context.settings.aliases,
+      context.settings.allowedBranches,
     ].sortedBy((setting) => setting.name);
     bool isSettingAvailable(String name) =>
         availableSettings.any((setting) => setting.name == name);
@@ -73,6 +78,37 @@ class InternalCommandSettings extends InternalCommand {
         printAvailableSettings();
       case ['clear', ...]:
         context.printToConsole('Usage: stax settings clear <setting_name>');
+
+      case ['add', final name, final value] when isSettingAvailable(name):
+        final setting = getSettingByName(name);
+        if (setting is KeyValueListSetting) {
+          final parts = value.split('=');
+          if (parts.length != 2) {
+            context.printToConsole(
+              "Invalid format for key-value setting. Use: key=value",
+            );
+            return;
+          }
+          setting.addKeyValue(parts[0], parts[1]);
+          context.printToConsole("Added key-value '$value' to setting: $name");
+        } else if (setting is BaseListSetting) {
+          setting.add(value);
+          context.printToConsole("Added value '$value' to setting: $name");
+        } else {
+          context.printToConsole(
+            "Setting '$name' is not a list setting. Use 'set' instead.",
+          );
+        }
+
+      case ['add', final name, _]:
+        context.printToConsole(
+          "add: unknown setting '$name'. Available settings:",
+        );
+        printAvailableSettings();
+
+      case ['add', ...]:
+        context
+            .printToConsole('Usage: stax settings add <setting_name> <value>');
 
       case [final subCommand, ...]:
         context.printToConsole(

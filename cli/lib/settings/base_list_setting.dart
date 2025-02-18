@@ -15,7 +15,9 @@ abstract class BaseListSetting<T> extends Setting<List<T>> {
           name,
           defaultValue,
           settings,
-          (String s) => (jsonDecode(s) as List<String>).expand<T>(
+          (String s) => (jsonDecode(s) as List<dynamic>)
+              .map((element) => element.toString())
+              .expand<T>(
             (element) {
               try {
                 return switch (fromString(element)) {

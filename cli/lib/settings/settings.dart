@@ -3,6 +3,8 @@ import 'package:path/path.dart' as path;
 import 'package:stax/settings/base_settings.dart';
 import 'package:stax/settings/date_time_setting.dart';
 import 'package:stax/settings/string_setting.dart';
+import 'package:stax/settings/key_value_list_setting.dart';
+import 'package:stax/settings/string_list_setting.dart';
 
 class Settings extends BaseSettings {
   late final DateTimeSetting lastUpdatePrompt = DateTimeSetting(
@@ -31,6 +33,20 @@ class Settings extends BaseSettings {
     '',
     this,
     'Override for default remote (empty means use first available remote)',
+  );
+
+  late final KeyValueListSetting aliases = KeyValueListSetting(
+    'aliases',
+    [],
+    this,
+    'Command aliases (e.g., "git=g")',
+  );
+
+  late final StringListSetting allowedBranches = StringListSetting(
+    'allowed_branches',
+    [],
+    this,
+    'Patterns for allowed branch names (e.g., "feature/*")',
   );
 
   Settings()
