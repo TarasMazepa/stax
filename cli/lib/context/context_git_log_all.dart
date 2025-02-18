@@ -107,9 +107,12 @@ class GitLogAllLine {
     return localBranchNamesAndHead().whereNot((x) => x == 'HEAD');
   }
 
+  String? branchName() {
+    return localBranchNames().followedBy(remoteBranchNames()).firstOrNull;
+  }
+
   String branchNameOrCommitHash() {
-    return localBranchNames().followedBy(remoteBranchNames()).firstOrNull ??
-        commitHash;
+    return branchName() ?? commitHash;
   }
 
   @override
