@@ -8,7 +8,9 @@ import 'package:stax/context/context_get_pr_url.dart';
 import 'package:stax/context/context_gh_create_pr.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
+import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
+import 'package:stax/context/context_git_log_all.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
 import 'package:stax/context/context_open_in_browser.dart';
 
@@ -87,7 +89,19 @@ class InternalCommandCommit extends InternalCommand {
     }
     context.printToConsole("Commit  message: '$commitMessage'");
     context.printToConsole("New branch name: '$prefixedBranchName'");
-    final previousBranch = createPr ? context.getCurrentBranch() : null;
+
+    String? previousBranch;
+    if (createPr) {
+      previousBranch = context.getCurrentBranch() ??
+          context
+              .withSilence(true)
+              .gitLogAll()
+              .findCurrent()
+              ?.line
+              .branchName() ??
+          context.getDefaultBranch();
+    }
+
     final newBranchCheckoutExitCode = context.git.checkoutNewBranch
         .arg(prefixedBranchName)
         .announce('Creating new branch.')
