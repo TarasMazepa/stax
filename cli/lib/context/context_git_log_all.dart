@@ -44,7 +44,7 @@ extension GitLogAllOnContext on Context {
       lines.addAll(nextLines);
       nextLines.clear();
     }
-    return root;
+    return root.collapse();
   }
 }
 
