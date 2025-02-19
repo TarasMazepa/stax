@@ -9,11 +9,7 @@ import 'package:stax/context/context_open_in_browser.dart';
 
 class InternalCommandPrCreation extends InternalCommand {
   InternalCommandPrCreation()
-      : super(
-          'pull-request',
-          'Creates a pull request.',
-          shortName: 'pr',
-        );
+    : super('pull-request', 'Creates a pull request.', shortName: 'pr');
 
   @override
   void run(final List<String> args, final Context context) {
@@ -39,7 +35,8 @@ class InternalCommandPrCreation extends InternalCommand {
       return;
     }
 
-    final targetBranch = current.parent?.line.branchNameOrCommitHash() ??
+    final targetBranch =
+        current.parent?.line.branchNameOrCommitHash() ??
         context.getDefaultBranch();
     if (targetBranch == null) {
       context.printToConsole("Can't determine target branch.");

@@ -143,20 +143,16 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
     String previousValue = '';
     bool haveSeenNonCheckout = false;
     List<String> gitLines(int id) => [
-          "echo '${commitName(id)}' > ${commitName(id)}",
-          'stax commit -a --accept-all ${commitName(id)}',
-          ..._children(id).expand(
-            (element) => [
-              ...gitLines(element),
-              'git checkout ${commitName(id)}',
-            ],
-          ),
-        ];
+      "echo '${commitName(id)}' > ${commitName(id)}",
+      'stax commit -a --accept-all ${commitName(id)}',
+      ..._children(id).expand(
+        (element) => [...gitLines(element), 'git checkout ${commitName(id)}'],
+      ),
+    ];
 
     return ['git init']
         .followedBy(
-          gitLines(initialCommitId)
-              .reversed
+          gitLines(initialCommitId).reversed
               .whereIndexed((index, element) {
                 if (haveSeenNonCheckout) return true;
                 if (!element.startsWith('git checkout')) {
@@ -165,8 +161,9 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
                 return false;
               })
               .where((element) {
-                final result = !(previousValue.startsWith('git checkout') &&
-                    element.startsWith('git checkout'));
+                final result =
+                    !(previousValue.startsWith('git checkout') &&
+                        element.startsWith('git checkout'));
                 previousValue = element;
                 return result;
               })
@@ -201,9 +198,9 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
 
   bool isDefaultBranchOrHasDefaultBranchAsAChild(int id) {
     return isDefaultBranch(id) ||
-        _children(id).any(
-          (element) => isDefaultBranchOrHasDefaultBranchAsAChild(element),
-        );
+        _children(
+          id,
+        ).any((element) => isDefaultBranchOrHasDefaultBranchAsAChild(element));
   }
 
   int sortingValue(int id) {
@@ -221,13 +218,14 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
   @override
   List<int> children(int id) {
     return _children(id).sorted(
-      (a, b) => ComparisonChain()
-          .chainBoolReverse(
-            isDefaultBranchOrHasDefaultBranchAsAChild(a),
-            isDefaultBranchOrHasDefaultBranchAsAChild(b),
-          )
-          .chain(() => branchName(b).compareTo(branchName(a)))
-          .compare(),
+      (a, b) =>
+          ComparisonChain()
+              .chainBoolReverse(
+                isDefaultBranchOrHasDefaultBranchAsAChild(a),
+                isDefaultBranchOrHasDefaultBranchAsAChild(b),
+              )
+              .chain(() => branchName(b).compareTo(branchName(a)))
+              .compare(),
     );
   }
 

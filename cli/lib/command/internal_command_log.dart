@@ -17,14 +17,11 @@ class InternalCommandLog extends InternalCommand {
   );
 
   InternalCommandLog()
-      : super(
-          'log',
-          'Builds a tree of all branches.',
-          flags: [
-            defaultBranchFlag,
-            allBranchesFlag,
-          ],
-        );
+    : super(
+        'log',
+        'Builds a tree of all branches.',
+        flags: [defaultBranchFlag, allBranchesFlag],
+      );
 
   @override
   void run(List<String> args, Context context) {

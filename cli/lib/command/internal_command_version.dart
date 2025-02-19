@@ -8,11 +8,7 @@ class InternalCommandVersion extends InternalCommand {
     defaultValue: '0.9.41',
   );
 
-  InternalCommandVersion()
-      : super(
-          'version',
-          'Version of stax',
-        );
+  InternalCommandVersion() : super('version', 'Version of stax');
 
   @override
   void run(List<String> args, Context context) {

@@ -12,11 +12,11 @@ abstract class BaseListSetting<T> extends Setting<List<T>> {
     T? Function(String) fromString,
     String Function(T) toString,
   ) : super(
-          name,
-          defaultValue,
-          settings,
-          (String s) => (jsonDecode(s) as List<String>).expand<T>(
-            (element) {
+        name,
+        defaultValue,
+        settings,
+        (String s) =>
+            (jsonDecode(s) as List<String>).expand<T>((element) {
               try {
                 return switch (fromString(element)) {
                   null => [],
@@ -25,11 +25,10 @@ abstract class BaseListSetting<T> extends Setting<List<T>> {
               } catch (_) {
                 return [];
               }
-            },
-          ).toList(),
-          (List<T> list) => jsonEncode(list.map(toString).toList()),
-          description,
-        );
+            }).toList(),
+        (List<T> list) => jsonEncode(list.map(toString).toList()),
+        description,
+      );
 
   void add(T item) {
     value = [...value, item];

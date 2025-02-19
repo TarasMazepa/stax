@@ -18,9 +18,9 @@ class Setting<T> {
   );
 
   T get value => switch (_settings[name]) {
-        null => _defaultValue,
-        final raw => _fromStringConverter(raw)
-      };
+    null => _defaultValue,
+    final raw => _fromStringConverter(raw),
+  };
 
   set value(T newValue) {
     _settings[name] = _toStringConverter(newValue);

@@ -13,23 +13,24 @@ extension ContextGitGetDefaultBranch on Context {
 
     if (defaultBranch != null) return defaultBranch;
     final complainAboutEmptyOnce = Once();
-    remotes = git.remote
-        .announce('Checking name of your remote.')
-        .runSync()
-        .printNotEmptyResultFields()
-        .stdout
-        .toString()
-        .split('\n')
-        .map((e) => e.trim())
-        .where((element) => element.isNotEmpty)
-        .onEmpty(
-          complainAboutEmptyOnce.wrap(
-            () => printToConsole(
-              "You have no remotes. Can't figure out default branch.",
-            ),
-          ),
-        )
-        .toList();
+    remotes =
+        git.remote
+            .announce('Checking name of your remote.')
+            .runSync()
+            .printNotEmptyResultFields()
+            .stdout
+            .toString()
+            .split('\n')
+            .map((e) => e.trim())
+            .where((element) => element.isNotEmpty)
+            .onEmpty(
+              complainAboutEmptyOnce.wrap(
+                () => printToConsole(
+                  "You have no remotes. Can't figure out default branch.",
+                ),
+              ),
+            )
+            .toList();
     return defaultBranch = remotes
         ?.map(
           (remote) => (
@@ -42,7 +43,7 @@ extension ContextGitGetDefaultBranch on Context {
                 .stdout
                 .toString()
                 .trim()
-                .split('/')
+                .split('/'),
           ),
         )
         .where((e) => e.parts.length == 2)
