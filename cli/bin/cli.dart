@@ -11,7 +11,7 @@ void main(List<String> arguments) {
   arguments = arguments.toList();
   final context = Context.implicit().handleGlobalFlags(arguments);
   switch (arguments) {
-    case []:
+    case [ ]:
       InternalCommandHelp().run([], context);
     case [final commandName, ...final args]:
       final command =
