@@ -16,6 +16,9 @@ jobs:
         with:
           sdk: ${{ steps.get-dart-version.outputs.text }}
       - run: dart format .
+        working-directory: cli
+      - run: dart format .
+        working-directory: ui
       - run: |
           if ! git diff --quiet; then
             timestamp=$(date -u +"%Y-%m-%dT%H-%M-%S")
