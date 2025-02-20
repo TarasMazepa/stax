@@ -27,11 +27,7 @@ class InternalCommandPrCreation extends InternalCommand {
       return;
     }
 
-    final root = context.withSilence(true).gitLogAll().collapse();
-    if (root == null) {
-      context.printToConsole("Can't build branch tree.");
-      return;
-    }
+    final root = context.gitLogAll();
 
     final current = root.findCurrent();
     if (current == null) {

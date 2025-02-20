@@ -93,12 +93,7 @@ class InternalCommandCommit extends InternalCommand {
     String? previousBranch;
     if (createPr) {
       previousBranch = context.getCurrentBranch() ??
-          context
-              .withSilence(true)
-              .gitLogAll()
-              .findCurrent()
-              ?.line
-              .branchName() ??
+          context.gitLogAll().findCurrent()?.line.branchName() ??
           context.getDefaultBranch();
     }
 
