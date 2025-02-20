@@ -10,7 +10,7 @@ class BaseSettings {
   BaseSettings(this._settings, this._file);
 
   BaseSettings.fromFile(File file)
-      : this(readJsonSettingsFileAsStringSyncWithRetry(file), file);
+    : this(readJsonSettingsFileAsStringSyncWithRetry(file), file);
 
   BaseSettings.fromUri(Uri uri) : this.fromFile(File.fromUri(uri));
 
