@@ -7,12 +7,5 @@ class StringSetting extends Setting<String> {
     String defaultValue,
     Settings settings,
     String description,
-  ) : super(
-          name,
-          defaultValue,
-          settings,
-          (s) => s,
-          (s) => s,
-          description,
-        );
+  ) : super(name, defaultValue, settings, (s) => s, (s) => s, description);
 }

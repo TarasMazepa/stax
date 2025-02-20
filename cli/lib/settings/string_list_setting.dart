@@ -7,12 +7,5 @@ class StringListSetting extends BaseListSetting<String> {
     List<String> defaultValue,
     Settings settings,
     String description,
-  ) : super(
-          name,
-          defaultValue,
-          settings,
-          description,
-          (s) => s,
-          (s) => s,
-        );
+  ) : super(name, defaultValue, settings, description, (s) => s, (s) => s);
 }

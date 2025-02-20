@@ -4,11 +4,11 @@ import 'package:stax/context/context.dart';
 
 class InternalCommandUpdate extends InternalCommand {
   InternalCommandUpdate()
-      : super(
-          'update',
-          'Updates to the latest version.',
-          type: InternalCommandType.hidden,
-        );
+    : super(
+        'update',
+        'Updates to the latest version.',
+        type: InternalCommandType.hidden,
+      );
 
   @override
   void run(final List<String> args, Context context) {
