@@ -2,6 +2,8 @@ import 'package:cli_util/cli_util.dart';
 import 'package:path/path.dart' as path;
 import 'package:stax/settings/base_settings.dart';
 import 'package:stax/settings/date_time_setting.dart';
+import 'package:stax/settings/key_value_list_setting.dart';
+import 'package:stax/settings/string_list_setting.dart';
 import 'package:stax/settings/string_setting.dart';
 
 class Settings extends BaseSettings {
@@ -31,6 +33,22 @@ class Settings extends BaseSettings {
     '',
     this,
     'Override for default remote (empty means use first available remote)',
+  );
+
+  late final KeyValueListSetting baseBranchReplacement = KeyValueListSetting(
+    'base_branch_replacement',
+    [],
+    this,
+    'Automatically substitute specific branch when creating pr: stable=main - '
+        'if your current branch is stable, but you want to have main is base '
+        'branch when creating PRs',
+  );
+
+  late final StringListSetting additionallyPull = StringListSetting(
+    'additionally_pull',
+    [],
+    this,
+    'Additional branches to pull besides default_branch',
   );
 
   Settings()

@@ -17,6 +17,11 @@ class Setting<T> {
     this.description,
   );
 
+  String get rawValue => switch (_settings[name]) {
+        null => _toStringConverter(_defaultValue),
+        final raw => raw,
+      };
+
   T get value => switch (_settings[name]) {
         null => _defaultValue,
         final raw => _fromStringConverter(raw)

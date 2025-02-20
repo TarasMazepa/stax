@@ -20,9 +20,10 @@ class KeyValueListSetting extends BaseListSetting<MapEntry<String, String>> {
           (entry) => '${entry.key}=${entry.value}',
         );
 
-  void addKeyValue(String key, String value) {
-    removeByKey(key);
-    add(MapEntry(key, value));
+  void addRaw(String value) {
+    final parsed = itemFromString(value)!;
+    removeByKey(parsed.key);
+    add(parsed);
   }
 
   void removeByKey(String key) {
