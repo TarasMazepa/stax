@@ -2,9 +2,9 @@ import 'package:collection/collection.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
-import 'package:stax/settings/setting.dart';
 import 'package:stax/settings/base_list_setting.dart';
 import 'package:stax/settings/key_value_list_setting.dart';
+import 'package:stax/settings/setting.dart';
 
 class InternalCommandSettings extends InternalCommand {
   late final availableSubCommands = [
@@ -29,11 +29,11 @@ class InternalCommandSettings extends InternalCommand {
   @override
   void run(final List<String> args, final Context context) {
     late final List<Setting> availableSettings = <Setting>[
+      context.settings.additionallyPull,
+      context.settings.baseBranchReplacement,
       context.settings.branchPrefix,
       context.settings.defaultBranch,
       context.settings.defaultRemote,
-      context.settings.aliases,
-      context.settings.allowedBranches,
     ].sortedBy((setting) => setting.name);
     bool isSettingAvailable(String name) =>
         availableSettings.any((setting) => setting.name == name);
@@ -42,7 +42,7 @@ class InternalCommandSettings extends InternalCommand {
     void printAvailableSettings() {
       for (final setting in availableSettings) {
         context.printToConsole(
-          " • ${setting.name} = '${setting.value}' # ${setting.description}",
+          " • ${setting.name} = '${setting.rawValue}' # ${setting.description}",
         );
       }
     }
@@ -82,14 +82,7 @@ class InternalCommandSettings extends InternalCommand {
       case ['add', final name, final value] when isSettingAvailable(name):
         final setting = getSettingByName(name);
         if (setting is KeyValueListSetting) {
-          final parts = value.split('=');
-          if (parts.length != 2) {
-            context.printToConsole(
-              "Invalid format for key-value setting. Use: key=value",
-            );
-            return;
-          }
-          setting.addKeyValue(parts[0], parts[1]);
+          setting.addRaw(value);
           context.printToConsole("Added key-value '$value' to setting: $name");
         } else if (setting is BaseListSetting) {
           setting.add(value);

@@ -2,9 +2,9 @@ import 'package:cli_util/cli_util.dart';
 import 'package:path/path.dart' as path;
 import 'package:stax/settings/base_settings.dart';
 import 'package:stax/settings/date_time_setting.dart';
-import 'package:stax/settings/string_setting.dart';
 import 'package:stax/settings/key_value_list_setting.dart';
 import 'package:stax/settings/string_list_setting.dart';
+import 'package:stax/settings/string_setting.dart';
 
 class Settings extends BaseSettings {
   late final DateTimeSetting lastUpdatePrompt = DateTimeSetting(
@@ -35,18 +35,20 @@ class Settings extends BaseSettings {
     'Override for default remote (empty means use first available remote)',
   );
 
-  late final KeyValueListSetting aliases = KeyValueListSetting(
-    'aliases',
+  late final KeyValueListSetting baseBranchReplacement = KeyValueListSetting(
+    'base_branch_replacement',
     [],
     this,
-    'Command aliases (e.g., "git=g")',
+    'Automatically substitute specific branch when creating pr: stable=main - '
+        'if your current branch is stable, but you want to have main is base '
+        'branch when creating PRs',
   );
 
-  late final StringListSetting allowedBranches = StringListSetting(
-    'allowed_branches',
+  late final StringListSetting additionallyPull = StringListSetting(
+    'additionally_pull',
     [],
     this,
-    'Patterns for allowed branch names (e.g., "feature/*")',
+    'Additional branches to pull besides default_branch',
   );
 
   Settings()

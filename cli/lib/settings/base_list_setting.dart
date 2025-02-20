@@ -4,13 +4,15 @@ import 'package:stax/settings/setting.dart';
 import 'package:stax/settings/settings.dart';
 
 abstract class BaseListSetting<T> extends Setting<List<T>> {
+  T? Function(String) itemFromString;
+
   BaseListSetting(
     String name,
     List<T> defaultValue,
     Settings settings,
     String description,
-    T? Function(String) fromString,
-    String Function(T) toString,
+    this.itemFromString,
+    String Function(T) itemToString,
   ) : super(
           name,
           defaultValue,
@@ -20,7 +22,7 @@ abstract class BaseListSetting<T> extends Setting<List<T>> {
               .expand<T>(
             (element) {
               try {
-                return switch (fromString(element)) {
+                return switch (itemFromString(element)) {
                   null => [],
                   final converted => [converted],
                 };
@@ -29,7 +31,7 @@ abstract class BaseListSetting<T> extends Setting<List<T>> {
               }
             },
           ).toList(),
-          (List<T> list) => jsonEncode(list.map(toString).toList()),
+          (List<T> list) => jsonEncode(list.map(itemToString).toList()),
           description,
         );
 
