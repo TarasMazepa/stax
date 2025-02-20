@@ -6,13 +6,11 @@ import 'internal_command.dart';
 
 class InternalCommandGet extends InternalCommand {
   InternalCommandGet()
-      : super(
-          'get',
-          'checkout all child branches',
-          arguments: {
-            'arg1': 'name of the remote ref',
-          },
-        );
+    : super(
+        'get',
+        'checkout all child branches',
+        arguments: {'arg1': 'name of the remote ref'},
+      );
 
   @override
   void run(List<String> args, Context context) {
@@ -43,24 +41,26 @@ class InternalCommandGet extends InternalCommand {
     }
 
     for (String branch in targetNode.remoteBranchNamesInOrderForCheckout().map(
-          (x) => x.substring(x.indexOf('/') + 1),
-        )) {
-      final exists = context.git.revParseVerify
-          .arg(branch)
-          .announce()
-          .runSync()
-          .printNotEmptyResultFields()
-          .isSuccess();
+      (x) => x.substring(x.indexOf('/') + 1),
+    )) {
+      final exists =
+          context.git.revParseVerify
+              .arg(branch)
+              .announce()
+              .runSync()
+              .printNotEmptyResultFields()
+              .isSuccess();
       context.git.checkout
           .arg(branch)
           .announce()
           .runSync()
           .printNotEmptyResultFields();
-      final success = context.git.pullForce
-          .announce()
-          .runSync()
-          .printNotEmptyResultFields()
-          .isSuccess();
+      final success =
+          context.git.pullForce
+              .announce()
+              .runSync()
+              .printNotEmptyResultFields()
+              .isSuccess();
       if (!success) {
         if (!exists) {
           return;

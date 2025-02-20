@@ -14,7 +14,8 @@ void main(List<String> arguments) {
     case []:
       InternalCommandHelp().run([], context);
     case [final commandName, ...final args]:
-      final command = internalCommands
+      final command =
+          internalCommands
               .where(
                 (command) =>
                     command.name == commandName ||
