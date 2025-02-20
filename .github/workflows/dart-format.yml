@@ -18,13 +18,14 @@ jobs:
       - run: dart format .
       - run: |
           if ! git diff --quiet; then
-            branch_name=format-dart-$RANDOM
+            timestamp=$(date -u +"%Y-%m-%dT%H-%M-%S")
+            branch_name=${GITHUB_REF#refs/heads/}-formatted-$timestamp
             git config --global user.name 'stax'
             git config --global user.email 'stax@staxforgit.com'
             git checkout -b $branch_name
             git commit -a -m "Format dart code"
             git push --set-upstream origin $branch_name
-            gh pr merge $(gh pr create -B ${{ github.event.pull_request.base.ref }} -f) --auto --squash
+            gh pr merge $(gh pr create -B ${GITHUB_REF#refs/heads/} -t "Format dart code" -f) --auto --squash
           fi
         env:
           GH_TOKEN: ${{ secrets.PAT }} 
