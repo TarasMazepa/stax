@@ -39,8 +39,8 @@ class Settings extends BaseSettings {
     'base_branch_replacement',
     [],
     this,
-    'Automatically substitute specific branch when creating pr: stable=main - '
-        'if your current branch is stable, but you want to have main is base '
+    'Automatically substitute specific branch when creating pr: stable=main if '
+        "your current branch is 'stable', but you want to have 'main' as base "
         'branch when creating PRs',
   );
 
