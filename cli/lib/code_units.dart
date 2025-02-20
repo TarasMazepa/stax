@@ -2,7 +2,7 @@ import 'package:stax/int_range.dart';
 
 class CodeUnits {
   static final smallLetterRange =
-      IntRange.closed('a'.codeUnitAt(0), 'z'.codeUnitAt(0));
+      IntRange.closed('a'.codeUnitAt(0) , 'z'.codeUnitAt(0));
   static final largeLetterRange =
       IntRange.closed('A'.codeUnitAt(0), 'Z'.codeUnitAt(0));
   static final numbersRange =
