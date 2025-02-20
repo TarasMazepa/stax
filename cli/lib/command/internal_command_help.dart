@@ -7,17 +7,13 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
 
 class InternalCommandHelp extends InternalCommand {
-  static final showAllFlag =
-      Flag(short: '-a', description: 'Show all commands including hidden.');
+  static final showAllFlag = Flag(
+    short: '-a',
+    description: 'Show all commands including hidden.',
+  );
 
   InternalCommandHelp()
-      : super(
-          'help',
-          'List of available commands.',
-          flags: [
-            showAllFlag,
-          ],
-        );
+    : super('help', 'List of available commands.', flags: [showAllFlag]);
 
   void printIndented(
     Context context,
@@ -41,9 +37,7 @@ class InternalCommandHelp extends InternalCommand {
     printIndented(
       context,
       header,
-      entries?.sortedBy(
-        (x) => x.key.replaceAll('-', ''),
-      ),
+      entries?.sortedBy((x) => x.key.replaceAll('-', '')),
       indent,
     );
   }

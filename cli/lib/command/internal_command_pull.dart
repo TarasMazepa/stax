@@ -8,28 +8,28 @@ import 'package:stax/external_command/extended_process_result.dart';
 
 class InternalCommandPull extends InternalCommand {
   InternalCommandPull()
-      : super(
-          'pull',
-          'Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.',
-          shortName: 'p',
-          arguments: {
-            'opt1': 'Optional target branch, will default to <remote>/HEAD',
-          },
-          flags: [
-            InternalCommandDeleteGoneBranches.skipDeleteFlag,
-            InternalCommandDeleteGoneBranches.forceDeleteFlag,
-          ],
-        );
+    : super(
+        'pull',
+        'Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.',
+        shortName: 'p',
+        arguments: {
+          'opt1': 'Optional target branch, will default to <remote>/HEAD',
+        },
+        flags: [
+          InternalCommandDeleteGoneBranches.skipDeleteFlag,
+          InternalCommandDeleteGoneBranches.forceDeleteFlag,
+        ],
+      );
 
   @override
   void run(List<String> args, Context context) {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }
-    final hasSkipDeleteFlag =
-        InternalCommandDeleteGoneBranches.skipDeleteFlag.hasFlag(args);
-    final hasForceDeleteFlag =
-        InternalCommandDeleteGoneBranches.forceDeleteFlag.hasFlag(args);
+    final hasSkipDeleteFlag = InternalCommandDeleteGoneBranches.skipDeleteFlag
+        .hasFlag(args);
+    final hasForceDeleteFlag = InternalCommandDeleteGoneBranches.forceDeleteFlag
+        .hasFlag(args);
     final currentBranch = context.getCurrentBranch();
     final targetBranch = args.elementAtOrNull(0);
     final defaultBranch = targetBranch ?? context.getDefaultBranch();
@@ -42,19 +42,21 @@ class InternalCommandPull extends InternalCommand {
     bool needToSwitchBranches = currentBranch != defaultBranch;
     ExtendedProcessResult? result;
     if (needToSwitchBranches) {
-      result = context.git.checkout
-          .arg(defaultBranch)
-          .announce("Switching to default branch '$defaultBranch'.")
-          .runSync()
-          .printNotEmptyResultFields()
-          .assertSuccessfulExitCode();
+      result =
+          context.git.checkout
+              .arg(defaultBranch)
+              .announce("Switching to default branch '$defaultBranch'.")
+              .runSync()
+              .printNotEmptyResultFields()
+              .assertSuccessfulExitCode();
       if (result == null) return;
     }
-    result = context.git.pull
-        .announce('Pulling new changes.')
-        .runSync()
-        .printNotEmptyResultFields()
-        .assertSuccessfulExitCode();
+    result =
+        context.git.pull
+            .announce('Pulling new changes.')
+            .runSync()
+            .printNotEmptyResultFields()
+            .assertSuccessfulExitCode();
     if (result == null) {
       if (needToSwitchBranches && currentBranch != null) {
         context.git.checkout
@@ -66,15 +68,12 @@ class InternalCommandPull extends InternalCommand {
       return;
     }
 
-    InternalCommandDeleteGoneBranches().run(
-      [
-        if (hasSkipDeleteFlag)
-          InternalCommandDeleteGoneBranches.skipDeleteFlag.shortOrLong,
-        if (hasForceDeleteFlag)
-          InternalCommandDeleteGoneBranches.forceDeleteFlag.shortOrLong,
-      ],
-      context,
-    );
+    InternalCommandDeleteGoneBranches().run([
+      if (hasSkipDeleteFlag)
+        InternalCommandDeleteGoneBranches.skipDeleteFlag.shortOrLong,
+      if (hasForceDeleteFlag)
+        InternalCommandDeleteGoneBranches.forceDeleteFlag.shortOrLong,
+    ], context);
     if (needToSwitchBranches && currentBranch != null) {
       context.git.checkout
           .arg(currentBranch)

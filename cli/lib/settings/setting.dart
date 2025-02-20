@@ -18,14 +18,14 @@ class Setting<T> {
   );
 
   String get rawValue => switch (_settings[name]) {
-        null => _toStringConverter(_defaultValue),
-        final raw => raw,
-      };
+    null => _toStringConverter(_defaultValue),
+    final raw => raw,
+  };
 
   T get value => switch (_settings[name]) {
-        null => _defaultValue,
-        final raw => _fromStringConverter(raw)
-      };
+    null => _defaultValue,
+    final raw => _fromStringConverter(raw),
+  };
 
   set value(T newValue) {
     _settings[name] = _toStringConverter(newValue);
