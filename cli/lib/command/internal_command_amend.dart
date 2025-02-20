@@ -40,18 +40,18 @@ class InternalCommandAmend extends InternalCommand {
   );
 
   InternalCommandAmend()
-      : super(
-          'amend',
-          'Amends and pushes changes.',
-          flags: [
-            ...ContextHandleAddAllFlag.flags,
-            rebaseFlag,
-            rebaseOursFlag,
-            rebaseTheirsFlag,
-            forcePushFlag,
-            skipPushFlag,
-          ],
-        );
+    : super(
+        'amend',
+        'Amends and pushes changes.',
+        flags: [
+          ...ContextHandleAddAllFlag.flags,
+          rebaseFlag,
+          rebaseOursFlag,
+          rebaseTheirsFlag,
+          forcePushFlag,
+          skipPushFlag,
+        ],
+      );
 
   @override
   void run(final List<String> args, final Context context) {
@@ -69,12 +69,14 @@ class InternalCommandAmend extends InternalCommand {
     if (context.assertNoConflictingFlags(
       [hasRebaseFlag, hasRebaseTheirsFlag, hasRebaseOursFlag],
       [rebaseFlag, rebaseTheirsFlag, rebaseOursFlag],
-    )) return;
+    ))
+      return;
 
     if (context.assertNoConflictingFlags(
       [hasForcePushFlag, hasSkipPushFlag],
       [forcePushFlag, skipPushFlag],
-    )) return;
+    ))
+      return;
 
     final hasChanges = !context.areThereNoStagedChanges();
 
@@ -111,14 +113,11 @@ class InternalCommandAmend extends InternalCommand {
     }
 
     if (hasRebaseFlag || hasRebaseTheirsFlag || hasRebaseOursFlag) {
-      InternalCommandRebase().run(
-        [
-          if (hasRebaseTheirsFlag) InternalCommandRebase.theirsFlag.long!,
-          if (hasRebaseOursFlag) InternalCommandRebase.oursFlag.long!,
-          context.gitLogAll().findCurrent()!.line.branchNameOrCommitHash(),
-        ],
-        context,
-      );
+      InternalCommandRebase().run([
+        if (hasRebaseTheirsFlag) InternalCommandRebase.theirsFlag.long!,
+        if (hasRebaseOursFlag) InternalCommandRebase.oursFlag.long!,
+        context.gitLogAll().findCurrent()!.line.branchNameOrCommitHash(),
+      ], context);
     }
   }
 }

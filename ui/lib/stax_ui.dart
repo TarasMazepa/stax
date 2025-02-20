@@ -44,30 +44,22 @@ class StaxUiState extends State<StaxUi> {
                         alignment: Alignment.bottomLeft,
                         child: SelectableText(
                           consoleText,
-                          style: const TextStyle(
-                            fontSize: fontSize,
-                          ),
+                          style: const TextStyle(fontSize: fontSize),
                         ),
                       ),
                     ),
                     TextField(
                       controller: controller,
-                      style: const TextStyle(
-                        fontSize: fontSize,
-                      ),
+                      style: const TextStyle(fontSize: fontSize),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(
-                width: 8,
-              ),
+              const SizedBox(width: 8),
               Expanded(
                 child: SelectableText(
                   logText,
-                  style: const TextStyle(
-                    fontSize: fontSize,
-                  ),
+                  style: const TextStyle(fontSize: fontSize),
                 ),
               ),
             ],

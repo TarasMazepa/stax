@@ -13,16 +13,16 @@ class IntRange {
   }
 
   IntRange.closed(int start, int end)
-      : this(start, end, RangeEdgeCondition.closed, RangeEdgeCondition.closed);
+    : this(start, end, RangeEdgeCondition.closed, RangeEdgeCondition.closed);
 
   IntRange.open(int start, int end)
-      : this(start, end, RangeEdgeCondition.open, RangeEdgeCondition.open);
+    : this(start, end, RangeEdgeCondition.open, RangeEdgeCondition.open);
 
   IntRange.closedOpen(int start, int end)
-      : this(start, end, RangeEdgeCondition.closed, RangeEdgeCondition.open);
+    : this(start, end, RangeEdgeCondition.closed, RangeEdgeCondition.open);
 
   IntRange.openClosed(int start, int end)
-      : this(start, end, RangeEdgeCondition.open, RangeEdgeCondition.closed);
+    : this(start, end, RangeEdgeCondition.open, RangeEdgeCondition.closed);
 
   IntRange.singleton(int number) : this.closed(number, number);
 
@@ -33,7 +33,7 @@ class IntRange {
         } &&
         switch (endCondition) {
           RangeEdgeCondition.open => number < end,
-          RangeEdgeCondition.closed => number <= end
+          RangeEdgeCondition.closed => number <= end,
         };
   }
 }
