@@ -18,7 +18,8 @@ jobs:
       - run: dart format .
       - run: |
           if ! git diff --quiet; then
-            branch_name=format-dart-$RANDOM
+            timestamp=$(date -u +"%Y-%m-%dT%H-%M-%S")
+            branch_name=${GITHUB_REF#refs/heads/}-formatted-$timestamp
             git config --global user.name 'stax'
             git config --global user.email 'stax@staxforgit.com'
             git checkout -b $branch_name
