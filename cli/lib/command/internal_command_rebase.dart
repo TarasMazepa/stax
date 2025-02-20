@@ -48,12 +48,7 @@ class InternalCommandRebase extends InternalCommand {
       return;
     }
 
-    final root = context.withSilence(true).gitLogAll().collapse();
-
-    if (root == null) {
-      context.printToConsole("Can't find any branches.");
-      return;
-    }
+    final root = context.gitLogAll();
 
     final current = root.findCurrent();
 

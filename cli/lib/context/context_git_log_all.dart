@@ -4,7 +4,7 @@ import 'package:stax/context/context.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 
 extension GitLogAllOnContext on Context {
-  GitLogAllNode gitLogAll() {
+  GitLogAllNode _gitLogAll() {
     final lines = git.log
         .args([
           '--decorate=full',
@@ -44,7 +44,11 @@ extension GitLogAllOnContext on Context {
       lines.addAll(nextLines);
       nextLines.clear();
     }
-    return root.collapse()!;
+    return root;
+  }
+
+  GitLogAllNode gitLogAll([bool showAllBranches = false]) {
+    return withSilence(true)._gitLogAll().collapse(showAllBranches)!;
   }
 }
 
@@ -165,7 +169,7 @@ class GitLogAllNode {
     if (depth < 0) return this;
     List<GitLogAllNode> newChildren = [];
     for (int i = 0; i < children.length; i++) {
-      GitLogAllNode? child = null, newChild = children[i];
+      GitLogAllNode? child, newChild = children[i];
       while (newChild != null && child != newChild) {
         child = newChild;
         newChild = child.collapse(showAllBranches, depth - 1);
