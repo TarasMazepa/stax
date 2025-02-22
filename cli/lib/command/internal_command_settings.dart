@@ -12,6 +12,7 @@ class InternalCommandSettings extends InternalCommand {
     'clear',
     'show',
     'add',
+    'remove',
   ].sorted();
 
   InternalCommandSettings()
@@ -102,6 +103,34 @@ class InternalCommandSettings extends InternalCommand {
       case ['add', ...]:
         context
             .printToConsole('Usage: stax settings add <setting_name> <value>');
+
+      case ['remove', final name, final value] when isSettingAvailable(name):
+        final setting = getSettingByName(name);
+        if (setting is KeyValueListSetting) {
+          final key = value.split('=').first;
+          setting.removeByKey(key);
+          context.printToConsole(
+            "Removed key-value with key '$key' from setting: $name",
+          );
+        } else if (setting is BaseListSetting) {
+          setting.remove(value);
+          context.printToConsole("Removed value '$value' from setting: $name");
+        } else {
+          context.printToConsole(
+            "Setting '$name' is not a list setting. Use 'clear' instead.",
+          );
+        }
+
+      case ['remove', final name, _]:
+        context.printToConsole(
+          "remove: unknown setting '$name'. Available settings:",
+        );
+        printAvailableSettings();
+
+      case ['remove', ...]:
+        context.printToConsole(
+          'Usage: stax settings remove <setting_name> <value>',
+        );
 
       case [final subCommand, ...]:
         context.printToConsole(
