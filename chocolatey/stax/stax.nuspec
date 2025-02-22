@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>stax</id>
-    <version>0.9.42</version>
+    <version>0.9.43</version>
     <packageSourceUrl>https://github.com/TarasMazepa/stax/tree/main/chocolatey/stax</packageSourceUrl>
     <owners>GPL</owners>
     <title>stax - streamline your git workflow</title>
