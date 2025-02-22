@@ -39,6 +39,9 @@ class InternalCommandPull extends InternalCommand {
       );
       return;
     }
+
+    final additionalBranches = context.settings.additionallyPull.value;
+
     bool needToSwitchBranches = currentBranch != defaultBranch;
     ExtendedProcessResult? result;
     if (needToSwitchBranches) {
@@ -66,6 +69,21 @@ class InternalCommandPull extends InternalCommand {
       return;
     }
 
+    for (final branch in additionalBranches) {
+      if (branch.isNotEmpty) {
+        context.git.checkout
+            .arg(branch)
+            .announce("Switching to additional branch '$branch'.")
+            .runSync()
+            .printNotEmptyResultFields();
+
+        context.git.pull
+            .announce("Pulling changes for branch '$branch'.")
+            .runSync()
+            .printNotEmptyResultFields();
+      }
+    }
+
     InternalCommandDeleteGoneBranches().run(
       [
         if (hasSkipDeleteFlag)
@@ -75,7 +93,9 @@ class InternalCommandPull extends InternalCommand {
       ],
       context,
     );
-    if (needToSwitchBranches && currentBranch != null) {
+
+    if ((needToSwitchBranches || additionalBranches.isNotEmpty) &&
+        currentBranch != null) {
       context.git.checkout
           .arg(currentBranch)
           .announce("Switching back to original branch '$currentBranch'.")
