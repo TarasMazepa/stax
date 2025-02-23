@@ -26,9 +26,9 @@ jobs:
             git config --global user.name 'stax'
             git config --global user.email 'stax@staxforgit.com'
             git checkout -b $branch_name
-            git commit -a -m "Format dart code"
+            git commit -a -m "${GITHUB_REF#refs/heads/} dart code formatted on $timestamp"
             git push --set-upstream origin $branch_name
-            gh pr merge $(gh pr create -B ${GITHUB_REF#refs/heads/} -t "Format dart code" -f) --auto --squash
+            gh pr merge $(gh pr create -B ${GITHUB_REF#refs/heads/} -f) --auto --squash
           fi
         env:
           GH_TOKEN: ${{ secrets.PAT }} 
