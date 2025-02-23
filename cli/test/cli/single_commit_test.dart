@@ -21,8 +21,9 @@ void main() {
       );
     });
     test("commit 'commit message'", () async {
-      await setup
-          .startLiveStax(['commit', 'commit message']).then((process) async {
+      await setup.startLiveStax(['commit', 'commit message']).then((
+        process,
+      ) async {
         await process.stdout.forEach((element) async {
           final line = String.fromCharCodes(element);
           print(line);

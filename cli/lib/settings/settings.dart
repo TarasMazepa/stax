@@ -52,7 +52,5 @@ class Settings extends BaseSettings {
   );
 
   Settings()
-      : super.fromPath(
-          path.join(applicationConfigHome('stax'), '.stax_config'),
-        );
+    : super.fromPath(path.join(applicationConfigHome('stax'), '.stax_config'));
 }

@@ -8,11 +8,11 @@ class DateTimeSetting extends Setting<DateTime> {
     Settings settings,
     String description,
   ) : super(
-          name,
-          defaultValue,
-          settings,
-          DateTime.parse,
-          (x) => x.toIso8601String(),
-          description,
-        );
+        name,
+        defaultValue,
+        settings,
+        DateTime.parse,
+        (x) => x.toIso8601String(),
+        description,
+      );
 }
