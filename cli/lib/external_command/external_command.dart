@@ -11,7 +11,7 @@ class ExternalCommand {
   ExternalCommand(this.parts, this.context);
 
   ExternalCommand.raw(String command, this.context)
-      : parts = command.split(' ');
+    : parts = command.split(' ');
 
   String get executable => parts[0];
 
@@ -38,9 +38,10 @@ class ExternalCommand {
   ExternalCommand announce([String? announcement]) {
     context.printToConsole('');
     if (announcement != null) context.printToConsole('# $announcement');
-    String path = context.workingDirectory != null
-        ? '[${context.workingDirectory}] '
-        : '';
+    String path =
+        context.workingDirectory != null
+            ? '[${context.workingDirectory}] '
+            : '';
     context.printToConsole('$path> ${toString()}');
     return this;
   }
