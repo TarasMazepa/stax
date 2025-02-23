@@ -9,16 +9,16 @@ class KeyValueListSetting extends BaseListSetting<MapEntry<String, String>> {
     Settings settings,
     String description,
   ) : super(
-          name,
-          defaultValue,
-          settings,
-          description,
-          (s) => switch (s.split('=')) {
-            [final key, final value] => MapEntry(key, value),
-            _ => throw FormatException('Invalid key-value format: $s'),
-          },
-          (entry) => '${entry.key}=${entry.value}',
-        );
+        name,
+        defaultValue,
+        settings,
+        description,
+        (s) => switch (s.split('=')) {
+          [final key, final value] => MapEntry(key, value),
+          _ => throw FormatException('Invalid key-value format: $s'),
+        },
+        (entry) => '${entry.key}=${entry.value}',
+      );
 
   void addRaw(String value) {
     final parsed = itemFromString(value)!;
@@ -31,10 +31,6 @@ class KeyValueListSetting extends BaseListSetting<MapEntry<String, String>> {
   }
 
   String? getValue(String key) {
-    return value
-        .firstWhereOrNull(
-          (entry) => entry.key == key,
-        )
-        ?.value;
+    return value.firstWhereOrNull((entry) => entry.key == key)?.value;
   }
 }

@@ -5,11 +5,11 @@ import 'package:stax/context/context_git_get_default_branch.dart';
 
 class InternalCommandMainBranch extends InternalCommand {
   InternalCommandMainBranch()
-      : super(
-          'main-branch',
-          'Shows which branch stax considers to be main.',
-          type: InternalCommandType.hidden,
-        );
+    : super(
+        'main-branch',
+        'Shows which branch stax considers to be main.',
+        type: InternalCommandType.hidden,
+      );
 
   @override
   void run(final List<String> args, final Context context) {

@@ -12,32 +12,33 @@ void main() {
         .split('\n')
         .where((x) => x.length > 1 && x[0] == '[')
         .map((x) => x[1])
-        .whereIndexed(
-          (index, element) => index != 4,
-        )
+        .whereIndexed((index, element) => index != 4)
         .toList();
   }
 
   cliGroup('doctor', bundle: true, (CliTestSetup setup) {
     test('doctor', () {
-      final defaultGlobalUsername = setup
-          .runSync('git', ['config', '--get', 'user.name'])
-          .stdout
-          .toString()
-          .trim()
-          .emptyToNull();
-      final defaultGlobalEmail = setup
-          .runSync('git', ['config', '--get', 'user.email'])
-          .stdout
-          .toString()
-          .trim()
-          .emptyToNull();
-      final defaultGlobalAutoRemote = setup
-          .runSync('git', ['config', '--get', 'push.autoSetupRemote'])
-          .stdout
-          .toString()
-          .trim()
-          .emptyToNull();
+      final defaultGlobalUsername =
+          setup
+              .runSync('git', ['config', '--get', 'user.name'])
+              .stdout
+              .toString()
+              .trim()
+              .emptyToNull();
+      final defaultGlobalEmail =
+          setup
+              .runSync('git', ['config', '--get', 'user.email'])
+              .stdout
+              .toString()
+              .trim()
+              .emptyToNull();
+      final defaultGlobalAutoRemote =
+          setup
+              .runSync('git', ['config', '--get', 'push.autoSetupRemote'])
+              .stdout
+              .toString()
+              .trim()
+              .emptyToNull();
       List<String> expectedOutput = [
         defaultGlobalUsername == null ? 'X' : 'V',
         defaultGlobalEmail == null ? 'X' : 'V',
