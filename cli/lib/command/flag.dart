@@ -22,17 +22,17 @@ class Flag {
   String get shortOrLong => (short ?? long)!;
 
   bool hasFlag(List<String> args) {
-    return switch (0) {
-      0 when long != null && args.remove(long) => true,
-      0 when short != null && args.remove(short) => true,
-      0 when short == null => false,
-      _ => () {
+    return switch ((short, long)) {
+      (_, String long) when args.remove(long) => true,
+      (String short, _) when args.remove(short) => true,
+      (null, _) => false,
+      (String short, _) => () {
           for (int i = 0; i < args.length; i++) {
             final arg = args[i];
             if (arg.length < 2) continue;
             if (arg[0] != '-') continue;
             if (arg[1] == '-') continue;
-            final newArg = arg.replaceAll(short![1], '');
+            final newArg = arg.replaceFirst(short[1], '');
             if (newArg.length < arg.length) {
               args[i] = newArg;
               return true;
