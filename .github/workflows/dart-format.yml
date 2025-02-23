@@ -26,7 +26,7 @@ jobs:
             git config --global user.name 'stax'
             git config --global user.email 'stax@staxforgit.com'
             git checkout -b $branch_name
-            git commit -a -m "${GITHUB_REF#refs/heads/} dart code formatted on $timestamp"
+            git commit -a -m "${GITHUB_REF#refs/heads/} branch dart code formatted at $timestamp"
             git push --set-upstream origin $branch_name
             gh pr merge $(gh pr create -B ${GITHUB_REF#refs/heads/} -f) --auto --squash
           fi
