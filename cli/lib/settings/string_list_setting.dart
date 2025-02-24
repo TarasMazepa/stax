@@ -1,11 +1,11 @@
 import 'package:stax/settings/base_list_setting.dart';
-import 'package:stax/settings/settings.dart';
+import 'package:stax/settings/base_settings.dart';
 
 class StringListSetting extends BaseListSetting<String> {
   StringListSetting(
     String name,
     List<String> defaultValue,
-    Settings settings,
+    BaseSettings settings,
     String description,
   ) : super(
           name,

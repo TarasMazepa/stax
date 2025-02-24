@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:stax/settings/base_settings.dart';
 import 'package:stax/settings/setting.dart';
-import 'package:stax/settings/settings.dart';
 
 abstract class BaseListSetting<T> extends Setting<List<T>> {
   T? Function(String) itemFromString;
@@ -9,7 +9,7 @@ abstract class BaseListSetting<T> extends Setting<List<T>> {
   BaseListSetting(
     String name,
     List<T> defaultValue,
-    Settings settings,
+    BaseSettings settings,
     String description,
     this.itemFromString,
     String Function(T) itemToString,
