@@ -1,12 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:stax/settings/base_list_setting.dart';
-import 'package:stax/settings/settings.dart';
+import 'package:stax/settings/base_settings.dart';
 
 class KeyValueListSetting extends BaseListSetting<MapEntry<String, String>> {
   KeyValueListSetting(
     String name,
     List<MapEntry<String, String>> defaultValue,
-    Settings settings,
+    BaseSettings settings,
     String description,
   ) : super(
           name,

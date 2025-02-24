@@ -1,11 +1,11 @@
+import 'package:stax/settings/base_settings.dart';
 import 'package:stax/settings/setting.dart';
-import 'package:stax/settings/settings.dart';
 
 class StringSetting extends Setting<String> {
   StringSetting(
     String name,
     String defaultValue,
-    Settings settings,
+    BaseSettings settings,
     String description,
   ) : super(
           name,
