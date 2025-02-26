@@ -1,9 +1,9 @@
 import browser from 'webextension-polyfill';
-import { AuthState, GitHubUser, GitHubPR } from '../types/github';
+import { AuthState, GitHubPR, GitHubUser } from '../types/github';
 
 const CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.VITE_GITHUB_CLIENT_SECRET;
-const REDIRECT_URL = browser.identity.getRedirectURL();
+const PRS_PER_PAGE: number = 100;
 
 export class GitHubService {
   private static async getAuthState(): Promise<AuthState> {
@@ -15,12 +15,16 @@ export class GitHubService {
     await browser.storage.local.set({ authState: state });
   }
 
+  private static async getAuthToken(): Promise<string | null> {
+    const response = await browser.runtime.sendMessage({type: 'GET_AUTH_STATE'});
+    return response?.token || null;
+  }
+
   static async login(): Promise<AuthState> {
     const state = Math.random().toString(36).substring(7);
     const authUrl = new URL('https://github.com/login/oauth/authorize');
     
     authUrl.searchParams.append('client_id', CLIENT_ID);
-    authUrl.searchParams.append('redirect_uri', REDIRECT_URL);
     authUrl.searchParams.append('state', state);
     authUrl.searchParams.append('scope', 'repo user');
     authUrl.searchParams.append('response_type', 'code');
@@ -72,41 +76,85 @@ export class GitHubService {
     return response.json();
   }
 
-  static async getPullRequests(owner: string, repo: string): Promise<GitHubPR[]> {
-    const authState = await this.getAuthState();
-    if (!authState.token) throw new Error('Not authenticated');
+    static async getPullRequests(owner: string, repo: string, page: number = 1): Promise<GitHubPR[]> {
+        const token = await this.getAuthToken();
+        if (!token) throw new Error('Not authenticated');
 
-    const response = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/pulls?state=open`,
-      {
-        headers: {
-          Authorization: `Bearer ${authState.token}`,
-        },
-      }
-    );
-    return response.json();
-  }
+        const authState = await this.getAuthState();
+        if (!authState.user?.login) throw new Error('User not authenticated');
 
-  private static async getAccessToken(code: string): Promise<string> {
-    const response = await fetch('https://github.com/login/oauth/access_token', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        code,
-        redirect_uri: REDIRECT_URL,
-      }),
-    });
+        const params = new URLSearchParams({
+            q: `repo:${owner}/${repo} is:pr author:${authState.user.login}`,
+            sort: 'updated',
+            order: 'desc',
+            per_page: PRS_PER_PAGE.toString(),
+            page: page.toString(),
+        });
 
-    if (!response.ok) {
-      throw new Error('Failed to exchange code for token');
+        const response = await fetch(
+            `https://api.github.com/search/issues?${params}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: 'application/vnd.github.v3+json',
+                },
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch pull requests: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        return data.items;
     }
 
-    const data = await response.json();
-    return data.access_token;
-  }
+    static async getAllPullRequests(owner: string, repo: string): Promise<GitHubPR[]> {
+        const allPRs: GitHubPR[] = [];
+        let page = 1;
+
+        while (true) {
+            const prs = await this.getPullRequests(owner, repo, page);
+
+            if (prs.length === 0) break;
+
+            allPRs.push(...prs);
+
+            if (prs.length < PRS_PER_PAGE) break;
+            page++;
+        }
+
+        return allPRs;
+    }
+
+    private static async getAccessToken(code: string): Promise<string> {
+        const response = await fetch('https://github.com/login/oauth/access_token', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                client_id: CLIENT_ID,
+                client_secret: CLIENT_SECRET,
+                code,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to exchange code for token');
+        }
+
+        const data = await response.json();
+        return data.access_token;
+    }
+
+    static async getCurrentUserPRs(owner: string, repo: string): Promise<GitHubPR[]> {
+        const authState = await this.getAuthState();
+        if (!authState.token || !authState.user) {
+            throw new Error('Not authenticated');
+        }
+
+        return this.getAllPullRequests(owner, repo);
+    }
 }
