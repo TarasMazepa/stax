@@ -6,6 +6,8 @@ extension ContextGhCreatePr on Context {
     String baseBranch,
     String headBranch,
   ) {
+    final replacedBaseBranch = getReplacedBaseBranch(baseBranch);
+
     return command([
       'gh',
       'pr',
@@ -13,7 +15,7 @@ extension ContextGhCreatePr on Context {
       '--title',
       title,
       '--base',
-      baseBranch,
+      replacedBaseBranch,
       '--head',
       headBranch,
       '-f',
@@ -25,5 +27,16 @@ extension ContextGhCreatePr on Context {
         ?.stdout
         .toString()
         .trim();
+  }
+
+  String getReplacedBaseBranch(String baseBranch) {
+    final replacement = settings.baseBranchReplacement.getValue(baseBranch);
+    if (replacement != null) {
+      printToConsole(
+        'Replacing base branch "$baseBranch" with "$replacement" as configured in settings',
+      );
+      return replacement;
+    }
+    return baseBranch;
   }
 }
