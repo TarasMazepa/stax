@@ -153,7 +153,7 @@ $object
     }
 
     for (final option in options) {
-      if (option.key == response) {
+      if (equalsIgnoreAsciiCase(option.key, response)) {
         return option.key;
       }
     }
