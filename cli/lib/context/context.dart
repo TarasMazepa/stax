@@ -143,7 +143,7 @@ $object
 
     print(questionContext);
     for (final option in options) {
-      print('  ${option.key}) - ${option.description}');
+      print(' ${option.key}) - ${option.description}');
     }
 
     print('Your choice: ');
