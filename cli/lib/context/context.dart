@@ -140,7 +140,6 @@ $object
       return null;
     }
 
-
     print(questionContext);
     for (final option in options) {
       print('  ${option.key}) - ${option.description}');
