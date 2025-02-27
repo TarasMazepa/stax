@@ -140,13 +140,10 @@ $object
       return null;
     }
 
-    final includeSpace = questionContext.isNotEmpty &&
-        questionContext[questionContext.length - 1] != '\n';
-    if (includeSpace) questionContext += ' ';
 
-    printToConsole(questionContext);
+    print(questionContext);
     for (final option in options) {
-      printToConsole('  ${option.key}) ${option.description}');
+      print('  ${option.key}) - ${option.description}');
     }
 
     print('Your choice: ');
