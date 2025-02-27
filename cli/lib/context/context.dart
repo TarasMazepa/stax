@@ -159,7 +159,7 @@ $object
       }
     }
 
-    print("Unknown option provided '$response'");
+    print("Unknown option selected '$response'");
 
     return null;
   }
