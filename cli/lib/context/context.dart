@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:stax/context/context_git_get_repository_root.dart';
 import 'package:stax/external_command/external_command.dart';
 import 'package:stax/file_path_dir_on_uri.dart';
@@ -127,5 +128,39 @@ $object
     print('${questionContext}Continue y/N? ');
     final response = stdin.readLineSync();
     return response == 'y' || response == 'Y';
+  }
+
+  String? commandLineMultipleOptionsQuestion(
+    String questionContext,
+    List<({String key, String description})> options,
+  ) {
+    if (declineAll) {
+      printToConsole(
+        "Automatically declining '$questionContext' as per user request.",
+      );
+      return null;
+    }
+
+    print(questionContext);
+    for (final option in options) {
+      print(' ${option.key}) - ${option.description}');
+    }
+
+    print('Your choice: ');
+    final response = stdin.readLineSync()?.trim();
+
+    if (response == null || response.isEmpty) {
+      return null;
+    }
+
+    for (final option in options) {
+      if (equalsIgnoreAsciiCase(option.key, response)) {
+        return option.key;
+      }
+    }
+
+    print("Unknown option selected '$response'");
+
+    return null;
   }
 }
