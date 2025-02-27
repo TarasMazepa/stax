@@ -128,4 +128,40 @@ $object
     final response = stdin.readLineSync();
     return response == 'y' || response == 'Y';
   }
+
+  String? commandLineMultipleOptionsQuestion(
+    String questionContext,
+    List<({String key, String description})> options,
+  ) {
+    if (declineAll) {
+      printToConsole(
+        "Automatically declining '$questionContext' as per user request.",
+      );
+      return null;
+    }
+
+    final includeSpace = questionContext.isNotEmpty &&
+        questionContext[questionContext.length - 1] != '\n';
+    if (includeSpace) questionContext += ' ';
+
+    printToConsole(questionContext);
+    for (final option in options) {
+      printToConsole('  ${option.key}) ${option.description}');
+    }
+
+    print('Your choice: ');
+    final response = stdin.readLineSync()?.trim();
+
+    if (response == null || response.isEmpty) {
+      return null;
+    }
+
+    for (final option in options) {
+      if (option.key == response) {
+        return option.key;
+      }
+    }
+
+    return null;
+  }
 }
