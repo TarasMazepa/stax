@@ -91,10 +91,16 @@ class InternalCommandCommit extends InternalCommand {
     context.printToConsole("New branch name: '$prefixedBranchName'");
 
     String? previousBranch;
+    String? baseBranch;
     if (createPr) {
       previousBranch = context.getCurrentBranch() ??
           context.gitLogAll().findCurrent()?.line.branchName() ??
           context.getDefaultBranch();
+      if (previousBranch != null) {
+        baseBranch =
+            context.settings.baseBranchReplacement.getValue(previousBranch) ??
+                previousBranch;
+      }
     }
 
     final newBranchCheckoutExitCode = context.git.checkoutNewBranch
@@ -111,7 +117,7 @@ class InternalCommandCommit extends InternalCommand {
     }
 
     late final backupPrUrl =
-        createPr ? context.getPrUrl(previousBranch!, prefixedBranchName) : null;
+        createPr ? context.getPrUrl(baseBranch!, prefixedBranchName) : null;
     informAboutPrUrlIfNeeded() {
       if (backupPrUrl != null) {
         context.printParagraph('PR URL would have been: $backupPrUrl');
@@ -164,7 +170,7 @@ class InternalCommandCommit extends InternalCommand {
       context.printToConsole('Creating PR using GitHub CLI');
       prUrl = context.createPrWithGhCli(
         commitMessage,
-        previousBranch!,
+        baseBranch!,
         prefixedBranchName,
       );
 
