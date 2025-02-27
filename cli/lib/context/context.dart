@@ -159,6 +159,8 @@ $object
       }
     }
 
+    print("Unknown option provided '$response'");
+
     return null;
   }
 }
