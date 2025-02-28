@@ -140,9 +140,8 @@ class GitLogAllNode {
             b.isRemoteHeadReachable(),
           )
           .chain(
-            () => (b.line.parts.firstOrNull?.replaceFirst('HEAD -> ', '') ?? '')
-                .compareTo(
-              a.line.parts.firstOrNull?.replaceFirst('HEAD -> ', '') ?? '',
+            () => (b.line.branchNameOrCommitHash()).compareTo(
+              a.line.branchNameOrCommitHash(),
             ),
           )
           .chain(() => b.line.timestamp - a.line.timestamp)
@@ -287,9 +286,8 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
       (a, b) => ComparisonChain()
           .chainBoolReverse(isDefaultBranch(a), isDefaultBranch(b))
           .chain(
-            () => (b.line.parts.firstOrNull?.replaceFirst('HEAD -> ', '') ?? '')
-                .compareTo(
-              a.line.parts.firstOrNull?.replaceFirst('HEAD -> ', '') ?? '',
+            () => (b.line.branchNameOrCommitHash()).compareTo(
+              a.line.branchNameOrCommitHash(),
             ),
           )
           .chain(() => b.line.timestamp - a.line.timestamp)
