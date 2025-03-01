@@ -1,4 +1,5 @@
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
 
@@ -20,11 +21,20 @@ class InternalCommandGet extends InternalCommand {
       return;
     }
 
-    final targetRef = args.elementAtOrNull(0);
+    String? targetRef = args.elementAtOrNull(0);
 
     if (targetRef == null) {
-      context.printToConsole('Please specify remote ref');
-      return;
+      if (!context.commandLineContinueQuestion(
+        'No target ref specified. Will use current branch.',
+      )) {
+        return;
+      }
+      targetRef = context.getCurrentBranch();
+
+      if (targetRef == null) {
+        context.printToConsole("Can't determine current branch");
+        return;
+      }
     }
 
     context.git.fetchWithPrune
