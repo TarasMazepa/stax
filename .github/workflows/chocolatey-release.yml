@@ -22,8 +22,8 @@ jobs:
           sdk: ${{ steps.get-dart-version.outputs.text }}
       
       - name: Compile Stax binary
+        working-directory: cli
         run: |
-          cd cli
           dart pub get
           dart compile exe -o ../chocolatey/stax/tools/stax.exe "-Dversion=${{ steps.get-stax-version.outputs.text }}" bin/cli.dart
       
