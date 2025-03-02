@@ -6,6 +6,8 @@ import 'package:stax/settings/setting.dart';
 abstract class BaseListSetting<T> extends Setting<List<T>> {
   T? Function(String) itemFromString;
 
+
+
   BaseListSetting(
     String name,
     List<T> defaultValue,
