@@ -6,12 +6,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+
+      # read version from https://github.com/TarasMazepa/stax/blob/main/chocolatey/stax/stax.nuspec#L6 
+      # download https://github.com/TarasMazepa/stax/releases/download/<version>/windows-x64.zip 
+      # and unzip to chocolatey/stax/tools/stax.exe
+      
       - run: choco pack chocolatey/stax/stax.nuspec
-      - uses: TarasMazepa/github-action-cat@master
-        id: get-dart-version
-        with:
-          path: DART_SDK_VERSION
-      - run: choco install dart-sdk -y --version ${{ steps.get-dart-version.outputs.text }}
       - run: choco install stax --source . -y
       - run: stax help
       - run: stax doctor
