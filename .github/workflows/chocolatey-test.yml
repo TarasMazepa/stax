@@ -29,14 +29,6 @@ jobs:
         run: |
           dart pub get
           dart compile exe -o "../chocolatey/stax/tools/stax.exe" "-Dversion=${{ steps.get-stax-version.outputs.text }}" "bin/cli.dart"
-          
-      - name: Update version in nuspec file
-        shell: pwsh
-        run: |
-          $nuspecPath = "chocolatey/stax/stax.nuspec"
-          $xml = [xml](Get-Content $nuspecPath)
-          $xml.package.metadata.version = "${{ steps.get-stax-version.outputs.text }}"
-          $xml.Save($nuspecPath)
       
       - run: choco pack chocolatey/stax/stax.nuspec
       
