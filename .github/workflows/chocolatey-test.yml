@@ -15,7 +15,6 @@ jobs:
       # and unzip to chocolatey/stax/tools/stax.exe
       
       - run: choco pack chocolatey/stax/stax.nuspec
-      
       - run: choco install stax --source . -y
       - run: stax help
       - run: stax doctor
