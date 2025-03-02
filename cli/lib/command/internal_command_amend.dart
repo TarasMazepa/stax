@@ -60,23 +60,28 @@ class InternalCommandAmend extends InternalCommand {
     }
     context.handleAddAllFlag(args);
 
-    final hasRebaseFlag = rebaseFlag.hasFlag(args);
-    final hasRebaseTheirsFlag = rebaseTheirsFlag.hasFlag(args);
-    final hasRebaseOursFlag = rebaseOursFlag.hasFlag(args);
+    bool hasRebaseFlag = rebaseFlag.hasFlag(args);
+    bool hasRebaseTheirsFlag = rebaseTheirsFlag.hasFlag(args);
+    bool hasRebaseOursFlag = rebaseOursFlag.hasFlag(args);
     final hasForcePushFlag = forcePushFlag.hasFlag(args);
     final hasSkipPushFlag = skipPushFlag.hasFlag(args);
 
     if (context.assertNoConflictingFlags(
       [hasRebaseFlag, hasRebaseTheirsFlag, hasRebaseOursFlag],
       [rebaseFlag, rebaseTheirsFlag, rebaseOursFlag],
-    )) return;
+    )) {
+      return;
+    }
 
     if (context.assertNoConflictingFlags(
       [hasForcePushFlag, hasSkipPushFlag],
       [forcePushFlag, skipPushFlag],
-    )) return;
+    )) {
+      return;
+    }
 
     final hasChanges = !context.areThereNoStagedChanges();
+    final current = context.gitLogAll().findCurrent();
 
     if (hasChanges) {
       context.git.commitAmendNoEdit
@@ -98,24 +103,59 @@ class InternalCommandAmend extends InternalCommand {
             .runSync()
             .printNotEmptyResultFields();
       } else {
-        final shouldForcePush = context.commandLineContinueQuestion(
-          'Would you like to force push anyway?',
-        );
-        if (shouldForcePush) {
-          context.git.pushForce
-              .announce('Force pushing to a remote.')
-              .runSync()
-              .printNotEmptyResultFields();
-        }
+        context.git.pushForce
+            .askContinueQuestion('Would you like to force push anyway?')
+            ?.announce('Force pushing to a remote.')
+            .runSync()
+            .printNotEmptyResultFields();
       }
     }
 
-    if (hasRebaseFlag || hasRebaseTheirsFlag || hasRebaseOursFlag) {
+    bool hasAnyRebaseFlag() =>
+        hasRebaseFlag || hasRebaseTheirsFlag || hasRebaseOursFlag;
+
+    if (!hasAnyRebaseFlag() && current?.children.isNotEmpty == true) {
+      final rebaseOption = context.commandLineMultipleOptionsQuestion(
+        'This branch has children. Would you like to rebase them?',
+        [
+          (
+            key: 'r',
+            description: 'Standard rebase',
+          ),
+          (
+            key: 'm',
+            description: 'Rebase prefer moving (--rebase-prefer-moving)',
+          ),
+          (
+            key: 'b',
+            description: 'Rebase prefer base (--rebase-prefer-base)',
+          ),
+          (
+            key: '<any>',
+            description: 'Decline',
+          ),
+        ],
+      );
+
+      switch (rebaseOption) {
+        case 'r':
+          hasRebaseFlag = true;
+          break;
+        case 'm':
+          hasRebaseTheirsFlag = true;
+          break;
+        case 'b':
+          hasRebaseOursFlag = true;
+          break;
+      }
+    }
+
+    if (hasAnyRebaseFlag()) {
       InternalCommandRebase().run(
         [
           if (hasRebaseTheirsFlag) InternalCommandRebase.theirsFlag.long!,
           if (hasRebaseOursFlag) InternalCommandRebase.oursFlag.long!,
-          context.gitLogAll().findCurrent()!.line.branchNameOrCommitHash(),
+          current!.line.branchNameOrCommitHash(),
         ],
         context,
       );
