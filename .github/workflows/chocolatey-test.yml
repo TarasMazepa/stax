@@ -9,26 +9,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - uses: TarasMazepa/github-action-cat@master
-        id: get-dart-version
-        with:
-          path: DART_SDK_VERSION
-          
-      - uses: TarasMazepa/github-action-cat@master
-        id: get-stax-version
-        with:
-          path: VERSION
-          
-      - uses: dart-lang/setup-dart@v1
-        with:
-          sdk: ${{ steps.get-dart-version.outputs.text }}
-      
-      - name: Compile Stax binary
-        working-directory: cli
-        run: |
-          dart pub get
-          dart compile exe -o "../chocolatey/stax/tools/stax.exe" "-Dversion=${{ steps.get-stax-version.outputs.text }}" "bin/cli.dart"
+
+      # read version from https://github.com/TarasMazepa/stax/blob/main/chocolatey/stax/stax.nuspec#L6 
+      # download https://github.com/TarasMazepa/stax/releases/download/<version>/windows-x64.zip 
+      # and unzip to chocolatey/stax/tools/stax.exe
       
       - run: choco pack chocolatey/stax/stax.nuspec
       
