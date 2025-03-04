@@ -46,4 +46,4 @@ jobs:
             /repos/TarasMazepa/homebrew-stax/actions/workflows/update.yml/dispatches \
             -f "ref=main" -f "inputs[dart_sdk_version]=${{ steps.get-dart-version.outputs.dart_sdk_version }}"
         env:
-          GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}  
+          GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}
