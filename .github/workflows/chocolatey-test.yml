@@ -10,12 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Prepare Chocolatey Package
-        id: prepare_chocolatey
+      - run: ./.github/scripts/prepare-chocolatey.ps1
         shell: pwsh
-        run: |
-          ./.github/scripts/prepare-chocolatey.ps1
-      
+
       - run: choco pack chocolatey/stax/stax.nuspec
       - run: choco install stax --source . -y
       - run: stax help
