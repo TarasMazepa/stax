@@ -10,28 +10,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Extract version from nuspec
-        id: get_version
+      - name: Prepare Chocolatey Package
+        id: prepare_chocolatey
         shell: pwsh
         run: |
-          $nuspecContent = Get-Content -Path chocolatey/stax/stax.nuspec -Raw
-          $version = [regex]::Match($nuspecContent, '<version>(.*?)</version>').Groups[1].Value
-          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
-          echo "Found version: $version"
-      
-      - name: Download and extract release
-        shell: pwsh
-        run: |
-          $version = "${{ steps.get_version.outputs.VERSION }}"
-          $downloadUrl = "https://github.com/TarasMazepa/stax/releases/download/$version/windows-x64.zip"
-          $outputZip = "windows-x64.zip"
-          
-          echo "Downloading from: $downloadUrl"
-          Invoke-WebRequest -Uri $downloadUrl -OutFile $outputZip
-          
-          echo "Extracting stax.exe to chocolatey/stax/tools/"
-          Expand-Archive -Path $outputZip -DestinationPath temp_extract
-          Copy-Item -Path "temp_extract/stax.exe" -Destination "chocolatey/stax/tools/stax.exe" -Force
+          ./.github/scripts/prepare-chocolatey.ps1
       
       - run: choco pack chocolatey/stax/stax.nuspec
       - run: choco install stax --source . -y

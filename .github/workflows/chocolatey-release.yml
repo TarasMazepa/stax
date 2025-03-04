@@ -7,9 +7,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # read version from https://github.com/TarasMazepa/stax/blob/main/chocolatey/stax/stax.nuspec#L6 
-      # download https://github.com/TarasMazepa/stax/releases/download/<version>/windows-x64.zip 
-      # and unzip to chocolatey/stax/tools/stax.exe
+      - name: Prepare Chocolatey Package
+        id: prepare_chocolatey
+        shell: pwsh
+        run: |
+          ./.github/scripts/prepare-chocolatey.ps1
       
       - run: choco pack chocolatey/stax/stax.nuspec
       - run: choco install stax --source . -y
