@@ -47,14 +47,3 @@ jobs:
             -f "ref=main" -f "inputs[dart_sdk_version]=${{ steps.get-dart-version.outputs.dart_sdk_version }}"
         env:
           GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}
-      - run: |
-          git checkout HEAD~
-          sed -i "s+<dependency id='dart-sdk' version='.*' />+<dependency id='dart-sdk' version='$DART_SDK_VERSION' />+" ./chocolatey/stax/stax.nuspec
-          branch_name=chocolatey-update-dart-sdk-to-$DART_SDK_VERSION-$RANDOM
-          git checkout -b $branch_name
-          git commit -a -m "Chocolatey update dart sdk to $DART_SDK_VERSION"
-          git push --set-upstream origin $branch_name
-          gh pr merge $(gh pr create -B main -f) --auto --squash
-        env:
-          GH_TOKEN: ${{ secrets.PAT }}
-          DART_SDK_VERSION: ${{ steps.get-dart-version.outputs.dart_sdk_version }}

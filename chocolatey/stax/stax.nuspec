@@ -25,10 +25,6 @@
     </description>
     <releaseNotes>https://github.com/TarasMazepa/stax/blob/main/README.md</releaseNotes>
 
-    <dependencies>
-        <dependency id='dart-sdk' version='3.5.3' />
-    </dependencies>
-
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
