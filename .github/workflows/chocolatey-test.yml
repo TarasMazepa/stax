@@ -9,12 +9,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+
+      - run: ./.github/scripts/prepare-chocolatey.ps1
+        shell: pwsh
+
       - run: choco pack chocolatey/stax/stax.nuspec
-      - uses: TarasMazepa/github-action-cat@master
-        id: get-dart-version
-        with:
-          path: DART_SDK_VERSION
-      - run: choco install dart-sdk -y --version ${{ steps.get-dart-version.outputs.text }}
       - run: choco install stax --source . -y
-      - run: stax help
+      - run: stax version
       - run: stax doctor
+      - run: stax help
