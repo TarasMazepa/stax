@@ -4,8 +4,8 @@ param (
 )
 
 Write-Host "Extracting version from $NuspecPath"
-$nuspecContent = Get-Content -Path $NuspecPath -Raw
-$version = [regex]::Match($nuspecContent, '<version>(.*?)</version>').Groups[1].Value
+[xml]$xml = Get-Content -Path $NuspecPath
+$version = $xml.package.metadata.version
 Write-Host "Found version: $version"
 
 $downloadUrl = "https://github.com/TarasMazepa/stax/releases/download/$version/windows-x64.zip"
