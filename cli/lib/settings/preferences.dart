@@ -12,7 +12,7 @@ class Preferences extends BaseSettings {
   );
 
   Preferences()
-      : super.fromPath(
-          path.join(applicationConfigHome('stax'), '.stax_preferences'),
-        );
+    : super.fromPath(
+        path.join(applicationConfigHome('stax'), '.stax_preferences'),
+      );
 }

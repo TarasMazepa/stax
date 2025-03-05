@@ -8,11 +8,11 @@ import 'package:stax/context/context.dart';
 
 class InternalCommandUpdate extends InternalCommand {
   InternalCommandUpdate()
-      : super(
-          'update',
-          'Updates to the latest version.',
-          type: InternalCommandType.hidden,
-        );
+    : super(
+        'update',
+        'Updates to the latest version.',
+        type: InternalCommandType.hidden,
+      );
 
   static const String versionUrl =
       'https://raw.githubusercontent.com/TarasMazepa/stax/refs/heads/main/VERSION';
@@ -58,8 +58,9 @@ class InternalCommandUpdate extends InternalCommand {
 
     if (brewListResult.exitCode != 0 ||
         !brewListResult.stdout.toString().contains('stax')) {
-      context
-          .printToConsole('stax is not installed via Homebrew on this system.');
+      context.printToConsole(
+        'stax is not installed via Homebrew on this system.',
+      );
       showInstallationInstructions(context);
       return;
     }
@@ -80,14 +81,16 @@ class InternalCommandUpdate extends InternalCommand {
           .runSync()
           .printNotEmptyResultFields();
 
-      context
-          .printToConsole('A new version of stax is available. Upgrading...');
+      context.printToConsole(
+        'A new version of stax is available. Upgrading...',
+      );
 
-      final upgradeResult = context
-          .command(['brew', 'upgrade', 'TarasMazepa/stax/stax'])
-          .announce('Upgrading stax...')
-          .runSync()
-          .printNotEmptyResultFields();
+      final upgradeResult =
+          context
+              .command(['brew', 'upgrade', 'TarasMazepa/stax/stax'])
+              .announce('Upgrading stax...')
+              .runSync()
+              .printNotEmptyResultFields();
 
       if (upgradeResult.exitCode == 0) {
         context.printToConsole(
