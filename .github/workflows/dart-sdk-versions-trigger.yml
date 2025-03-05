@@ -23,13 +23,14 @@ jobs:
           sdk: ${{ steps.get-dart-version.outputs.dart_sdk_version }}
       - run: dart pub get
         working-directory: cli
+      - run: |
+          git config --global user.name 'stax'
+          git config --global user.email 'stax@staxforgit.com'
       - run: dart test
         working-directory: cli
       - run: dart analyze
         working-directory: cli
       - run: |
-          git config --global user.name 'stax'
-          git config --global user.email 'stax@staxforgit.com'
           branch_name=update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION-$RANDOM
           git checkout -b $branch_name
           git commit -a -m "Update dart sdk version for cli to $DART_SDK_VERSION"
