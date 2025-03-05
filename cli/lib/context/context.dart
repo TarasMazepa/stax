@@ -17,8 +17,9 @@ class Context {
 
   late final Git git = Git(this);
   late final Settings settings = Settings();
-  late final RepositorySettings? repositorySettings =
-      RepositorySettings.load(this);
+  late final RepositorySettings? repositorySettings = RepositorySettings.load(
+    this,
+  );
 
   Context.implicit() : this(false, null, false, false, false);
 
@@ -122,7 +123,8 @@ $object
       );
       return true;
     }
-    final includeSpace = questionContext.isNotEmpty &&
+    final includeSpace =
+        questionContext.isNotEmpty &&
         questionContext[questionContext.length - 1] != '\n';
     if (includeSpace) questionContext += ' ';
     print('${questionContext}Continue y/N? ');
