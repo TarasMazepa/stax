@@ -14,26 +14,26 @@ abstract class BaseListSetting<T> extends Setting<List<T>> {
     this.itemFromString,
     String Function(T) itemToString,
   ) : super(
-          name,
-          defaultValue,
-          settings,
-          (String s) => (jsonDecode(s) as List<dynamic>)
-              .map((element) => element.toString())
-              .expand<T>(
-            (element) {
-              try {
-                return switch (itemFromString(element)) {
-                  null => [],
-                  final converted => [converted],
-                };
-              } catch (_) {
-                return [];
-              }
-            },
-          ).toList(),
-          (List<T> list) => jsonEncode(list.map(itemToString).toList()),
-          description,
-        );
+        name,
+        defaultValue,
+        settings,
+        (String s) =>
+            (jsonDecode(s) as List<dynamic>)
+                .map((element) => element.toString())
+                .expand<T>((element) {
+                  try {
+                    return switch (itemFromString(element)) {
+                      null => [],
+                      final converted => [converted],
+                    };
+                  } catch (_) {
+                    return [];
+                  }
+                })
+                .toList(),
+        (List<T> list) => jsonEncode(list.map(itemToString).toList()),
+        description,
+      );
 
   void add(T item) {
     value = [...value, item];

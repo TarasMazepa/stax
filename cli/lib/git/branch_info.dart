@@ -91,12 +91,13 @@ class BranchInfo {
           final remoteMarkers =
               remoteInfo[1].split(',').map((e) => e.trim()).toList();
           gone = remoteMarkers.contains('gone');
-          parsePrefixed(String prefix) => remoteMarkers
-              .where((e) => e.startsWith(prefix))
-              .map((e) => e.split(' '))
-              .where((e) => e.length == 2)
-              .map((e) => int.tryParse(e[1]))
-              .firstOrNull;
+          parsePrefixed(String prefix) =>
+              remoteMarkers
+                  .where((e) => e.startsWith(prefix))
+                  .map((e) => e.split(' '))
+                  .where((e) => e.length == 2)
+                  .map((e) => int.tryParse(e[1]))
+                  .firstOrNull;
           ahead = parsePrefixed('ahead ');
           behind = parsePrefixed('behind ');
         }

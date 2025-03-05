@@ -17,19 +17,22 @@ void cliGroup(
   @Deprecated('Debug only') bool solo = false,
 }) {
   final CliTestSetup setup = CliTestSetup.create(bundle);
-  group(description,
-      testOn: testOn,
-      timeout: timeout,
-      skip: skip,
-      tags: tags,
-      onPlatform: onPlatform,
-      retry: retry, () {
-    setUp(() {
-      setup.setUp();
-    });
-    tearDown(() {
-      setup.tearDown();
-    });
-    body(setup);
-  });
+  group(
+    description,
+    testOn: testOn,
+    timeout: timeout,
+    skip: skip,
+    tags: tags,
+    onPlatform: onPlatform,
+    retry: retry,
+    () {
+      setUp(() {
+        setup.setUp();
+      });
+      tearDown(() {
+        setup.tearDown();
+      });
+      body(setup);
+    },
+  );
 }
