@@ -15,5 +15,6 @@ jobs:
 
       - run: choco pack chocolatey/stax/stax.nuspec
       - run: choco install stax --source . -y
-      - run: stax help
+      - run: stax vector
       - run: stax doctor
+      - run: stax help
