@@ -22,11 +22,11 @@ jobs:
       - run: |
           if ! git diff --quiet; then
             timestamp=$(date -u +"%Y-%m-%dT%H-%M-%S")
-            branch_name=${GITHUB_REF#refs/heads/}-formatted-$timestamp
+            branch_name=format-dart-code-in-${GITHUB_REF#refs/heads/}-branch-at-$timestamp
             git config --global user.name 'stax'
             git config --global user.email 'stax@staxforgit.com'
             git checkout -b $branch_name
-            git commit -a -m "${GITHUB_REF#refs/heads/} branch dart code formatted at $timestamp"
+            git commit -a -m "Format dart code in ${GITHUB_REF#refs/heads/} branch at $timestamp"
             git push --set-upstream origin $branch_name
             gh pr merge $(gh pr create -B ${GITHUB_REF#refs/heads/} -f) --auto --squash
           fi
