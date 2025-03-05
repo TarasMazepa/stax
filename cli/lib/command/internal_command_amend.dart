@@ -40,18 +40,18 @@ class InternalCommandAmend extends InternalCommand {
   );
 
   InternalCommandAmend()
-      : super(
-          'amend',
-          'Amends and pushes changes.',
-          flags: [
-            ...ContextHandleAddAllFlag.flags,
-            rebaseFlag,
-            rebaseOursFlag,
-            rebaseTheirsFlag,
-            forcePushFlag,
-            skipPushFlag,
-          ],
-        );
+    : super(
+        'amend',
+        'Amends and pushes changes.',
+        flags: [
+          ...ContextHandleAddAllFlag.flags,
+          rebaseFlag,
+          rebaseOursFlag,
+          rebaseTheirsFlag,
+          forcePushFlag,
+          skipPushFlag,
+        ],
+      );
 
   @override
   void run(final List<String> args, final Context context) {
@@ -118,22 +118,13 @@ class InternalCommandAmend extends InternalCommand {
       final rebaseOption = context.commandLineMultipleOptionsQuestion(
         'This branch has children. Would you like to rebase them?',
         [
-          (
-            key: 'r',
-            description: 'Standard rebase',
-          ),
+          (key: 'r', description: 'Standard rebase'),
           (
             key: 'm',
             description: 'Rebase prefer moving (--rebase-prefer-moving)',
           ),
-          (
-            key: 'b',
-            description: 'Rebase prefer base (--rebase-prefer-base)',
-          ),
-          (
-            key: '<any>',
-            description: 'Decline',
-          ),
+          (key: 'b', description: 'Rebase prefer base (--rebase-prefer-base)'),
+          (key: '<any>', description: 'Decline'),
         ],
       );
 
@@ -151,14 +142,11 @@ class InternalCommandAmend extends InternalCommand {
     }
 
     if (hasAnyRebaseFlag()) {
-      InternalCommandRebase().run(
-        [
-          if (hasRebaseTheirsFlag) InternalCommandRebase.theirsFlag.long!,
-          if (hasRebaseOursFlag) InternalCommandRebase.oursFlag.long!,
-          current!.line.branchNameOrCommitHash(),
-        ],
-        context,
-      );
+      InternalCommandRebase().run([
+        if (hasRebaseTheirsFlag) InternalCommandRebase.theirsFlag.long!,
+        if (hasRebaseOursFlag) InternalCommandRebase.oursFlag.long!,
+        current!.line.branchNameOrCommitHash(),
+      ], context);
     }
   }
 }

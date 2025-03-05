@@ -6,11 +6,7 @@ import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 extension GitLogAllOnContext on Context {
   GitLogAllNode _gitLogAll() {
     final lines = git.log
-        .args([
-          '--decorate=full',
-          '--format=%h %ct %p %d',
-          '--all',
-        ])
+        .args(['--decorate=full', '--format=%h %ct %p %d', '--all'])
         .runSync()
         .printNotEmptyResultFields()
         .stdout
@@ -19,8 +15,9 @@ extension GitLogAllOnContext on Context {
         .where((x) => x.isNotEmpty)
         .map((x) => GitLogAllLine.parse(x))
         .sorted((a, b) => a.timestamp - b.timestamp);
-    final root =
-        GitLogAllNode.root(lines.firstWhere((x) => x.parentCommitHash == null));
+    final root = GitLogAllNode.root(
+      lines.firstWhere((x) => x.parentCommitHash == null),
+    );
     lines.remove(root.line);
     final nodes = {root.line.commitHash: root};
     final nextLines = <GitLogAllLine>[];
@@ -134,18 +131,19 @@ class GitLogAllNode {
 
   List<GitLogAllNode> get sortedChildren {
     return children.sorted(
-      (a, b) => ComparisonChain()
-          .chainBoolReverse(
-            a.isRemoteHeadReachable(),
-            b.isRemoteHeadReachable(),
-          )
-          .chain(
-            () => (b.line.branchNameOrCommitHash()).compareTo(
-              a.line.branchNameOrCommitHash(),
-            ),
-          )
-          .chain(() => b.line.timestamp - a.line.timestamp)
-          .compare(),
+      (a, b) =>
+          ComparisonChain()
+              .chainBoolReverse(
+                a.isRemoteHeadReachable(),
+                b.isRemoteHeadReachable(),
+              )
+              .chain(
+                () => (b.line.branchNameOrCommitHash()).compareTo(
+                  a.line.branchNameOrCommitHash(),
+                ),
+              )
+              .chain(() => b.line.timestamp - a.line.timestamp)
+              .compare(),
     );
   }
 
@@ -177,7 +175,8 @@ class GitLogAllNode {
       newChildren.add(newChild);
     }
     children = newChildren;
-    final hasInterestingParts = (showAllBranches && line.partsHasRemoteRef) ||
+    final hasInterestingParts =
+        (showAllBranches && line.partsHasRemoteRef) ||
         line.partsHasRemoteHead ||
         line.parts.any(
           (x) =>
@@ -200,39 +199,27 @@ class GitLogAllNode {
   }
 
   GitLogAllNode? findAnyRefThatEndsWith(String suffix) {
-    return find(
-      (x) => x.line.parts.any(
-        (element) => element.endsWith(suffix),
-      ),
-    );
+    return find((x) => x.line.parts.any((element) => element.endsWith(suffix)));
   }
 
   GitLogAllNode? find(bool Function(GitLogAllNode) predicate) {
     if (predicate(this)) return this;
-    return children
-        .map(
-          (x) => x.find(predicate),
-        )
-        .nonNulls
-        .firstOrNull;
+    return children.map((x) => x.find(predicate)).nonNulls.firstOrNull;
   }
 
   GitLogAllNode? findCurrent() {
-    return find(
-      (x) => x.line.isCurrent,
-    );
+    return find((x) => x.line.isCurrent);
   }
 
   GitLogAllNode? findRemoteHead() {
-    return find(
-      (x) => x.line.partsHasRemoteHead,
-    );
+    return find((x) => x.line.partsHasRemoteHead);
   }
 
   Iterable<({String? parent, String node})> localBranchNamesInOrderForRebase() {
     return [
       (
-        parent: parent?.line.localBranchNames().firstOrNull ??
+        parent:
+            parent?.line.localBranchNames().firstOrNull ??
             parent?.line.remoteBranchNames().firstOrNull,
         node: line.localBranchNames().first,
       ),
@@ -241,11 +228,10 @@ class GitLogAllNode {
 
   Iterable<String> remoteBranchNamesInOrderForCheckout() {
     return children
-        .expand(
-          (x) => x.remoteBranchNamesInOrderForCheckout(),
-        )
+        .expand((x) => x.remoteBranchNamesInOrderForCheckout())
         .cast<String?>()
-        .followedBy([line.remoteBranchNames().firstOrNull]).nonNulls;
+        .followedBy([line.remoteBranchNames().firstOrNull])
+        .nonNulls;
   }
 
   bool isRemoteHeadReachable() {
@@ -283,15 +269,16 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
   @override
   List<GitLogAllNode> children(GitLogAllNode t) {
     return t.children.sorted(
-      (a, b) => ComparisonChain()
-          .chainBoolReverse(isDefaultBranch(a), isDefaultBranch(b))
-          .chain(
-            () => (b.line.branchNameOrCommitHash()).compareTo(
-              a.line.branchNameOrCommitHash(),
-            ),
-          )
-          .chain(() => b.line.timestamp - a.line.timestamp)
-          .compare(),
+      (a, b) =>
+          ComparisonChain()
+              .chainBoolReverse(isDefaultBranch(a), isDefaultBranch(b))
+              .chain(
+                () => (b.line.branchNameOrCommitHash()).compareTo(
+                  a.line.branchNameOrCommitHash(),
+                ),
+              )
+              .chain(() => b.line.timestamp - a.line.timestamp)
+              .compare(),
     );
   }
 
