@@ -8,7 +8,11 @@ class RepositorySettings extends BaseSettings {
     final root = context.getRepositoryRoot();
     if (root == null) return null;
     return RepositorySettings(
-      path.join(Uri.parse(root).toFilePath(), '.git/info/stax/settings.json'),
+      path.join(Uri.parse(root).toFilePath(),
+      '.git',
+      'info',
+      'stax',
+      'settings.json',
     );
   }
 
