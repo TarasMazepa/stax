@@ -13,7 +13,7 @@ void main(List<String> arguments) async {
     );
 
     bool isRunning = true;
-    serverSocket!.listen((client) {
+    serverSocket.listen((client) {
       client.listen((data) {
         switch (String.fromCharCodes(data).trim()) {
           case 'exit':
