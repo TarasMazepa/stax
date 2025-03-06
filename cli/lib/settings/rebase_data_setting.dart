@@ -18,21 +18,22 @@ class RebaseData {
   });
 
   Map<String, dynamic> toJson() => {
-        'hasTheirsFlag': hasTheirsFlag,
-        'hasOursFlag': hasOursFlag,
-        'rebaseOnto': rebaseOnto,
-        'branches': branches,
-        'currentIndex': currentIndex,
-      };
+    'hasTheirsFlag': hasTheirsFlag,
+    'hasOursFlag': hasOursFlag,
+    'rebaseOnto': rebaseOnto,
+    'branches': branches,
+    'currentIndex': currentIndex,
+  };
 
   factory RebaseData.fromJson(Map<String, dynamic> json) {
     return RebaseData(
       hasTheirsFlag: json['hasTheirsFlag'] as bool,
       hasOursFlag: json['hasOursFlag'] as bool,
       rebaseOnto: json['rebaseOnto'] as String,
-      branches: (json['branches'] as List)
-          .map((e) => Map<String, String>.from(e as Map))
-          .toList(),
+      branches:
+          (json['branches'] as List)
+              .map((e) => Map<String, String>.from(e as Map))
+              .toList(),
       currentIndex: json['currentIndex'] as int? ?? 0,
     );
   }
@@ -45,11 +46,11 @@ class RebaseDataSetting extends Setting<RebaseData?> {
     BaseSettings settings,
     String description,
   ) : super(
-          name,
-          defaultValue,
-          settings,
-          (s) => s.isEmpty ? null : RebaseData.fromJson(jsonDecode(s)),
-          (data) => data == null ? '' : jsonEncode(data.toJson()),
-          description,
-        );
+        name,
+        defaultValue,
+        settings,
+        (s) => s.isEmpty ? null : RebaseData.fromJson(jsonDecode(s)),
+        (data) => data == null ? '' : jsonEncode(data.toJson()),
+        description,
+      );
 }
