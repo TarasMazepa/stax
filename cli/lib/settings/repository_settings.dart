@@ -23,7 +23,6 @@ class RepositorySettings extends BaseSettings {
       'stax',
       'settings.json',
     );
-    return RepositorySettings(settingsPath);
   }
 
   RepositorySettings(super.path) : super.fromPath();
