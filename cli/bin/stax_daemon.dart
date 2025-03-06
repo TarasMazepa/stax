@@ -17,17 +17,16 @@ void main(List<String> arguments) async {
   context.printParagraph('Starting stax daemon on port $_daemonPort...');
 
   try {
-    _serverSocket =
-        await ServerSocket.bind(InternetAddress.loopbackIPv4, _daemonPort);
+    _serverSocket = await ServerSocket.bind(
+      InternetAddress.loopbackIPv4,
+      _daemonPort,
+    );
 
     _serverSocket!.listen((client) {
-      client.listen(
-        (data) {
-          final command = String.fromCharCodes(data).trim();
-          _handleCommand(command, client, context);
-        },
-        onDone: () => client.close(),
-      );
+      client.listen((data) {
+        final command = String.fromCharCodes(data).trim();
+        _handleCommand(command, client, context);
+      }, onDone: () => client.close());
     });
 
     while (_isRunning) {
@@ -42,20 +41,19 @@ void main(List<String> arguments) async {
   }
 }
 
-void _handleCommand(
-  String commandString,
-  Socket client,
-  Context context,
-) {
+void _handleCommand(String commandString, Socket client, Context context) {
   final parts = commandString.split(' ');
   if (parts.isEmpty) return;
 
   final commandName = parts.first;
   final args = parts.length > 1 ? parts.sublist(1) : <String>[];
 
-  final internalCommand = internalCommandsDaemon
-      .where((cmd) => cmd.name == commandName || cmd.shortName == commandName)
-      .firstOrNull;
+  final internalCommand =
+      internalCommandsDaemon
+          .where(
+            (cmd) => cmd.name == commandName || cmd.shortName == commandName,
+          )
+          .firstOrNull;
 
   if (internalCommand != null) {
     client.writeln('\nExecuting command: ${internalCommand.name}\n');
