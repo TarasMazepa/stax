@@ -15,13 +15,14 @@ class RepositorySettings extends BaseSettings {
   static RepositorySettings? load(Context context) {
     final root = context.getRepositoryRoot();
     if (root == null) return null;
-
-    final settingsPath = path.join(
-      root,
-      '.git',
-      'info',
-      'stax',
-      'settings.json',
+    return RepositorySettings(
+      path.join(
+        Uri.parse(root).toFilePath(),
+        '.git',
+        'info',
+        'stax',
+        'settings.json',
+      ),
     );
     return RepositorySettings(settingsPath);
   }
