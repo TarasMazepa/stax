@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:stax/context/context.dart';
-
 void main(List<String> arguments) async {
   final daemonPort = 5000;
-  context.printParagraph('Starting stax daemon on port $daemonPort...');
+  print('Starting stax daemon on port $daemonPort...');
 
   ServerSocket? serverSocket;
   try {
@@ -28,11 +26,8 @@ void main(List<String> arguments) async {
     while (isRunning) {
       await Future.delayed(Duration(seconds: 1));
     }
-  } catch (e) {
-    context.printParagraph('Error: $e');
-    exit(1);
   } finally {
     await serverSocket?.close();
-    context.printParagraph('Daemon shut down');
+    print('Daemon shut down');
   }
 }
