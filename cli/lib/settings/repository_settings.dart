@@ -24,7 +24,6 @@ class RepositorySettings extends BaseSettings {
         'settings.json',
       ),
     );
-    return RepositorySettings(settingsPath);
   }
 
   RepositorySettings(super.path) : super.fromPath();
