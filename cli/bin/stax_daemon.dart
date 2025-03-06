@@ -4,17 +4,17 @@ import 'dart:io';
 import 'package:stax/context/context.dart';
 
 void main(List<String> arguments) async {
-  ServerSocket? serverSocket;
-  bool isRunning = true;
   final daemonPort = 5000;
   context.printParagraph('Starting stax daemon on port $daemonPort...');
 
+  ServerSocket? serverSocket;
   try {
     serverSocket = await ServerSocket.bind(
       InternetAddress.loopbackIPv4,
       daemonPort,
     );
 
+    bool isRunning = true;
     serverSocket!.listen((client) {
       client.listen((data) {
         switch (String.fromCharCodes(data).trim()) {
