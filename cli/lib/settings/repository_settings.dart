@@ -13,6 +13,7 @@ class RepositorySettings extends BaseSettings {
       'info',
       'stax',
       'settings.json',
+      ),
     );
   }
 
