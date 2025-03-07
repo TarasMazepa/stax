@@ -16,13 +16,7 @@ class RebaseSettings extends BaseSettings {
     final root = context.getRepositoryRoot();
     if (root == null) return null;
     return RebaseSettings(
-      path.join(
-        root,
-        '.git',
-        'info',
-        'stax',
-        'rebase.json',
-      ),
+      path.join(root, '.git', 'info', 'stax', 'rebase.json'),
     );
   }
 
