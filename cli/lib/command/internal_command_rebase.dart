@@ -1,8 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:stax/command/flag.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_assert_no_conflicting_flags.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
+import 'package:stax/rebase/rebase_data_setting.dart';
 
 import 'internal_command.dart';
 
@@ -72,9 +75,35 @@ class InternalCommandRebase extends InternalCommand {
 
     final rebaseOnto = targetNode.line.branchNameOrCommitHash();
 
+    final branchesForRebase = current.localBranchNamesInOrderForRebase();
+
+    final branches =
+        branchesForRebase
+            .map((node) => {'node': node.node, 'parent': node.parent ?? ''})
+            .toList();
+
+    final rebaseData = RebaseData(
+      hasTheirsFlag: hasTheirsFlag,
+      hasOursFlag: hasOursFlag,
+      rebaseOnto: rebaseOnto,
+      steps:
+          branches
+              .map(
+                (branch) => RebaseStep(
+                  node: branch['node'] as String,
+                  parent: branch['parent'] as String,
+                ),
+              )
+              .toList(),
+    );
+
+    final rebaseFile = File('.git/info/stax/rebase.json');
+    rebaseFile.writeAsStringSync(jsonEncode(rebaseData.toJson()));
+    context.printToConsole('Saved rebase data to .git/info/stax/rebase.json');
+
     bool changeParentOnce = true;
 
-    for (var node in current.localBranchNamesInOrderForRebase()) {
+    for (var node in branchesForRebase) {
       final exitCode =
           context.git.rebase
               .args([
@@ -93,6 +122,13 @@ class InternalCommandRebase extends InternalCommand {
         return;
       }
       context.git.pushForce.announce().runSync().printNotEmptyResultFields();
+    }
+
+    if (rebaseFile.existsSync()) {
+      rebaseFile.deleteSync();
+      context.printToConsole(
+        'Deleted rebase data file from .git/info/stax/rebase.json',
+      );
     }
   }
 }
