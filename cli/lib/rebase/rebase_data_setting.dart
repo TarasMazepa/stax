@@ -3,14 +3,24 @@ import 'package:stax/settings/base_settings.dart';
 import 'package:stax/settings/setting.dart';
 
 class RebaseStep {
-  final Map<String, String> data;
+  final String node;
+  final String parent;
 
-  RebaseStep({required this.data});
+  RebaseStep({
+    required this.node,
+    this.parent = '',
+  });
 
-  Map<String, dynamic> toJson() => data;
+  Map<String, dynamic> toJson() => {
+        'node': node,
+        'parent': parent,
+      };
 
   factory RebaseStep.fromJson(Map<String, dynamic> json) {
-    return RebaseStep(data: Map<String, String>.from(json));
+    return RebaseStep(
+      node: json['node'] as String,
+      parent: (json['parent'] as String?) ?? '',
+    );
   }
 }
 
@@ -30,24 +40,23 @@ class RebaseData {
   });
 
   Map<String, dynamic> toJson() => {
-    'hasTheirsFlag': hasTheirsFlag,
-    'hasOursFlag': hasOursFlag,
-    'rebaseOnto': rebaseOnto,
-    'branches': steps.map((step) => step.toJson()).toList(),
-    'currentIndex': currentIndex,
-  };
+        'hasTheirsFlag': hasTheirsFlag,
+        'hasOursFlag': hasOursFlag,
+        'rebaseOnto': rebaseOnto,
+        'branches': steps.map((step) => step.toJson()).toList(),
+        'currentIndex': currentIndex,
+      };
 
   factory RebaseData.fromJson(Map<String, dynamic> json) {
     return RebaseData(
       hasTheirsFlag: json['hasTheirsFlag'] as bool,
       hasOursFlag: json['hasOursFlag'] as bool,
       rebaseOnto: json['rebaseOnto'] as String,
-      steps:
-          (json['branches'] as List)
-              .map(
-                (e) => RebaseStep.fromJson(Map<String, dynamic>.from(e as Map)),
-              )
-              .toList(),
+      steps: (json['branches'] as List)
+          .map(
+            (e) => RebaseStep.fromJson(Map<String, dynamic>.from(e as Map)),
+          )
+          .toList(),
       currentIndex: json['currentIndex'] as int? ?? 0,
     );
   }
@@ -60,11 +69,11 @@ class RebaseDataSetting extends Setting<RebaseData?> {
     BaseSettings settings,
     String description,
   ) : super(
-        name,
-        defaultValue,
-        settings,
-        (s) => s.isEmpty ? null : RebaseData.fromJson(jsonDecode(s)),
-        (data) => data == null ? '' : jsonEncode(data.toJson()),
-        description,
-      );
+          name,
+          defaultValue,
+          settings,
+          (s) => s.isEmpty ? null : RebaseData.fromJson(jsonDecode(s)),
+          (data) => data == null ? '' : jsonEncode(data.toJson()),
+          description,
+        );
 }
