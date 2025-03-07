@@ -21,15 +21,14 @@ class InternalCommandRebase extends InternalCommand {
   );
 
   InternalCommandRebase()
-      : super(
-          'rebase',
-          'rebase tree of branches on top of main',
-          arguments: {
-            'opt1':
-                'Optional argument for target, will default to <remote>/HEAD',
-          },
-          flags: [theirsFlag, oursFlag],
-        );
+    : super(
+        'rebase',
+        'rebase tree of branches on top of main',
+        arguments: {
+          'opt1': 'Optional argument for target, will default to <remote>/HEAD',
+        },
+        flags: [theirsFlag, oursFlag],
+      );
 
   @override
   void run(List<String> args, Context context) {
@@ -58,9 +57,10 @@ class InternalCommandRebase extends InternalCommand {
 
     final userProvidedTarget = args.elementAtOrNull(0);
 
-    final GitLogAllNode? targetNode = userProvidedTarget != null
-        ? root.findAnyRefThatEndsWith(userProvidedTarget)
-        : root.findRemoteHead();
+    final GitLogAllNode? targetNode =
+        userProvidedTarget != null
+            ? root.findAnyRefThatEndsWith(userProvidedTarget)
+            : root.findRemoteHead();
 
     if (targetNode == null) {
       context.printToConsole("Can't find target branch.");
@@ -77,9 +77,10 @@ class InternalCommandRebase extends InternalCommand {
     final branchesForRebase = current.localBranchNamesInOrderForRebase();
 
     if (context.rebaseSettings != null) {
-      final branches = branchesForRebase
-          .map((node) => {'node': node.node, 'parent': node.parent ?? ''})
-          .toList();
+      final branches =
+          branchesForRebase
+              .map((node) => {'node': node.node, 'parent': node.parent ?? ''})
+              .toList();
 
       final rebaseData = RebaseData(
         hasTheirsFlag: hasTheirsFlag,
@@ -95,17 +96,18 @@ class InternalCommandRebase extends InternalCommand {
     bool changeParentOnce = true;
 
     for (var node in branchesForRebase) {
-      final exitCode = context.git.rebase
-          .args([
-            if (hasTheirsFlag) ...['-X', 'theirs'],
-            if (hasOursFlag) ...['-X', 'ours'],
-            if (changeParentOnce) rebaseOnto else node.parent!,
-            node.node,
-          ])
-          .announce()
-          .runSync()
-          .printNotEmptyResultFields()
-          .exitCode;
+      final exitCode =
+          context.git.rebase
+              .args([
+                if (hasTheirsFlag) ...['-X', 'theirs'],
+                if (hasOursFlag) ...['-X', 'ours'],
+                if (changeParentOnce) rebaseOnto else node.parent!,
+                node.node,
+              ])
+              .announce()
+              .runSync()
+              .printNotEmptyResultFields()
+              .exitCode;
       changeParentOnce = false;
       if (exitCode != 0) {
         context.printParagraph('Rebase failed');
