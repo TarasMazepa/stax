@@ -33,3 +33,5 @@ jobs:
         working-directory: cli
       - run: dart compile exe bin/cli.dart
         working-directory: cli
+      - run: dart compile exe bin/stax_daemon.dart
+        working-directory: cli

@@ -29,6 +29,8 @@ jobs:
         working-directory: cli
       - run: dart compile exe bin/cli.dart
         working-directory: cli
+      - run: dart compile exe bin/stax_daemon.dart
+        working-directory: cli
       - run: |
           if ! git diff --quiet; then
             branch_name=cli-update-dependencies-$RANDOM
