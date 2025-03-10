@@ -1,22 +1,4 @@
-import 'dart:convert';
-import 'package:stax/settings/base_settings.dart';
-import 'package:stax/settings/setting.dart';
-
-class RebaseStep {
-  final String node;
-  final String parent;
-
-  RebaseStep({required this.node, this.parent = ''});
-
-  Map<String, dynamic> toJson() => {'node': node, 'parent': parent};
-
-  factory RebaseStep.fromJson(Map<String, dynamic> json) {
-    return RebaseStep(
-      node: json['node'] as String,
-      parent: (json['parent'] as String?) ?? '',
-    );
-  }
-}
+import 'package:stax/rebase/rebase_step.dart';
 
 class RebaseData {
   final bool hasTheirsFlag;
@@ -55,20 +37,4 @@ class RebaseData {
       currentIndex: json['currentIndex'] as int? ?? 0,
     );
   }
-}
-
-class RebaseDataSetting extends Setting<RebaseData?> {
-  RebaseDataSetting(
-    String name,
-    RebaseData? defaultValue,
-    BaseSettings settings,
-    String description,
-  ) : super(
-        name,
-        defaultValue,
-        settings,
-        (s) => s.isEmpty ? null : RebaseData.fromJson(jsonDecode(s)),
-        (data) => data == null ? '' : jsonEncode(data.toJson()),
-        description,
-      );
 }
