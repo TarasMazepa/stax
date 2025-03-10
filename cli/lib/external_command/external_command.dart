@@ -65,6 +65,26 @@ class ExternalCommand {
     ).extend(this);
   }
 
+  ExtendedProcessResult? runSyncCatching({
+    Map<String, String>? environment,
+    bool includeParentEnvironment = true,
+    bool runInShell = false,
+    Encoding? stdoutEncoding = systemEncoding,
+    Encoding? stderrEncoding = systemEncoding,
+  }) {
+    try {
+      return runSync(
+        environment: environment,
+        includeParentEnvironment: includeParentEnvironment,
+        runInShell: runInShell,
+        stdoutEncoding: stdoutEncoding,
+        stderrEncoding: stderrEncoding,
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<ExtendedProcessResult> run({
     Map<String, String>? environment,
     bool includeParentEnvironment = true,
