@@ -19,8 +19,8 @@ extension ContextGhCreatePr on Context {
           '-f',
         ])
         .announce('Creating PR using GitHub CLI')
-        .runSync()
-        .printNotEmptyResultFields()
+        .runSyncCatching()
+        ?.printNotEmptyResultFields()
         .assertSuccessfulExitCode()
         ?.stdout
         .toString()
