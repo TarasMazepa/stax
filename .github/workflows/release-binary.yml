@@ -39,8 +39,8 @@ jobs:
         with:
           path: VERSION
       - run: dart compile exe cli/bin/cli.dart -o stax -Dversion=${{ steps.get-stax-version.outputs.text }}
-      - run: dart compile exe cli/bin/stax_daemon.dart -o stax_daemon -Dversion=${{ steps.get-stax-version.outputs.text }}
-      - run: zip macos-arm.zip stax stax_daemon
+      - run: dart compile exe cli/bin/stax_daemon.dart -o stax-daemon -Dversion=${{ steps.get-stax-version.outputs.text }}
+      - run: zip macos-arm.zip stax stax-daemon
       - run: gh release upload $CHECKOUT macos-arm.zip
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
@@ -68,8 +68,8 @@ jobs:
         with:
           path: VERSION
       - run: dart compile exe cli/bin/cli.dart -o stax -Dversion=${{ steps.get-stax-version.outputs.text }}
-      - run: dart compile exe cli/bin/stax_daemon.dart -o stax_daemon -Dversion=${{ steps.get-stax-version.outputs.text }}
-      - run: zip macos-x64.zip stax stax_daemon
+      - run: dart compile exe cli/bin/stax_daemon.dart -o stax-daemon -Dversion=${{ steps.get-stax-version.outputs.text }}
+      - run: zip macos-x64.zip stax stax-daemon
       - run: gh release upload $CHECKOUT macos-x64.zip
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
@@ -97,8 +97,8 @@ jobs:
         with:
           path: VERSION
       - run: dart compile exe cli/bin/cli.dart -o stax -Dversion=${{ steps.get-stax-version.outputs.text }}
-      - run: dart compile exe cli/bin/stax_daemon.dart -o stax_daemon -Dversion=${{ steps.get-stax-version.outputs.text }}
-      - run: zip linux-x64.zip stax stax_daemon
+      - run: dart compile exe cli/bin/stax_daemon.dart -o stax-daemon -Dversion=${{ steps.get-stax-version.outputs.text }}
+      - run: zip linux-x64.zip stax stax-daemon
       - run: gh release upload $CHECKOUT linux-x64.zip
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
@@ -127,8 +127,8 @@ jobs:
           path: VERSION
           trim: true
       - run: dart compile exe -o stax.exe "-Dversion=${{ steps.get-stax-version.outputs.text }}" cli/bin/cli.dart
-      - run: dart compile exe -o stax_daemon.exe "-Dversion=${{ steps.get-stax-version.outputs.text }}" cli/bin/stax_daemon.dart
-      - run: powershell Compress-Archive -Path stax.exe,stax_daemon.exe -DestinationPath windows-x64.zip
+      - run: dart compile exe -o stax-daemon.exe "-Dversion=${{ steps.get-stax-version.outputs.text }}" cli/bin/stax_daemon.dart
+      - run: powershell Compress-Archive -Path stax.exe,stax-daemon.exe -DestinationPath windows-x64.zip
       - run: gh release upload ${{ env.CHECKOUT }} windows-x64.zip
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
