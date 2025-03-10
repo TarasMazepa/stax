@@ -5,15 +5,15 @@ class RebaseData {
   final bool hasOursFlag;
   final String rebaseOnto;
   final List<RebaseStep> steps;
-  int currentIndex;
+  final int currentIndex;
 
-  RebaseData(
-    this.hasTheirsFlag,
-    this.hasOursFlag,
-    this.rebaseOnto,
-    this.steps,
-    this.currentIndex,
-  );
+  RebaseData({
+    required this.hasTheirsFlag,
+    required this.hasOursFlag,
+    required this.rebaseOnto,
+    required this.steps,
+    this.currentIndex = 0,
+  });
 
   Map<String, dynamic> toJson() => {
     'hasTheirsFlag': hasTheirsFlag,
@@ -25,11 +25,16 @@ class RebaseData {
 
   factory RebaseData.fromJson(Map<String, dynamic> json) {
     return RebaseData(
-      json['hasTheirsFlag'] as bool,
-      json['hasOursFlag'] as bool,
-      json['rebaseOnto'] as String,
-      (json['branches'] as List).map((e) => RebaseStep.fromJson(e)).toList(),
-      json['currentIndex'] as int,
+      hasTheirsFlag: json['hasTheirsFlag'] as bool,
+      hasOursFlag: json['hasOursFlag'] as bool,
+      rebaseOnto: json['rebaseOnto'] as String,
+      steps:
+          (json['branches'] as List)
+              .map(
+                (e) => RebaseStep.fromJson(Map<String, dynamic>.from(e as Map)),
+              )
+              .toList(),
+      currentIndex: json['currentIndex'] as int? ?? 0,
     );
   }
 }
