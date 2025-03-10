@@ -74,10 +74,11 @@ class InternalCommandRebase extends InternalCommand {
     }
 
     final rebaseData = RebaseData(
-      hasTheirsFlag: hasTheirsFlag,
-      hasOursFlag: hasOursFlag,
-      rebaseOnto: targetNode.line.branchNameOrCommitHash(),
-      steps: current.localBranchNamesInOrderForRebase().toList(),
+      hasTheirsFlag,
+      hasOursFlag,
+      targetNode.line.branchNameOrCommitHash(),
+      current.localBranchNamesInOrderForRebase().toList(),
+      0,
     );
 
     final rebaseFile = File('.git/info/stax/rebase.json');
