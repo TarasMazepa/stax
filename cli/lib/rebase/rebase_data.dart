@@ -7,13 +7,13 @@ class RebaseData {
   final List<RebaseStep> steps;
   final int currentIndex;
 
-  RebaseData({
-    required this.hasTheirsFlag,
-    required this.hasOursFlag,
-    required this.rebaseOnto,
-    required this.steps,
-    this.currentIndex = 0,
-  });
+  RebaseData(
+    this.hasTheirsFlag,
+    this.hasOursFlag,
+    this.rebaseOnto,
+    this.steps,
+    this.currentIndex,
+  );
 
   Map<String, dynamic> toJson() => {
     'hasTheirsFlag': hasTheirsFlag,
@@ -25,16 +25,13 @@ class RebaseData {
 
   factory RebaseData.fromJson(Map<String, dynamic> json) {
     return RebaseData(
-      hasTheirsFlag: json['hasTheirsFlag'] as bool,
-      hasOursFlag: json['hasOursFlag'] as bool,
-      rebaseOnto: json['rebaseOnto'] as String,
-      steps:
-          (json['branches'] as List)
-              .map(
-                (e) => RebaseStep.fromJson(Map<String, dynamic>.from(e as Map)),
-              )
-              .toList(),
-      currentIndex: json['currentIndex'] as int? ?? 0,
+      json['hasTheirsFlag'] as bool,
+      json['hasOursFlag'] as bool,
+      json['rebaseOnto'] as String,
+      (json['branches'] as List)
+          .map((e) => RebaseStep.fromJson(Map<String, dynamic>.from(e as Map)))
+          .toList(),
+      json['currentIndex'] as int,
     );
   }
 }
