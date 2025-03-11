@@ -83,7 +83,7 @@ class InternalCommandRebase extends InternalCommand {
       0,
     );
 
-    final repoRoot = context.getRepositoryRoot();
+    final repoRoot = context.withSilence(true).getRepositoryRoot();
     if (repoRoot == null) {
       context.printToConsole('Can find repository root.');
       return;
