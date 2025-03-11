@@ -43,5 +43,5 @@ class RebaseUseCase {
     return RebaseUseCase(context, rebaseData);
   }
 
-  RebaseUseCase(this._context, this._rebaseData);
+  RebaseUseCase(this.context, this._rebaseData);
 }
