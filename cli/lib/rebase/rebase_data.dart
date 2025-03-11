@@ -5,7 +5,7 @@ class RebaseData {
   final bool hasOursFlag;
   final String rebaseOnto;
   final List<RebaseStep> steps;
-  final int currentIndex;
+  int currentIndex;
 
   RebaseData(
     this.hasTheirsFlag,
