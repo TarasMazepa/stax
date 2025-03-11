@@ -28,9 +28,7 @@ class RebaseData {
       json['hasTheirsFlag'] as bool,
       json['hasOursFlag'] as bool,
       json['rebaseOnto'] as String,
-      (json['branches'] as List)
-          .map((e) => RebaseStep.fromJson(Map<String, dynamic>.from(e as Map)))
-          .toList(),
+      (json['branches'] as List).map((e) => RebaseStep.fromJson(e)).toList(),
       json['currentIndex'] as int,
     );
   }
