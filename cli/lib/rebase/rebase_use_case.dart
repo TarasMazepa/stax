@@ -7,7 +7,7 @@ import 'package:stax/context/context_git_get_repository_root.dart';
 import 'package:stax/rebase/rebase_data.dart';
 
 class RebaseUseCase {
-  final Context _context;
+  final Context context;
   RebaseData? _rebaseData;
 
   RebaseData? get rebaseDate => _rebaseData;
