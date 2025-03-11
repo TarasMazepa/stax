@@ -93,7 +93,6 @@ class InternalCommandRebase extends InternalCommand {
       path.join(repoRoot, '.git', 'info', 'stax', 'rebase.json'),
     );
     rebaseFile.writeAsStringSync(jsonEncode(rebaseData.toJson()));
-    context.printToConsole('Saved rebase data to .git/info/stax/rebase.json');
 
     bool changeParentOnce = true;
 
