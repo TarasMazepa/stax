@@ -27,11 +27,12 @@ class RebaseUseCase {
     if (!file.existsSync()) {
       return RebaseUseCase(context, null);
     }
-    RebaseData? rebaseData;
     for (int i = 0; i < 3; i++) {
       try {
-        rebaseData = RebaseData.fromJson(jsonDecode(file.readAsStringSync()));
-        break;
+        return RebaseUseCase(
+          context,
+          RebaseData.fromJson(jsonDecode(file.readAsStringSync())),
+        );
       } catch (e) {
         try {
           file.deleteSync();
@@ -40,7 +41,7 @@ class RebaseUseCase {
         }
       }
     }
-    return RebaseUseCase(context, rebaseData);
+    return RebaseUseCase(context, null);
   }
 
   RebaseUseCase(this.context, this._rebaseData);
