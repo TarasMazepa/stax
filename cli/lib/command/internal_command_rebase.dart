@@ -1,10 +1,6 @@
-import 'package:path/path.dart' as path;
-import 'dart:convert';
-import 'dart:io';
 import 'package:stax/command/flag.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_assert_no_conflicting_flags.dart';
-import 'package:stax/context/context_git_get_repository_root.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
 import 'package:stax/rebase/rebase_data.dart';
@@ -75,34 +71,40 @@ class InternalCommandRebase extends InternalCommand {
       return;
     }
 
-    final rebaseData = RebaseData(
-      hasTheirsFlag,
-      hasOursFlag,
-      targetNode.line.branchNameOrCommitHash(),
-      current.localBranchNamesInOrderForRebase().toList(),
-      0,
+    context.assertRebaseUseCase.initiate(
+      RebaseData(
+        hasTheirsFlag,
+        hasOursFlag,
+        targetNode.line.branchNameOrCommitHash(),
+        current.localBranchNamesInOrderForRebase().toList(),
+        0,
+      ),
     );
-
-    final repoRoot = context.withSilence(true).getRepositoryRoot();
-    if (repoRoot == null) {
-      context.printToConsole('Can find repository root.');
-      return;
-    }
-
-    final rebaseFile = File(
-      path.join(repoRoot, '.git', 'info', 'stax', 'rebase.json'),
-    );
-    rebaseFile.writeAsStringSync(jsonEncode(rebaseData.toJson()));
 
     bool changeParentOnce = true;
 
-    for (var node in rebaseData.steps) {
+    for (var node in context.assertRebaseUseCase.assertRebaseData.steps) {
       final exitCode =
           context.git.rebase
               .args([
-                if (rebaseData.hasTheirsFlag) ...['-X', 'theirs'],
-                if (rebaseData.hasOursFlag) ...['-X', 'ours'],
-                if (changeParentOnce) rebaseData.rebaseOnto else node.parent!,
+                if (context
+                    .assertRebaseUseCase
+                    .assertRebaseData
+                    .hasTheirsFlag) ...[
+                  '-X',
+                  'theirs',
+                ],
+                if (context
+                    .assertRebaseUseCase
+                    .assertRebaseData
+                    .hasOursFlag) ...[
+                  '-X',
+                  'ours',
+                ],
+                if (changeParentOnce)
+                  context.assertRebaseUseCase.assertRebaseData.rebaseOnto
+                else
+                  node.parent!,
                 node.node,
               ])
               .announce()

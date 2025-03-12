@@ -23,6 +23,10 @@ class Context {
   );
   late final RebaseUseCase? rebaseUseCase = RebaseUseCase.create(this);
 
+  RepositorySettings get assertRepositorySettings => repositorySettings!;
+
+  RebaseUseCase get assertRebaseUseCase => rebaseUseCase!;
+
   Context.implicit() : this(false, null, false, false, false);
 
   Context(

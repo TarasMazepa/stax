@@ -9,29 +9,27 @@ import 'package:stax/rebase/rebase_data.dart';
 class RebaseUseCase {
   final Context context;
   RebaseData? _rebaseData;
+  final File _file;
 
-  RebaseData? get rebaseDate => _rebaseData;
+  RebaseData? get rebaseData => _rebaseData;
+
+  RebaseData get assertRebaseData => _rebaseData!;
 
   static RebaseUseCase? create(Context context) {
     final repositoryRoot = context.withSilence(true).getRepositoryRoot();
     if (repositoryRoot == null) return null;
     final file = File(
-      path.join(
-        repositoryRoot,
-        '.git',
-        'info',
-        'stax',
-        'rebase.json',
-      ),
+      path.join(repositoryRoot, '.git', 'info', 'stax', 'rebase.json'),
     );
     if (!file.existsSync()) {
-      return RebaseUseCase(context, null);
+      return RebaseUseCase(context, null, file);
     }
     for (int i = 0; i < 3; i++) {
       try {
         return RebaseUseCase(
           context,
           RebaseData.fromJson(jsonDecode(file.readAsStringSync())),
+          file,
         );
       } catch (e) {
         try {
@@ -41,8 +39,23 @@ class RebaseUseCase {
         }
       }
     }
-    return RebaseUseCase(context, null);
+    return RebaseUseCase(context, null, file);
   }
 
-  RebaseUseCase(this.context, this._rebaseData);
+  RebaseUseCase(this.context, this._rebaseData, this._file);
+
+  void initiate(RebaseData rebaseData) {
+    if (_rebaseData != null) throw StateError('Rebase is already in progress');
+    _rebaseData = rebaseData;
+    save();
+  }
+
+  void save() {
+    final rebaseData = _rebaseData;
+    if (rebaseData == null) {
+      _file.deleteSync();
+      return;
+    }
+    _file.writeAsStringSync(jsonEncode(rebaseData.toJson()));
+  }
 }
