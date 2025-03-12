@@ -28,7 +28,11 @@ class BaseSettings {
         }
         return jsonDecode(file.readAsStringSync());
       } catch (e) {
-        file.deleteSync();
+        try {
+          file.deleteSync();
+        } catch (e) {
+          // no op
+        }
         error ??= e;
       }
     }
