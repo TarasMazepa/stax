@@ -17,7 +17,7 @@ class RebaseUseCase {
     if (repositoryRoot == null) return null;
     final file = File(
       path.join(
-        context.withSilence(true).getRepositoryRoot()!,
+        repositoryRoot,
         '.git',
         'info',
         'stax',
