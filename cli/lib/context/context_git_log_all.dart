@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:stax/comparison_chain.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer.dart';
+import 'package:stax/rebase/rebase_step.dart';
 
 extension GitLogAllOnContext on Context {
   GitLogAllNode _gitLogAll() {
@@ -215,13 +216,12 @@ class GitLogAllNode {
     return find((x) => x.line.partsHasRemoteHead);
   }
 
-  Iterable<({String? parent, String node})> localBranchNamesInOrderForRebase() {
+  Iterable<RebaseStep> localBranchNamesInOrderForRebase() {
     return [
-      (
-        parent:
-            parent?.line.localBranchNames().firstOrNull ??
+      RebaseStep(
+        line.localBranchNames().first,
+        parent?.line.localBranchNames().firstOrNull ??
             parent?.line.remoteBranchNames().firstOrNull,
-        node: line.localBranchNames().first,
       ),
     ].followedBy(children.expand((x) => x.localBranchNamesInOrderForRebase()));
   }
