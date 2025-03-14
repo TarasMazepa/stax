@@ -3,6 +3,7 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_assert_no_conflicting_flags.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
+import 'package:stax/rebase/rebase_data.dart';
 
 import 'internal_command.dart';
 
@@ -70,17 +71,40 @@ class InternalCommandRebase extends InternalCommand {
       return;
     }
 
-    final rebaseOnto = targetNode.line.branchNameOrCommitHash();
+    context.assertRebaseUseCase.initiate(
+      RebaseData(
+        hasTheirsFlag,
+        hasOursFlag,
+        targetNode.line.branchNameOrCommitHash(),
+        current.localBranchNamesInOrderForRebase().toList(),
+        0,
+      ),
+    );
 
     bool changeParentOnce = true;
 
-    for (var node in current.localBranchNamesInOrderForRebase()) {
+    for (var node in context.assertRebaseUseCase.assertRebaseData.steps) {
       final exitCode =
           context.git.rebase
               .args([
-                if (hasTheirsFlag) ...['-X', 'theirs'],
-                if (hasOursFlag) ...['-X', 'ours'],
-                if (changeParentOnce) rebaseOnto else node.parent!,
+                if (context
+                    .assertRebaseUseCase
+                    .assertRebaseData
+                    .hasTheirsFlag) ...[
+                  '-X',
+                  'theirs',
+                ],
+                if (context
+                    .assertRebaseUseCase
+                    .assertRebaseData
+                    .hasOursFlag) ...[
+                  '-X',
+                  'ours',
+                ],
+                if (changeParentOnce)
+                  context.assertRebaseUseCase.assertRebaseData.rebaseOnto
+                else
+                  node.parent!,
                 node.node,
               ])
               .announce()
