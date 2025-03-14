@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_repository_root.dart';
+import 'package:stax/file/file_system_entity_delete_sync_silently.dart';
 import 'package:stax/rebase/rebase_data.dart';
 
 class RebaseUseCase {
@@ -31,12 +32,8 @@ class RebaseUseCase {
           RebaseData.fromJson(jsonDecode(file.readAsStringSync())),
           file,
         );
-      } catch (e) {
-        try {
-          file.deleteSync();
-        } catch (e) {
-          // no op
-        }
+      } catch (_) {
+        file.deleteSyncSilently();
       }
     }
     return RebaseUseCase(context, null, file);
@@ -53,7 +50,7 @@ class RebaseUseCase {
   void save() {
     final rebaseData = _rebaseData;
     if (rebaseData == null) {
-      _file.deleteSync();
+      _file.deleteSyncSilently();
       return;
     }
     _file.writeAsStringSync(jsonEncode(rebaseData.toJson()));

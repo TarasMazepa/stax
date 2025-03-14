@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
+import 'package:stax/file/file_system_entity_delete_sync_silently.dart';
 
 class BaseSettings {
   final Map<String, dynamic> _settings;
@@ -28,11 +29,7 @@ class BaseSettings {
         }
         return jsonDecode(file.readAsStringSync());
       } catch (e) {
-        try {
-          file.deleteSync();
-        } catch (e) {
-          // no op
-        }
+        file.deleteSyncSilently();
         error ??= e;
       }
     }
