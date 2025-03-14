@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:stax/context/context.dart';
+import 'package:stax/file/file_system_entity_delete_sync_silently.dart';
 
 class CliTestSetup {
   static final random = Random(DateTime.now().microsecondsSinceEpoch);
@@ -65,11 +66,7 @@ class CliTestSetup {
   }
 
   void tearDown() {
-    try {
-      Directory(testRepoPath).deleteSync(recursive: true);
-    } catch (e) {
-      // no op, just ignore
-    }
+    Directory(testRepoPath).deleteSyncSilently(recursive: true);
   }
 
   ProcessResult runSync(String command, [List<String>? args]) {
