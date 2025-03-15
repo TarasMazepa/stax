@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:stax/file/file_read_as_string_sync_with_retry.dart';
 import 'package:stax/file/file_system_entity_delete_sync_silently.dart';
+import 'package:stax/file/file_write_as_string_sync_with_retry.dart';
 
 class BaseSettings {
   final Map<String, dynamic> _settings;
@@ -24,7 +25,7 @@ class BaseSettings {
     Map<String, dynamic> createEmptySettingsFileIfNeededAndRead() {
       if (!file.existsSync()) {
         file.createSync(recursive: true);
-        file.writeAsStringSync('{}', flush: true);
+        file.writeAsStringSyncWithRetry('{}');
       }
       return jsonDecode(file.readAsStringSyncWithRetry());
     }
@@ -47,6 +48,6 @@ class BaseSettings {
   }
 
   void save() {
-    _file.writeAsStringSync(jsonEncode(_settings), flush: true);
+    _file.writeAsStringSyncWithRetry(jsonEncode(_settings));
   }
 }
