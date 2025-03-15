@@ -6,6 +6,7 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_repository_root.dart';
 import 'package:stax/file/file_read_as_string_sync_with_retry.dart';
 import 'package:stax/file/file_system_entity_delete_sync_silently.dart';
+import 'package:stax/file/file_write_as_string_sync_with_retry.dart';
 import 'package:stax/rebase/rebase_data.dart';
 
 class RebaseUseCase {
@@ -52,6 +53,6 @@ class RebaseUseCase {
       _file.deleteSyncSilently();
       return;
     }
-    _file.writeAsStringSync(jsonEncode(rebaseData.toJson()));
+    _file.writeAsStringSyncWithRetry(jsonEncode(rebaseData.toJson()));
   }
 }
