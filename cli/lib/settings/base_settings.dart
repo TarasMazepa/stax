@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
+import 'package:stax/file/file_read_as_string_sync_with_retry.dart';
 import 'package:stax/file/file_system_entity_delete_sync_silently.dart';
 
 class BaseSettings {
@@ -20,20 +21,20 @@ class BaseSettings {
   static Map<String, dynamic> readJsonSettingsFileAsStringSyncWithRetry(
     File file,
   ) {
-    dynamic error;
-    for (int i = 0; i < 3; i++) {
-      try {
-        if (!file.existsSync()) {
-          file.createSync(recursive: true);
-          file.writeAsStringSync('{}', flush: true);
-        }
-        return jsonDecode(file.readAsStringSync());
-      } catch (e) {
-        file.deleteSyncSilently();
-        error ??= e;
+    Map<String, dynamic> createEmptySettingsFileIfNeededAndRead() {
+      if (!file.existsSync()) {
+        file.createSync(recursive: true);
+        file.writeAsStringSync('{}', flush: true);
       }
+      return jsonDecode(file.readAsStringSyncWithRetry());
     }
-    throw error;
+
+    try {
+      return createEmptySettingsFileIfNeededAndRead();
+    } catch (_) {
+      file.deleteSyncSilently();
+      return createEmptySettingsFileIfNeededAndRead();
+    }
   }
 
   String? operator [](String key) {

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_repository_root.dart';
+import 'package:stax/file/file_read_as_string_sync_with_retry.dart';
 import 'package:stax/file/file_system_entity_delete_sync_silently.dart';
 import 'package:stax/rebase/rebase_data.dart';
 
@@ -25,16 +26,14 @@ class RebaseUseCase {
     if (!file.existsSync()) {
       return RebaseUseCase(context, null, file);
     }
-    for (int i = 0; i < 3; i++) {
-      try {
-        return RebaseUseCase(
-          context,
-          RebaseData.fromJson(jsonDecode(file.readAsStringSync())),
-          file,
-        );
-      } catch (_) {
-        file.deleteSyncSilently();
-      }
+    try {
+      return RebaseUseCase(
+        context,
+        RebaseData.fromJson(jsonDecode(file.readAsStringSyncWithRetry())),
+        file,
+      );
+    } catch (_) {
+      file.deleteSyncSilently();
     }
     return RebaseUseCase(context, null, file);
   }
