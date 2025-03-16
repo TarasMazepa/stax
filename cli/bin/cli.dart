@@ -27,9 +27,9 @@ void main(List<String> arguments) {
             (current, command) => switch (command) {
               _ when !command.name.startsWith(commandName) => current,
               _ when current == null => command,
+              _ when current.type.isHidden && command.type.isPublic => command,
               _ when current.name.length > command.name.length => command,
               _ when current.name.length < command.name.length => current,
-              _ when current.type.isHidden && command.type.isPublic => command,
               _ => current,
             },
           );
