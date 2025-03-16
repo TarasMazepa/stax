@@ -149,7 +149,9 @@ class InternalCommandDoctor extends InternalCommand {
       );
 
       if (ghVersion?.isNotEmpty != true) {
-        context.printToConsole('''    X Install GitHub CLI using:''');
+        context.printToConsole(
+          '''    X [Optional] Install GitHub CLI using:''',
+        );
         context.printToConsole(
           '''      https://github.com/cli/cli#installation''',
         );
