@@ -26,6 +26,12 @@ class InternalCommandCommit extends InternalCommand {
     description:
         'Accepts branch name proposed by converting commit name to branch name.',
   );
+  static final ignoreNoStagedChanges = Flag(
+    short: '-i',
+    long: '--ignore-no-staged-changes',
+    description:
+        "Skips check if there staged changes, helpful when your change is only rename of the file which stax can't see at the moment.",
+  );
 
   InternalCommandCommit()
     : super(
@@ -51,7 +57,7 @@ class InternalCommandCommit extends InternalCommand {
     context.handleAddAllFlag(args);
     final createPr = prFlag.hasFlag(args);
     final acceptBranchName = branchNameFlag.hasFlag(args);
-    if (context.areThereNoStagedChanges()) {
+    if (!ignoreNoStagedChanges.hasFlag(args) || context.areThereNoStagedChanges()) {
       context.explainToUserNoStagedChanges();
       return;
     }
