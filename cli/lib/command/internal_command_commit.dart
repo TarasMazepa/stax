@@ -40,7 +40,7 @@ class InternalCommandCommit extends InternalCommand {
             'First argument is mandatory commit message. '
             'Second argument is optional branch name, if not provided '
             'branch name would be generated from commit message.',
-        flags: [prFlag, branchNameFlag, ...ContextHandleAddAllFlag.flags],
+        flags: [prFlag, branchNameFlag, ignoreNoStagedChanges, ...ContextHandleAddAllFlag.flags],
         arguments: {
           'arg1':
               'Required commit message, usually enclosed in double quotes like this: "Sample commit message".',
