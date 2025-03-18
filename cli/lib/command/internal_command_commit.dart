@@ -26,6 +26,12 @@ class InternalCommandCommit extends InternalCommand {
     description:
         'Accepts branch name proposed by converting commit name to branch name.',
   );
+  static final ignoreNoStagedChanges = Flag(
+    short: '-i',
+    long: '--ignore-no-staged-changes',
+    description:
+        "Skips check if there staged changes, helpful when your change is only rename of the file which stax can't see at the moment.",
+  );
 
   InternalCommandCommit()
     : super(
@@ -34,7 +40,12 @@ class InternalCommandCommit extends InternalCommand {
             'First argument is mandatory commit message. '
             'Second argument is optional branch name, if not provided '
             'branch name would be generated from commit message.',
-        flags: [prFlag, branchNameFlag, ...ContextHandleAddAllFlag.flags],
+        flags: [
+          prFlag,
+          branchNameFlag,
+          ignoreNoStagedChanges,
+          ...ContextHandleAddAllFlag.flags,
+        ],
         arguments: {
           'arg1':
               'Required commit message, usually enclosed in double quotes like this: "Sample commit message".',
@@ -51,7 +62,8 @@ class InternalCommandCommit extends InternalCommand {
     context.handleAddAllFlag(args);
     final createPr = prFlag.hasFlag(args);
     final acceptBranchName = branchNameFlag.hasFlag(args);
-    if (context.areThereNoStagedChanges()) {
+    if (!ignoreNoStagedChanges.hasFlag(args) &&
+        context.areThereNoStagedChanges()) {
       context.explainToUserNoStagedChanges();
       return;
     }
