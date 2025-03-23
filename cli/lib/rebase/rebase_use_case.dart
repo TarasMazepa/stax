@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_repository_root.dart';
+import 'package:stax/context/context_git_log_all.dart';
 import 'package:stax/file/file_read_as_string_sync_with_retry.dart';
 import 'package:stax/file/file_system_entity_delete_sync_silently.dart';
 import 'package:stax/file/file_write_as_string_sync_with_retry.dart';
@@ -41,9 +42,46 @@ class RebaseUseCase {
 
   RebaseUseCase(this.context, this._rebaseData, this._file);
 
-  void initiate(RebaseData rebaseData) {
+  void initiate(bool hasTheirsFlag, bool hasOursFlag, String? rebaseOnto) {
     if (_rebaseData != null) throw StateError('Rebase is already in progress');
-    _rebaseData = rebaseData;
+
+    final root = context.gitLogAll();
+
+    final current = root.findCurrent();
+
+    if (current == null) {
+      throw Exception('Can find current branch.');
+    }
+
+    GitLogAllNode? targetNode;
+
+    if (rebaseOnto != null) {
+      targetNode = root.findAnyRefThatEndsWith(rebaseOnto);
+      if (targetNode == null) {
+        throw Exception(
+          "Can't find target branch which ends with user provided '$rebaseOnto'.",
+        );
+      }
+    } else {
+      targetNode = root.findRemoteHead();
+    }
+
+    if (targetNode == null) {
+      throw Exception("Can't find target branch.");
+    }
+
+    if (current == targetNode) {
+      throw Exception('Nothing to rebase.');
+    }
+
+    _rebaseData = RebaseData(
+      hasTheirsFlag,
+      hasOursFlag,
+      targetNode.line.branchNameOrCommitHash(),
+      current.localBranchNamesInOrderForRebase().toList(),
+      0,
+    );
+
     save();
   }
 

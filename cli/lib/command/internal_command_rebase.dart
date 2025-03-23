@@ -2,8 +2,6 @@ import 'package:stax/command/flag.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_assert_no_conflicting_flags.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
-import 'package:stax/context/context_git_log_all.dart';
-import 'package:stax/rebase/rebase_data.dart';
 
 import 'internal_command.dart';
 
@@ -45,40 +43,10 @@ class InternalCommandRebase extends InternalCommand {
       return;
     }
 
-    final root = context.gitLogAll();
-
-    final current = root.findCurrent();
-
-    if (current == null) {
-      context.printToConsole('Can find current branch.');
-      return;
-    }
-
-    final userProvidedTarget = args.elementAtOrNull(0);
-
-    final GitLogAllNode? targetNode =
-        userProvidedTarget != null
-            ? root.findAnyRefThatEndsWith(userProvidedTarget)
-            : root.findRemoteHead();
-
-    if (targetNode == null) {
-      context.printToConsole("Can't find target branch.");
-      return;
-    }
-
-    if (current == targetNode) {
-      context.printToConsole('Nothing to rebase.');
-      return;
-    }
-
     context.assertRebaseUseCase.initiate(
-      RebaseData(
-        hasTheirsFlag,
-        hasOursFlag,
-        targetNode.line.branchNameOrCommitHash(),
-        current.localBranchNamesInOrderForRebase().toList(),
-        0,
-      ),
+      hasTheirsFlag,
+      hasOursFlag,
+      args.elementAtOrNull(0),
     );
 
     bool changeParentOnce = true;
