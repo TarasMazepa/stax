@@ -5,6 +5,17 @@ import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 import 'package:stax/rebase/rebase_step.dart';
 
 extension GitLogAllOnContext on Context {
+  static GitLogAllNode? _gitLogAllLocal;
+  static GitLogAllNode? _gitLogAllAll;
+
+  GitLogAllNode gitLogAll([bool showAllBranches = false]) {
+    produce() => withSilence(true)._gitLogAll().collapse(showAllBranches)!;
+    if (showAllBranches) {
+      return _gitLogAllAll ??= produce();
+    }
+    return _gitLogAllLocal ??= produce();
+  }
+
   GitLogAllNode _gitLogAll() {
     final lines = git.log
         .args(['--decorate=full', '--format=%h %ct %p %d', '--all'])
@@ -43,10 +54,6 @@ extension GitLogAllOnContext on Context {
       nextLines.clear();
     }
     return root;
-  }
-
-  GitLogAllNode gitLogAll([bool showAllBranches = false]) {
-    return withSilence(true)._gitLogAll().collapse(showAllBranches)!;
   }
 }
 
