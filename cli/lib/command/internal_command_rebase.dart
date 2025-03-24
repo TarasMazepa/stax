@@ -43,48 +43,8 @@ class InternalCommandRebase extends InternalCommand {
       return;
     }
 
-    context.assertRebaseUseCase.initiate(
-      hasTheirsFlag,
-      hasOursFlag,
-      args.elementAtOrNull(0),
-    );
-
-    bool changeParentOnce = true;
-
-    for (var node in context.assertRebaseUseCase.assertRebaseData.steps) {
-      final exitCode =
-          context.git.rebase
-              .args([
-                if (context
-                    .assertRebaseUseCase
-                    .assertRebaseData
-                    .hasTheirsFlag) ...[
-                  '-X',
-                  'theirs',
-                ],
-                if (context
-                    .assertRebaseUseCase
-                    .assertRebaseData
-                    .hasOursFlag) ...[
-                  '-X',
-                  'ours',
-                ],
-                if (changeParentOnce)
-                  context.assertRebaseUseCase.assertRebaseData.rebaseOnto
-                else
-                  node.parent!,
-                node.node,
-              ])
-              .announce()
-              .runSync()
-              .printNotEmptyResultFields()
-              .exitCode;
-      changeParentOnce = false;
-      if (exitCode != 0) {
-        context.printParagraph('Rebase failed');
-        return;
-      }
-      context.git.pushForce.announce().runSync().printNotEmptyResultFields();
-    }
+    context.assertRebaseUseCase
+      ..initiate(hasTheirsFlag, hasOursFlag, args.elementAtOrNull(0))
+      ..continueRebase();
   }
 }

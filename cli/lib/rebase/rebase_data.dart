@@ -7,6 +7,8 @@ class RebaseData {
   final List<RebaseStep> steps;
   int currentIndex;
 
+  RebaseStep get currentStep => steps[currentIndex];
+
   RebaseData(
     this.hasTheirsFlag,
     this.hasOursFlag,
