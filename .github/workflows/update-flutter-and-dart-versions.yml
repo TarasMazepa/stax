@@ -18,7 +18,7 @@ jobs:
           echo $new_flutter_version > FLUTTER_VERSION
           echo $new_dart_version > DART_SDK_VERSION
           if ! git diff --quiet; then
-            branch_name=update-flutter-to-$new_flutter_version-and-dart-to-$new_dart_version-$RANDOM
+            branch_name=update-flutter-to-$new_flutter_version-and-dart-to-$new_dart_version-$(date -u +"%Y-%m-%dT%H-%M-%S")
             git config --global user.name 'stax'
             git config --global user.email 'stax@staxforgit.com'
             git checkout -b $branch_name
