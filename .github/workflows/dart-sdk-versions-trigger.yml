@@ -32,7 +32,7 @@ jobs:
         working-directory: cli
       - run: |
           if ! git diff --quiet; then
-            branch_name=update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION-$RANDOM
+            branch_name=update-dart-sdk-version-for-cli-to-$DART_SDK_VERSION-$(date -u +"%Y-%m-%dT%H-%M-%S")
             git checkout -b $branch_name
             git commit -a -m "Update dart sdk version for cli to $DART_SDK_VERSION"
             git push --set-upstream origin $branch_name
