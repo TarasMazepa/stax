@@ -23,8 +23,9 @@ class InternalCommandRebase extends InternalCommand {
   );
   static final abortFlag = Flag(
     short: '-a',
-    long: '--abort',
-    description: 'Abort rebase that is in progress.',
+    long: '--abandon',
+    description:
+        "Abandon rebase that is in progress, stax can't abort own rebases.",
   );
 
   InternalCommandRebase()

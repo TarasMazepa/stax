@@ -28,16 +28,6 @@ class InternalCommandAmend extends InternalCommand {
     description:
         "Runs 'stax rebase ${InternalCommandRebase.oursFlag.long}' afterwards on all children branches.",
   );
-  static final forcePushFlag = Flag(
-    short: '-f',
-    long: '--force',
-    description: 'Force push without asking if no changes to amend.',
-  );
-  static final skipPushFlag = Flag(
-    short: '-s',
-    long: '--skip',
-    description: 'Skip force push without asking if no changes to amend.',
-  );
 
   InternalCommandAmend()
     : super(
@@ -48,8 +38,6 @@ class InternalCommandAmend extends InternalCommand {
           rebaseFlag,
           rebaseOursFlag,
           rebaseTheirsFlag,
-          forcePushFlag,
-          skipPushFlag,
         ],
       );
 
@@ -60,11 +48,14 @@ class InternalCommandAmend extends InternalCommand {
     }
     context.handleAddAllFlag(args);
 
+    if (context.areThereNoStagedChanges()) {
+      context.explainToUserNoStagedChanges();
+      return;
+    }
+
     bool hasRebaseFlag = rebaseFlag.hasFlag(args);
     bool hasRebaseTheirsFlag = rebaseTheirsFlag.hasFlag(args);
     bool hasRebaseOursFlag = rebaseOursFlag.hasFlag(args);
-    final hasForcePushFlag = forcePushFlag.hasFlag(args);
-    final hasSkipPushFlag = skipPushFlag.hasFlag(args);
 
     if (context.assertNoConflictingFlags([
       if (hasRebaseFlag) rebaseFlag,
@@ -74,49 +65,13 @@ class InternalCommandAmend extends InternalCommand {
       return;
     }
 
-    if (context.assertNoConflictingFlags([
-      if (hasForcePushFlag) forcePushFlag,
-      if (hasSkipPushFlag) skipPushFlag,
-    ])) {
-      return;
-    }
-
-    final hasChanges = !context.areThereNoStagedChanges();
     final current = context.gitLogAll().findCurrent();
-
-    if (hasChanges) {
-      context.git.commitAmendNoEdit
-          .announce('Amending changes to a commit.')
-          .runSync()
-          .printNotEmptyResultFields();
-      context.git.pushForce
-          .announce('Force pushing to a remote.')
-          .runSync()
-          .printNotEmptyResultFields();
-    } else {
-      context.explainToUserNoStagedChanges();
-
-      if (hasSkipPushFlag) {
-        context.printToConsole('Skipping force push as requested.');
-      } else if (hasForcePushFlag) {
-        context.git.pushForce
-            .announce('Force pushing to a remote.')
-            .runSync()
-            .printNotEmptyResultFields();
-      } else {
-        context.git.pushForce
-            .askContinueQuestion('Would you like to force push anyway?')
-            ?.announce('Force pushing to a remote.')
-            .runSync()
-            .printNotEmptyResultFields();
-      }
-    }
 
     bool hasAnyRebaseFlag() =>
         hasRebaseFlag || hasRebaseTheirsFlag || hasRebaseOursFlag;
 
     if (!hasAnyRebaseFlag() && current?.children.isNotEmpty == true) {
-      final rebaseOption = context.commandLineMultipleOptionsQuestion(
+      switch (context.commandLineMultipleOptionsQuestion(
         'This branch has children. Would you like to rebase them?',
         [
           (key: 'r', description: 'Standard rebase'),
@@ -127,9 +82,7 @@ class InternalCommandAmend extends InternalCommand {
           (key: 'b', description: 'Rebase prefer base (--rebase-prefer-base)'),
           (key: '<any>', description: 'Decline'),
         ],
-      );
-
-      switch (rebaseOption) {
+      )) {
         case 'r':
           hasRebaseFlag = true;
           break;
@@ -143,11 +96,24 @@ class InternalCommandAmend extends InternalCommand {
     }
 
     if (hasAnyRebaseFlag()) {
-      InternalCommandRebase().run([
-        if (hasRebaseTheirsFlag) InternalCommandRebase.theirsFlag.long!,
-        if (hasRebaseOursFlag) InternalCommandRebase.oursFlag.long!,
+      context.assertRebaseUseCase.initiate(
+        hasRebaseTheirsFlag,
+        hasRebaseOursFlag,
         current!.line.branchNameOrCommitHash(),
-      ], context);
+      );
+    }
+
+    context.git.commitAmendNoEdit
+        .announce('Amending changes to a commit.')
+        .runSync()
+        .printNotEmptyResultFields();
+    context.git.pushForce
+        .announce('Force pushing to a remote.')
+        .runSync()
+        .printNotEmptyResultFields();
+
+    if (hasAnyRebaseFlag()) {
+      context.assertRebaseUseCase.continueRebase();
     }
   }
 }
