@@ -25,7 +25,7 @@ class InternalCommandRebase extends InternalCommand {
     short: '-a',
     long: '--abandon',
     description:
-        "Abandon rebase that is in progress, stax can't abort its rebases.",
+        "Abandon rebase that is in progress, stax can't abort own rebases.",
   );
 
   InternalCommandRebase()
