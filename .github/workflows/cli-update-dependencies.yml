@@ -33,7 +33,7 @@ jobs:
         working-directory: cli
       - run: |
           if ! git diff --quiet; then
-            branch_name=cli-update-dependencies-$RANDOM
+            branch_name=cli-update-dependencies-$(date -u +"%Y-%m-%dT%H-%M-%S")
             git config --global user.name 'stax'
             git config --global user.email 'stax@staxforgit.com'
             git checkout -b $branch_name
