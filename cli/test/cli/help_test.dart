@@ -61,7 +61,7 @@ Note: you can type first letter or couple of first letters instead of full comma
       Positional arguments:
          opt1 - Optional argument for target, will default to <remote>/HEAD
       Flags:
-         -a, --abandon - Abandon rebase that is in progress, stax can't abort its rebases.
+         -a, --abandon - Abandon rebase that is in progress, stax can't abort own rebases.
          -b, --prefer-base - Prefer base changes on conflict.
          -c, --continue - Continue rebase that is in progress.
          -m, --prefer-moving - Prefer moving changes on conflict.
