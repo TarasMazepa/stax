@@ -48,6 +48,11 @@ class InternalCommandAmend extends InternalCommand {
     }
     context.handleAddAllFlag(args);
 
+    if (context.areThereNoStagedChanges()) {
+      context.explainToUserNoStagedChanges();
+      return;
+    }
+
     bool hasRebaseFlag = rebaseFlag.hasFlag(args);
     bool hasRebaseTheirsFlag = rebaseTheirsFlag.hasFlag(args);
     bool hasRebaseOursFlag = rebaseOursFlag.hasFlag(args);
@@ -60,13 +65,7 @@ class InternalCommandAmend extends InternalCommand {
       return;
     }
 
-    final hasChanges = !context.areThereNoStagedChanges();
     final current = context.gitLogAll().findCurrent();
-
-    if (!hasChanges) {
-      context.explainToUserNoStagedChanges();
-      return;
-    }
 
     bool hasAnyRebaseFlag() =>
         hasRebaseFlag || hasRebaseTheirsFlag || hasRebaseOursFlag;
