@@ -135,4 +135,9 @@ class RebaseUseCase {
     }
     _file.writeAsStringSyncWithRetry(jsonEncode(rebaseData.toJson()));
   }
+
+  void abort() {
+    _rebaseData = null;
+    save();
+  }
 }

@@ -16,6 +16,16 @@ class InternalCommandRebase extends InternalCommand {
     long: '--prefer-base',
     description: 'Prefer base changes on conflict.',
   );
+  static final continueFlag = Flag(
+    short: '-c',
+    long: '--continue',
+    description: 'Continue rebase that is in progress.',
+  );
+  static final abortFlag = Flag(
+    short: '-a',
+    long: '--abort',
+    description: 'Abort rebase that is in progress.',
+  );
 
   InternalCommandRebase()
     : super(
@@ -24,12 +34,22 @@ class InternalCommandRebase extends InternalCommand {
         arguments: {
           'opt1': 'Optional argument for target, will default to <remote>/HEAD',
         },
-        flags: [theirsFlag, oursFlag],
+        flags: [theirsFlag, oursFlag, continueFlag, abortFlag],
       );
 
   @override
   void run(List<String> args, Context context) {
     if (context.handleNotInsideGitWorkingTree()) {
+      return;
+    }
+
+    final hasContinueFlag = continueFlag.hasFlag(args);
+    final hasAbortFlag = abortFlag.hasFlag(args);
+
+    if (context.assertNoConflictingFlags(
+      [hasContinueFlag, hasAbortFlag],
+      [continueFlag, abortFlag],
+    )) {
       return;
     }
 
@@ -40,6 +60,31 @@ class InternalCommandRebase extends InternalCommand {
       [hasTheirsFlag, hasOursFlag],
       [theirsFlag, oursFlag],
     )) {
+      return;
+    }
+
+    if (context.assertNoConflictingFlags(
+      [hasContinueFlag, hasTheirsFlag, hasOursFlag],
+      [continueFlag, theirsFlag, oursFlag],
+    )) {
+      return;
+    }
+
+    if (context.assertNoConflictingFlags(
+      [hasAbortFlag, hasTheirsFlag, hasOursFlag],
+      [abortFlag, theirsFlag, oursFlag],
+    )) {
+      return;
+    }
+
+    if (hasContinueFlag) {
+      context.assertRebaseUseCase.continueRebase();
+      return;
+    }
+
+    if (hasAbortFlag) {
+      context.assertRebaseUseCase.abort();
+      context.printParagraph('Rebase successfully aborted.');
       return;
     }
 
