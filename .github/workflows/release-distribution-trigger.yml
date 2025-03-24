@@ -31,7 +31,7 @@ jobs:
           sed -i "s+-Checksum .*+-Checksum $checksumUpper \`+" ./chocolatey/stax/tools/chocolateyinstall.ps1
           git config --global user.name 'stax'
           git config --global user.email 'stax@staxforgit.com'
-          branch_name=chocolatey-update-stax-to-$TAG-$RANDOM
+          branch_name=chocolatey-update-stax-to-$TAG-$(date -u +"%Y-%m-%dT%H-%M-%S")
           git checkout -b $branch_name
           git commit -a -m "Chocolatey update stax to $TAG"
           git push --set-upstream origin $branch_name
