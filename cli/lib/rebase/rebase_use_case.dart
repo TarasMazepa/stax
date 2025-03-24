@@ -136,6 +136,10 @@ class RebaseUseCase {
     _file.writeAsStringSyncWithRetry(jsonEncode(rebaseData.toJson()));
   }
 
+  void assertRebaseInProgress() {
+    if (_rebaseData == null) throw Exception('No rebase in progress.');
+  }
+
   void abort() {
     _rebaseData = null;
     save();
