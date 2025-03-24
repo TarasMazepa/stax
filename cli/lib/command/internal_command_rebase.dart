@@ -46,44 +46,50 @@ class InternalCommandRebase extends InternalCommand {
     final hasContinueFlag = continueFlag.hasFlag(args);
     final hasAbortFlag = abortFlag.hasFlag(args);
 
-    if (context.assertNoConflictingFlags(
-      [hasContinueFlag, hasAbortFlag],
-      [continueFlag, abortFlag],
-    )) {
+    if (context.assertNoConflictingFlags([
+      if (hasContinueFlag) continueFlag,
+      if (hasAbortFlag) abortFlag,
+    ])) {
       return;
     }
 
     final hasTheirsFlag = theirsFlag.hasFlag(args);
     final hasOursFlag = oursFlag.hasFlag(args);
 
-    if (context.assertNoConflictingFlags(
-      [hasTheirsFlag, hasOursFlag],
-      [theirsFlag, oursFlag],
-    )) {
+    if (context.assertNoConflictingFlags([
+      if (hasTheirsFlag) theirsFlag,
+      if (hasOursFlag) oursFlag,
+    ])) {
       return;
     }
 
-    if (context.assertNoConflictingFlags(
-      [hasContinueFlag, hasTheirsFlag, hasOursFlag],
-      [continueFlag, theirsFlag, oursFlag],
-    )) {
+    if (context.assertNoConflictingFlags([
+      if (hasContinueFlag) continueFlag,
+      if (hasTheirsFlag) theirsFlag,
+      if (hasOursFlag) oursFlag,
+    ])) {
       return;
     }
 
-    if (context.assertNoConflictingFlags(
-      [hasAbortFlag, hasTheirsFlag, hasOursFlag],
-      [abortFlag, theirsFlag, oursFlag],
-    )) {
+    if (context.assertNoConflictingFlags([
+      if (hasAbortFlag) abortFlag,
+      if (hasTheirsFlag) theirsFlag,
+      if (hasOursFlag) oursFlag,
+    ])) {
       return;
     }
 
     if (hasContinueFlag) {
-      context.assertRebaseUseCase.continueRebase();
+      context.assertRebaseUseCase
+        ..assertRebaseInProgress()
+        ..continueRebase();
       return;
     }
 
     if (hasAbortFlag) {
-      context.assertRebaseUseCase.abort();
+      context.assertRebaseUseCase
+        ..assertRebaseInProgress()
+        ..abort();
       context.printParagraph('Rebase successfully aborted.');
       return;
     }

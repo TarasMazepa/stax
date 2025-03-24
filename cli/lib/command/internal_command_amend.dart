@@ -66,17 +66,18 @@ class InternalCommandAmend extends InternalCommand {
     final hasForcePushFlag = forcePushFlag.hasFlag(args);
     final hasSkipPushFlag = skipPushFlag.hasFlag(args);
 
-    if (context.assertNoConflictingFlags(
-      [hasRebaseFlag, hasRebaseTheirsFlag, hasRebaseOursFlag],
-      [rebaseFlag, rebaseTheirsFlag, rebaseOursFlag],
-    )) {
+    if (context.assertNoConflictingFlags([
+      if (hasRebaseFlag) rebaseFlag,
+      if (hasRebaseTheirsFlag) rebaseTheirsFlag,
+      if (hasRebaseOursFlag) rebaseOursFlag,
+    ])) {
       return;
     }
 
-    if (context.assertNoConflictingFlags(
-      [hasForcePushFlag, hasSkipPushFlag],
-      [forcePushFlag, skipPushFlag],
-    )) {
+    if (context.assertNoConflictingFlags([
+      if (hasForcePushFlag) forcePushFlag,
+      if (hasSkipPushFlag) skipPushFlag,
+    ])) {
       return;
     }
 
