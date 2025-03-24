@@ -43,7 +43,7 @@ class RebaseUseCase {
   RebaseUseCase(this.context, this._rebaseData, this._file);
 
   void initiate(bool hasTheirsFlag, bool hasOursFlag, String? rebaseOnto) {
-    if (_rebaseData != null) throw StateError('Rebase is already in progress');
+    if (_rebaseData != null) throw Exception('Rebase is already in progress');
 
     final root = context.gitLogAll();
 
@@ -85,8 +85,50 @@ class RebaseUseCase {
     save();
   }
 
+  void continueRebase() {
+    while (shouldContinueRebase()) {
+      executeNextRebaseStep();
+    }
+  }
+
+  bool shouldContinueRebase() {
+    return _rebaseData != null;
+  }
+
+  void executeNextRebaseStep() {
+    final rebaseData = assertRebaseData;
+    try {
+      final rebaseStep = rebaseData.currentStep;
+      final exitCode =
+          context.git.rebase
+              .args([
+                if (rebaseData.hasTheirsFlag) ...['-X', 'theirs'],
+                if (rebaseData.hasOursFlag) ...['-X', 'ours'],
+                if (rebaseData.currentIndex == 0)
+                  rebaseData.rebaseOnto
+                else
+                  rebaseStep.parent!,
+                rebaseStep.node,
+              ])
+              .announce()
+              .runSync()
+              .printNotEmptyResultFields()
+              .exitCode;
+      if (exitCode != 0) {
+        throw Exception('Rebase failed');
+      }
+      context.git.pushForce.announce().runSync().printNotEmptyResultFields();
+    } finally {
+      rebaseData.currentIndex++;
+      save();
+    }
+  }
+
   void save() {
-    final rebaseData = _rebaseData;
+    RebaseData? rebaseData = _rebaseData;
+    if (rebaseData?.currentIndex == rebaseData?.steps.length) {
+      rebaseData = _rebaseData = null;
+    }
     if (rebaseData == null) {
       _file.deleteSyncSilently();
       return;
