@@ -16,7 +16,7 @@ jobs:
           sed -i "s+defaultValue: '.*',+defaultValue: '${{ steps.get-version.outputs.version }}',+" ./cli/lib/command/internal_command_version.dart
           git config --global user.name 'stax'
           git config --global user.email 'stax@staxforgit.com'
-          branch_name=update-cli/lib/command/internal_command_version.dart-to-have-${{ steps.get-version.outputs.version }}-as-a-default-version-$RANDOM
+          branch_name=update-cli/lib/command/internal_command_version.dart-to-have-${{ steps.get-version.outputs.version }}-as-a-default-version-$(date -u +"%Y-%m-%dT%H-%M-%S")
           git checkout -b $branch_name
           git commit -a -m "Update cli/lib/command/internal_command_version.dart to have ${{ steps.get-version.outputs.version }} as a default version"
           git push --set-upstream origin $branch_name
