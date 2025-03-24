@@ -171,7 +171,9 @@ class InternalCommandDoctor extends InternalCommand {
       );
 
       if (!isAuthenticated) {
-        context.printToConsole('''    X Authenticate GitHub CLI using:''');
+        context.printToConsole(
+          '''    X [Optional] Authenticate GitHub CLI using:''',
+        );
         context.printToConsole('''      gh auth login''');
         return;
       }
@@ -191,7 +193,7 @@ class InternalCommandDoctor extends InternalCommand {
 
         if (!canAccessRepo) {
           context.printToConsole(
-            '''    X Ensure you have access to this repository on GitHub''',
+            '''    X [Optional] Ensure you have access to this repository on GitHub''',
           );
         }
       }
