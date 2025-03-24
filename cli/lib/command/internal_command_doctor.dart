@@ -171,7 +171,9 @@ class InternalCommandDoctor extends InternalCommand {
       );
 
       if (!isAuthenticated) {
-        context.printToConsole('''    X [Optional] Authenticate GitHub CLI using:''');
+        context.printToConsole(
+          '''    X [Optional] Authenticate GitHub CLI using:''',
+        );
         context.printToConsole('''      gh auth login''');
         return;
       }
