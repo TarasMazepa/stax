@@ -63,7 +63,9 @@ Note: you can type first letter or couple of first letters instead of full comma
       Positional arguments:
          opt1 - Optional argument for target, will default to <remote>/HEAD
       Flags:
+         -a, --abort - Abort rebase that is in progress.
          -b, --prefer-base - Prefer base changes on conflict.
+         -c, --continue - Continue rebase that is in progress.
          -m, --prefer-moving - Prefer moving changes on conflict.
  • version - Version of stax
 """);

@@ -12,8 +12,7 @@ extension ContextAssertNoConflictingFlags on Context {
     final result = selected.length > 1;
     if (result) {
       printParagraph("""You have used conflicting flags:
-${selected.map((e) => "  $e").join("\n")}
-""");
+${selected.map((e) => "  $e").join("\n")}""");
     }
     return result;
   }
