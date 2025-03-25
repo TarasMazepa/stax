@@ -11,3 +11,4 @@ Invoke-WebRequest -Uri $downloadUrl -OutFile $outputZip
 $ToolsPath = "chocolatey/stax/tools"
 Write-Host "Extracting stax.exe to $ToolsPath"
 Expand-Archive -Path $outputZip -DestinationPath "$ToolsPath" -Force
+Copy-Item "LICENSE" -Destination $ToolsPath
