@@ -5,24 +5,24 @@ class RebaseData {
   final bool hasOursFlag;
   final String rebaseOnto;
   final List<RebaseStep> steps;
-  int currentIndex;
+  int index;
 
-  RebaseStep get currentStep => steps[currentIndex];
+  RebaseStep get currentStep => steps[index];
 
   RebaseData(
     this.hasTheirsFlag,
     this.hasOursFlag,
     this.rebaseOnto,
     this.steps,
-    this.currentIndex,
+    this.index,
   );
 
   Map<String, dynamic> toJson() => {
     'hasTheirsFlag': hasTheirsFlag,
     'hasOursFlag': hasOursFlag,
     'rebaseOnto': rebaseOnto,
-    'branches': steps.map((step) => step.toJson()).toList(),
-    'currentIndex': currentIndex,
+    'steps': steps.map((step) => step.toJson()).toList(),
+    'index': index,
   };
 
   factory RebaseData.fromJson(Map<String, dynamic> json) {
@@ -30,8 +30,8 @@ class RebaseData {
       json['hasTheirsFlag'] as bool,
       json['hasOursFlag'] as bool,
       json['rebaseOnto'] as String,
-      (json['branches'] as List).map((e) => RebaseStep.fromJson(e)).toList(),
-      json['currentIndex'] as int,
+      (json['steps'] as List).map((e) => RebaseStep.fromJson(e)).toList(),
+      json['index'] as int,
     );
   }
 }

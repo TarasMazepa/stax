@@ -1,3 +1,6 @@
+0.9.51
+ * stax amend - fixing rebase
+
 0.9.50
  * stax rebase - now supports resumable rebase
  * stax amend - now has working rebase

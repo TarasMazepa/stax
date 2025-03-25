@@ -70,10 +70,6 @@ class RebaseUseCase {
       throw Exception("Can't find target branch.");
     }
 
-    if (current == targetNode) {
-      throw Exception('Nothing to rebase.');
-    }
-
     _rebaseData = RebaseData(
       hasTheirsFlag,
       hasOursFlag,
@@ -104,7 +100,7 @@ class RebaseUseCase {
               .args([
                 if (rebaseData.hasTheirsFlag) ...['-X', 'theirs'],
                 if (rebaseData.hasOursFlag) ...['-X', 'ours'],
-                if (rebaseData.currentIndex == 0)
+                if (rebaseData.index == 0)
                   rebaseData.rebaseOnto
                 else
                   rebaseStep.parent!,
@@ -119,14 +115,14 @@ class RebaseUseCase {
       }
       context.git.pushForce.announce().runSync().printNotEmptyResultFields();
     } finally {
-      rebaseData.currentIndex++;
+      rebaseData.index++;
       save();
     }
   }
 
   void save() {
     RebaseData? rebaseData = _rebaseData;
-    if (rebaseData?.currentIndex == rebaseData?.steps.length) {
+    if (rebaseData?.index == rebaseData?.steps.length) {
       rebaseData = _rebaseData = null;
     }
     if (rebaseData == null) {
