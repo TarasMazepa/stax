@@ -104,7 +104,7 @@ class InternalCommandAmend extends InternalCommand {
         hasRebaseOursFlag,
         current!.line.branchNameOrCommitHash(),
       );
-      rebaseUseCase.assertRebaseData.currentIndex++;
+      rebaseUseCase.assertRebaseData.index++;
       rebaseUseCase.save();
     }
 
