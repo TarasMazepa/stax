@@ -25,10 +25,6 @@ jobs:
           GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}
       - run: |
           sed -i "s+<version>.*</version>+<version>$TAG</version>+" ./chocolatey/stax/stax.nuspec
-          sed -i "s+$tag = '.*'+$tag = '$TAG'+" ./chocolatey/stax/tools/chocolateyinstall.ps1
-          checksum=$(curl -sL https://github.com/TarasMazepa/stax/archive/$TAG.zip | sha256sum | sed 's/  -//')
-          checksumUpper=${checksum^^}
-          sed -i "s+-Checksum .*+-Checksum $checksumUpper \`+" ./chocolatey/stax/tools/chocolateyinstall.ps1
           git config --global user.name 'stax'
           git config --global user.email 'stax@staxforgit.com'
           branch_name=chocolatey-update-stax-to-$TAG-$(date -u +"%Y-%m-%dT%H-%M-%S")
