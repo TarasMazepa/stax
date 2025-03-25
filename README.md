@@ -1,9 +1,6 @@
 # Stax
 
-Stax is a tool that will help you to stack your PRs.
-
-The primary purpose is to make it easier to create smaller PRs. And reduce the amount of energy other people need to
-review them.
+Stax helps you to manage your git branches and stack PRs.
 
 ## Installation
 
@@ -66,12 +63,6 @@ stax doctor
 [V] git remote # remote(s): origin
 [V] git rev-parse --abbrev-ref origin/HEAD # main
 ```
-
-## What is stacking PRs git workflow?
-
-It is a way to reduce the burden of creating commits, branches, and PRs, so it doesn't consume much
-of your time. As a result, you can start creating more PRs with smaller changes and have
-them reviewed easier and faster while catching more bugs.
 
 ## Commands
 
