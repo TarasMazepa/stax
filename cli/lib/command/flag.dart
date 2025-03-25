@@ -44,27 +44,18 @@ class Flag {
   }
 
   String? getFlagValue(List<String> args) {
-    if (long != null) {
-      final index = args.indexOf(long!).toNullableIndexOfResult();
-      if (index != null) {
-        final valueIndex = index + 1;
-        if (args.length <= valueIndex) {
-          throw Exception("Value wasn't provided for '$long' flag.");
-        }
-        return args[valueIndex];
+    String? getFlagValueInternal(String? flag) {
+      if (flag == null) return null;
+      final index = args.indexOf(flag).toNullableIndexOfResult();
+      if (index == null) return null;
+      final valueIndex = index + 1;
+      if (args.length <= valueIndex) {
+        throw Exception("Value wasn't provided for '$long' flag.");
       }
+      return args[valueIndex];
     }
-    if (short != null) {
-      final index = args.indexOf(short!).toNullableIndexOfResult();
-      if (index != null) {
-        final valueIndex = index + 1;
-        if (args.length <= valueIndex) {
-          throw Exception("Value wasn't provided for '$short' flag.");
-        }
-        return args[valueIndex];
-      }
-    }
-    return null;
+
+    return getFlagValueInternal(long) ?? getFlagValueInternal(short);
   }
 
   @override
