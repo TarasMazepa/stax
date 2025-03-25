@@ -95,12 +95,17 @@ class InternalCommandAmend extends InternalCommand {
       }
     }
 
-    if (hasAnyRebaseFlag()) {
-      context.assertRebaseUseCase.initiate(
+    final rebaseUseCase = context.assertRebaseUseCase;
+    final shouldDoRebase = hasAnyRebaseFlag();
+
+    if (shouldDoRebase) {
+      rebaseUseCase.initiate(
         hasRebaseTheirsFlag,
         hasRebaseOursFlag,
         current!.line.branchNameOrCommitHash(),
       );
+      rebaseUseCase.assertRebaseData.index++;
+      rebaseUseCase.save();
     }
 
     context.git.commitAmendNoEdit
@@ -112,8 +117,8 @@ class InternalCommandAmend extends InternalCommand {
         .runSync()
         .printNotEmptyResultFields();
 
-    if (hasAnyRebaseFlag()) {
-      context.assertRebaseUseCase.continueRebase();
+    if (shouldDoRebase) {
+      rebaseUseCase.continueRebase();
     }
   }
 }
