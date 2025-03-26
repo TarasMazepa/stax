@@ -1,16 +1,16 @@
-import 'package:stax/settings/base_settings.dart';
+import 'package:stax/settings/key_value_store.dart';
 import 'package:stax/settings/setting.dart';
 
 class DateTimeSetting extends Setting<DateTime> {
   DateTimeSetting(
     String name,
     DateTime defaultValue,
-    BaseSettings settings,
+    KeyValueStore keyValueStore,
     String description,
   ) : super(
         name,
         defaultValue,
-        settings,
+        keyValueStore,
         DateTime.parse,
         (x) => x.toIso8601String(),
         description,

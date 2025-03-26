@@ -1,35 +1,43 @@
 import 'package:collection/collection.dart';
+import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
-import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/settings/base_list_setting.dart';
 import 'package:stax/settings/key_value_list_setting.dart';
 import 'package:stax/settings/setting.dart';
 
 class InternalCommandSettings extends InternalCommand {
-  late final availableSubCommands =
+  static final availableSubCommands =
       ['set', 'clear', 'show', 'add', 'remove'].sorted();
+  static final globalFlag = Flag(
+    short: '-g',
+    long: '--global',
+    description:
+        'Perform operation on global settings regardless of invocation path.',
+  );
 
   InternalCommandSettings()
     : super(
         'settings',
         'View or modify stax settings',
-        type: InternalCommandType.hidden,
         arguments: {
-          'arg1': 'Subcommand (show, set,clear)',
-          'opt2': 'Setting name (for show/set/clear)',
-          'opt3': 'New value (for set)',
+          'arg1': 'Subcommand (${availableSubCommands.join(', ')})',
+          'opt2': 'Setting name',
+          'opt3': 'Setting value',
         },
+        flags: [globalFlag],
       );
 
   @override
   void run(final List<String> args, final Context context) {
+    final effectiveSettings =
+        globalFlag.hasFlag(args) ? context.settings : context.effectiveSettings;
     late final List<Setting> availableSettings = <Setting>[
-      context.settings.additionallyPull,
-      context.settings.baseBranchReplacement,
-      context.settings.branchPrefix,
-      context.settings.defaultBranch,
-      context.settings.defaultRemote,
+      effectiveSettings.additionallyPull,
+      effectiveSettings.baseBranchReplacement,
+      effectiveSettings.branchPrefix,
+      effectiveSettings.defaultBranch,
+      effectiveSettings.defaultRemote,
     ].sortedBy((setting) => setting.name);
     bool isSettingAvailable(String name) =>
         availableSettings.any((setting) => setting.name == name);

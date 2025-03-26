@@ -1,3 +1,7 @@
+0.9.52
+ * stax settings - now public
+ * stax settings - now supports repository specific settings
+
 0.9.51
  * stax amend - fixing rebase
 

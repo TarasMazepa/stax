@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:stax/settings/base_settings.dart';
+import 'package:stax/settings/key_value_store.dart';
 import 'package:stax/settings/setting.dart';
 
 abstract class BaseListSetting<T> extends Setting<List<T>> {
@@ -9,14 +9,14 @@ abstract class BaseListSetting<T> extends Setting<List<T>> {
   BaseListSetting(
     String name,
     List<T> defaultValue,
-    BaseSettings settings,
+    KeyValueStore keyValueStore,
     String description,
     this.itemFromString,
     String Function(T) itemToString,
   ) : super(
         name,
         defaultValue,
-        settings,
+        keyValueStore,
         (String s) =>
             (jsonDecode(s) as List<dynamic>)
                 .map((element) => element.toString())

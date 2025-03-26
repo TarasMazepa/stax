@@ -5,7 +5,7 @@ extension ContextGitGetPreferredRemote on Context {
   static String? _preferredRemote;
 
   String? getPreferredRemote() {
-    final override = settings.defaultRemote.value;
+    final override = effectiveSettings.defaultRemote.value;
     if (override.isNotEmpty) return override;
 
     if (_preferredRemote != null) return _preferredRemote;

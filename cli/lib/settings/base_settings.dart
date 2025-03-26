@@ -1,53 +1,46 @@
-import 'dart:convert';
-import 'dart:io';
+import 'package:stax/settings/key_value_list_setting.dart';
+import 'package:stax/settings/key_value_store.dart';
+import 'package:stax/settings/string_list_setting.dart';
+import 'package:stax/settings/string_setting.dart';
 
-import 'package:path/path.dart' as p;
-import 'package:stax/file/file_read_as_string_sync_with_retry.dart';
-import 'package:stax/file/file_system_entity_delete_sync_silently.dart';
-import 'package:stax/file/file_write_as_string_sync_with_retry.dart';
+mixin BaseSettings implements KeyValueStore {
 
-class BaseSettings {
-  final Map<String, dynamic> _settings;
-  final File _file;
+  String get name;
 
-  BaseSettings(this._settings, this._file);
+  late final StringSetting branchPrefix = StringSetting(
+    'branch_prefix',
+    '',
+    this,
+    'Prefix to add to all new branch names (e.g., "feature/")',
+  );
 
-  BaseSettings.fromFile(File file)
-    : this(readJsonSettingsFileAsStringSyncWithRetry(file), file);
+  late final StringSetting defaultBranch = StringSetting(
+    'default_branch',
+    '',
+    this,
+    'Override for default branch (empty means use <remote>/HEAD)',
+  );
 
-  BaseSettings.fromUri(Uri uri) : this.fromFile(File.fromUri(uri));
+  late final StringSetting defaultRemote = StringSetting(
+    'default_remote',
+    '',
+    this,
+    'Override for default remote (empty means use first available remote)',
+  );
 
-  BaseSettings.fromPath(String path) : this.fromUri(p.toUri(path));
+  late final KeyValueListSetting baseBranchReplacement = KeyValueListSetting(
+    'base_branch_replacement',
+    [],
+    this,
+    'Automatically substitute specific branch when creating pr: stable=main if '
+        "your current branch is 'stable', but you want to have 'main' as base "
+        'branch when creating PRs',
+  );
 
-  static Map<String, dynamic> readJsonSettingsFileAsStringSyncWithRetry(
-    File file,
-  ) {
-    Map<String, dynamic> createEmptySettingsFileIfNeededAndRead() {
-      if (!file.existsSync()) {
-        file.createSync(recursive: true);
-        file.writeAsStringSyncWithRetry('{}');
-      }
-      return jsonDecode(file.readAsStringSyncWithRetry());
-    }
-
-    try {
-      return createEmptySettingsFileIfNeededAndRead();
-    } catch (_) {
-      file.deleteSyncSilently();
-      return createEmptySettingsFileIfNeededAndRead();
-    }
-  }
-
-  String? operator [](String key) {
-    final value = _settings[key];
-    return value is String ? value : null;
-  }
-
-  void operator []=(String key, String? value) {
-    _settings[key] = value;
-  }
-
-  void save() {
-    _file.writeAsStringSyncWithRetry(jsonEncode(_settings));
-  }
+  late final StringListSetting additionallyPull = StringListSetting(
+    'additionally_pull',
+    [],
+    this,
+    'Additional branches to pull besides default_branch',
+  );
 }
