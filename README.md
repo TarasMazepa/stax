@@ -46,7 +46,7 @@ brew install TarasMazepa/stax/stax
 
 ### Alternative
 
-Clone this repo and put the path to the repo into your PATH variable.
+Clone this repo and put the path to the repo into your PATH variable. You would need to have dart [installed](https://dart.dev/get-dart#install) on your system.
 
 ## stax doctor
 
