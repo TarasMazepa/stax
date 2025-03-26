@@ -28,8 +28,6 @@ jobs:
       - run: flutter test
         working-directory: ui
       - run: |
-          git config --global user.name 'stax'
-          git config --global user.email 'stax@staxforgit.com'
           if ! git diff --quiet; then
             branch_name=ui-update-dependencies-$(date -u +"%Y-%m-%dT%H-%M-%S")
             git config --global user.name 'stax'
