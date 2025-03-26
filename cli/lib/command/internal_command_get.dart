@@ -10,7 +10,9 @@ class InternalCommandGet extends InternalCommand {
     : super(
         'get',
         '(Re)Checkout specified branch and all its children',
-        arguments: {'opt1': 'Name of the remote ref. Will be matched as a suffix.'},
+        arguments: {
+          'opt1': 'Name of the remote ref. Will be matched as a suffix.',
+        },
       );
 
   @override
