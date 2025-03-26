@@ -37,16 +37,16 @@ Note: you can type first letter or couple of first letters instead of full comma
          -f - Force delete gone branches.
          -s - Skip deletion of gone branches.
  • doctor - Helps to ensure that stax has everything to be used.
- • get - checkout all child branches
+ • get - (Re)Checkout specified branch and all its children
       Positional arguments:
-         arg1 - name of the remote ref
+         opt1 - Name of the remote ref. Will be matched as a suffix.
  • help - List of available commands.
       Flags:
          -a - Show all commands including hidden.
- • log - Builds a tree of all branches.
+ • log - Shows a tree of all branches.
       Flags:
-         -a - show remote branches also
-         --default-branch - assume different default branch
+         -a, --all - show remote branches also
+         -d, --default-branch - assume different default branch
  • move - Allows you to move around log tree. Note: you can type any amount of first letters to specify direction. 'h' instead of 'head', 't' for 'top, 'd' for down, 'u' for 'up', 'b' for 'bottom'
       Positional arguments:
          [arg]+ - up (one up, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), down (one down), top (to the closest top parent that have at least two children or to the top most node, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), bottom (to the closest bottom parent that have at least two children or bottom most node, will stop before any direct parent of <remote>/head), head (<remote>/head)

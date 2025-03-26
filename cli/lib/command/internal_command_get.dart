@@ -9,8 +9,8 @@ class InternalCommandGet extends InternalCommand {
   InternalCommandGet()
     : super(
         'get',
-        'checkout all child branches',
-        arguments: {'arg1': 'name of the remote ref'},
+        '(Re)Checkout specified branch and all its children',
+        arguments: {'opt1': 'Name of the remote ref. Will be matched as a suffix.'},
       );
 
   @override
