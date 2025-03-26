@@ -34,8 +34,6 @@ jobs:
       - run: |
           if ! git diff --quiet; then
             branch_name=cli-update-dependencies-$(date -u +"%Y-%m-%dT%H-%M-%S")
-            git config --global user.name 'stax'
-            git config --global user.email 'stax@staxforgit.com'
             git checkout -b $branch_name
             git commit -a -m "Cli update dependencies"
             git push --set-upstream origin $branch_name
