@@ -4,7 +4,6 @@ import 'package:stax/settings/string_list_setting.dart';
 import 'package:stax/settings/string_setting.dart';
 
 mixin BaseSettings implements KeyValueStore {
-
   String get name;
 
   late final StringSetting branchPrefix = StringSetting(
