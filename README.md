@@ -1,6 +1,6 @@
 # Stax
 
-Stax helps you to manage your git branches and stack PRs.
+stax - manage git branches and stack PRs
 
 ## Installation
 
