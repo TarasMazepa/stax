@@ -1,0 +1,43 @@
+name: ui-update-dependencies.yml
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "25 6 * * *"
+
+jobs:
+  ui-update-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: TarasMazepa/github-action-cat@master
+        id: get-flutter-version
+        with:
+          path: FLUTTER_VERSION
+          trim: true
+      - uses: flutter-actions/setup-flutter@v4
+        with:
+          version: ${{ steps.get-flutter-version.outputs.text }}
+      - run: flutter pub upgrade
+        working-directory: ui
+      - run: flutter pub get
+        working-directory: ui
+      - run: dart format . -o none --set-exit-if-changed
+        working-directory: ui
+      - run: flutter analyze --fatal-infos
+        working-directory: ui
+      - run: flutter test
+        working-directory: ui
+      - run: |
+          git config --global user.name 'stax'
+          git config --global user.email 'stax@staxforgit.com'
+          if ! git diff --quiet; then
+            branch_name=ui-update-dependencies-$(date -u +"%Y-%m-%dT%H-%M-%S")
+            git config --global user.name 'stax'
+            git config --global user.email 'stax@staxforgit.com'
+            git checkout -b $branch_name
+            git commit -a -m "UI update dependencies"
+            git push --set-upstream origin $branch_name
+            gh pr merge $(gh pr create -B main -f) --auto --squash
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
