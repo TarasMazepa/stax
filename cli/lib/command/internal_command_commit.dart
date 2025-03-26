@@ -86,7 +86,7 @@ class InternalCommandCommit extends InternalCommand {
     }
     final resultingBranchName = sanitizeBranchName(originalBranchName);
     final prefixedBranchName =
-        context.settings.branchPrefix.value + resultingBranchName;
+        context.effectiveSettings.branchPrefix.value + resultingBranchName;
 
     if (!acceptBranchName && originalBranchName != prefixedBranchName) {
       if (!context.commandLineContinueQuestion(
@@ -107,7 +107,9 @@ class InternalCommandCommit extends InternalCommand {
           context.getDefaultBranch();
       if (previousBranch != null) {
         baseBranch =
-            context.settings.baseBranchReplacement.getValue(previousBranch) ??
+            context.effectiveSettings.baseBranchReplacement.getValue(
+              previousBranch,
+            ) ??
             previousBranch;
       }
     }

@@ -65,6 +65,13 @@ Note: you can type first letter or couple of first letters instead of full comma
          -b, --prefer-base - Prefer base changes on conflict.
          -c, --continue - Continue rebase that is in progress.
          -m, --prefer-moving - Prefer moving changes on conflict.
+ • settings - View or modify stax settings
+      Positional arguments:
+         arg1 - Subcommand (add, clear, remove, set, show)
+         opt2 - Setting name
+         opt3 - Setting value
+      Flags:
+         -g, --global - Perform operation on global settings regardless of invocation path.
  • version - Version of stax
 """);
     });

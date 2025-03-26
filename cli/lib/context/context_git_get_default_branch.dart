@@ -8,7 +8,7 @@ extension ContextGitGetDefaultBranch on Context {
   static String? defaultBranch;
 
   String? getDefaultBranch() {
-    final override = settings.defaultBranch.value;
+    final override = effectiveSettings.defaultBranch.value;
     if (override.isNotEmpty) return override;
 
     if (defaultBranch != null) return defaultBranch;

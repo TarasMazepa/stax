@@ -40,7 +40,7 @@ class InternalCommandPull extends InternalCommand {
       return;
     }
 
-    final additionalBranches = context.settings.additionallyPull.value;
+    final additionalBranches = context.effectiveSettings.additionallyPull.value;
 
     bool needToSwitchBranches = currentBranch != defaultBranch;
     ExtendedProcessResult? result;
