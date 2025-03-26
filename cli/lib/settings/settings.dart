@@ -6,7 +6,4 @@ import 'package:stax/settings/key_value_store.dart';
 class Settings extends KeyValueStore with BaseSettings {
   Settings()
     : super.fromPath(path.join(applicationConfigHome('stax'), '.stax_config'));
-
-  @override
-  String get name => '--global';
 }

@@ -107,7 +107,9 @@ class InternalCommandCommit extends InternalCommand {
           context.getDefaultBranch();
       if (previousBranch != null) {
         baseBranch =
-            context.effectiveSettings.baseBranchReplacement.getValue(previousBranch) ??
+            context.effectiveSettings.baseBranchReplacement.getValue(
+              previousBranch,
+            ) ??
             previousBranch;
       }
     }

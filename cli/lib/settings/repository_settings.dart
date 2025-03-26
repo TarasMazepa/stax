@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:path/path.dart' as path;
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_repository_root.dart';
@@ -11,7 +13,7 @@ class RepositorySettings extends KeyValueStore with BaseSettings {
     if (root == null) return null;
     return RepositorySettings(
       path.join(
-        Uri.parse(root).toFilePath(),
+        Uri.directory(root, windows: Platform.isWindows).toFilePath(),
         '.git',
         'info',
         'stax',
@@ -24,9 +26,6 @@ class RepositorySettings extends KeyValueStore with BaseSettings {
   final Settings _settings;
 
   RepositorySettings(super.path, this._settings) : super.fromPath();
-
-  @override
-  String get name => '--local';
 
   @override
   String? operator [](String key) {
