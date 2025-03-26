@@ -8,18 +8,20 @@ import 'internal_command.dart';
 
 class InternalCommandLog extends InternalCommand {
   static final Flag defaultBranchFlag = Flag(
+    short: '-d',
     long: '--default-branch',
     description: 'assume different default branch',
   );
   static final Flag allBranchesFlag = Flag(
     short: '-a',
+    long: '--all',
     description: 'show remote branches also',
   );
 
   InternalCommandLog()
     : super(
         'log',
-        'Builds a tree of all branches.',
+        'Shows a tree of all branches.',
         flags: [defaultBranchFlag, allBranchesFlag],
       );
 
