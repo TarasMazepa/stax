@@ -170,35 +170,3 @@ Move has five directions:
 * https://graphite.dev/
 * https://sapling-scm.com/
 * https://stacked-git.github.io/
-
-## TODO
-
-* UI
-    * Add initial console UI
-    * add cd command (which will be the only way to select project)
-    * add continuous stax log display
-
-* stax
-    * e2e test
-        * create e2e tests roadmap
-        * add more e2e tests
-    * unit tests
-        * create unit tests roadmap
-        * add more e2e tests
-    * add test coverage reporting
-    * integration with gh tool (to create PRs and add automerge)
-    * add update prompt (check VERSION file in repository, and offer to run choco update or brew update)
-
-* stax move
-  * flag to ignore <remote>/HEAD transition
-  * flag to ignore multi children nodes
-
-* stax squash
-  * command which ensures that each branch only has one commit
-
-* stax commit
-  * perform `git fetch -p` before and target new commit to local branches only
-  * offer `stax rebase -m` in case when one of the child branches are gone
-
-* homebrew-stax
-  * add test for installing stax on arm64 linux
