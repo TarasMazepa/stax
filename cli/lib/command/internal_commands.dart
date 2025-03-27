@@ -1,7 +1,7 @@
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_amend.dart';
 import 'package:stax/command/internal_command_commit.dart';
-import 'package:stax/command/internal_command_delete_gone_branches.dart';
+import 'package:stax/command/internal_command_delete.dart';
 import 'package:stax/command/internal_command_doctor.dart';
 import 'package:stax/command/internal_command_get.dart';
 import 'package:stax/command/internal_command_help.dart';
@@ -21,7 +21,7 @@ import 'package:stax/command/internal_command_version.dart';
 final List<InternalCommand> internalCommands = [
   InternalCommandAmend(),
   InternalCommandCommit(),
-  InternalCommandDeleteGoneBranches(),
+  InternalCommandDelete(),
   InternalCommandDoctor(),
   InternalCommandGet(),
   InternalCommandHelp(),

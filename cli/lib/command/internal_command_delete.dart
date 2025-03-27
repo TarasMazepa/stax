@@ -5,7 +5,7 @@ import 'package:stax/context/context_git_fetch_with_prune.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/git/branch_info.dart';
 
-class InternalCommandDeleteGoneBranches extends InternalCommand {
+class InternalCommandDelete extends InternalCommand {
   static final forceDeleteFlag = Flag(
     short: '-f',
     description: 'Force delete gone branches.',
@@ -15,9 +15,9 @@ class InternalCommandDeleteGoneBranches extends InternalCommand {
     description: 'Skip deletion of gone branches.',
   );
 
-  InternalCommandDeleteGoneBranches()
+  InternalCommandDelete()
     : super(
-        'delete-gone-branches',
+        'delete',
         'Deletes local branches with gone remotes.',
         flags: [forceDeleteFlag, skipDeleteFlag],
       );

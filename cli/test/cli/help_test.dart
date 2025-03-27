@@ -32,7 +32,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -i, --ignore-no-staged-changes - Skips check if there staged changes, helpful when your change is only rename of the file which stax can't see at the moment.
          -p, --pr - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
          -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
- • delete-gone-branches - Deletes local branches with gone remotes.
+ • delete - Deletes local branches with gone remotes.
       Flags:
          -f - Force delete gone branches.
          -s - Skip deletion of gone branches.
