@@ -1,5 +1,5 @@
 import 'package:stax/command/internal_command.dart';
-import 'package:stax/command/internal_command_delete_gone_branches.dart';
+import 'package:stax/command/internal_command_delete.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
@@ -16,8 +16,8 @@ class InternalCommandPull extends InternalCommand {
           'opt1': 'Optional target branch, will default to <remote>/HEAD',
         },
         flags: [
-          InternalCommandDeleteGoneBranches.skipDeleteFlag,
-          InternalCommandDeleteGoneBranches.forceDeleteFlag,
+          InternalCommandDelete.skipDeleteFlag,
+          InternalCommandDelete.forceDeleteFlag,
         ],
       );
 
@@ -26,10 +26,12 @@ class InternalCommandPull extends InternalCommand {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }
-    final hasSkipDeleteFlag = InternalCommandDeleteGoneBranches.skipDeleteFlag
-        .hasFlag(args);
-    final hasForceDeleteFlag = InternalCommandDeleteGoneBranches.forceDeleteFlag
-        .hasFlag(args);
+    final hasSkipDeleteFlag = InternalCommandDelete.skipDeleteFlag.hasFlag(
+      args,
+    );
+    final hasForceDeleteFlag = InternalCommandDelete.forceDeleteFlag.hasFlag(
+      args,
+    );
     final currentBranch = context.getCurrentBranch();
     final targetBranch = args.elementAtOrNull(0);
     final defaultBranch = targetBranch ?? context.getDefaultBranch();
@@ -86,11 +88,9 @@ class InternalCommandPull extends InternalCommand {
       }
     }
 
-    InternalCommandDeleteGoneBranches().run([
-      if (hasSkipDeleteFlag)
-        InternalCommandDeleteGoneBranches.skipDeleteFlag.shortOrLong,
-      if (hasForceDeleteFlag)
-        InternalCommandDeleteGoneBranches.forceDeleteFlag.shortOrLong,
+    InternalCommandDelete().run([
+      if (hasSkipDeleteFlag) InternalCommandDelete.skipDeleteFlag.shortOrLong,
+      if (hasForceDeleteFlag) InternalCommandDelete.forceDeleteFlag.shortOrLong,
     ], context);
 
     if ((needToSwitchBranches || additionalBranches.isNotEmpty) &&
