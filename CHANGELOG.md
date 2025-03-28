@@ -1,3 +1,6 @@
+0.10.0
+ * stax delete-gone-branches - renamed to delete
+
 0.9.52
  * stax settings - now public
  * stax settings - now supports repository specific settings
