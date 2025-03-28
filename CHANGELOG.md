@@ -17,4 +17,4 @@
  * stax commit - adds -i flag to ignore no staged changes
 
 0.9.48
- * stax doctor: mark GitHub CLI installation as optional
+ * stax doctor - mark GitHub CLI installation as optional
