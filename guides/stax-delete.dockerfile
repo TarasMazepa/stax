@@ -2,72 +2,72 @@ FROM homebrew/brew
 
 RUN brew install TarasMazepa/stax/stax
 
-RUN mkdir -p /home/linuxbrew/repo-bare /home/linuxbrew/repo-local
+RUN mkdir -p /home/linuxbrew/remote /home/linuxbrew/clone
 
-RUN cd /home/linuxbrew/repo-bare && git init --bare
+RUN cd /home/linuxbrew/remote && git init --bare
 
-RUN cd /home/linuxbrew && git clone /home/linuxbrew/repo-bare /home/linuxbrew/repo-local
+RUN git config --global user.email "stax@staxforgit.com" && \
+    git config --global user.name "stax" && \
+    git config --global init.defaultBranch main
 
-RUN cd /home/linuxbrew/repo-local && \
-    git config --global user.email "demo@example.com" && \
-    git config --global user.name "Demo User" && \
-    git config --global init.defaultBranch master
+RUN cd /home/linuxbrew && git clone /home/linuxbrew/remote /home/linuxbrew/clone
 
-RUN cd /home/linuxbrew/repo-local && \
+RUN cd /home/linuxbrew/clone && \
     echo "# Demo Repository" > README.md && \
     git add README.md && \
     git commit -m "Initial commit" && \
-    git push origin master
+    git branch -M main && \
+    git push -u origin main
 
-RUN cd /home/linuxbrew/repo-local && \
+RUN cd /home/linuxbrew/clone && \
     # Branch 1 - will keep this one
-    git checkout -b feature-1 && \
-    echo "Feature 1 content" > feature1.txt && \
-    git add feature1.txt && \
-    git commit -m "Add feature 1" && \
-    git push -u origin feature-1 && \
+    git checkout -b login-page-refactor && \
+    echo "Login page refactor changes" > login-page.txt && \
+    git add login-page.txt && \
+    git commit -m "Refactor login page implementation" && \
+    git push -u origin login-page-refactor && \
     # Branch 2 - will keep this one
-    git checkout -b feature-2 && \
-    echo "Feature 2 content" > feature2.txt && \
-    git add feature2.txt && \
-    git commit -m "Add feature 2" && \
-    git push -u origin feature-2 && \
+    git checkout -b new-button-component && \
+    echo "New reusable button component" > button.txt && \
+    git add button.txt && \
+    git commit -m "Add reusable button component" && \
+    git push -u origin new-button-component && \
     # Branch 3 - will delete this one from remote
-    git checkout -b feature-3 && \
-    echo "Feature 3 content" > feature3.txt && \
-    git add feature3.txt && \
-    git commit -m "Add feature 3" && \
-    git push -u origin feature-3 && \
+    git checkout -b registration-form-not-working && \
+    echo "Registration form bug fixes" > registration.txt && \
+    git add registration.txt && \
+    git commit -m "Fix registration form issues" && \
+    git push -u origin registration-form-not-working && \
     # Branch 4 - will delete this one from remote
-    git checkout -b feature-4 && \
-    echo "Feature 4 content" > feature4.txt && \
-    git add feature4.txt && \
-    git commit -m "Add feature 4" && \
-    git push -u origin feature-4 && \
-    git checkout master
+    git checkout -b outdated-ui-design && \
+    echo "Old UI design implementation" > old-ui.txt && \
+    git add old-ui.txt && \
+    git commit -m "Implement outdated UI design" && \
+    git push -u origin outdated-ui-design && \
+    git checkout main
 
-RUN cd /home/linuxbrew/repo-local && \
-    git checkout master && \
+RUN cd /home/linuxbrew/clone && \
+    git checkout main && \
     echo "Additional content" >> README.md && \
     git add README.md && \
     git commit -m "Update README" && \
-    git push origin master
+    git push origin main
 
-RUN cd /home/linuxbrew/repo-bare && \
-    git branch -D feature-3 && \
-    git branch -D feature-4
+RUN cd /home/linuxbrew/remote && \
+    git branch -D registration-form-not-working && \
+    git branch -D outdated-ui-design
 
-RUN cd /home/linuxbrew/repo-local && \
+RUN cd /home/linuxbrew/clone && \
     git fetch --prune && \
-    echo "Branches with tracking info:" && \
+    echo "git branch -vv:" && \
     git branch -vv
 
 RUN echo 'echo -e "\n===== STAX DELETE DEMO =====\n"' > /home/linuxbrew/.bashrc && \
     echo 'echo "This demo has branches with remote tracking information:"' >> /home/linuxbrew/.bashrc && \
-    echo 'echo -e "\n* feature-1 and feature-2: normal branches with remote tracking"' >> /home/linuxbrew/.bashrc && \
-    echo 'echo "* feature-3 and feature-4: branches whose remote counterparts were deleted (gone)"' >> /home/linuxbrew/.bashrc && \
+    echo 'echo -e "\n* login-page-refactor and new-button-component: normal branches with remote tracking"' >> /home/linuxbrew/.bashrc && \
+    echo 'echo "* registration-form-not-working and outdated-ui-design: branches whose remote counterparts were deleted (gone)"' >> /home/linuxbrew/.bashrc && \
     echo 'echo -e "\nRun \"git branch -vv\" to see branch status"' >> /home/linuxbrew/.bashrc && \
     echo 'echo -e "Run \"stax delete\" to see and remove gone branches\n"' >> /home/linuxbrew/.bashrc && \
-    echo 'cd /home/linuxbrew/repo-local' >> /home/linuxbrew/.bashrc
+    echo 'cd /home/linuxbrew/clone' >> /home/linuxbrew/.bashrc
 
-WORKDIR /home/linuxbrew/repo-local
+WORKDIR /home/linuxbrew/clone
