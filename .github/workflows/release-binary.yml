@@ -141,10 +141,11 @@ jobs:
           ref: ${{ env.CHECKOUT }}
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
-      - run: docker login -u taras0mazepa -p ${{ secrets.DOCKER_PAT }}
+      - run: cat Dockerfile
       - run: docker build -t taras0mazepa/stax:${{ env.CHECKOUT }} .
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
+      - run: docker login -u taras0mazepa -p ${{ secrets.DOCKER_PAT }}
       - run: docker push taras0mazepa/stax:${{ env.CHECKOUT }}
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
