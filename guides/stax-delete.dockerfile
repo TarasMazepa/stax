@@ -62,12 +62,12 @@ RUN cd /home/linuxbrew/clone && \
     echo "git branch -vv:" && \
     git branch -vv
 
-RUN echo 'echo -e "\n===== STAX DELETE DEMO =====\n"' > /home/linuxbrew/.bashrc && \
-    echo 'echo "This demo has branches with remote tracking information:"' >> /home/linuxbrew/.bashrc && \
-    echo 'echo -e "\n* login-page-refactor and new-button-component: normal branches with remote tracking"' >> /home/linuxbrew/.bashrc && \
-    echo 'echo "* registration-form-not-working and outdated-ui-design: branches whose remote counterparts were deleted (gone)"' >> /home/linuxbrew/.bashrc && \
-    echo 'echo -e "\nRun \"git branch -vv\" to see branch status"' >> /home/linuxbrew/.bashrc && \
-    echo 'echo -e "Run \"stax delete\" to see and remove gone branches\n"' >> /home/linuxbrew/.bashrc && \
+RUN echo 'echo -e "\n===== stax delete demo =====\n"' > /home/linuxbrew/.bashrc && \
+    echo 'echo "This demo has following branches:"' >> /home/linuxbrew/.bashrc && \
+    echo 'echo -e "\n * login-page-refactor and new-button-component - branches with their remotes still in tact"' >> /home/linuxbrew/.bashrc && \
+    echo 'echo " * registration-form-not-working and outdated-ui-design - branches whose remote counterparts were deleted (gone)"' >> /home/linuxbrew/.bashrc && \
+    echo 'echo -e "\nRun \"git branch -vv\" to see how git marks branches with gone remotes."' >> /home/linuxbrew/.bashrc && \
+    echo 'echo -e "Run \"stax delete\" to see and cleanup local branches. Try out \"-f\" flag too!\n"' >> /home/linuxbrew/.bashrc && \
     echo 'cd /home/linuxbrew/clone' >> /home/linuxbrew/.bashrc
 
 WORKDIR /home/linuxbrew/clone
