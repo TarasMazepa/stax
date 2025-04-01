@@ -1,25 +1,23 @@
-FROM homebrew/brew
+FROM taras0mazepa/stax:0.10.0
 
-RUN brew install TarasMazepa/stax/stax
+RUN mkdir -p /home/stax/remote /home/stax/clone
 
-RUN mkdir -p /home/linuxbrew/remote /home/linuxbrew/clone
-
-RUN cd /home/linuxbrew/remote && git init --bare
+RUN cd /home/stax/remote && git init --bare
 
 RUN git config --global user.email "stax@staxforgit.com" && \
     git config --global user.name "stax" && \
     git config --global init.defaultBranch main
 
-RUN cd /home/linuxbrew && git clone /home/linuxbrew/remote /home/linuxbrew/clone
+RUN cd /home/stax && git clone /home/stax/remote /home/stax/clone
 
-RUN cd /home/linuxbrew/clone && \
+RUN cd /home/stax/clone && \
     echo "# Demo Repository" > README.md && \
     git add README.md && \
     git commit -m "Initial commit" && \
     git branch -M main && \
     git push -u origin main
 
-RUN cd /home/linuxbrew/clone && \
+RUN cd /home/stax/clone && \
     # Branch 1 - will keep this one
     git checkout -b login-page-refactor && \
     echo "Login page refactor changes" > login-page.txt && \
@@ -46,28 +44,30 @@ RUN cd /home/linuxbrew/clone && \
     git push -u origin outdated-ui-design && \
     git checkout main
 
-RUN cd /home/linuxbrew/clone && \
+RUN cd /home/stax/clone && \
     git checkout main && \
     echo "Additional content" >> README.md && \
     git add README.md && \
     git commit -m "Update README" && \
     git push origin main
 
-RUN cd /home/linuxbrew/remote && \
+RUN cd /home/stax/remote && \
     git branch -D registration-form-not-working && \
     git branch -D outdated-ui-design
 
-RUN cd /home/linuxbrew/clone && \
+RUN cd /home/stax/clone && \
     git fetch --prune && \
     echo "git branch -vv:" && \
     git branch -vv
 
-RUN echo 'echo -e "\n===== stax delete demo =====\n"' > /home/linuxbrew/.bashrc && \
-    echo 'echo "This demo has following branches:"' >> /home/linuxbrew/.bashrc && \
-    echo 'echo -e "\n * login-page-refactor and new-button-component - branches with their remotes still in tact"' >> /home/linuxbrew/.bashrc && \
-    echo 'echo " * registration-form-not-working and outdated-ui-design - branches whose remote counterparts were deleted (gone)"' >> /home/linuxbrew/.bashrc && \
-    echo 'echo -e "\nRun \"git branch -vv\" to see how git marks branches with gone remotes."' >> /home/linuxbrew/.bashrc && \
-    echo 'echo -e "Run \"stax delete\" to see and cleanup local branches. Try out \"-f\" flag too!\n"' >> /home/linuxbrew/.bashrc && \
-    echo 'cd /home/linuxbrew/clone' >> /home/linuxbrew/.bashrc
+RUN echo 'echo -e "\n===== stax delete demo =====\n"' > /home/stax/.bashrc && \
+    echo 'echo "This demo has following branches:"' >> /home/stax/.bashrc && \
+    echo 'echo -e "\n * login-page-refactor and new-button-component - branches with their remotes in tact"' >> /home/stax/.bashrc && \
+    echo 'echo " * registration-form-not-working and outdated-ui-design - branches whose remote counterparts were deleted (gone)"' >> /home/stax/.bashrc && \
+    echo 'echo -e "\nRun \"git branch -vv\" to see how git marks branches with gone remotes."' >> /home/stax/.bashrc && \
+    echo 'echo -e "Run \"stax delete\" to see and cleanup local branches. Try out \"-f\" flag too!\n"' >> /home/stax/.bashrc && \
+    echo 'cd /home/stax/clone' >> /home/stax/.bashrc
 
-WORKDIR /home/linuxbrew/clone
+ENV ENV=/home/stax/.bashrc
+
+WORKDIR /home/stax/clone
