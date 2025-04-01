@@ -1,0 +1,17 @@
+name: cli-docker.yml
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  cli-docker:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build .
+        working-directory: cli
