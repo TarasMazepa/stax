@@ -132,3 +132,19 @@ jobs:
       - run: gh release upload ${{ env.CHECKOUT }} windows-x64.zip
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
+
+  release-binary-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CHECKOUT }}
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
+      - run: docker login -u taras0mazepa -p ${{ secrets.DOCKER_PAT }}
+      - run: docker build -t taras0mazepa/stax:${{CHECKOUT}} .
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
+      - run: docker push taras0mazepa/stax:${{CHECKOUT}}
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
