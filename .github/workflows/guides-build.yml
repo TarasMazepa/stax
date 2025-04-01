@@ -1,0 +1,17 @@
+name: guides-build.yml
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  guides-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - working-directory: guides
+        run: |
+          for file in *.dockerfile; do
+            docker build -f "$file" -t "$file:latest" .
+          done
