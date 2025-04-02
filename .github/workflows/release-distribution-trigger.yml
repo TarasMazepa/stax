@@ -7,7 +7,7 @@ on:
       - completed
 
 jobs:
-  release-distribution-trigger:
+  release-distribution-trigger-homebrew:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,9 +20,15 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/TarasMazepa/homebrew-stax/actions/workflows/update.yml/dispatches \
             -f "ref=main" -f "inputs[tag]=${{ steps.get-version.outputs.version }}"
-        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.HOMEBREW_STAX_DISPATCH }}
+
+  release-distribution-trigger-chocolatey:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: get-version
+        run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
       - run: |
           sed -i "s+<version>.*</version>+<version>$TAG</version>+" ./chocolatey/stax/stax.nuspec
           git config --global user.name 'stax'
@@ -35,3 +41,21 @@ jobs:
         env:
           TAG: ${{ steps.get-version.outputs.version }}
           GH_TOKEN: ${{ secrets.PAT }}
+
+  release-distribution-trigger-guides:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: get-version
+        run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
+      - run: |
+          sed -i "s+FROM taras0mazepa/stax:.*+FROM taras0mazepa/stax:$TAG+" ./guides/*.dockerfile
+          git config --global user.name 'stax'
+          git config --global user.email 'stax@staxforgit.com'
+          branch_name=guides-docker-files-update-stax-base-image-to-$TAG-$(date -u +"%Y-%m-%dT%H-%M-%S")
+          git checkout -b $branch_name
+          git commit -a -m "Guides docker files update stax base image to $TAG"
+          git push --set-upstream origin $branch_name
+          gh pr merge $(gh pr create -B main -f) --auto --squash
+        env:
+          TAG: ${{ steps.get-version.outputs.version }}
