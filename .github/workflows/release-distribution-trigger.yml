@@ -59,3 +59,4 @@ jobs:
           gh pr merge $(gh pr create -B main -f) --auto --squash
         env:
           TAG: ${{ steps.get-version.outputs.version }}
+          GH_TOKEN: ${{ secrets.PAT }}
