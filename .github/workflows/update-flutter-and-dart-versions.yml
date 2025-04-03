@@ -11,10 +11,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: Homebrew/actions/setup-homebrew@master
       - run: |
-          brew tap leoafarias/fvm
-          brew install fvm
-          new_flutter_version="$(fvm api releases -c --limit=1 --filter-channel stable | jq -r '.versions[0].version')"
-          new_dart_version="$(fvm api releases -c --limit=1 --filter-channel stable | jq -r '.versions[0].dart_sdk_version')"
+          brew install leoafarias/fvm/fvm
+          recent_version="$(fvm api releases -c --limit=1 --filter-channel stable | jq -r '.versions[0]')"
+          new_flutter_version="$(echo $recent_version | jq -r '.version')"
+          new_dart_version="$(echo $recent_version | jq -r '.dart_sdk_version')"
           echo $new_flutter_version > FLUTTER_VERSION
           echo $new_dart_version > DART_SDK_VERSION
           if ! git diff --quiet; then
