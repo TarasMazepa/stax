@@ -162,6 +162,7 @@ Move has five directions:
 
 * https://ejoffe.github.io/spr/
 * https://git-town.com/
+* https://gitbutler.com/
 * https://github.com/VirtusLab/git-machete
 * https://github.com/arxanas/git-branchless
 * https://github.com/ezyang/ghstack
