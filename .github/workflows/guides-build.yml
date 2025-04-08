@@ -13,5 +13,5 @@ jobs:
       - working-directory: guides
         run: |
           for file in *.dockerfile; do
-            docker build -f "$file" -t "$file:latest" .
+            docker build -f "$file" -t "${file#.dockerfile}-guide:$(cat ../VERSION)" .
           done
