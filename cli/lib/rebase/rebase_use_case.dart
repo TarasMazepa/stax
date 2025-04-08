@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:path/path.dart' as path;
 import 'package:stax/context/context.dart';
-import 'package:stax/context/context_git_get_current_branch.dart';
+import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_get_repository_root.dart';
 import 'package:stax/context/context_git_log_all.dart';
 import 'package:stax/file/file_read_as_string_sync_with_retry.dart';
