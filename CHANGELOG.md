@@ -1,3 +1,6 @@
+0.10.1
+ * stax rebase - assumes default branch when no argument supplied
+
 0.10.0
  * stax delete-gone-branches - renamed to delete
 
