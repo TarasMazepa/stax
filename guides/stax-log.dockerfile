@@ -1,70 +1,26 @@
-FROM taras0mazepa/stax:0.10.0
+FROM taras0mazepa/stax-guide-base:0.10.2
 
-RUN mkdir -p /home/stax/clone /home/stax/remote
+RUN touch auth.md
+RUN stax c -ab "feature auth"
 
-WORKDIR /home/stax/remote
+RUN touch auth.js
+RUN stax c -ab "feature password reset"
 
-RUN git init --bare
+RUN git checkout main
+RUN touch ui.md
+RUN stax c -ab "feature ui"
 
-WORKDIR /home/stax/clone 
+RUN touch styles.css
+RUN stax c -ab "feature dark theme"
 
-RUN git config --global user.email "stax@staxforgit.com" && \
-    git config --global user.name "stax" && \
-    git config --global init.defaultBranch main
+RUN git checkout feature-ui
+RUN touch styles.css
+RUN stax c -ab "feature responsive"
 
-RUN git init && \
-    echo "# Project Documentation" > README.md && \
-    git add README.md && \
-    git commit -m "Initial commit: Project setup" && \
-    git remote add origin /home/stax/remote && \
-    git push -u origin main
-
-RUN git checkout -b feature-auth && \
-    echo "# Authentication Module" > auth.md && \
-    git add auth.md && \
-    git commit -m "Add authentication module documentation" && \
-    echo "function login() { /* ... */ }" > auth.js && \
-    git add auth.js && \
-    git commit -m "Implement basic login functionality" && \
-    git push -u origin feature-auth
-
-RUN git checkout feature-auth && \
-    git checkout -b feature-password-reset && \
-    echo "function resetPassword() { /* ... */ }" >> auth.js && \
-    git add auth.js && \
-    git commit -m "Add password reset functionality" && \
-    echo "# Password Reset Guide" > password-reset.md && \
-    git add password-reset.md && \
-    git commit -m "Add password reset documentation" && \
-    git push -u origin feature-password-reset
-
-RUN git checkout main && \
-    git checkout -b feature-ui && \
-    echo "# UI Components" > ui.md && \
-    git add ui.md && \
-    git commit -m "Add UI components documentation" && \
-    echo ".button { color: blue; }" > styles.css && \
-    git add styles.css && \
-    git commit -m "Add button styles" && \
-    git push -u origin feature-ui
-
-RUN git checkout feature-ui && \
-    git checkout -b feature-dark-theme && \
-    echo ".dark-mode { background: #333; }" >> styles.css && \
-    git add styles.css && \
-    git commit -m "Implement dark theme" && \
-    git push -u origin feature-dark-theme && \
-    git checkout feature-ui && \
-    git checkout -b feature-responsive && \
-    echo "@media (max-width: 768px) { /* ... */ }" >> styles.css && \
-    git add styles.css && \
-    git commit -m "Add responsive styles" && \
-    git push -u origin feature-responsive
-
-RUN git checkout main && \
-    echo "# Getting Started" >> README.md && \
-    git add README.md && \
-    git commit -m "Update README with getting started guide" && \
-    git push origin main
+RUN git checkout main
+RUN touch LICENSE.md
+RUN git add LICENSE.md
+RUN git commit -m "Adds LICENSE.md"
+RUN git push
 
 ENV ENV=/home/stax/.bashrc
