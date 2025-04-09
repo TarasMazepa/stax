@@ -4,13 +4,13 @@ RUN mkdir -p /home/stax/clone /home/stax/remote
 
 WORKDIR /home/stax/remote
 
-RUN git init --bare
-
-WORKDIR /home/stax/clone 
-
 RUN git config --global user.email "stax@staxforgit.com" && \
     git config --global user.name "stax" && \
     git config --global init.defaultBranch main
+
+RUN git init --bare
+
+WORKDIR /home/stax/clone 
 
 RUN git init && \
     echo "# Project Documentation" > README.md && \
