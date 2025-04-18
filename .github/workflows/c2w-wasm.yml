@@ -1,0 +1,34 @@
+name: c2w-wasm.yml
+on:
+  workflow_dispatch:
+
+jobs:
+  c2w:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install container2wasm
+        run: |
+          wget https://github.com/container2wasm/container2wasm/releases/download/v0.8.0/container2wasm-v0.8.0-linux-amd64.tar.gz
+          tar -xvf container2wasm-v0.8.0-linux-amd64.tar.gz
+          sudo mv c2w /usr/local/bin/
+      - name: Build Docker images and convert to WASM
+        run: |
+          mkdir -p ./guides/web/containers
+          
+          for dockerfile in guides/*.dockerfile; do
+            image_name=$(basename "$dockerfile" .dockerfile)
+            
+            echo "Building Docker image for $dockerfile with tag $image_name"
+            docker build -t "$image_name" -f "$dockerfile" .
+            
+            c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
+          done
+      
+      - name: Upload guides/web as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: guides-web
+          path: guides/web
+          retention-days: 7

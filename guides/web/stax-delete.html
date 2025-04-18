@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>stax delete - Interactive Demo</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.1.0/css/xterm.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+  <main class="container mx-auto px-4 py-8 max-w-4xl">
+    <div class="mb-4">
+      <a href="index.html" class="text-blue-600 hover:text-blue-800 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        </svg>
+        Back to Command Reference
+      </a>
+    </div>
+
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <div class="bg-gradient-to-r from-red-600 to-red-800 p-6 text-white">
+        <h1 class="text-3xl font-bold mb-2">stax delete</h1>
+        <p class="text-lg opacity-90">
+          Clean up your local branches that no longer exist on the remote
+        </p>
+      </div>
+      
+      <div class="p-6">
+        <div class="mb-8">
+          <h2 class="text-xl font-semibold text-gray-800 mb-3">About This Command</h2>
+          <p class="text-gray-700 mb-3">
+            The <code class="bg-gray-100 px-1 py-0.5 rounded">stax delete</code> command helps you clean up your repository by removing local branches that have been deleted from the remote (often called "gone" branches).
+            This keeps your branch list tidy and prevents confusion when working with your repository.
+          </p>
+        </div>
+
+        <div class="mb-8">
+          <h2 class="text-xl font-semibold text-gray-800 mb-3">Interactive Terminal Demo</h2>
+          <div class="border border-gray-300 rounded-lg p-1 bg-black">
+            <div class="d-inline-block" id="terminal-amd64-debian"></div>
+          </div>
+        </div>
+
+        <div class="mb-8">
+          <h2 class="text-xl font-semibold text-gray-800 mb-3">How To Use</h2>
+          <p class="text-gray-700 mb-3">The command scans your local repository for branches that are tracking remote branches that no longer exist and removes them.</p>
+          
+          <div class="bg-gray-100 p-4 rounded-md mt-4">
+            <h3 class="font-semibold text-gray-800 mb-2">Basic Usage:</h3>
+            <pre class="font-mono text-sm">stax delete</pre>
+          </div>
+          
+          <div class="mt-6">
+            <h3 class="font-semibold text-gray-800 mb-2">What It Does:</h3>
+            <ol class="list-decimal pl-5 text-gray-700 space-y-2">
+              <li>Fetches latest information from the remote repository</li>
+              <li>Identifies local branches that are tracking deleted remote branches</li>
+              <li>Removes these "gone" branches from your local repository</li>
+              <li>Provides a summary of removed branches</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-200 pt-6 mt-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-3">Benefits</h2>
+          <ul class="list-disc pl-5 text-gray-700 space-y-1">
+            <li>Keeps your repository clean and organized</li>
+            <li>Reduces confusion when switching between branches</li>
+            <li>Improves Git command output by removing references to non-existent branches</li>
+            <li>Helps maintain better repository hygiene</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="./coi-serviceworker.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xterm@5.1.0/lib/xterm.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xterm-pty@0.9.4/index.js"></script>
+  <script src="./src/stack.js"></script>
+  <script src="./worker.js"></script>
+  <script>startWasi("terminal-amd64-debian", "./src/worker.js"+location.search, location.origin + "/containers/stax-delete", 1);</script>
+</body>
+</html>
