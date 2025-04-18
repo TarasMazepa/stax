@@ -27,7 +27,7 @@ jobs:
           done
       
       - name: Upload guides/web as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: guides-web
           path: guides/web
