@@ -148,3 +148,19 @@ jobs:
       - run: docker push taras0mazepa/stax:${{ env.CHECKOUT }}
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
+
+  release-binary-guides-base:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CHECKOUT }}
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
+      - run: docker build -f "guides/base.dockerfile" -t taras0mazepa/stax-guide-base:${{ env.CHECKOUT }} .
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
+      - run: docker login -u taras0mazepa -p ${{ secrets.DOCKER_PAT }}
+      - run: docker push taras0mazepa/stax-guide-base:${{ env.CHECKOUT }}
+        env:
+          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
