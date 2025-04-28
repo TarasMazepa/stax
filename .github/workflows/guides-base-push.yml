@@ -6,6 +6,7 @@ on:
     paths:
       guides/base.dockerfile
 
+jobs:
   guides-base-push:
     runs-on: ubuntu-latest
     steps:
