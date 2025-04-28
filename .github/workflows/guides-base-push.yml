@@ -1,0 +1,37 @@
+name: guides-base-push.yml
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      guides/base.dockerfile
+
+jobs:
+  guides-base-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - run: docker login -u taras0mazepa -p ${{ secrets.DOCKER_PAT }}
+      - id: get-version
+        run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
+      - run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            -t taras0mazepa/stax-guide-base:${{ steps.get-version.outputs.version }} \
+            --push \
+            -f "guides/base.dockerfile" \
+            .
+      - run: |
+          sed -i "s+FROM taras0mazepa/stax-guide-base:.*+FROM taras0mazepa/stax-guide-base:$TAG+" ./guides/*.dockerfile
+          git config --global user.name 'stax'
+          git config --global user.email 'stax@staxforgit.com'
+          branch_name=guides-docker-files-update-stax-base-image-to-$TAG-$(date -u +"%Y-%m-%dT%H-%M-%S")
+          git checkout -b $branch_name
+          git commit -a -m "Guides docker files update stax base image to $TAG"
+          git push --set-upstream origin $branch_name
+          gh pr merge $(gh pr create -B main -f) --auto --squash
+        env:
+          TAG: ${{ steps.get-version.outputs.version }}
+          GH_TOKEN: ${{ secrets.PAT }}
