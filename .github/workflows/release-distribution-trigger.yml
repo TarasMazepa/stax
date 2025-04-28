@@ -52,9 +52,9 @@ jobs:
           sed -i "s+FROM taras0mazepa/stax:.*+FROM taras0mazepa/stax:$TAG+" ./guides/*.dockerfile
           git config --global user.name 'stax'
           git config --global user.email 'stax@staxforgit.com'
-          branch_name=guides-docker-files-update-stax-base-image-to-$TAG-$(date -u +"%Y-%m-%dT%H-%M-%S")
+          branch_name=guides-docker-files-update-stax-image-to-$TAG-$(date -u +"%Y-%m-%dT%H-%M-%S")
           git checkout -b $branch_name
-          git commit -a -m "Guides docker files update stax base image to $TAG"
+          git commit -a -m "Guides docker files update stax image to $TAG"
           git push --set-upstream origin $branch_name
           gh pr merge $(gh pr create -B main -f) --auto --squash
         env:
