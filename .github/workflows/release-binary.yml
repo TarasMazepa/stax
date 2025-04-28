@@ -147,18 +147,3 @@ jobs:
       - run: docker buildx build --platform linux/amd64,linux/arm64 -t taras0mazepa/stax:${{ env.CHECKOUT }} --push .
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
-
-  release-binary-guides-base:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ env.CHECKOUT }}
-        env:
-          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
-      - uses: docker/setup-qemu-action@v3
-      - uses: docker/setup-buildx-action@v3
-      - run: docker login -u taras0mazepa -p ${{ secrets.DOCKER_PAT }}
-      - run: docker buildx build --platform linux/amd64,linux/arm64 -t taras0mazepa/stax-guide-base:${{ env.CHECKOUT }} --push -f "guides/base.dockerfile" .
-        env:
-          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
