@@ -1,4 +1,4 @@
-FROM taras0mazepa/stax:0.10.1
+FROM taras0mazepa/stax:0.10.2
 
 RUN mkdir -p /home/stax/remote /home/stax/clone
 
