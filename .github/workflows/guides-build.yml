@@ -10,8 +10,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
       - working-directory: guides
         run: |
           for file in *.dockerfile; do
-            docker build -f "$file" -t "${file%.dockerfile}-guide:$(cat ../VERSION)" .
+            docker buildx build --platform linux/amd64,linux/arm64 -f "$file" -t "${file%.dockerfile}-guide:$(cat ../VERSION)" .
           done
