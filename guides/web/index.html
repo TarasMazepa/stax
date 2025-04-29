@@ -4,27 +4,72 @@
   <title>Stax Commands</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- <meta http-equiv="refresh" content="0;url=stax-delete.html"> -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: white;
+    }
+    
+    #header{
+      margin:20px 0px ;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+    
+    #header a {
+      margin-left: 10px;
+      text-decoration: none;
+      color: white;
+      padding: 7px;
+      background: #007bff;
+      border-radius: 6px;
+    }
+
+    .container-content{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    #content {
+      width: 80%;
+      max-width: 800px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    #content h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
-  <main class="container mx-auto px-6 py-12 max-w-5xl bg-white shadow-md rounded-lg">
-    <div class="flex justify-around w-full mb-6 text-lg font-semibold text-gray-700">
-      <a href="https://github.com/TarasMazepa/stax" target="_blank" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">GitHub</a>
-      <a href="guides.html" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">Guides</a>
+<body>
+  <main>
+    <div id="header">
+      <a id="github" href="https://github.com/TarasMazepa/stax" target="_blank" >GitHub</a>
+      <a id="guides" href="guides.html" >Guides</a>
     </div>
 
-    <div id="content">
-      readme
+    <div class="container-content">
+      <div id="content">
+        readme
+      </div>
     </div>
+   
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
   <script type="module">
-    import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
       fetch("https://raw.githubusercontent.com/TarasMazepa/stax/refs/heads/main/README.md")
       .then(res => res.text())
       .then(md => {
-        document.getElementById('content').innerHTML = marked.parse(md)
+        var converter = new showdown.Converter(),
+              html    = converter.makeHtml(md)
+        document.getElementById('content').innerHTML = html;
       });
   </script>
 </body>
