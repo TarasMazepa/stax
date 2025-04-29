@@ -23,8 +23,10 @@ class RebaseUseCase {
   static RebaseUseCase? create(Context context) {
     final repositoryRoot = context.withSilence(true).getRepositoryRoot();
     if (repositoryRoot == null) return null;
-    final file = File(
-      path.join(repositoryRoot, '.git', 'info', 'stax', 'rebase.json'),
+    final file = File.fromUri(
+      path.toUri(
+        path.join(repositoryRoot, '.git', 'info', 'stax', 'rebase.json'),
+      ),
     );
     if (!file.existsSync()) {
       return RebaseUseCase(context, null, file);
