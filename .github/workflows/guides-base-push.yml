@@ -3,8 +3,9 @@ on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
-    paths:
-      guides/base.dockerfile
+    paths: [
+      "guides/base.dockerfile",
+    ]
 
 jobs:
   guides-base-push:
@@ -25,13 +26,15 @@ jobs:
             .
       - run: |
           sed -i "s+FROM taras0mazepa/stax-guide-base:.*+FROM taras0mazepa/stax-guide-base:$TAG+" ./guides/*.dockerfile
-          git config --global user.name 'stax'
-          git config --global user.email 'stax@staxforgit.com'
-          branch_name=guides-docker-files-update-stax-base-image-to-$TAG-$(date -u +"%Y-%m-%dT%H-%M-%S")
-          git checkout -b $branch_name
-          git commit -a -m "Guides docker files update stax base image to $TAG"
-          git push --set-upstream origin $branch_name
-          gh pr merge $(gh pr create -B main -f) --auto --squash
+          if ! git diff --quiet; then
+            git config --global user.name 'stax'
+            git config --global user.email 'stax@staxforgit.com'
+            branch_name=guides-docker-files-update-stax-base-image-to-$TAG-$(date -u +"%Y-%m-%dT%H-%M-%S")
+            git checkout -b $branch_name
+            git commit -a -m "Guides docker files update stax base image to $TAG"
+            git push --set-upstream origin $branch_name
+            gh pr merge $(gh pr create -B main -f) --auto --squash
+          fi
         env:
           TAG: ${{ steps.get-version.outputs.version }}
           GH_TOKEN: ${{ secrets.PAT }}
