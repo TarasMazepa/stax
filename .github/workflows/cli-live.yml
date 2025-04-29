@@ -23,3 +23,17 @@ jobs:
         working-directory: cli
       - run: ./stax help
       - run: ./stax doctor
+      - run: |
+          mkdir repo
+          cd repo
+          git config --global user.name 'stax'
+          git config --global user.email 'stax@staxforgit.com'
+          git init -b main
+          touch README.md
+          git add .
+          git commit -m "Initial commit"
+          git checkout -b second
+          touch LICENSE.md
+          git add .
+          git commit -m "Second commit"
+          ../stax rebase main

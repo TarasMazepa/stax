@@ -12,6 +12,7 @@ extension FileWriteAsStringSyncWithRetry on File {
     dynamic error;
     for (int i = 0; i < retry && retry > 0; i++) {
       try {
+        createSync(recursive: true);
         writeAsStringSync(
           contents,
           mode: mode,

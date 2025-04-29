@@ -1,4 +1,8 @@
+0.10.3
+ * stax rebase - fix for windows
+
 0.10.2
+ * technical release
 
 0.10.1
  * stax rebase - assumes default branch when no argument supplied
