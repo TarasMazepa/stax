@@ -1,4 +1,4 @@
-FROM taras0mazepa/stax:0.10.2
+FROM taras0mazepa/stax:0.10.3
 
 RUN mkdir -p /home/stax/origin /home/stax/repo /home/stax/setup
 
