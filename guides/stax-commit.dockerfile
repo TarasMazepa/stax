@@ -24,6 +24,3 @@ RUN mkdir -p /usr/local/bin && \
     echo 'echo "This would open a browser to create a pull request in a real environment."' >> /usr/local/bin/open && \
     echo 'echo "============================"' >> /usr/local/bin/open && \
     chmod +x /usr/local/bin/open
-
-ENV ENV=/home/stax/.bashrc
-ENV BROWSER=/usr/local/bin/open
