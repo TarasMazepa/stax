@@ -1,5 +1,6 @@
 0.10.3
- * stax rebase - fix for windows
+ * stax rebase - now ceates folder structure for rebase file
+ * stax rebase - fix for rebase file path on windows
 
 0.10.2
  * technical release
