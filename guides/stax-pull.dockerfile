@@ -1,56 +1,27 @@
-FROM taras0mazepa/stax:0.10.1
+FROM taras0mazepa/stax-guide-base:0.10.3
 
-RUN mkdir -p /home/stax/remote /home/stax/clone
+RUN mkdir -p /home/stax/second-repo
+WORKDIR /home/stax/second-repo
+RUN git clone /home/stax/origin .
 
-RUN git config --global user.email "stax@staxforgit.com" && \
-    git config --global user.name "stax" && \
-    git config --global init.defaultBranch main
+RUN touch login-page.txt
+RUN stax commit -ab "login page refactor"
 
-RUN cd /home/stax/remote && git init --bare
+WORKDIR /home/stax/repo
 
-RUN cd /home/stax/remote && git symbolic-ref HEAD refs/heads/main
+RUN touch registration.txt
+RUN stax commit -ab "registration form not working"
+RUN touch old-ui.txt
+RUN stax commit -ab "outdated ui design"
+RUN git checkout main
 
-RUN cd /home/stax && git clone /home/stax/remote /home/stax/clone
+RUN git checkout main
+RUN touch button.txt
+RUN git add button.txt
+RUN git commit -m "new button component"
+RUN git push
 
-RUN cd /home/stax/clone && \
-    echo "# Demo Repository" > README.md && \
-    git add README.md && \
-    git commit -m "Initial commit" && \
-    git branch -M main && \
-    git push -u origin main
+WORKDIR /home/stax/origin
+RUN git branch -D registration-form-not-working outdated-ui-design
 
-RUN cd /home/stax/clone && \
-    git remote set-head origin main
-
-RUN cd /home/stax/clone && \
-    git checkout -b feature-branch && \
-    echo "Feature branch changes" > feature.txt && \
-    git add feature.txt && \
-    git commit -m "Add feature implementation" && \
-    git push -u origin feature-branch
-
-RUN cd /home/stax && git clone /home/stax/remote /home/stax/second-clone && \
-    cd /home/stax/second-clone && \
-    echo "Changes from another developer" >> README.md && \
-    git add README.md && \
-    git commit -m "Update README from another developer" && \
-    git push origin main && \
-    echo "More changes from another developer" >> README.md && \
-    git add README.md && \
-    git commit -m "Another update to README from another developer" && \
-    git push origin main
-
-RUN cd /home/stax/clone && \
-    git checkout -b temp-branch && \
-    echo "Temporary work" > temp.txt && \
-    git add temp.txt && \
-    git commit -m "Add temporary file" && \
-    git push -u origin temp-branch && \
-    git checkout feature-branch
-
-RUN cd /home/stax/remote && \
-    git branch -D temp-branch
-
-ENV ENV=/home/stax/.bashrc
-
-WORKDIR /home/stax/clone
+WORKDIR /home/stax/repo
