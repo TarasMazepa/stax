@@ -1,80 +1,88 @@
-FROM taras0mazepa/stax-guide-base:0.10.2
+FROM taras0mazepa/stax-guide-base:0.10.3
 
-RUN mkdir -p /home/stax/clone2
+RUN touch README.md
+RUN git add README.md
+RUN git commit -m "Initial commit"
+RUN git branch -M main
+RUN git push
 
-RUN cd /home/stax/repo && \
-    echo "# Demo Repository" > README.md && \
-    git add README.md && \
-    git commit -m "Initial commit" && \
-    git push
+RUN git checkout main
+RUN touch LICENSE.md
+RUN git add LICENSE.md
+RUN git commit -m "Adds LICENSE.md"
+RUN git push
 
-RUN cd /home/stax && git clone /home/stax/origin /home/stax/clone2
+RUN git checkout -b login-feature
+RUN touch login-page.txt
+RUN git add login-page.txt
+RUN git commit -m "Add login page"
+RUN git push -u origin login-feature
 
-RUN cd /home/stax/repo && \
-    mkdir -p src && \
-    echo "function app() { /* implementation */ }" > src/app.js && \
-    git add src/app.js && \
-    git commit -m "Add app.js with basic structure" && \
-    echo "/* App styles */" > src/styles.css && \
-    git add src/styles.css && \
-    git commit -m "Add basic stylesheet" && \
-    echo "<!DOCTYPE html><html><body><h1>Demo App</h1></body></html>" > src/index.html && \
-    git add src/index.html && \
-    git commit -m "Add HTML index file" && \
-    git push
+RUN git checkout -b remember-password-feature
+RUN touch remember-password.txt
+RUN git add remember-password.txt
+RUN git commit -m "Add remember password functionality"
+RUN git push -u origin remember-password-feature
 
-RUN cd /home/stax/repo && \
-    git checkout -b feature-user-auth && \
-    echo "function login() { /* auth implementation */ }" > src/auth.js && \
-    git add src/auth.js && \
-    git commit -m "Add authentication module" && \
-    echo "function register() { /* registration implementation */ }" >> src/auth.js && \
-    git add src/auth.js && \
-    git commit -m "Add user registration" && \
-    git push
+RUN git checkout -b registration-feature
+RUN touch registration.txt
+RUN git add registration.txt
+RUN git commit -m "Add registration form"
+RUN git push -u origin registration-feature
 
-RUN cd /home/stax/repo && \
-    git checkout feature-user-auth && \
-    git checkout -b feature-oauth && \
-    echo "function googleAuth() { /* Google OAuth */ }" >> src/auth.js && \
-    git add src/auth.js && \
-    git commit -m "Add Google OAuth" && \
-    echo "function facebookAuth() { /* Facebook OAuth */ }" >> src/auth.js && \
-    git add src/auth.js && \
-    git commit -m "Add Facebook OAuth" && \
-    git push
+RUN git checkout -b ui-feature
+RUN touch ui-update.txt
+RUN git add ui-update.txt
+RUN git commit -m "Update UI design"
+RUN git push -u origin ui-feature
 
-RUN cd /home/stax/repo && \
-    git checkout feature-oauth && \
-    git checkout -b feature-security && \
-    echo "function validateToken() { /* Token validation */ }" > src/security.js && \
-    git add src/security.js && \
-    git commit -m "Add token validation" && \
-    echo "function encryptData() { /* Data encryption */ }" >> src/security.js && \
-    git add src/security.js && \
-    git commit -m "Add data encryption" && \
-    git push
+RUN git checkout -b dark-theme-feature
+RUN touch dark-theme.txt
+RUN git add dark-theme.txt
+RUN git commit -m "Add dark theme support"
+RUN git push -u origin dark-theme-feature
 
-RUN cd /home/stax/repo && \
-    git checkout feature-user-auth && \
-    git checkout -b feature-user-profile && \
-    echo "function getProfile() { /* Get user profile */ }" > src/profile.js && \
-    git add src/profile.js && \
-    git commit -m "Add user profile retrieval" && \
-    echo "function updateProfile() { /* Update user profile */ }" >> src/profile.js && \
-    git add src/profile.js && \
-    git commit -m "Add profile update functionality" && \
-    git push
+RUN mkdir -p /home/stax/second-repo
+WORKDIR /home/stax/second-repo
+RUN git clone /home/stax/origin .
 
-RUN cd /home/stax/clone2 && \
-    git fetch origin && \
-    git checkout main && \
-    git checkout -b feature-user-auth origin/feature-user-auth && \
-    git checkout -b feature-oauth origin/feature-oauth && \
-    git checkout -b feature-security origin/feature-security && \
-    git checkout -b feature-user-profile origin/feature-user-profile && \
-    git checkout main
+RUN touch login-page.txt
+RUN git add login-page.txt
+RUN git commit -m "login page"
+RUN git push
 
-ENV ENV=/home/stax/clone2/.bashrc
+RUN git checkout login-feature
+RUN echo "Added login validation" >> login-page.txt
+RUN git add login-page.txt
+RUN git commit -m "Add login validation"
+RUN git push
 
-WORKDIR /home/stax/clone2
+RUN git checkout remember-password-feature  
+RUN echo "Added password encryption" >> remember-password.txt
+RUN git add remember-password.txt && git commit -m "Add password encryption" && git push
+
+RUN git checkout registration-feature
+RUN echo "Added email validation" >> registration.txt
+RUN git add registration.txt && git commit -m "Add email validation" && git push
+
+RUN git checkout ui-feature
+RUN echo "Updated button styles" >> ui-update.txt
+RUN git add ui-update.txt && git commit -m "Update button styles" && git push
+
+RUN git checkout dark-theme-feature
+RUN echo "Added theme switcher" >> dark-theme.txt
+RUN git add dark-theme.txt && git commit -m "Add theme switcher" && git push
+
+WORKDIR /home/stax/repo
+RUN git fetch
+
+RUN echo 'echo -e "\n===== stax get demo =====\n"' > /home/stax/.bashrc
+RUN echo 'echo "This demo shows how to use stax get command:"' >> /home/stax/.bashrc
+RUN echo 'echo -e "\nstax get <branch-name> - (Re)Checkout specified branch and all its children && pull latest changes"' >> /home/stax/.bashrc
+RUN echo 'echo " * The branch name will be matched as a suffix"' >> /home/stax/.bashrc
+RUN echo 'echo " * For example: stax get main - will checkout main branch"' >> /home/stax/.bashrc
+RUN echo 'echo " * For example: stax get feature - will checkout any branch ending with feature"' >> /home/stax/.bashrc
+RUN echo -e '\nTry checking out the main branch by running "stax get main"\n' >> /home/stax/.bashrc
+RUN echo 'cd /home/stax/repo' >> /home/stax/.bashrc
+
+ENV ENV=/home/stax/.bashrc
