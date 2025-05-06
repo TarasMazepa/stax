@@ -24,12 +24,17 @@ RUN chmod +x /usr/local/bin/open
 
 RUN echo 'echo -e "\n===== stax commit demo =====\n"' > /home/stax/.bashrc
 RUN echo 'echo "This demo shows how to use stax commit command:"' >> /home/stax/.bashrc
-RUN echo 'echo -e "\n * stax commit \"message\" - creates a branch, commits, and pushes changes"' >> /home/stax/.bashrc
-RUN echo 'echo " * stax commit -a \"message\" - adds all files before committing"' >> /home/stax/.bashrc
-RUN echo 'echo " * stax commit -u \"message\" - adds only tracked files"' >> /home/stax/.bashrc
-RUN echo 'echo " * stax commit -p \"message\" - creates PR after pushing"' >> /home/stax/.bashrc
-RUN echo 'echo " * stax commit -b \"message\" - accepts branch name from commit message"' >> /home/stax/.bashrc
-RUN echo 'echo -e "\nTry out different combinations of flags!\n"' >> /home/stax/.bashrc
+RUN echo 'echo -e "\nUsage: stax commit \"commit message\" [branch name]"' >> /home/stax/.bashrc
+RUN echo 'echo -e "\nThe commit message is required and should be in quotes, like: \"Fix button styling\""' >> /home/stax/.bashrc
+RUN echo 'echo "The branch name is optional - if not provided, it will be generated from the commit message"' >> /home/stax/.bashrc
+RUN echo 'echo -e "\nFlags:"' >> /home/stax/.bashrc
+RUN echo 'echo " * -A     - Add all tracked and untracked files in entire working tree"' >> /home/stax/.bashrc
+RUN echo 'echo " * -a     - Add all tracked and untracked files in current folder and subfolders"' >> /home/stax/.bashrc
+RUN echo 'echo " * -u     - Add only tracked files in entire working tree"' >> /home/stax/.bashrc
+RUN echo 'echo " * -b     - Accept branch name generated from commit message"' >> /home/stax/.bashrc
+RUN echo 'echo " * -i     - Skip check for staged changes (useful for renames)"' >> /home/stax/.bashrc
+RUN echo 'echo " * -p     - Create and open PR after pushing (GitHub only)"' >> /home/stax/.bashrc
+RUN echo 'echo -e "\nExample: stax commit -a \"Fix button styling\" button-fix\n"' >> /home/stax/.bashrc
 RUN echo 'cd /home/stax/repo' >> /home/stax/.bashrc
 
 ENV ENV=/home/stax/.bashrc
