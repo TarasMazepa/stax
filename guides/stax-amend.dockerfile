@@ -25,7 +25,7 @@ RUN echo 'echo " * stax amend -u - adds only tracked files in whole working tree
 RUN echo 'echo " * stax amend -r - runs rebase afterwards on all children branches"' >> /home/stax/.bashrc
 RUN echo 'echo " * stax amend -m - runs rebase with prefer-moving afterwards on children"' >> /home/stax/.bashrc
 RUN echo 'echo " * stax amend -b - runs rebase with prefer-base afterwards on children"' >> /home/stax/.bashrc
-RUN echo -e '\nTry updating the changes by running "stax amend -u"\n' >> /home/stax/.bashrc
+RUN echo 'echo -e "\nTry updating the changes by running \"stax amend -u\"\n"' >> /home/stax/.bashrc
 RUN echo 'cd /home/stax/repo' >> /home/stax/.bashrc
 
 ENV ENV=/home/stax/.bashrc
