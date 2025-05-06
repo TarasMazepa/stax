@@ -84,7 +84,7 @@ RUN echo 'echo " * down (d) - Move one commit down"' >> /home/stax/.bashrc
 RUN echo 'echo " * top (t) - Move to closest parent with multiple children or topmost node. Optional child-index"' >> /home/stax/.bashrc
 RUN echo 'echo " * bottom (b) - Move to closest parent with multiple children or bottom node"' >> /home/stax/.bashrc
 RUN echo 'echo " * head (h) - Move to remote HEAD"' >> /home/stax/.bashrc
-RUN echo -e '\nTry moving up the tree by running "stax move up" or "stax move u"\n' >> /home/stax/.bashrc
+RUN echo 'echo "Try moving up the tree by running \"stax move up\" or \"stax move u\"\n"' >> /home/stax/.bashrc
 RUN echo 'cd /home/stax/repo' >> /home/stax/.bashrc
 
 ENV ENV=/home/stax/.bashrc
