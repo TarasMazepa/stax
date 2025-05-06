@@ -82,7 +82,7 @@ RUN echo 'echo -e "\nstax get <branch-name> - (Re)Checkout specified branch and 
 RUN echo 'echo " * The branch name will be matched as a suffix"' >> /home/stax/.bashrc
 RUN echo 'echo " * For example: stax get main - will checkout main branch"' >> /home/stax/.bashrc
 RUN echo 'echo " * For example: stax get feature - will checkout any branch ending with feature"' >> /home/stax/.bashrc
-RUN echo -e '\nTry checking out the main branch by running "stax get main"\n' >> /home/stax/.bashrc
+RUN echo 'echo -e "\nTry checking out the main branch by running \"stax get main\"\n"' >> /home/stax/.bashrc
 RUN echo 'cd /home/stax/repo' >> /home/stax/.bashrc
 
 ENV ENV=/home/stax/.bashrc
