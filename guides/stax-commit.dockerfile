@@ -1,26 +1,35 @@
 FROM taras0mazepa/stax-guide-base:0.10.2
 
-RUN echo "# Demo Repository" > README.md && \
-    git add README.md && \
-    git commit -m "Initial commit" && \
-    git branch -M main && \
-    git push -u origin main
+RUN touch README.md
+RUN git add README.md
+RUN git commit -m "Initial commit"
+RUN git branch -M main
+RUN git push
 
-RUN mkdir -p src && \
-    echo "function app() { /* implementation */ }" > src/app.js && \
-    echo "body { margin: 0; padding: 0; }" > src/styles.css && \
-    echo "<!DOCTYPE html><html><body><h1>Demo App</h1></body></html>" > src/index.html && \
-    git add src && \
-    git commit -m "Add initial project files" && \
-    git push origin main
+RUN git checkout main
+RUN touch LICENSE.md
+RUN git add LICENSE.md
+RUN git commit -m "Adds LICENSE.md"
+RUN git push
 
-RUN echo "function newFeature() { /* implementation */ }" >> src/app.js 
+RUN touch fix-button.txt 
 
+RUN mkdir -p /usr/local/bin
+RUN echo '#!/bin/bash' > /usr/local/bin/open
+RUN echo 'echo "===== BROWSER SIMULATION ====="' >> /usr/local/bin/open
+RUN echo 'echo "Opening URL: $1"' >> /usr/local/bin/open
+RUN echo 'echo "This would open a browser to create a pull request in a real environment."' >> /usr/local/bin/open
+RUN echo 'echo "============================"' >> /usr/local/bin/open
+RUN chmod +x /usr/local/bin/open
 
-RUN mkdir -p /usr/local/bin && \
-    echo '#!/bin/bash' > /usr/local/bin/open && \
-    echo 'echo "===== BROWSER SIMULATION ====="' >> /usr/local/bin/open && \
-    echo 'echo "Opening URL: $1"' >> /usr/local/bin/open && \
-    echo 'echo "This would open a browser to create a pull request in a real environment."' >> /usr/local/bin/open && \
-    echo 'echo "============================"' >> /usr/local/bin/open && \
-    chmod +x /usr/local/bin/open
+RUN echo 'echo -e "\n===== stax commit demo =====\n"' > /home/stax/.bashrc
+RUN echo 'echo "This demo shows how to use stax commit command:"' >> /home/stax/.bashrc
+RUN echo 'echo -e "\n * stax commit \"message\" - creates a branch, commits, and pushes changes"' >> /home/stax/.bashrc
+RUN echo 'echo " * stax commit -a \"message\" - adds all files before committing"' >> /home/stax/.bashrc
+RUN echo 'echo " * stax commit -u \"message\" - adds only tracked files"' >> /home/stax/.bashrc
+RUN echo 'echo " * stax commit -p \"message\" - creates PR after pushing"' >> /home/stax/.bashrc
+RUN echo 'echo " * stax commit -b \"message\" - accepts branch name from commit message"' >> /home/stax/.bashrc
+RUN echo 'echo -e "\nTry out different combinations of flags!\n"' >> /home/stax/.bashrc
+RUN echo 'cd /home/stax/repo' >> /home/stax/.bashrc
+
+ENV ENV=/home/stax/.bashrc
