@@ -1,17 +1,31 @@
 FROM taras0mazepa/stax-guide-base:0.10.2
 
-RUN echo "# Demo Repository" > README.md && \
-    git add README.md && \
-    git commit -m "Initial commit" && \
-    git branch -M main && \
-    git push -u origin main
+RUN touch README.md
+RUN git add README.md
+RUN git commit -m "Initial commit"
+RUN git branch -M main
+RUN git push
 
-RUN git checkout -b feature-navigation && \
-    mkdir -p src/components && \
-    echo "function NavBar() { /* initial implementation */ }" > src/components/NavBar.js && \
-    git add src/components/NavBar.js && \
-    git commit -m "Add navigation bar component" && \
-    git push origin feature-navigation
+RUN git checkout main
+RUN touch LICENSE.md
+RUN git add LICENSE.md
+RUN git commit -m "Adds LICENSE.md"
+RUN git push
 
-RUN echo "function NavItem() { /* implementation */ }" >> src/components/NavBar.js && \
-    echo ".navbar { display: flex; }" > src/components/NavBar.css
+RUN touch login-page.txt 
+RUN stax commit -ab "login page"
+
+RUN touch login-page-refactor.txt
+
+RUN echo 'echo -e "\n===== stax amend demo =====\n"' > /home/stax/.bashrc
+RUN echo 'echo "This demo shows how to use stax amend command:"' >> /home/stax/.bashrc
+RUN echo 'echo -e "\n * stax amend -A - adds tracked and untracked files in whole working tree before amending"' >> /home/stax/.bashrc
+RUN echo 'echo " * stax amend -a - adds tracked and untracked files in current folder before amending"' >> /home/stax/.bashrc
+RUN echo 'echo " * stax amend -u - adds only tracked files in whole working tree before amending"' >> /home/stax/.bashrc
+RUN echo 'echo " * stax amend -r - runs rebase afterwards on all children branches"' >> /home/stax/.bashrc
+RUN echo 'echo " * stax amend -m - runs rebase with prefer-moving afterwards on children"' >> /home/stax/.bashrc
+RUN echo 'echo " * stax amend -b - runs rebase with prefer-base afterwards on children"' >> /home/stax/.bashrc
+RUN echo -e '\nTry updating the changes by running "stax amend -u"\n' >> /home/stax/.bashrc
+RUN echo 'cd /home/stax/repo' >> /home/stax/.bashrc
+
+ENV ENV=/home/stax/.bashrc
