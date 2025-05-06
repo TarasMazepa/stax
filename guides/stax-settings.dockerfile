@@ -12,8 +12,6 @@ RUN git add LICENSE.md
 RUN git commit -m "Adds LICENSE.md"
 RUN git push
 
-RUN stax settings set branch_prefix "feature/" 
-
 WORKDIR /home/stax/repo
 
 RUN echo 'echo -e "\n===== stax settings demo =====\n"' > /home/stax/.bashrc
