@@ -44,7 +44,9 @@ RUN git fetch
 RUN echo 'echo -e "\n===== stax pull demo =====\n"' > /home/stax/.bashrc
 RUN echo 'echo "This demo shows how to update your local repository:"' >> /home/stax/.bashrc
 RUN echo 'echo -e "\n * Run \"stax pull\" to switch to remote HEAD, pull latest changes, and return to your branch"' >> /home/stax/.bashrc
-RUN echo 'echo " * Use \"stax pull -f\" to also clean up any local branches whose remotes were deleted"' >> /home/stax/.bashrc
+RUN echo 'echo " * Use \"stax pull -f\" to force delete gone branches"' >> /home/stax/.bashrc
+RUN echo 'echo " * Use \"stax pull -s\" to skip deletion of gone branches"' >> /home/stax/.bashrc
+RUN echo 'echo " * Optionally specify a target branch, e.g. \"stax pull origin/main\""' >> /home/stax/.bashrc
 RUN echo 'echo -e "\nTry running \"git branch -vv\" before and after to see the changes!\n"' >> /home/stax/.bashrc
 RUN echo 'cd /home/stax/repo' >> /home/stax/.bashrc
 
