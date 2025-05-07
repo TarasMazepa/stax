@@ -1,6 +1,5 @@
 FROM taras0mazepa/stax-guide-base:0.10.3
 
-RUN git checkout main
 RUN touch LICENSE.md
 RUN git add LICENSE.md
 RUN git commit -m "Adds LICENSE.md"
