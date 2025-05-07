@@ -1,11 +1,5 @@
 FROM taras0mazepa/stax-guide-base:0.10.3
 
-RUN touch README.md
-RUN git add README.md
-RUN git commit -m "Initial commit"
-RUN git branch -M main
-RUN git push
-
 RUN touch login-page.txt
 RUN stax commit -ab "login page refactor"
 RUN touch button.txt
