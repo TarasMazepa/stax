@@ -13,10 +13,8 @@ jobs:
           wget https://github.com/container2wasm/container2wasm/releases/download/v0.8.0/container2wasm-v0.8.0-linux-amd64.tar.gz
           tar -xvf container2wasm-v0.8.0-linux-amd64.tar.gz
           sudo mv c2w /usr/local/bin/
-      - name: Build Docker images and convert to WASM
-        run: |
-          mkdir -p ./guides/web/containers
-          
+      - run: mkdir -p ./guides/web/containers
+      - run: |
           for dockerfile in guides/*.dockerfile; do
             image_name=$(basename "$dockerfile" .dockerfile)
             
@@ -26,8 +24,7 @@ jobs:
             c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
           done
       
-      - name: Upload guides/web as artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: guides-web
           path: guides/web
