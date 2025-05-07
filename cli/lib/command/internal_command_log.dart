@@ -26,7 +26,7 @@ class InternalCommandLog extends InternalCommand {
   static final Flag watchFlag = Flag(
     short: '-w',
     long: '--watch',
-    description: 'watch all branches',
+    description: 'watch for git changes and re-run',
   );
 
   InternalCommandLog()
