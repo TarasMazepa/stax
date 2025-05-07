@@ -14,66 +14,16 @@ jobs:
           tar -xvf container2wasm-v0.8.0-linux-amd64.tar.gz
           sudo mv c2w /usr/local/bin/
       - run: mkdir -p ./guides/web/containers
-      - run: |
-          dockerfile="stax-amend.dockerfile"
-          image_name=$(basename "$dockerfile" .dockerfile)
-          echo "Building Docker image for $dockerfile with tag $image_name"
-          docker build -t "$image_name" -f "$dockerfile" .
-          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
-      - run: |
-          dockerfile="stax-commit.dockerfile"
-          image_name=$(basename "$dockerfile" .dockerfile)
-          echo "Building Docker image for $dockerfile with tag $image_name"
-          docker build -t "$image_name" -f "$dockerfile" .
-          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
-      - run: |
-          dockerfile="stax-delete.dockerfile"
-          image_name=$(basename "$dockerfile" .dockerfile)
-          echo "Building Docker image for $dockerfile with tag $image_name"
-          docker build -t "$image_name" -f "$dockerfile" .
-          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
-      - run: |
-          dockerfile="stax-doctor.dockerfile"
-          image_name=$(basename "$dockerfile" .dockerfile)
-          echo "Building Docker image for $dockerfile with tag $image_name"
-          docker build -t "$image_name" -f "$dockerfile" .
-          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
-      - run: |
-          dockerfile="stax-get.dockerfile"
-          image_name=$(basename "$dockerfile" .dockerfile)
-          echo "Building Docker image for $dockerfile with tag $image_name"
-          docker build -t "$image_name" -f "$dockerfile" .
-          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
-      - run: |
-          dockerfile="stax-log.dockerfile"
-          image_name=$(basename "$dockerfile" .dockerfile)
-          echo "Building Docker image for $dockerfile with tag $image_name"
-          docker build -t "$image_name" -f "$dockerfile" .
-          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
-      - run: |
-          dockerfile="stax-move.dockerfile"
-          image_name=$(basename "$dockerfile" .dockerfile)
-          echo "Building Docker image for $dockerfile with tag $image_name"
-          docker build -t "$image_name" -f "$dockerfile" .
-          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
-      - run: |
-          dockerfile="stax-pull.dockerfile"
-          image_name=$(basename "$dockerfile" .dockerfile)
-          echo "Building Docker image for $dockerfile with tag $image_name"
-          docker build -t "$image_name" -f "$dockerfile" .
-          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
-      - run: |
-          dockerfile="stax-rebase.dockerfile"
-          image_name=$(basename "$dockerfile" .dockerfile)
-          echo "Building Docker image for $dockerfile with tag $image_name"
-          docker build -t "$image_name" -f "$dockerfile" .
-          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
-      - run: |
-          dockerfile="stax-settings.dockerfile"
-          image_name=$(basename "$dockerfile" .dockerfile)
-          echo "Building Docker image for $dockerfile with tag $image_name"
-          docker build -t "$image_name" -f "$dockerfile" .
-          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
+      - run: .github/scripts/build_guide_docker_to_wasm amend
+      - run: .github/scripts/build_guide_docker_to_wasm commit
+      - run: .github/scripts/build_guide_docker_to_wasm delete
+      - run: .github/scripts/build_guide_docker_to_wasm doctor
+      - run: .github/scripts/build_guide_docker_to_wasm get
+      - run: .github/scripts/build_guide_docker_to_wasm log
+      - run: .github/scripts/build_guide_docker_to_wasm move
+      - run: .github/scripts/build_guide_docker_to_wasm pull
+      - run: .github/scripts/build_guide_docker_to_wasm rebase
+      - run: .github/scripts/build_guide_docker_to_wasm settings
       
       - uses: actions/upload-artifact@v4
         with:

@@ -1,0 +1,5 @@
+dockerfile="guides/stax-$1.dockerfile"
+image_name=$(basename "$dockerfile" .dockerfile)
+echo "Building Docker image for $dockerfile with tag $image_name"
+docker build -t "$image_name" -f "$dockerfile" .
+c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
