@@ -15,14 +15,65 @@ jobs:
           sudo mv c2w /usr/local/bin/
       - run: mkdir -p ./guides/web/containers
       - run: |
-          for dockerfile in guides/*.dockerfile; do
-            image_name=$(basename "$dockerfile" .dockerfile)
-            
-            echo "Building Docker image for $dockerfile with tag $image_name"
-            docker build -t "$image_name" -f "$dockerfile" .
-            
-            c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
-          done
+          dockerfile="stax-amend.dockerfile"
+          image_name=$(basename "$dockerfile" .dockerfile)
+          echo "Building Docker image for $dockerfile with tag $image_name"
+          docker build -t "$image_name" -f "$dockerfile" .
+          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
+      - run: |
+          dockerfile="stax-commit.dockerfile"
+          image_name=$(basename "$dockerfile" .dockerfile)
+          echo "Building Docker image for $dockerfile with tag $image_name"
+          docker build -t "$image_name" -f "$dockerfile" .
+          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
+      - run: |
+          dockerfile="stax-delete.dockerfile"
+          image_name=$(basename "$dockerfile" .dockerfile)
+          echo "Building Docker image for $dockerfile with tag $image_name"
+          docker build -t "$image_name" -f "$dockerfile" .
+          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
+      - run: |
+          dockerfile="stax-doctor.dockerfile"
+          image_name=$(basename "$dockerfile" .dockerfile)
+          echo "Building Docker image for $dockerfile with tag $image_name"
+          docker build -t "$image_name" -f "$dockerfile" .
+          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
+      - run: |
+          dockerfile="stax-get.dockerfile"
+          image_name=$(basename "$dockerfile" .dockerfile)
+          echo "Building Docker image for $dockerfile with tag $image_name"
+          docker build -t "$image_name" -f "$dockerfile" .
+          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
+      - run: |
+          dockerfile="stax-log.dockerfile"
+          image_name=$(basename "$dockerfile" .dockerfile)
+          echo "Building Docker image for $dockerfile with tag $image_name"
+          docker build -t "$image_name" -f "$dockerfile" .
+          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
+      - run: |
+          dockerfile="stax-move.dockerfile"
+          image_name=$(basename "$dockerfile" .dockerfile)
+          echo "Building Docker image for $dockerfile with tag $image_name"
+          docker build -t "$image_name" -f "$dockerfile" .
+          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
+      - run: |
+          dockerfile="stax-pull.dockerfile"
+          image_name=$(basename "$dockerfile" .dockerfile)
+          echo "Building Docker image for $dockerfile with tag $image_name"
+          docker build -t "$image_name" -f "$dockerfile" .
+          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
+      - run: |
+          dockerfile="stax-rebase.dockerfile"
+          image_name=$(basename "$dockerfile" .dockerfile)
+          echo "Building Docker image for $dockerfile with tag $image_name"
+          docker build -t "$image_name" -f "$dockerfile" .
+          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
+      - run: |
+          dockerfile="stax-settings.dockerfile"
+          image_name=$(basename "$dockerfile" .dockerfile)
+          echo "Building Docker image for $dockerfile with tag $image_name"
+          docker build -t "$image_name" -f "$dockerfile" .
+          c2w "$image_name" ./guides/web/containers/"$image_name"00.wasm
       
       - uses: actions/upload-artifact@v4
         with:
