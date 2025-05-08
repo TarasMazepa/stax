@@ -1,3 +1,7 @@
+0.10.4
+ * stax pull-request - will honor base branch replacement setting
+ * stax commit - will come back to original branch even if user haven't used Pull Request creation flag
+
 0.10.3
  * stax rebase - now ceates folder structure for rebase file
  * stax rebase - fix for rebase file path on windows

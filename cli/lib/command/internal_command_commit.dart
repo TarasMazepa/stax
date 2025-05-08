@@ -2,9 +2,10 @@ import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/sanitize_branch_name.dart';
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_apply_base_branch_replacement.dart';
 import 'package:stax/context/context_cleanup_flags.dart';
 import 'package:stax/context/context_explain_to_user_no_staged_changes.dart';
-import 'package:stax/context/context_get_pr_url.dart';
+import 'package:stax/context/context_get_pull_request_url.dart';
 import 'package:stax/context/context_gh_create_pr.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
@@ -98,20 +99,16 @@ class InternalCommandCommit extends InternalCommand {
     context.printToConsole("Commit  message: '$commitMessage'");
     context.printToConsole("New branch name: '$prefixedBranchName'");
 
-    String? previousBranch;
+    String? comeBackNode =
+        context.getCurrentBranch() ??
+        context.gitLogAll().findCurrent()?.line.branchNameOrCommitHash();
     String? baseBranch;
     if (createPr) {
-      previousBranch =
-          context.getCurrentBranch() ??
-          context.gitLogAll().findCurrent()?.line.branchName() ??
-          context.getDefaultBranch();
-      if (previousBranch != null) {
-        baseBranch =
-            context.effectiveSettings.baseBranchReplacement.getValue(
-              previousBranch,
-            ) ??
-            previousBranch;
-      }
+      baseBranch = context.applyBaseBranchReplacement(
+        context.getCurrentBranch() ??
+            context.gitLogAll().findCurrent()?.line.branchName() ??
+            context.getDefaultBranch(),
+      );
     }
 
     final newBranchCheckoutExitCode = context.git.checkoutNewBranch
@@ -127,9 +124,10 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
 
-    late final backupPrUrl = createPr
-        ? context.getPrUrl(baseBranch!, prefixedBranchName)
-        : null;
+    late final backupPrUrl =
+        createPr
+            ? context.getPullRequestUrl(baseBranch!, prefixedBranchName)
+            : null;
     informAboutPrUrlIfNeeded() {
       if (backupPrUrl != null) {
         context.printParagraph('PR URL would have been: $backupPrUrl');
@@ -143,10 +141,10 @@ class InternalCommandCommit extends InternalCommand {
         .printNotEmptyResultFields()
         .exitCode;
     if (commitExitCode != 0) {
-      if (previousBranch != null) {
+      if (comeBackNode != null) {
         context.git.checkout
-            .arg(previousBranch)
-            .announce('Switching back to original branch')
+            .arg(comeBackNode)
+            .announce('Switching back to original checkout')
             .runSync()
             .printNotEmptyResultFields();
       }
