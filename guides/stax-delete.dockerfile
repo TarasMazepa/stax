@@ -30,3 +30,4 @@ RUN echo 'cd /home/stax/repo' >> /home/stax/.bashrc
 ENV ENV=/home/stax/.bashrc
 
 WORKDIR /home/stax/repo
+RUN git fetch -p
