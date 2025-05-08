@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 void main(List<String> arguments) async {
-  final daemonPort = 5000;
+  final daemonPort = 62261;
   print('Starting stax daemon on port $daemonPort...');
 
   ServerSocket? serverSocket;
