@@ -11,8 +11,7 @@ void main(List<String> arguments) async {
   );
 
   final portValue = portFlag.getFlagValue(arguments);
-  daemonPort =
-      portValue != null ? int.tryParse(portValue) ?? daemonPort : daemonPort;
+  if (portValue != null) daemonPort = int.tryParse(portValue) ?? daemonPort;
 
   print('Starting stax daemon on port $daemonPort...');
 
