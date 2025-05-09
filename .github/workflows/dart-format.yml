@@ -1,6 +1,8 @@
 name: dart-format.yml
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [format-dart-code]
 
 jobs:
   dart-format:

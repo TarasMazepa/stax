@@ -22,8 +22,19 @@ jobs:
           sdk: ${{ steps.get-dart-version.outputs.text }}
       - run: dart pub get
         working-directory: cli
-      - run: dart format . -o none --set-exit-if-changed
+      - name: Check dart format
+        id: format-check
+        run: dart format . -o none --set-exit-if-changed
         working-directory: cli
+        continue-on-error: true
+      - name: Trigger format workflow
+        if: steps.format-check.outcome == 'failure'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PAT }}
+          repository: TarasMazepa/stax
+          event-type: format-dart-code
+          client-payload: '{"ref": "${{ github.ref }}"}'
       - run: dart analyze
         working-directory: cli
       - run: |
