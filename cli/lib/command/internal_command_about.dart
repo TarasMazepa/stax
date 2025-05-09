@@ -3,7 +3,7 @@ import 'package:stax/context/context.dart';
 
 class InternalCommandAbout extends InternalCommand {
   InternalCommandAbout()
-    : super('about', 'Shows information about the current project.');
+    : super('about', 'Shows information about the stax.');
 
   @override
   void run(final List<String> args, Context context) {
