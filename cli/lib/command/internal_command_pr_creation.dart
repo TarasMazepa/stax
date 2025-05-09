@@ -2,10 +2,10 @@ import 'package:stax/command/internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_get_pr_url.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
-import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
 import 'package:stax/context/context_open_in_browser.dart';
+import 'package:stax/context/context_get_target_branch.dart';
 
 class InternalCommandPrCreation extends InternalCommand {
   InternalCommandPrCreation()
@@ -31,9 +31,9 @@ class InternalCommandPrCreation extends InternalCommand {
       return;
     }
 
-    final targetBranch =
-        current.parent?.line.branchNameOrCommitHash() ??
-        context.getDefaultBranch();
+    final parentBranch = current.parent?.line.branchNameOrCommitHash();
+    final targetBranch = context.getTargetBranch(parentBranch);
+
     if (targetBranch == null) {
       context.printToConsole("Can't determine target branch.");
       return;
