@@ -25,9 +25,13 @@ void main(List<String> arguments) async {
     bool isRunning = true;
     serverSocket.listen((client) {
       client.listen((data) {
-        switch (String.fromCharCodes(data).trim()) {
+        final command = String.fromCharCodes(data).trim();
+        switch (command) {
           case 'exit':
             isRunning = false;
+            break;
+          case 'watch':
+            _startGitWatcher(client);
             break;
         }
       }, onDone: () => client.close());
@@ -40,4 +44,12 @@ void main(List<String> arguments) async {
     await serverSocket?.close();
     print('Daemon shut down');
   }
+}
+
+void _startGitWatcher(Socket client) {
+  final gitDir = Directory('.git');
+  gitDir.watch(events: FileSystemEvent.all).listen((event) {
+    final message = 'Git change detected: ${event.path} (${event.type})\n';
+    client.write(message);
+  });
 }
