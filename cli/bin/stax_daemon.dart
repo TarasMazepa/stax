@@ -1,15 +1,18 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:stax/command/flag.dart';
 
 void main(List<String> arguments) async {
   int daemonPort = 62261;
+  final portFlag = Flag(
+    short: '-p',
+    long: '--port',
+    description: 'Port to run the daemon on',
+  );
 
-  for (int i = 0; i < arguments.length; i++) {
-    if (arguments[i] == '-p' && i + 1 < arguments.length) {
-      daemonPort = int.tryParse(arguments[i + 1]) ?? 5000;
-      break;
-    }
-  }
+  final portValue = portFlag.getFlagValue(arguments);
+  daemonPort =
+      portValue != null ? int.tryParse(portValue) ?? daemonPort : daemonPort;
 
   print('Starting stax daemon on port $daemonPort...');
 
