@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.client_payload.ref }}
       - uses: TarasMazepa/github-action-cat@master
         id: get-dart-version
         with:
