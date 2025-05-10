@@ -1,6 +1,7 @@
-name: dart-format.yml
+name: dart-format-automatic.yml
 on:
-  workflow_dispatch:
+  repository_dispatch:
+    types: [format-dart-code]
 
 jobs:
   dart-format:
@@ -8,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.client_payload.ref }}
       - uses: TarasMazepa/github-action-cat@master
         id: get-dart-version
         with:
@@ -21,13 +24,14 @@ jobs:
         working-directory: ui
       - run: |
           if ! git diff --quiet; then
-            branch_name=format-dart-code-in-${GITHUB_REF#refs/heads/}-branch-at-$(date -u +"%Y-%m-%dT%H-%M-%S")
+            branch_name=format-dart-code-in-${BASE#refs/heads/}-branch-at-$(date -u +"%Y-%m-%dT%H-%M-%S")
             git config --global user.name 'stax'
             git config --global user.email 'stax@staxforgit.com'
             git checkout -b $branch_name
-            git commit -a -m "Format dart code in ${GITHUB_REF#refs/heads/} branch"
+            git commit -a -m "Format dart code in ${BASE#refs/heads/} branch"
             git push --set-upstream origin $branch_name
-            gh pr merge $(gh pr create -B ${GITHUB_REF#refs/heads/} -f) --auto --squash
+            gh pr merge $(gh pr create -B ${BASE#refs/heads/} -f) --auto --squash
           fi
         env:
+          BASE: ${{ github.event.client_payload.ref }}
           GH_TOKEN: ${{ secrets.PAT }} 
