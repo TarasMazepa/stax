@@ -13,6 +13,7 @@ import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
 import 'package:stax/context/context_open_in_browser.dart';
+import 'package:stax/context/context_get_target_branch.dart';
 
 class InternalCommandCommit extends InternalCommand {
   static final prFlag = Flag(
@@ -106,11 +107,7 @@ class InternalCommandCommit extends InternalCommand {
           context.gitLogAll().findCurrent()?.line.branchName() ??
           context.getDefaultBranch();
       if (previousBranch != null) {
-        baseBranch =
-            context.effectiveSettings.baseBranchReplacement.getValue(
-              previousBranch,
-            ) ??
-            previousBranch;
+        baseBranch = context.getTargetBranch(previousBranch);
       }
     }
 
