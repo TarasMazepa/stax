@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:stax/command/flag.dart';
+import 'package:stax/daemon/commands/handler.dart';
 
 void main(List<String> arguments) async {
   int daemonPort = 62261;
@@ -24,11 +25,10 @@ void main(List<String> arguments) async {
 
     bool isRunning = true;
     serverSocket.listen((client) {
-      client.listen((data) {
-        switch (String.fromCharCodes(data).trim()) {
-          case 'exit':
-            isRunning = false;
-            break;
+      client.listen((data) async {
+        final rawCommand = String.fromCharCodes(data).trim();
+        if (await CommandHandler.handle(client, rawCommand)) {
+          isRunning = true;
         }
       }, onDone: () => client.close());
     });
