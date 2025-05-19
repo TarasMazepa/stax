@@ -1,0 +1,87 @@
+name: Update Nix Hashes
+
+on:
+  push:
+    paths:
+      - 'VERSION'
+    branches:
+      - main
+
+jobs:
+  update-hashes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Verify VERSION file
+        run: |
+          if [ ! -f "VERSION" ]; then
+            echo "Error: VERSION file not found"
+            exit 1
+          fi
+          VERSION=$(cat VERSION | tr -d '\n')
+          if [ -z "$VERSION" ]; then
+            echo "Error: VERSION file is empty"
+            exit 1
+          fi
+          echo "Using version: $VERSION"
+
+      - name: Get Nix hashes
+        run: |
+          if [ ! -f "nix/get-nix-hashes.sh" ]; then
+            echo "Error: get-nix-hashes.sh not found"
+            exit 1
+          fi
+          ./nix/get-nix-hashes.sh
+
+      - name: Verify hashes file
+        run: |
+          VERSION=$(cat VERSION | tr -d '\n')
+          if [ ! -f "nix/hashes/${VERSION}.txt" ]; then
+            echo "Error: Hashes file not created"
+            exit 1
+          fi
+
+      - name: Replace Nix hashes
+        run: |
+          if [ ! -f "nix/replace-nix-hashes.sh" ]; then
+            echo "Error: replace-nix-hashes.sh not found"
+            exit 1
+          fi
+          ./nix/replace-nix-hashes.sh
+
+      - name: Verify flake.nix
+        run: |
+          if [ ! -f "flake.nix" ]; then
+            echo "Error: flake.nix not found"
+            exit 1
+          fi
+          if ! grep -q "/* replace with hashes */" flake.nix; then
+            echo "Error: flake.nix does not contain hash replacement markers"
+            exit 1
+          fi
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update Nix hashes for version $(cat VERSION)"
+          title: "chore: update Nix hashes for version $(cat VERSION)"
+          body: |
+            This PR updates the Nix hashes for the new version.
+            
+            Changes:
+            - Updated Nix hashes for all supported platforms
+            - Updated flake.nix with new hashes
+          branch: update-nix-hashes
+          base: main 
