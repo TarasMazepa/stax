@@ -115,7 +115,7 @@ class InternalCommandCommit extends InternalCommand {
     }
 
     final newBranchCheckoutExitCode =
-        context.git.checkoutNewBranch
+        context.git.gitSwitchNewBranch
             .arg(prefixedBranchName)
             .announce('Creating new branch.')
             .runSync()
@@ -145,7 +145,7 @@ class InternalCommandCommit extends InternalCommand {
             .exitCode;
     if (commitExitCode != 0) {
       if (previousBranch != null) {
-        context.git.checkout
+        context.git.gitSwitch
             .arg(previousBranch)
             .announce('Switching back to original branch')
             .runSync()

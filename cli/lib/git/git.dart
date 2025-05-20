@@ -11,6 +11,9 @@ class Git {
   late final branchDelete = branch.arg('-D');
   late final branchVv = branch.arg('-vv');
   late final checkout = rawEc('git checkout');
+  late final gitSwitch = rawEc('git switch');
+  late final gitSwitchNewBranch = gitSwitch.arg('-c');
+  late final gitSwitchDetach = gitSwitch.arg('-d');
   late final checkoutDetach = checkout.arg('--detach');
   late final checkoutNewBranch = checkout.arg('-b');
   late final clone = rawEc('git clone');
