@@ -61,7 +61,7 @@ class InternalCommandGet extends InternalCommand {
           .runSync()
           .printNotEmptyResultFields()
           .isSuccess();
-      context.git.checkout
+      context.git.switch0
           .arg(branch)
           .announce()
           .runSync()
@@ -75,7 +75,7 @@ class InternalCommandGet extends InternalCommand {
         if (!exists) {
           return;
         }
-        context.git.checkoutDetach
+        context.git.switchDetach
             .announce()
             .runSync()
             .printNotEmptyResultFields();
@@ -84,7 +84,7 @@ class InternalCommandGet extends InternalCommand {
             .announce()
             .runSync()
             .printNotEmptyResultFields();
-        context.git.checkout
+        context.git.switch0
             .arg(branch)
             .announce()
             .runSync()
