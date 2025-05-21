@@ -100,21 +100,20 @@ class RebaseUseCase {
     final rebaseData = assertRebaseData;
     try {
       final rebaseStep = rebaseData.currentStep;
-      final exitCode =
-          context.git.rebase
-              .args([
-                if (rebaseData.hasTheirsFlag) ...['-X', 'theirs'],
-                if (rebaseData.hasOursFlag) ...['-X', 'ours'],
-                if (rebaseData.index == 0)
-                  rebaseData.rebaseOnto
-                else
-                  rebaseStep.parent!,
-                rebaseStep.node,
-              ])
-              .announce()
-              .runSync()
-              .printNotEmptyResultFields()
-              .exitCode;
+      final exitCode = context.git.rebase
+          .args([
+            if (rebaseData.hasTheirsFlag) ...['-X', 'theirs'],
+            if (rebaseData.hasOursFlag) ...['-X', 'ours'],
+            if (rebaseData.index == 0)
+              rebaseData.rebaseOnto
+            else
+              rebaseStep.parent!,
+            rebaseStep.node,
+          ])
+          .announce()
+          .runSync()
+          .printNotEmptyResultFields()
+          .exitCode;
       if (exitCode != 0) {
         throw Exception('Rebase failed');
       }
