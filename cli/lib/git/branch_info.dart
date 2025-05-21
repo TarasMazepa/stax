@@ -74,8 +74,9 @@ class BranchInfo {
     String? remote;
     if (raw[i] == '[') {
       i++;
-      final clothingBracketIndex =
-          raw.indexOf(']', i).toNullableIndexOfResult();
+      final clothingBracketIndex = raw
+          .indexOf(']', i)
+          .toNullableIndexOfResult();
       if (clothingBracketIndex != null) {
         commitMessageStarIndex = clothingBracketIndex + 2;
         final remoteInfo = raw.substring(i, clothingBracketIndex).split(':');
@@ -88,16 +89,17 @@ class BranchInfo {
             remoteNameParts[1] == name &&
             remoteInfo.length == 2) {
           remote = remoteInfo[0];
-          final remoteMarkers =
-              remoteInfo[1].split(',').map((e) => e.trim()).toList();
+          final remoteMarkers = remoteInfo[1]
+              .split(',')
+              .map((e) => e.trim())
+              .toList();
           gone = remoteMarkers.contains('gone');
-          parsePrefixed(String prefix) =>
-              remoteMarkers
-                  .where((e) => e.startsWith(prefix))
-                  .map((e) => e.split(' '))
-                  .where((e) => e.length == 2)
-                  .map((e) => int.tryParse(e[1]))
-                  .firstOrNull;
+          parsePrefixed(String prefix) => remoteMarkers
+              .where((e) => e.startsWith(prefix))
+              .map((e) => e.split(' '))
+              .where((e) => e.length == 2)
+              .map((e) => int.tryParse(e[1]))
+              .firstOrNull;
           ahead = parsePrefixed('ahead ');
           behind = parsePrefixed('behind ');
         }

@@ -30,10 +30,9 @@ extension ContextHandleAddAllFlag on Context {
     final hasAddAll = addAllFlag.hasFlag(args);
     final hasUpdateAll = updateAllFlag.hasFlag(args);
     if (hasAddEverything || hasAddAll || hasUpdateAll) {
-      final selectedAddAll =
-          hasAddEverything
-              ? git.addEverything
-              : (hasAddAll ? git.addAll : git.addUpdate);
+      final selectedAddAll = hasAddEverything
+          ? git.addEverything
+          : (hasAddAll ? git.addAll : git.addUpdate);
       if (areThereStagedChanges()) {
         selectedAddAll
             .askContinueQuestion(
