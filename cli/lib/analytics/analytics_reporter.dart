@@ -15,5 +15,5 @@ class AnalyticsEvent {
 }
 
 class AnalyticsReporter {
-  Future<void> report(AnalyticsEvent event) async {}
+  void report(AnalyticsEvent event) {}
 }
