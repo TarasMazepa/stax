@@ -17,19 +17,20 @@ abstract class BaseListSetting<T> extends Setting<List<T>> {
         name,
         defaultValue,
         keyValueStore,
-        (String s) => (jsonDecode(s) as List<dynamic>)
-            .map((element) => element.toString())
-            .expand<T>((element) {
-              try {
-                return switch (itemFromString(element)) {
-                  null => [],
-                  final converted => [converted],
-                };
-              } catch (_) {
-                return [];
-              }
-            })
-            .toList(),
+        (String s) =>
+            (jsonDecode(s) as List<dynamic>)
+                .map((element) => element.toString())
+                .expand<T>((element) {
+                  try {
+                    return switch (itemFromString(element)) {
+                      null => [],
+                      final converted => [converted],
+                    };
+                  } catch (_) {
+                    return [];
+                  }
+                })
+                .toList(),
         (List<T> list) => jsonEncode(list.map(itemToString).toList()),
         description,
       );

@@ -45,10 +45,10 @@ class CliTestSetup {
       fileName,
       bundle
           ? fileName.replaceRange(
-              fileName.length - 4 /* Length of 'dart' filename extension*/,
-              fileName.length,
-              'bundle',
-            )
+            fileName.length - 4 /* Length of 'dart' filename extension*/,
+            fileName.length,
+            'bundle',
+          )
           : null,
       testRepo.toFilePath(),
       liveStax.toFilePath(),

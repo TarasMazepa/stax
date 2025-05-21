@@ -19,10 +19,10 @@ List<DecoratedLogLine> _produceDecoratedLogLine<T>(
   final children = adapter.children(root);
   final emptyIndent =
       (adapter.isDefaultBranch(root) &&
-          children.isNotEmpty &&
-          !adapter.isDefaultBranch(children.first))
-      ? 1
-      : 0;
+              children.isNotEmpty &&
+              !adapter.isDefaultBranch(children.first))
+          ? 1
+          : 0;
   final point = adapter.isCurrent(root) ? 'x' : 'o';
   return children
       .expandIndexed(

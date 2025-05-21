@@ -88,13 +88,13 @@ class GitLogAllLine {
       firstParts.elementAtOrNull(2),
       parts.length > 1
           ? parts.last
-                .replaceAll('(', '')
-                .replaceAll(')', '')
-                .split(', ')
-                .map((x) => x.trim())
-                .where((x) => x.isNotEmpty)
-                .whereNot((x) => x.startsWith('tag: '))
-                .toList()
+              .replaceAll('(', '')
+              .replaceAll(')', '')
+              .split(', ')
+              .map((x) => x.trim())
+              .where((x) => x.isNotEmpty)
+              .whereNot((x) => x.startsWith('tag: '))
+              .toList()
           : [],
     );
   }
@@ -139,18 +139,19 @@ class GitLogAllNode {
 
   List<GitLogAllNode> get sortedChildren {
     return children.sorted(
-      (a, b) => ComparisonChain()
-          .chainBoolReverse(
-            a.isRemoteHeadReachable(),
-            b.isRemoteHeadReachable(),
-          )
-          .chain(
-            () => (b.line.branchNameOrCommitHash()).compareTo(
-              a.line.branchNameOrCommitHash(),
-            ),
-          )
-          .chain(() => b.line.timestamp - a.line.timestamp)
-          .compare(),
+      (a, b) =>
+          ComparisonChain()
+              .chainBoolReverse(
+                a.isRemoteHeadReachable(),
+                b.isRemoteHeadReachable(),
+              )
+              .chain(
+                () => (b.line.branchNameOrCommitHash()).compareTo(
+                  a.line.branchNameOrCommitHash(),
+                ),
+              )
+              .chain(() => b.line.timestamp - a.line.timestamp)
+              .compare(),
     );
   }
 
@@ -275,15 +276,16 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
   @override
   List<GitLogAllNode> children(GitLogAllNode t) {
     return t.children.sorted(
-      (a, b) => ComparisonChain()
-          .chainBoolReverse(isDefaultBranch(a), isDefaultBranch(b))
-          .chain(
-            () => (b.line.branchNameOrCommitHash()).compareTo(
-              a.line.branchNameOrCommitHash(),
-            ),
-          )
-          .chain(() => b.line.timestamp - a.line.timestamp)
-          .compare(),
+      (a, b) =>
+          ComparisonChain()
+              .chainBoolReverse(isDefaultBranch(a), isDefaultBranch(b))
+              .chain(
+                () => (b.line.branchNameOrCommitHash()).compareTo(
+                  a.line.branchNameOrCommitHash(),
+                ),
+              )
+              .chain(() => b.line.timestamp - a.line.timestamp)
+              .compare(),
     );
   }
 
