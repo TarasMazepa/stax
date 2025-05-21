@@ -114,13 +114,12 @@ class InternalCommandCommit extends InternalCommand {
       }
     }
 
-    final newBranchCheckoutExitCode =
-        context.git.checkoutNewBranch
-            .arg(prefixedBranchName)
-            .announce('Creating new branch.')
-            .runSync()
-            .printNotEmptyResultFields()
-            .exitCode;
+    final newBranchCheckoutExitCode = context.git.checkoutNewBranch
+        .arg(prefixedBranchName)
+        .announce('Creating new branch.')
+        .runSync()
+        .printNotEmptyResultFields()
+        .exitCode;
     if (newBranchCheckoutExitCode != 0) {
       context.printParagraph(
         "Looks like we can't create new branch with '$prefixedBranchName' name. Please pick a different name.",
@@ -128,21 +127,21 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
 
-    late final backupPrUrl =
-        createPr ? context.getPrUrl(baseBranch!, prefixedBranchName) : null;
+    late final backupPrUrl = createPr
+        ? context.getPrUrl(baseBranch!, prefixedBranchName)
+        : null;
     informAboutPrUrlIfNeeded() {
       if (backupPrUrl != null) {
         context.printParagraph('PR URL would have been: $backupPrUrl');
       }
     }
 
-    final commitExitCode =
-        context.git.commitWithMessage
-            .arg(commitMessage)
-            .announce('Committing')
-            .runSync()
-            .printNotEmptyResultFields()
-            .exitCode;
+    final commitExitCode = context.git.commitWithMessage
+        .arg(commitMessage)
+        .announce('Committing')
+        .runSync()
+        .printNotEmptyResultFields()
+        .exitCode;
     if (commitExitCode != 0) {
       if (previousBranch != null) {
         context.git.checkout
@@ -165,12 +164,11 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
 
-    final pushExitCode =
-        context.git.push
-            .announce('Pushing')
-            .runSync()
-            .printNotEmptyResultFields()
-            .exitCode;
+    final pushExitCode = context.git.push
+        .announce('Pushing')
+        .runSync()
+        .printNotEmptyResultFields()
+        .exitCode;
     if (pushExitCode != 0) {
       context.printParagraph(
         'See above git error. Additionally you can check `stax doctor` command output.',
