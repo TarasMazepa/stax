@@ -10,16 +10,17 @@ extension ContextGitGetPreferredRemote on Context {
 
     if (_preferredRemote != null) return _preferredRemote;
 
-    final remotes = withSilence(true).git.remote
-        .announce('Getting remotes.')
-        .runSync()
-        .printNotEmptyResultFields()
-        .stdout
-        .toString()
-        .split('\n')
-        .map((e) => e.trim())
-        .where((e) => e.isNotEmpty)
-        .toList();
+    final remotes =
+        withSilence(true).git.remote
+            .announce('Getting remotes.')
+            .runSync()
+            .printNotEmptyResultFields()
+            .stdout
+            .toString()
+            .split('\n')
+            .map((e) => e.trim())
+            .where((e) => e.isNotEmpty)
+            .toList();
 
     _preferredRemote =
         remotes.firstWhereOrNull((x) => x == 'origin') ?? remotes.firstOrNull;

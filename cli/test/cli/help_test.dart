@@ -9,6 +9,7 @@ void main() {
       expect(setup.runLiveStaxSync(['help']).stdout, """Global flags:
    --accept-all - Accept all the user prompts automatically.
    --decline-all - Decline all the user prompts automatically.
+   -h, --help - Shows help documentation for the command
    --loud - Force all the output.
    --silent - Removes all output except user prompts.
 Here are available commands:
@@ -42,6 +43,8 @@ Note: you can type first letter or couple of first letters instead of full comma
       Positional arguments:
          opt1 - Name of the remote ref. Will be matched as a suffix.
  • help - List of available commands.
+      Positional arguments:
+         opt1 - Optional name of the command you want to learn about
       Flags:
          -a - Show all commands including hidden.
  • log - Shows a tree of all branches.

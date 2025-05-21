@@ -7,13 +7,14 @@ extension ContextGitGetRepositoryRoot on Context {
   String? getRepositoryRoot() {
     if (_loadedRepositoryRoot) return _repositoryRoot;
     _loadedRepositoryRoot = true;
-    return _repositoryRoot = git.revParseShowTopLevel
-        .announce('Getting top level location of repository.')
-        .runSync()
-        .printNotEmptyResultFields()
-        .assertSuccessfulExitCode()
-        ?.stdout
-        .toString()
-        .trim();
+    return _repositoryRoot =
+        git.revParseShowTopLevel
+            .announce('Getting top level location of repository.')
+            .runSync()
+            .printNotEmptyResultFields()
+            .assertSuccessfulExitCode()
+            ?.stdout
+            .toString()
+            .trim();
   }
 }

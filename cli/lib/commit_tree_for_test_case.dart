@@ -218,13 +218,14 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
   @override
   List<int> children(int id) {
     return _children(id).sorted(
-      (a, b) => ComparisonChain()
-          .chainBoolReverse(
-            isDefaultBranchOrHasDefaultBranchAsAChild(a),
-            isDefaultBranchOrHasDefaultBranchAsAChild(b),
-          )
-          .chain(() => branchName(b).compareTo(branchName(a)))
-          .compare(),
+      (a, b) =>
+          ComparisonChain()
+              .chainBoolReverse(
+                isDefaultBranchOrHasDefaultBranchAsAChild(a),
+                isDefaultBranchOrHasDefaultBranchAsAChild(b),
+              )
+              .chain(() => branchName(b).compareTo(branchName(a)))
+              .compare(),
     );
   }
 

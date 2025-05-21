@@ -13,7 +13,14 @@ class InternalCommandHelp extends InternalCommand {
   );
 
   InternalCommandHelp()
-    : super('help', 'List of available commands.', flags: [showAllFlag]);
+    : super(
+        'help',
+        'List of available commands.',
+        flags: [showAllFlag],
+        arguments: {
+          'opt1': 'Optional name of the command you want to learn about',
+        },
+      );
 
   void printIndented(
     Context context,
@@ -50,14 +57,22 @@ class InternalCommandHelp extends InternalCommand {
   @override
   void run(final List<String> args, final Context context) {
     final showAll = showAllFlag.hasFlag(args);
+    final selectedCommand = args.elementAtOrNull(0);
+    final singleCommand = selectedCommand != null;
     final commandsToShow = internalCommands.where(
-      (element) => showAll || element.type == InternalCommandType.public,
+      (element) => switch (element) {
+        _ when singleCommand => element.name == selectedCommand,
+        _ when showAll => true,
+        _ => element.type == InternalCommandType.public,
+      },
     );
     printFlags(context, 'Global flags', ContextHandleGlobalFlags.flags, '');
-    context.printToConsole('Here are available commands:');
-    context.printToConsole(
-      "Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.",
-    );
+    if (!singleCommand) {
+      context.printToConsole('Here are available commands:');
+      context.printToConsole(
+        "Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.",
+      );
+    }
     for (final element in commandsToShow) {
       context.printToConsole(
         ' • ${element.name}${element.shortName != null ? ", ${element.shortName}" : ""} - ${element.description}',
