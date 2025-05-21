@@ -31,6 +31,22 @@ jobs:
         working-directory: cli
       - run: dart analyze
         working-directory: cli
+      - uses: TarasMazepa/github-action-cat@master
+        id: get-flutter-version
+        with:
+          path: FLUTTER_VERSION
+          trim: true
+      - uses: flutter-actions/setup-flutter@v4
+        with:
+          version: ${{ steps.get-flutter-version.outputs.text }}
+      - run: flutter pub get
+        working-directory: ui
+      - run: dart format . -o none --set-exit-if-changed
+        working-directory: ui
+      - run: flutter analyze --fatal-infos
+        working-directory: ui
+      - run: flutter test
+        working-directory: ui
       - run: |
           if ! git diff --quiet; then
             branch_name=update-dart-sdk-version-to-$DART_SDK_VERSION-$(date -u +"%Y-%m-%dT%H-%M-%S")
