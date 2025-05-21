@@ -33,14 +33,13 @@ class InternalCommandUpdatePrompt extends InternalCommand {
       return;
     }
 
-    final responseBody =
-        (await get(
-          Uri.parse(
-            Platform.isWindows
-                ? 'https://community.chocolatey.org/api/v2/Packages()?%24filter=Id%20eq%20%27stax%27&%24orderby=Published%20desc&%24top=1'
-                : 'https://raw.githubusercontent.com/TarasMazepa/homebrew-stax/main/Formula/stax.rb',
-          ),
-        )).body;
+    final responseBody = (await get(
+      Uri.parse(
+        Platform.isWindows
+            ? 'https://community.chocolatey.org/api/v2/Packages()?%24filter=Id%20eq%20%27stax%27&%24orderby=Published%20desc&%24top=1'
+            : 'https://raw.githubusercontent.com/TarasMazepa/homebrew-stax/main/Formula/stax.rb',
+      ),
+    )).body;
 
     final remoteVersionRaw = RegExp(
       Platform.isWindows ? r'Version>(.*)</' : r"version '(.*)'",

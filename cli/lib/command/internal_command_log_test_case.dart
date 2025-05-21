@@ -17,8 +17,9 @@ class InternalCommandLogTestCase extends InternalCommand {
 
   @override
   void run(List<String> args, Context context) {
-    for (final commandText
-        in CommitTreeForTestCase.fromCompacted(args[0]).getTargetCommands()) {
+    for (final commandText in CommitTreeForTestCase.fromCompacted(
+      args[0],
+    ).getTargetCommands()) {
       ExternalCommand command = context.command(commandText.split(' '));
       if (command.parts[0] == 'stax') {
         mainFunctionReference(command.parts.sublist(1));
