@@ -10,8 +10,8 @@ class AnalyticsEvent {
     required this.type,
     required this.name,
     required this.data,
-    DateTime? timestamp,
-  }) : timestamp = timestamp ?? DateTime.now();
+    DateTime timestamp = DateTime.now(),
+  });
 }
 
 class AnalyticsReporter {
