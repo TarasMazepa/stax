@@ -18,12 +18,18 @@ extension ContextHandleGlobalFlags on Context {
     long: '--decline-all',
     description: 'Decline all the user prompts automatically.',
   );
+  static final helpFlag = Flag(
+    short: '-h',
+    long: '--help',
+    description: 'Shows help documentation for the command',
+  );
 
   static final List<Flag> flags = [
     silentFlag,
     loudFlag,
     acceptAllFlag,
     declineAllFlag,
+    helpFlag,
   ];
 
   Context handleGlobalFlags(List<String> args) {
