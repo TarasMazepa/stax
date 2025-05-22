@@ -39,6 +39,6 @@ void main(List<String> arguments) {
         );
         return;
       }
-      command.run(args, context);
+      command.runWraper(command.run, args, context);
   }
 }

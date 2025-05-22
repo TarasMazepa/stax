@@ -4,6 +4,7 @@ import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_commands.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_cleanup_flags.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
 
 class InternalCommandHelp extends InternalCommand {
@@ -45,9 +46,15 @@ class InternalCommandHelp extends InternalCommand {
   @override
   void run(final List<String> args, final Context context) {
     final showAll = showAllFlag.hasFlag(args);
-    final commandsToShow = internalCommands.where(
-      (element) => showAll || element.type == InternalCommandType.public,
-    );
+    context.cleanupFlags(args);
+    final commandName = (args.isNotEmpty) ? args[0] : '';
+    final commandsToShow = internalCommands.where((element) {
+      if (commandName.isNotEmpty) {
+        return element.name == commandName;
+      } else {
+        return showAll || element.type == InternalCommandType.public;
+      }
+    });
     printIndentedSorted(
       context,
       'Global flags',
