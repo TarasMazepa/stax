@@ -28,6 +28,7 @@ class Git {
   late final logTimestampOne = log.args(['--format=format:%ct', '-1']);
   late final mergeBase = rawEc('git merge-base');
   late final pull = rawEc('git pull');
+  late final pullPrune = pull.arg('--prune');
   late final pullForce = pull.arg('--force');
   late final push = rawEc('git push');
   late final pushForce = push.arg('--force');
