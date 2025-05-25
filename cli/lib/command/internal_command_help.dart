@@ -52,7 +52,7 @@ class InternalCommandHelp extends InternalCommand {
   void run(final List<String> args, final Context context) {
     final showAll = showAllFlag.hasFlag(args);
     final commandsToShow = internalCommands.where(
-          (element) => showAll || element.type == InternalCommandType.public,
+      (element) => showAll || element.type == InternalCommandType.public,
     );
     printFlags(context, 'Global flags', ContextHandleGlobalFlags.flags, '');
     context.printToConsole('Here are available commands:');
