@@ -53,8 +53,11 @@ class InternalCommandUpdate extends InternalCommand {
       return;
     }
 
-    final brewListResult =
-        context.command(['brew', 'list', '--formula']).runSync();
+    final brewListResult = context.command([
+      'brew',
+      'list',
+      '--formula',
+    ]).runSync();
 
     if (brewListResult.exitCode != 0 ||
         !brewListResult.stdout.toString().contains('stax')) {
@@ -85,12 +88,11 @@ class InternalCommandUpdate extends InternalCommand {
         'A new version of stax is available. Upgrading...',
       );
 
-      final upgradeResult =
-          context
-              .command(['brew', 'upgrade', 'TarasMazepa/stax/stax'])
-              .announce('Upgrading stax...')
-              .runSync()
-              .printNotEmptyResultFields();
+      final upgradeResult = context
+          .command(['brew', 'upgrade', 'TarasMazepa/stax/stax'])
+          .announce('Upgrading stax...')
+          .runSync()
+          .printNotEmptyResultFields();
 
       if (upgradeResult.exitCode == 0) {
         context.printToConsole(
