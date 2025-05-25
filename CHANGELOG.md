@@ -3,6 +3,8 @@
  * stax commit - will come back to original branch even if user haven't used Pull Request creation flag
  * stax about - new command with brief information about stax, link to the website and basic license infrmation
  * git checkout -> git switch - replaced all internal invocations of git checkout to git switch
+ * stax help - now accepts optional argument to show help only for one command
+ * --help is new global flag which you can call on any stax command you run
 
 0.10.3
  * stax rebase - now ceates folder structure for rebase file
