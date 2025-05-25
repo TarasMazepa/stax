@@ -10,9 +10,6 @@ class Git {
   late final branchCurrent = branch.arg('--show-current');
   late final branchDelete = branch.arg('-D');
   late final branchVv = branch.arg('-vv');
-  late final checkout = rawEc('git checkout');
-  late final checkoutDetach = checkout.arg('--detach');
-  late final checkoutNewBranch = checkout.arg('-b');
   late final clone = rawEc('git clone');
   late final commit = rawEc('git commit');
   late final commitAmendNoEdit = commit.args(['--amend', '--no-edit']);
@@ -47,6 +44,9 @@ class Git {
   late final showBranchSha1Name = showBranch.arg('--sha1-name');
   late final status = rawEc('git status');
   late final statusSb = status.arg('-sb');
+  late final switch0 = rawEc('git switch');
+  late final switchCreate = switch0.arg('--create');
+  late final switchDetach = switch0.arg('--detach');
 
   final Context context;
 

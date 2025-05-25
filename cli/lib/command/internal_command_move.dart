@@ -138,7 +138,7 @@ class InternalCommandMove extends InternalCommand {
       return;
     }
 
-    context.git.checkout
+    context.git.switch0
         .arg(target.line.branchNameOrCommitHash())
         .announce()
         .runSync()
