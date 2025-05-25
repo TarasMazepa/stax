@@ -28,15 +28,14 @@ class InternalCommandDelete extends InternalCommand {
       return;
     }
     context.fetchWithPrune();
-    final branchesToDelete =
-        context.git.branchVv
-            .announce('Checking if any remote branches are gone.')
-            .runSync()
-            .printNotEmptyResultFields()
-            .parseBranchInfo()
-            .where((e) => e.gone)
-            .map((e) => e.name)
-            .toList();
+    final branchesToDelete = context.git.branchVv
+        .announce('Checking if any remote branches are gone.')
+        .runSync()
+        .printNotEmptyResultFields()
+        .parseBranchInfo()
+        .where((e) => e.gone)
+        .map((e) => e.name)
+        .toList();
     if (branchesToDelete.isEmpty) {
       context.printToConsole('No local branches with gone remotes.');
       return;

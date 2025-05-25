@@ -7,8 +7,13 @@ import 'package:stax/settings/key_value_list_setting.dart';
 import 'package:stax/settings/setting.dart';
 
 class InternalCommandSettings extends InternalCommand {
-  static final availableSubCommands =
-      ['set', 'clear', 'show', 'add', 'remove'].sorted();
+  static final availableSubCommands = [
+    'set',
+    'clear',
+    'show',
+    'add',
+    'remove',
+  ].sorted();
   static final globalFlag = Flag(
     short: '-g',
     long: '--global',
@@ -30,8 +35,9 @@ class InternalCommandSettings extends InternalCommand {
 
   @override
   void run(final List<String> args, final Context context) {
-    final effectiveSettings =
-        globalFlag.hasFlag(args) ? context.settings : context.effectiveSettings;
+    final effectiveSettings = globalFlag.hasFlag(args)
+        ? context.settings
+        : context.effectiveSettings;
     late final List<Setting> availableSettings = <Setting>[
       effectiveSettings.additionallyPull,
       effectiveSettings.baseBranchReplacement,

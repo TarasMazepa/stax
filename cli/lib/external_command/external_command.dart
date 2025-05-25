@@ -38,10 +38,9 @@ class ExternalCommand {
   ExternalCommand announce([String? announcement]) {
     context.printToConsole('');
     if (announcement != null) context.printToConsole('# $announcement');
-    String path =
-        context.workingDirectory != null
-            ? '[${context.workingDirectory}] '
-            : '';
+    String path = context.workingDirectory != null
+        ? '[${context.workingDirectory}] '
+        : '';
     context.printToConsole('$path> ${toString()}');
     return this;
   }
