@@ -111,13 +111,12 @@ class InternalCommandCommit extends InternalCommand {
       );
     }
 
-    final newBranchCheckoutExitCode =
-        context.git.gitSwitchNewBranch
-            .arg(prefixedBranchName)
-            .announce('Creating new branch.')
-            .runSync()
-            .printNotEmptyResultFields()
-            .exitCode;
+    final newBranchCheckoutExitCode = context.git.gitSwitchNewBranch
+        .arg(prefixedBranchName)
+        .announce('Creating new branch.')
+        .runSync()
+        .printNotEmptyResultFields()
+        .exitCode;
     if (newBranchCheckoutExitCode != 0) {
       context.printParagraph(
         "Looks like we can't create new branch with '$prefixedBranchName' name. Please pick a different name.",

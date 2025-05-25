@@ -47,13 +47,12 @@ class InternalCommandPull extends InternalCommand {
     bool needToSwitchBranches = currentBranch != defaultBranch;
     ExtendedProcessResult? result;
     if (needToSwitchBranches) {
-      result =
-          context.git.gitSwitch
-              .arg(defaultBranch)
-              .announce("Switching to default branch '$defaultBranch'.")
-              .runSync()
-              .printNotEmptyResultFields()
-              .assertSuccessfulExitCode();
+      result = context.git.gitSwitch
+          .arg(defaultBranch)
+          .announce("Switching to default branch '$defaultBranch'.")
+          .runSync()
+          .printNotEmptyResultFields()
+          .assertSuccessfulExitCode();
       if (result == null) return;
     }
     result = context.git.pull

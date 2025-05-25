@@ -55,13 +55,12 @@ class InternalCommandGet extends InternalCommand {
     for (String branch in targetNode.remoteBranchNamesInOrderForCheckout().map(
       (x) => x.substring(x.indexOf('/') + 1),
     )) {
-      final exists =
-          context.git.revParseVerify
-              .arg(branch)
-              .announce()
-              .runSync()
-              .printNotEmptyResultFields()
-              .isSuccess();
+      final exists = context.git.revParseVerify
+          .arg(branch)
+          .announce()
+          .runSync()
+          .printNotEmptyResultFields()
+          .isSuccess();
       context.git.gitSwitch
           .arg(branch)
           .announce()
