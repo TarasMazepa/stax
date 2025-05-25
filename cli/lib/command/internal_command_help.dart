@@ -64,7 +64,7 @@ class InternalCommandHelp extends InternalCommand {
         _ when singleCommand => element.name == selectedCommand,
         _ when showAll => true,
         _ => element.type == InternalCommandType.public,
-      }
+      },
     );
     printFlags(context, 'Global flags', ContextHandleGlobalFlags.flags, '');
     if (!singleCommand) {
