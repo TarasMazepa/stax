@@ -1,32 +1,35 @@
+import 'package:stax/command/flag.dart';
 import 'package:stax/context/context.dart';
 
 extension ContextHandleGlobalFlags on Context {
-  static final _silentFlag = '--silent';
-  static final _loudFlag = '--loud';
-  static final _acceptAllFlag = '--accept-all';
-  static final _declineAllFlag = '--decline-all';
+  static final silentFlag = Flag(
+    long: '--silent',
+    description: 'Removes all output except user prompts.',
+  );
+  static final loudFlag = Flag(
+    long: '--loud',
+    description: 'Force all the output.',
+  );
+  static final acceptAllFlag = Flag(
+    long: '--accept-all',
+    description: 'Accept all the user prompts automatically.',
+  );
+  static final declineAllFlag = Flag(
+    long: '--decline-all',
+    description: 'Decline all the user prompts automatically.',
+  );
 
-  static Map<String, String> get flags => {
-    _silentFlag: 'Removes all output except user prompts.',
-    _loudFlag: 'Force all the output.',
-    _acceptAllFlag: 'Accept all the user prompts automatically.',
-    _declineAllFlag: 'Decline all the user prompts automatically.',
-  };
+  static final List<Flag> flags = [
+    silentFlag,
+    loudFlag,
+    acceptAllFlag,
+    declineAllFlag,
+  ];
 
   Context handleGlobalFlags(List<String> args) {
-    Context result = this;
-    if (args.remove(_silentFlag)) {
-      result = result.withSilence(true);
-    }
-    if (args.remove(_loudFlag)) {
-      result = result.withForcedLoudness(true);
-    }
-    if (args.remove(_acceptAllFlag)) {
-      result = result.withAcceptingAll(true);
-    }
-    if (args.remove(_declineAllFlag)) {
-      result = result.withDecliningAll(true);
-    }
-    return result;
+    return withSilence(silentFlag.hasFlag(args))
+        .withForcedLoudness(loudFlag.hasFlag(args))
+        .withAcceptingAll(acceptAllFlag.hasFlag(args))
+        .withDecliningAll(declineAllFlag.hasFlag(args));
   }
 }
