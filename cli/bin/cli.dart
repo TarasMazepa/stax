@@ -39,6 +39,10 @@ void main(List<String> arguments) {
         );
         return;
       }
-      command.run(args, context);
+      if (context.hasHelpFlag(args)) {
+        InternalCommandHelp().run([command.name], context);
+      } else {
+        command.run(args, context);
+      }
   }
 }
