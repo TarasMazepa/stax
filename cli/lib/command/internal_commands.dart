@@ -1,4 +1,5 @@
 import 'package:stax/command/internal_command.dart';
+import 'package:stax/command/internal_command_about.dart';
 import 'package:stax/command/internal_command_amend.dart';
 import 'package:stax/command/internal_command_commit.dart';
 import 'package:stax/command/internal_command_delete.dart';
@@ -19,6 +20,7 @@ import 'package:stax/command/internal_command_update_prompt.dart';
 import 'package:stax/command/internal_command_version.dart';
 
 final List<InternalCommand> internalCommands = [
+  InternalCommandAbout(),
   InternalCommandAmend(),
   InternalCommandCommit(),
   InternalCommandDelete(),
