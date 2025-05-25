@@ -6,7 +6,8 @@ class InternalCommandAbout extends InternalCommand {
 
   @override
   void run(final List<String> args, Context context) {
-    context.printToConsole('''
+    context.printToConsole(
+      '''
 stax - manage git branches and stack PRs
 
 For more information, visit: https://staxforgit.com/
@@ -27,6 +28,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 https://github.com/TarasMazepa/stax/blob/main/LICENSE
-'''.trim());
+'''
+          .trim(),
+    );
   }
 }
