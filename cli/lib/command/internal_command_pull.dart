@@ -1,5 +1,4 @@
 import 'package:stax/command/internal_command.dart';
-import 'package:stax/command/internal_command_delete.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
@@ -15,10 +14,6 @@ class InternalCommandPull extends InternalCommand {
         arguments: {
           'opt1': 'Optional target branch, will default to <remote>/HEAD',
         },
-        flags: [
-          InternalCommandDelete.skipDeleteFlag,
-          InternalCommandDelete.forceDeleteFlag,
-        ],
       );
 
   @override
@@ -26,12 +21,7 @@ class InternalCommandPull extends InternalCommand {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }
-    final hasSkipDeleteFlag = InternalCommandDelete.skipDeleteFlag.hasFlag(
-      args,
-    );
-    final hasForceDeleteFlag = InternalCommandDelete.forceDeleteFlag.hasFlag(
-      args,
-    );
+
     final currentBranch = context.getCurrentBranch();
     final targetBranch = args.elementAtOrNull(0);
     final defaultBranch = targetBranch ?? context.getDefaultBranch();
@@ -47,19 +37,21 @@ class InternalCommandPull extends InternalCommand {
     bool needToSwitchBranches = currentBranch != defaultBranch;
     ExtendedProcessResult? result;
     if (needToSwitchBranches) {
-      result = context.git.switch0
-          .arg(defaultBranch)
-          .announce("Switching to default branch '$defaultBranch'.")
-          .runSync()
-          .printNotEmptyResultFields()
-          .assertSuccessfulExitCode();
+      result =
+          context.git.checkout
+              .arg(defaultBranch)
+              .announce("Switching to default branch '$defaultBranch'.")
+              .runSync()
+              .printNotEmptyResultFields()
+              .assertSuccessfulExitCode();
       if (result == null) return;
     }
-    result = context.git.pull
-        .announce('Pulling new changes.')
-        .runSync()
-        .printNotEmptyResultFields()
-        .assertSuccessfulExitCode();
+    result =
+        context.git.pullPrune
+            .announce('Pulling new changes.')
+            .runSync()
+            .printNotEmptyResultFields()
+            .assertSuccessfulExitCode();
     if (result == null) {
       if (needToSwitchBranches && currentBranch != null) {
         context.git.switch0
@@ -79,17 +71,12 @@ class InternalCommandPull extends InternalCommand {
             .runSync()
             .printNotEmptyResultFields();
 
-        context.git.pull
+        context.git.pullPrune
             .announce("Pulling changes for branch '$branch'.")
             .runSync()
             .printNotEmptyResultFields();
       }
     }
-
-    InternalCommandDelete().run([
-      if (hasSkipDeleteFlag) InternalCommandDelete.skipDeleteFlag.shortOrLong,
-      if (hasForceDeleteFlag) InternalCommandDelete.forceDeleteFlag.shortOrLong,
-    ], context);
 
     if ((needToSwitchBranches || additionalBranches.isNotEmpty) &&
         currentBranch != null) {
