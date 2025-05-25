@@ -28,16 +28,21 @@ class InternalCommandHelp extends InternalCommand {
     }
   }
 
-  void printIndentedSorted(
+  void printFlags(
     Context context,
     String header,
-    Iterable<MapEntry<String, String>>? entries,
+    List<Flag>? flags,
     String indent,
   ) {
     printIndented(
       context,
       header,
-      entries?.sortedBy((x) => x.key.replaceAll('-', '')),
+      flags
+          ?.map(
+            (e) =>
+                MapEntry([e.short, e.long].nonNulls.join(', '), e.description),
+          )
+          .sortedBy((x) => x.key.replaceAll('-', '')),
       indent,
     );
   }
@@ -48,12 +53,7 @@ class InternalCommandHelp extends InternalCommand {
     final commandsToShow = internalCommands.where(
       (element) => showAll || element.type == InternalCommandType.public,
     );
-    printIndentedSorted(
-      context,
-      'Global flags',
-      ContextHandleGlobalFlags.flags.entries,
-      '',
-    );
+    printFlags(context, 'Global flags', ContextHandleGlobalFlags.flags, '');
     context.printToConsole('Here are available commands:');
     context.printToConsole(
       "Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.",
@@ -69,14 +69,7 @@ class InternalCommandHelp extends InternalCommand {
         element.arguments?.entries.toList(),
         '      ',
       );
-      printIndentedSorted(
-        context,
-        'Flags',
-        element.flags?.map(
-          (e) => MapEntry([e.short, e.long].nonNulls.join(', '), e.description),
-        ),
-        '      ',
-      );
+      printFlags(context, 'Flags', element.flags, '      ');
     }
   }
 }
