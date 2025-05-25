@@ -1,7 +1,6 @@
 import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/context/context.dart';
-import 'package:stax/context/context_git_fetch_with_prune.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/git/branch_info.dart';
 
@@ -27,7 +26,10 @@ class InternalCommandDelete extends InternalCommand {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }
-    context.fetchWithPrune();
+    context.git.fetchWithPrune
+        .announce('Fetching latest changes from remote.')
+        .runSync()
+        .printNotEmptyResultFields();
     final branchesToDelete = context.git.branchVv
         .announce('Checking if any remote branches are gone.')
         .runSync()

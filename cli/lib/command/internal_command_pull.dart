@@ -48,7 +48,7 @@ class InternalCommandPull extends InternalCommand {
     bool needToSwitchBranches = currentBranch != defaultBranch;
     ExtendedProcessResult? result;
     if (needToSwitchBranches) {
-      result = context.git.checkout
+      result = context.git.switch0
           .arg(defaultBranch)
           .announce("Switching to default branch '$defaultBranch'.")
           .runSync()
@@ -56,7 +56,7 @@ class InternalCommandPull extends InternalCommand {
           .assertSuccessfulExitCode();
       if (result == null) return;
     }
-    result = context.git.pull
+    result = context.git.pullPrune
         .announce('Pulling new changes.')
         .runSync()
         .printNotEmptyResultFields()
@@ -80,7 +80,7 @@ class InternalCommandPull extends InternalCommand {
             .runSync()
             .printNotEmptyResultFields();
 
-        context.git.pull
+        context.git.pullPrune
             .announce("Pulling changes for branch '$branch'.")
             .runSync()
             .printNotEmptyResultFields();
