@@ -57,9 +57,6 @@ Note: you can type first letter or couple of first letters instead of full comma
  • pull, p - Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
       Positional arguments:
          opt1 - Optional target branch, will default to <remote>/HEAD
-      Flags:
-         -f - Force delete gone branches.
-         -s - Skip deletion of gone branches.
  • pull-request, pr - Creates a pull request.
  • rebase - rebase tree of branches on top of main
       Positional arguments:
