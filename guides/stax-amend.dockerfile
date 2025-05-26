@@ -1,4 +1,4 @@
-FROM taras0mazepa/stax-guide-base:0.10.2
+FROM taras0mazepa/stax-guide-base:0.10.4
 
 RUN touch README.md
 RUN git add README.md

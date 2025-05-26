@@ -1,4 +1,4 @@
-FROM taras0mazepa/stax-guide-base:0.10.3
+FROM taras0mazepa/stax-guide-base:0.10.4
 
 RUN touch LICENSE.md
 RUN git add LICENSE.md
