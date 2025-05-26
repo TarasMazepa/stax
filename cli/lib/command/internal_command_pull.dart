@@ -5,6 +5,7 @@ import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/external_command/extended_process_result.dart';
+import 'package:stax/git/branch_info.dart';
 
 class InternalCommandPull extends InternalCommand {
   InternalCommandPull()
@@ -55,7 +56,7 @@ class InternalCommandPull extends InternalCommand {
           .assertSuccessfulExitCode();
       if (result == null) return;
     }
-    result = context.git.pull
+    result = context.git.pullPrune
         .announce('Pulling new changes.')
         .runSync()
         .printNotEmptyResultFields()
@@ -79,17 +80,35 @@ class InternalCommandPull extends InternalCommand {
             .runSync()
             .printNotEmptyResultFields();
 
-        context.git.pull
+        context.git.pullPrune
             .announce("Pulling changes for branch '$branch'.")
             .runSync()
             .printNotEmptyResultFields();
       }
     }
 
-    InternalCommandDelete().run([
-      if (hasSkipDeleteFlag) InternalCommandDelete.skipDeleteFlag.shortOrLong,
-      if (hasForceDeleteFlag) InternalCommandDelete.forceDeleteFlag.shortOrLong,
-    ], context);
+    final branchesToDelete = context.git.branchVv
+        .announce('Checking if any remote branches are gone.')
+        .runSync()
+        .printNotEmptyResultFields()
+        .parseBranchInfo()
+        .where((e) => e.gone)
+        .map((e) => e.name)
+        .toList();
+    if (branchesToDelete.isEmpty) {
+      context.printToConsole('No local branches with gone remotes.');
+      return;
+    }
+    context.git.branchDelete
+        .args(branchesToDelete)
+        .askContinueQuestion(
+          "Local branches with gone remotes that would be deleted:\n${branchesToDelete.map((e) => "   • $e").join("\n")}\n",
+          assumeYes: hasForceDeleteFlag,
+          assumeNo: hasSkipDeleteFlag,
+        )
+        ?.announce('Deleting branches.')
+        .runSync()
+        .printNotEmptyResultFields();
 
     if ((needToSwitchBranches || additionalBranches.isNotEmpty) &&
         currentBranch != null) {
