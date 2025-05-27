@@ -1,4 +1,4 @@
-FROM taras0mazepa/stax-guide-base:0.10.4
+FROM taras0mazepa/stax-guide-base:0.10.5
 
 RUN touch auth.md
 RUN stax c -ab "feature auth"

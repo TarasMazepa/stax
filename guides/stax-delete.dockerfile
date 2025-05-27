@@ -1,4 +1,4 @@
-FROM taras0mazepa/stax-guide-base:0.10.4
+FROM taras0mazepa/stax-guide-base:0.10.5
 
 RUN touch login-page.txt
 RUN stax commit -ab "login page refactor"
