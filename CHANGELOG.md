@@ -1,3 +1,6 @@
+0.10.5
+ * stax pull - fix that stax will not return to a previous branch if there is no gone branches to delete
+
 0.10.4
  * stax pull-request - will honor base branch replacement setting
  * stax commit - will come back to original branch even if user haven't used Pull Request creation flag
