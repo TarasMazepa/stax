@@ -18,12 +18,13 @@ import 'package:stax/context/context_open_in_browser.dart';
 class InternalCommandCommit extends InternalCommand {
   static final prFlag = Flag(
     short: '-p',
-    long: '--pr',
+    long: '--pull-request',
     description:
         'Opens PR creation page on your remote. Works only if you have GitHub as your remote.',
   );
   static final branchNameFlag = Flag(
     short: '-b',
+    long: '--branch-from-commit',
     description:
         'Accepts branch name proposed by converting commit name to branch name.',
   );

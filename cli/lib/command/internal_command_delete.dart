@@ -7,10 +7,12 @@ import 'package:stax/git/branch_info.dart';
 class InternalCommandDelete extends InternalCommand {
   static final forceDeleteFlag = Flag(
     short: '-f',
+    long: '--force-delete',
     description: 'Force delete gone branches.',
   );
   static final skipDeleteFlag = Flag(
     short: '-s',
+    long: '--skip-delete',
     description: 'Skip deletion of gone branches.',
   );
 

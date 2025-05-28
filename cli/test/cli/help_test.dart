@@ -30,14 +30,14 @@ Note: you can type first letter or couple of first letters instead of full comma
       Flags:
          -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
          -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
-         -b - Accepts branch name proposed by converting commit name to branch name.
+         -b, --branch-from-commit - Accepts branch name proposed by converting commit name to branch name.
          -i, --ignore-no-staged-changes - Skips check if there staged changes, helpful when your change is only rename of the file which stax can't see at the moment.
-         -p, --pr - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
+         -p, --pull-request - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
          -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
  • delete - Deletes local branches with gone remotes.
       Flags:
-         -f - Force delete gone branches.
-         -s - Skip deletion of gone branches.
+         -f, --force-delete - Force delete gone branches.
+         -s, --skip-delete - Skip deletion of gone branches.
  • doctor - Helps to ensure that stax has everything to be used.
  • get - (Re)Checkout specified branch and all its children
       Positional arguments:
@@ -46,10 +46,10 @@ Note: you can type first letter or couple of first letters instead of full comma
       Positional arguments:
          opt1 - Optional name of the command you want to learn about
       Flags:
-         -a - Show all commands including hidden.
+         -a, --show-all - Show all commands including hidden.
  • log - Shows a tree of all branches.
       Flags:
-         -a, --all - show remote branches also
+         -a, --all-branches - show remote branches also
          -d, --default-branch - assume different default branch
  • move - Allows you to move around log tree. Note: you can type any amount of first letters to specify direction. 'h' instead of 'head', 't' for 'top, 'd' for down, 'u' for 'up', 'b' for 'bottom'
       Positional arguments:
@@ -58,8 +58,8 @@ Note: you can type first letter or couple of first letters instead of full comma
       Positional arguments:
          opt1 - Optional target branch, will default to <remote>/HEAD
       Flags:
-         -f - Force delete gone branches.
-         -s - Skip deletion of gone branches.
+         -f, --force-delete - Force delete gone branches.
+         -s, --skip-delete - Skip deletion of gone branches.
  • pull-request, pr - Creates a pull request.
  • rebase - rebase tree of branches on top of main
       Positional arguments:
