@@ -1,3 +1,6 @@
+0.10.6
+ * flags now have verbose versions 
+
 0.10.5
  * stax pull - fix that stax will not return to a previous branch if there is no gone branches to delete
 
