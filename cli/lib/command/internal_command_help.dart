@@ -9,6 +9,7 @@ import 'package:stax/context/context_handle_global_flags.dart';
 class InternalCommandHelp extends InternalCommand {
   static final showAllFlag = Flag(
     short: '-a',
+    long: '--show-all',
     description: 'Show all commands including hidden.',
   );
 

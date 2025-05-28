@@ -14,7 +14,7 @@ class InternalCommandLog extends InternalCommand {
   );
   static final Flag allBranchesFlag = Flag(
     short: '-a',
-    long: '--all',
+    long: '--all-branches',
     description: 'show remote branches also',
   );
 
