@@ -1,32 +1,32 @@
 FROM taras0mazepa/stax-guide-base:0.10.5
 
-RUN touch login-page.txt
-RUN stax commit -ab "login page refactor"
-RUN touch button.txt
-RUN stax commit -ab "new button component"
-RUN touch registration.txt
-RUN stax commit -ab "registration form"
-RUN touch old-ui.txt
-RUN stax commit -ab "outdated ui design"
-RUN git checkout main
+RUN <<EOF
+touch login-page.txt
+stax commit -ab "login page refactor"
+touch button.txt
+stax commit -ab "new button component"
+touch registration.txt
+stax commit -ab "registration form"
+touch old-ui.txt
+stax commit -ab "outdated ui design"
+git checkout main
 
-RUN git checkout main
-RUN touch LICENSE.md
-RUN git add LICENSE.md
-RUN git commit -m "Adds LICENSE.md"
-RUN git push
+git checkout main
+touch LICENSE.md
+git add LICENSE.md
+git commit -m "Adds LICENSE.md"
+git push
 
-WORKDIR /home/stax/origin
-RUN git branch -D registration-form outdated-ui-design
+cd /home/stax/origin
+git branch -D registration-form outdated-ui-design
 
-RUN echo 'echo -e "\n===== stax delete demo =====\n"' > /home/stax/.bashrc
-RUN echo 'echo "This demo has following branches:"' >> /home/stax/.bashrc
-RUN echo 'echo -e "\n * login-page-refactor and new-button-component - branches with their remotes in tact"' >> /home/stax/.bashrc
-RUN echo 'echo " * registration-form and outdated-ui-design - branches whose remote counterparts were deleted (gone)"' >> /home/stax/.bashrc
-RUN echo 'echo -e "Run \"stax delete\" to see and cleanup local branches. Try out \"-f\" flag too!\n"' >> /home/stax/.bashrc
-RUN echo 'cd /home/stax/repo' >> /home/stax/.bashrc
+echo 'echo -e "\n===== stax delete demo =====\n"' > /home/stax/.bashrc
+echo 'echo "This demo has following branches:"' >> /home/stax/.bashrc
+echo 'echo " * login-page-refactor and new-button-component - branches with their remotes in tact"' >> /home/stax/.bashrc
+echo 'echo " * registration-form and outdated-ui-design - branches whose remote counterparts were deleted (gone)"' >> /home/stax/.bashrc
+echo 'echo -e "Run \"stax delete\" to see and cleanup local branches. Try out \"-f\" flag too!\n"' >> /home/stax/.bashrc
+cd /home/stax/repo
+git fetch -p
+EOF
 
 ENV ENV=/home/stax/.bashrc
-
-WORKDIR /home/stax/repo
-RUN git fetch -p

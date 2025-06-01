@@ -1,22 +1,26 @@
 FROM taras0mazepa/stax:0.10.5
 
-RUN mkdir -p /home/stax/origin /home/stax/repo /home/stax/setup
+RUN <<EOF
+mkdir -p /home/stax/origin /home/stax/repo /home/stax/setup
 
-RUN git config --global user.email "stax@staxforgit.com"
-RUN git config --global user.name "stax"
-RUN git config --global init.defaultBranch main
-RUN git config --global push.autoSetupRemote true
+git config --global user.email "stax@staxforgit.com"
+git config --global user.name "stax"
+git config --global init.defaultBranch main
+git config --global push.autoSetupRemote true
 
-WORKDIR /home/stax/origin
-RUN git init --bare
+cd /home/stax/origin
+git init --bare
 
-WORKDIR /home/stax/setup
-RUN git clone /home/stax/origin .
-RUN touch CONTRIBUTORS.md
-RUN git add CONTRIBUTORS.md
-RUN git commit -m "Initial commit"
-RUN git push
+cd /home/stax/setup
+git clone /home/stax/origin .
+touch CONTRIBUTORS.md
+git add CONTRIBUTORS.md
+git commit -m "Initial commit"
+git push
+
+cd /home/stax/repo
+rm -rf /home/stax/setup
+git clone /home/stax/origin .
+EOF
 
 WORKDIR /home/stax/repo
-RUN rm -rf /home/stax/setup
-RUN git clone /home/stax/origin .
