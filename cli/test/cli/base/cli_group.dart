@@ -14,7 +14,6 @@ void cliGroup(
   Map<String, dynamic>? onPlatform,
   int? retry,
   bool bundle = false,
-  @Deprecated('Debug only') bool solo = false,
 }) {
   final CliTestSetup setup = CliTestSetup.create(bundle);
   group(
