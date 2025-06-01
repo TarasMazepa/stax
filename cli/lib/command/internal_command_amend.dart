@@ -33,6 +33,7 @@ class InternalCommandAmend extends InternalCommand {
     : super(
         'amend',
         'Amends and pushes changes.',
+        shortName: 'a',
         flags: [
           ...ContextHandleAddAllFlag.flags,
           rebaseFlag,

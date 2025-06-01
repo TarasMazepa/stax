@@ -15,7 +15,7 @@ void main() {
 Here are available commands:
 Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.
  • about - Shows information about the stax.
- • amend - Amends and pushes changes.
+ • amend, a - Amends and pushes changes.
       Flags:
          -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
          -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
