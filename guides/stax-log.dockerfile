@@ -1,26 +1,28 @@
 FROM taras0mazepa/stax-guide-base:0.10.5
 
-RUN touch auth.md
-RUN stax c -ab "feature auth"
+RUN <<EOF
+touch auth.md
+stax c -ab "feature auth"
 
-RUN touch auth.js
-RUN stax c -ab "feature password reset"
+touch auth.js
+stax c -ab "feature password reset"
 
-RUN git checkout main
-RUN touch ui.md
-RUN stax c -ab "feature ui"
+git checkout main
+touch ui.md
+stax c -ab "feature ui"
 
-RUN touch styles.css
-RUN stax c -ab "feature dark theme"
+touch styles.css
+stax c -ab "feature dark theme"
 
-RUN git checkout feature-ui
-RUN touch styles.css
-RUN stax c -ab "feature responsive"
+git checkout feature-ui
+touch styles.css
+stax c -ab "feature responsive"
 
-RUN git checkout main
-RUN touch LICENSE.md
-RUN git add LICENSE.md
-RUN git commit -m "Adds LICENSE.md"
-RUN git push
+git checkout main
+touch LICENSE.md
+git add LICENSE.md
+git commit -m "Adds LICENSE.md"
+git push
+EOF
 
 ENV ENV=/home/stax/.bashrc

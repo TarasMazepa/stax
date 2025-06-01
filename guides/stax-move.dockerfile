@@ -1,83 +1,86 @@
 FROM taras0mazepa/stax-guide-base:0.10.5
 
-RUN touch LICENSE.md
-RUN git add LICENSE.md
-RUN git commit -m "Adds LICENSE.md"
-RUN git push
+RUN <<EOF
+touch LICENSE.md
+git add LICENSE.md
+git commit -m "Adds LICENSE.md"
+git push
 
-RUN git checkout -b login-feature
-RUN touch login-page.txt
-RUN git add login-page.txt
-RUN git commit -m "Add login page"
-RUN git push -u origin login-feature
+git checkout -b login-feature
+touch login-page.txt
+git add login-page.txt
+git commit -m "Add login page"
+git push -u origin login-feature
 
-RUN git checkout -b remember-password-feature
-RUN touch remember-password.txt
-RUN git add remember-password.txt
-RUN git commit -m "Add remember password functionality"
-RUN git push -u origin remember-password-feature
+git checkout -b remember-password-feature
+touch remember-password.txt
+git add remember-password.txt
+git commit -m "Add remember password functionality"
+git push -u origin remember-password-feature
 
-RUN git checkout -b registration-feature
-RUN touch registration.txt
-RUN git add registration.txt
-RUN git commit -m "Add registration form"
-RUN git push -u origin registration-feature
+git checkout -b registration-feature
+touch registration.txt
+git add registration.txt
+git commit -m "Add registration form"
+git push -u origin registration-feature
 
-RUN git checkout -b ui-feature
-RUN touch ui-update.txt
-RUN git add ui-update.txt
-RUN git commit -m "Update UI design"
-RUN git push -u origin ui-feature
+git checkout -b ui-feature
+touch ui-update.txt
+git add ui-update.txt
+git commit -m "Update UI design"
+git push -u origin ui-feature
 
-RUN git checkout -b dark-theme-feature
-RUN touch dark-theme.txt
-RUN git add dark-theme.txt
-RUN git commit -m "Add dark theme support"
-RUN git push -u origin dark-theme-feature
+git checkout -b dark-theme-feature
+touch dark-theme.txt
+git add dark-theme.txt
+git commit -m "Add dark theme support"
+git push -u origin dark-theme-feature
 
-RUN mkdir -p /home/stax/second-repo
-WORKDIR /home/stax/second-repo
-RUN git clone /home/stax/origin .
+mkdir -p /home/stax/second-repo
+cd /home/stax/second-repo
+git clone /home/stax/origin .
 
-RUN touch login-page.txt
-RUN git add login-page.txt
-RUN git commit -m "login page"
-RUN git push
+touch login-page.txt
+git add login-page.txt
+git commit -m "login page"
+git push
 
-RUN git checkout login-feature
-RUN echo "Added login validation" >> login-page.txt
-RUN git add login-page.txt
-RUN git commit -m "Add login validation"
-RUN git push
+git checkout login-feature
+echo "Added login validation" >> login-page.txt
+git add login-page.txt
+git commit -m "Add login validation"
+git push
 
-RUN git checkout remember-password-feature  
-RUN echo "Added password encryption" >> remember-password.txt
-RUN git add remember-password.txt && git commit -m "Add password encryption" && git push
+git checkout remember-password-feature
+echo "Added password encryption" >> remember-password.txt
+git add remember-password.txt && git commit -m "Add password encryption" && git push
 
-RUN git checkout registration-feature
-RUN echo "Added email validation" >> registration.txt
-RUN git add registration.txt && git commit -m "Add email validation" && git push
+git checkout registration-feature
+echo "Added email validation" >> registration.txt
+git add registration.txt && git commit -m "Add email validation" && git push
 
-RUN git checkout ui-feature
-RUN echo "Updated button styles" >> ui-update.txt
-RUN git add ui-update.txt && git commit -m "Update button styles" && git push
+git checkout ui-feature
+echo "Updated button styles" >> ui-update.txt
+git add ui-update.txt && git commit -m "Update button styles" && git push
 
-RUN git checkout dark-theme-feature
-RUN echo "Added theme switcher" >> dark-theme.txt
-RUN git add dark-theme.txt && git commit -m "Add theme switcher" && git push
+git checkout dark-theme-feature
+echo "Added theme switcher" >> dark-theme.txt
+git add dark-theme.txt && git commit -m "Add theme switcher" && git push
 
-WORKDIR /home/stax/repo
-RUN git fetch && git checkout ui-feature
+cd /home/stax/repo
+git fetch
+git checkout ui-feature
 
-RUN echo 'echo -e "\n===== stax move demo =====\n"' > /home/stax/.bashrc
-RUN echo 'echo "This demo shows how to use stax move command:"' >> /home/stax/.bashrc
-RUN echo 'echo -e "\nstax move <direction> [child-index] - Move around the git log tree"' >> /home/stax/.bashrc
-RUN echo 'echo " * up (u) - Move one commit up. Optional child-index (0-based) to select which child to move to"' >> /home/stax/.bashrc
-RUN echo 'echo " * down (d) - Move one commit down"' >> /home/stax/.bashrc
-RUN echo 'echo " * top (t) - Move to closest parent with multiple children or topmost node. Optional child-index"' >> /home/stax/.bashrc
-RUN echo 'echo " * bottom (b) - Move to closest parent with multiple children or bottom node"' >> /home/stax/.bashrc
-RUN echo 'echo " * head (h) - Move to remote HEAD"' >> /home/stax/.bashrc
-RUN echo 'echo "Try moving up the tree by running \"stax move up\" or \"stax move u\"\n"' >> /home/stax/.bashrc
-RUN echo 'cd /home/stax/repo' >> /home/stax/.bashrc
+echo 'echo -e "\n===== stax move demo =====\n"' > /home/stax/.bashrc
+echo 'echo "This demo shows how to use stax move command:"' >> /home/stax/.bashrc
+echo 'echo -e "\nstax move <direction> [child-index] - Move around the git log tree"' >> /home/stax/.bashrc
+echo 'echo " * up (u) - Move one commit up. Optional child-index (0-based) to select which child to move to"' >> /home/stax/.bashrc
+echo 'echo " * down (d) - Move one commit down"' >> /home/stax/.bashrc
+echo 'echo " * top (t) - Move to closest parent with multiple children or topmost node. Optional child-index"' >> /home/stax/.bashrc
+echo 'echo " * bottom (b) - Move to closest parent with multiple children or bottom node"' >> /home/stax/.bashrc
+echo 'echo " * head (h) - Move to remote HEAD"' >> /home/stax/.bashrc
+echo 'echo -e "Try moving up the tree by running \"stax move up\" or \"stax move u\"\n"' >> /home/stax/.bashrc
+echo 'cd /home/stax/repo' >> /home/stax/.bashrc
+EOF
 
 ENV ENV=/home/stax/.bashrc
