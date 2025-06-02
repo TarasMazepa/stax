@@ -5,6 +5,8 @@ import 'dart:math';
 import 'package:stax/context/context.dart';
 import 'package:stax/file/file_system_entity_delete_sync_silently.dart';
 
+import '../../test_file_original_path.dart';
+
 class CliTestSetup {
   static final random = Random(DateTime.now().microsecondsSinceEpoch);
   final String testFile;
@@ -20,13 +22,7 @@ class CliTestSetup {
   );
 
   factory CliTestSetup.create(bool bundle) {
-    final stackTraceLine = StackTrace.current.toString().split('\n')[2];
-    final left = stackTraceLine.indexOf('(') + 1;
-    final right = stackTraceLine.lastIndexOf(
-      ':',
-      stackTraceLine.lastIndexOf(':') - 1,
-    );
-    final uri = Uri.parse(stackTraceLine.substring(left, right));
+    final uri = Uri.parse(assertTestFileOriginalPath());
     final fileName = uri.toFilePath();
     final repoRoot = uri.replace(
       path: uri.path.substring(0, uri.path.indexOf('/cli/test/cli/')),
