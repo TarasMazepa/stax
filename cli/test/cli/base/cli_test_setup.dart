@@ -22,7 +22,7 @@ class CliTestSetup {
   );
 
   factory CliTestSetup.create(bool bundle) {
-    final uri = Uri.parse(assertTestFileOriginalPath());
+    final uri = Uri.parse(assertTestFileUriString());
     final fileName = uri.toFilePath();
     final repoRoot = uri.replace(
       path: uri.path.substring(0, uri.path.indexOf('/cli/test/cli/')),
