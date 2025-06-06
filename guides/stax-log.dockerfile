@@ -23,6 +23,8 @@ touch LICENSE.md
 git add LICENSE.md
 git commit -m "Adds LICENSE.md"
 git push
+
+echo 'echo -e "\n===== stax log demo =====\n"' > /home/stax/.bashrc
 EOF
 
 ENV ENV=/home/stax/.bashrc
