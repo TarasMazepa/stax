@@ -1,6 +1,7 @@
 0.10.6
  * flags now have verbose versions
  * stax amend - gets short name 'a'
+ * stax move - fix case when move can't navigate to detached commits
 
 0.10.5
  * stax pull - fix that stax will not return to a previous branch if there is no gone branches to delete

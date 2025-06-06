@@ -138,10 +138,19 @@ class InternalCommandMove extends InternalCommand {
       return;
     }
 
-    context.git.switch0
-        .arg(target.line.branchNameOrCommitHash())
-        .announce()
-        .runSync()
-        .printNotEmptyResultFields();
+    final branchName = target.line.branchName();
+    if (branchName != null) {
+      context.git.switch0
+          .arg(branchName)
+          .announce()
+          .runSync()
+          .printNotEmptyResultFields();
+    } else {
+      context.git.switchDetach
+          .arg(target.line.commitHash)
+          .announce()
+          .runSync()
+          .printNotEmptyResultFields();
+    }
   }
 }
