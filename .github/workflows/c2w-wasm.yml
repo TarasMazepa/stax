@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install container2wasm
         run: |
-          wget https://github.com/container2wasm/container2wasm/releases/download/v0.8.0/container2wasm-v0.8.0-linux-amd64.tar.gz
+          wget https://github.com/container2wasm/container2wasm/releases/download/v0.8.2/container2wasm-v0.8.0-linux-amd64.tar.gz
           tar -xvf container2wasm-v0.8.0-linux-amd64.tar.gz
           sudo mv c2w /usr/local/bin/
       - run: mkdir -p ./guides/web/containers
