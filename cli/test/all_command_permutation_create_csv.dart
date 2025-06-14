@@ -4,10 +4,10 @@ void main() {
   // Create CSV file
   final file = File('command_permutations.csv');
   final sink = file.openWrite();
-  
+
   // Write CSV header
   sink.writeln('command,flags,arguments,description,full_command');
-  
+
   final staxCommands = [
     {
       'name': 'about',
@@ -75,7 +75,7 @@ void main() {
     },
     {
       'name': 'log',
-      'flags': ['-a','-d',],
+      'flags': ['-a', '-d'],
       'description': 'Shows a tree of all branches.',
     },
     {
@@ -98,7 +98,7 @@ void main() {
     },
     {
       'name': 'pull',
-      'flags': ['-f',  '-s'],
+      'flags': ['-f', '-s'],
       'args': [
         {
           'required': false,
@@ -107,7 +107,8 @@ void main() {
           'type': 'string',
         },
       ],
-      'description': 'Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.',
+      'description':
+          'Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.',
     },
     {
       'name': 'pull-request',
@@ -116,7 +117,7 @@ void main() {
     },
     {
       'name': 'rebase',
-      'flags': ['-a', '-b',  '-c', '-m'],
+      'flags': ['-a', '-b', '-c', '-m'],
       'args': [
         {
           'required': false,
@@ -152,11 +153,7 @@ void main() {
       ],
       'description': 'View or modify stax settings',
     },
-    {
-      'name': 'version',
-      'flags': [],
-      'description': 'Version of stax',
-    },
+    {'name': 'version', 'flags': [], 'description': 'Version of stax'},
   ];
 
   for (final command in staxCommands) {
@@ -177,7 +174,7 @@ void main() {
       // Sort flags to ensure consistent order in output
       final sortedFlags = combo.toList()..sort();
       final flagString = sortedFlags.join(' ');
-      
+
       for (final optCombo in optionalArgCombos) {
         // Build argument string: required + this optional combo
         final allArgs = [...requiredArgs, ...optCombo];
@@ -194,24 +191,30 @@ void main() {
                   })
                   .join(' ')
             : '';
-        
+
         // Create full command string
-        final fullCommand = 'stax $commandName'
+        final fullCommand =
+            'stax $commandName'
             '${flagString.isNotEmpty ? ' ' + flagString : ''}'
             '${argString.isNotEmpty ? ' ' + argString : ''}';
-        
+
         // Escape any commas in the fields
         final escapedFlags = flagString.replaceAll(',', ';');
         final escapedArgs = argString.replaceAll(',', ';');
-        final escapedDesc = command['description'].toString().replaceAll(',', ';');
+        final escapedDesc = command['description'].toString().replaceAll(
+          ',',
+          ';',
+        );
         final escapedFullCommand = fullCommand.replaceAll(',', ';');
-        
+
         // Write to CSV
-        sink.writeln('stax $commandName,$escapedFlags,$escapedArgs,$escapedDesc,$escapedFullCommand');
+        sink.writeln(
+          'stax $commandName,$escapedFlags,$escapedArgs,$escapedDesc,$escapedFullCommand',
+        );
       }
     }
   }
-  
+
   // Close the file
   sink.close();
   print('Command permutations written to command_permutations.csv');
