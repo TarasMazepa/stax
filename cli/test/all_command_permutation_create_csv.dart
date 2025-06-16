@@ -1,160 +1,30 @@
 import 'dart:io';
+import 'dart:convert';
+import 'package:stax/command/internal_commands.dart';
+import 'package:stax/command/types_for_internal_command.dart';
+import 'package:stax/command/flag.dart';
 
 void main() {
-  // Create CSV file
-  final file = File('command_permutations.csv');
-  final sink = file.openWrite();
+  // Create JSON file
+ 
 
-  // Write CSV header
-  sink.writeln('command,flags,arguments,description,full_command');
+  // List to store all command permutations
+  final List<Map<String, dynamic>> permutations = [];
 
-  final staxCommands = [
-    {
-      'name': 'about',
-      'flags': [],
-      'description': 'Shows information about the stax.',
-    },
-    {
-      'name': 'amend',
-      'flags': ['-A', '-a', '-b', '-m', '-r', '-u'],
-      'description': 'Amends and pushes changes.',
-    },
-    {
-      'name': 'commit',
-      'flags': ['-A', '-a', '-b', '-i', '-p', '-u'],
-      'args': [
-        {
-          'required': true,
-          'description': 'Commit message',
-          'value': 'commit-message',
-          'type': 'string',
-        },
-        {
-          'required': false,
-          'description': 'Branch name',
-          'value': 'branch-name',
-          'type': 'string',
-        },
-      ],
-      'description': 'Creates a branch, commits, and pushes it to remote.',
-    },
-    {
-      'name': 'delete',
-      'flags': ['-f', '-s'],
-      'description': 'Deletes local branches with gone remotes.',
-    },
-    {
-      'name': 'doctor',
-      'flags': [],
-      'description': 'Helps to ensure that stax has everything to be used.',
-    },
-    {
-      'name': 'get',
-      'args': [
-        {
-          'required': false,
-          'description': 'Name of the remote ref',
-          'value': 'branch-name',
-          'type': 'string',
-        },
-      ],
-      'description': '(Re)Checkout specified branch and all its children',
-    },
-    {
-      'name': 'help',
-      'flags': ['-a'],
-      'args': [
-        {
-          'required': false,
-          'description': 'Name of the command to learn about',
-          'value': 'command-name',
-          'type': 'string',
-        },
-      ],
-      'description': 'List of available commands.',
-    },
-    {
-      'name': 'log',
-      'flags': ['-a', '-d'],
-      'description': 'Shows a tree of all branches.',
-    },
-    {
-      'name': 'move',
-      'args': [
-        {
-          'required': true,
-          'description': 'Direction (up, down, top, bottom, head)',
-          'value': 'direction',
-          'type': 'string',
-        },
-        {
-          'required': false,
-          'description': 'Child index for up/top',
-          'value': 'index',
-          'type': 'string',
-        },
-      ],
-      'description': 'Allows you to move around log tree.',
-    },
-    {
-      'name': 'pull',
-      'flags': ['-f', '-s'],
-      'args': [
-        {
-          'required': false,
-          'description': 'Target branch',
-          'value': 'branch-name',
-          'type': 'string',
-        },
-      ],
-      'description':
-          'Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.',
-    },
-    {
-      'name': 'pull-request',
-      'flags': [],
-      'description': 'Creates a pull request.',
-    },
-    {
-      'name': 'rebase',
-      'flags': ['-a', '-b', '-c', '-m'],
-      'args': [
-        {
-          'required': false,
-          'description': 'Target branch',
-          'value': 'branch-name',
-          'type': 'string',
-        },
-      ],
-      'description': 'rebase tree of branches on top of main',
-    },
-    {
-      'name': 'settings',
-      'flags': ['-g'],
-      'args': [
-        {
-          'required': true,
-          'description': 'Subcommand (add, clear, remove, set, show)',
-          'value': 'subcommand',
-          'type': 'string',
-        },
-        {
-          'required': false,
-          'description': 'Setting name',
-          'value': 'setting-name',
-          'type': 'string',
-        },
-        {
-          'required': false,
-          'description': 'Setting value',
-          'value': 'setting-value',
-          'type': 'string',
-        },
-      ],
-      'description': 'View or modify stax settings',
-    },
-    {'name': 'version', 'flags': [], 'description': 'Version of stax'},
-  ];
+  final staxCommands = internalCommands
+      .where((cmd) => cmd.type == InternalCommandType.public)
+      .map((cmd) => {
+            'name': cmd.name,
+            'flags': cmd.flags?.map((f) => f.short).toList() ?? [],
+            'description': cmd.description,
+            'args': cmd.arguments?.entries.map((e) => {
+                  'required': e.key.startsWith('arg'),
+                  'description': e.value,
+                  'value': e.key,
+                  'type': 'string',
+                }).toList() ?? [],
+          })
+      .toList();
 
   for (final command in staxCommands) {
     final commandName = command['name'];
@@ -198,26 +68,24 @@ void main() {
             '${flagString.isNotEmpty ? ' ' + flagString : ''}'
             '${argString.isNotEmpty ? ' ' + argString : ''}';
 
-        // Escape any commas in the fields
-        final escapedFlags = flagString.replaceAll(',', ';');
-        final escapedArgs = argString.replaceAll(',', ';');
-        final escapedDesc = command['description'].toString().replaceAll(
-          ',',
-          ';',
-        );
-        final escapedFullCommand = fullCommand.replaceAll(',', ';');
-
-        // Write to CSV
-        sink.writeln(
-          'stax $commandName,$escapedFlags,$escapedArgs,$escapedDesc,$escapedFullCommand',
-        );
+        // Add permutation to list
+        permutations.add({
+          'command': 'stax $commandName',
+          'flags': sortedFlags,
+          'arguments': allArgs.map((a) => a['value'] as String).toList(),
+          'description': command['description'],
+          'full_command': fullCommand,
+        });
       }
     }
   }
 
+  // Write JSON to file with pretty printing
+  print(JsonEncoder.withIndent('  ').convert(permutations));
+
   // Close the file
-  sink.close();
-  print('Command permutations written to command_permutations.csv');
+  // sink.close();
+  print('Exited');
 }
 
 /// Returns the power set (all subsets) of the given list.
