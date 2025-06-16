@@ -6,24 +6,31 @@ import 'package:stax/command/flag.dart';
 
 void main() {
   // Create JSON file
- 
 
   // List to store all command permutations
   final List<Map<String, dynamic>> permutations = [];
 
   final staxCommands = internalCommands
       .where((cmd) => cmd.type == InternalCommandType.public)
-      .map((cmd) => {
-            'name': cmd.name,
-            'flags': cmd.flags?.map((f) => f.short).toList() ?? [],
-            'description': cmd.description,
-            'args': cmd.arguments?.entries.map((e) => {
-                  'required': e.key.startsWith('arg'),
-                  'description': e.value,
-                  'value': e.key,
-                  'type': 'string',
-                }).toList() ?? [],
-          })
+      .map(
+        (cmd) => {
+          'name': cmd.name,
+          'flags': cmd.flags?.map((f) => f.short).toList() ?? [],
+          'description': cmd.description,
+          'args':
+              cmd.arguments?.entries
+                  .map(
+                    (e) => {
+                      'required': e.key.startsWith('arg'),
+                      'description': e.value,
+                      'value': e.key,
+                      'type': 'string',
+                    },
+                  )
+                  .toList() ??
+              [],
+        },
+      )
       .toList();
 
   for (final command in staxCommands) {
