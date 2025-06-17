@@ -7,7 +7,7 @@
     <packageSourceUrl>https://github.com/TarasMazepa/stax/tree/main/chocolatey/stax</packageSourceUrl>
     <owners>GPL</owners>
     <title>stax - streamline your git workflow</title>
-    <authors>Taras Mazepa, Alvee</authors>
+    <authors>Taras Mazepa</authors>
     <projectUrl>https://staxforgit.com/</projectUrl>
     <!--<iconUrl>http://rawcdn.githack.com/__REPLACE_YOUR_REPO__/master/icons/stax.png</iconUrl>-->
     <!-- <copyright>Year Software Vendor</copyright> -->
