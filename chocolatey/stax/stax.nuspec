@@ -23,7 +23,7 @@
       Stax is a tool that will help you a bit with day-to-day stax-like git workflow.
       Main purpose is to make it easier to create smaller PRs. And reduce amount of energy other people need to review them.
     </description>
-    <releaseNotes>https://github.com/TarasMazepa/stax/blob/main/README.md</releaseNotes>
+    <releaseNotes>https://github.com/TarasMazepa/stax/blob/main/CHANGELOG.md</releaseNotes>
 
   </metadata>
   <files>
