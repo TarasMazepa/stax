@@ -36,10 +36,10 @@ class Git {
   late final revListCount = revList.arg('--count');
   late final revParse = rawEc('git rev-parse');
   late final revParseAbbrevRef = revParse.arg('--abbrev-ref');
+  late final revParseAbsoluteGitDir = revParse.arg('--absolute-git-dir');
   late final revParseHead = revParse.arg('HEAD');
   late final revParseIsInsideWorkTree = revParse.arg('--is-inside-work-tree');
   late final revParseShort = revParse.arg('--short');
-  late final revParseShowTopLevel = revParse.arg('--show-toplevel');
   late final revParseVerify = revParse.arg('--verify');
   late final showBranch = rawEc('git show-branch');
   late final showBranchSha1Name = showBranch.arg('--sha1-name');

@@ -1,5 +1,6 @@
 0.10.7
  * stax log - will read git log in chunks to avoid hitting an edge case when git log would not fit into a single invocation
+ * fix a bug when stax will fail on submodules/worktrees when trying to find appropriate .git directory to initialize its own repository specific settings 
 
 0.10.6
  * flags now have verbose versions
