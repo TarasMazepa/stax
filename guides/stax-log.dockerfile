@@ -1,4 +1,4 @@
-FROM taras0mazepa/stax-guide-base:0.10.6
+FROM taras0mazepa/stax-guide-base:0.10.7
 
 RUN <<EOF
 touch auth.md
