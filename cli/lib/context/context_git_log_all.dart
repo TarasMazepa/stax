@@ -17,22 +17,38 @@ extension GitLogAllOnContext on Context {
   }
 
   GitLogAllNode _gitLogAll() {
-    final lines = git.log
-        .args(['--decorate=full', '--format=%h %ct %p %d', '--all'])
-        .runSync()
-        .printNotEmptyResultFields()
-        .stdout
-        .toString()
-        .split('\n')
-        .where((x) => x.isNotEmpty)
-        .map((x) => GitLogAllLine.parse(x))
-        .sorted((a, b) => a.timestamp - b.timestamp);
+    Iterable<List<GitLogAllLine>> generateLines([int step = 100_000]) sync* {
+      int skip = 0;
+      while (true) {
+        final result = git.log
+            .args([
+              '--decorate=full',
+              '--format=%h %ct %p %d',
+              '--all',
+              '--max-count=$step',
+              '--skip=$skip',
+            ])
+            .runSync()
+            .printNotEmptyResultFields()
+            .stdout
+            .toString()
+            .split('\n')
+            .where((x) => x.isNotEmpty)
+            .map((x) => GitLogAllLine.parse(x))
+            .toList();
+        if (result.isEmpty) return;
+        yield result;
+        skip += step;
+      }
+    }
+
+    List<GitLogAllLine> lines = generateLines().flattenedToList;
     final root = GitLogAllNode.root(
       lines.firstWhere((x) => x.parentCommitHash == null),
     );
     lines.remove(root.line);
     final nodes = {root.line.commitHash: root};
-    final nextLines = <GitLogAllLine>[];
+    List<GitLogAllLine> nextLines = [];
     int oldLength = 0;
     while (lines.isNotEmpty) {
       if (lines.length == oldLength) {
@@ -49,9 +65,7 @@ extension GitLogAllOnContext on Context {
         final node = parent.addChild(line);
         nodes[node.line.commitHash] = node;
       }
-      lines.clear();
-      lines.addAll(nextLines);
-      nextLines.clear();
+      (lines, nextLines) = (nextLines, []);
     }
     return root;
   }
