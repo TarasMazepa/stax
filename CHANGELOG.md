@@ -1,3 +1,6 @@
+0.10.7
+ * stax log - will read git log in chunks to avoid hitting an edge case when git log would not fit into a single invocation
+
 0.10.6
  * flags now have verbose versions
  * stax amend - gets short name 'a'
