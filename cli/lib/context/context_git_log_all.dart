@@ -17,7 +17,8 @@ extension GitLogAllOnContext on Context {
   }
 
   GitLogAllNode _gitLogAll() {
-    Iterable<List<GitLogAllLine>> generateLines([int step = 100_000]) sync* {
+    final silent = withSilence(true);
+    Iterable<List<GitLogAllLine>> generateLines() sync* {
       int skip = 0;
       while (true) {
         final result = git.log
@@ -25,9 +26,9 @@ extension GitLogAllOnContext on Context {
               '--decorate=full',
               '--format=%h %ct %p %d',
               '--all',
-              '--max-count=$step',
-              '--skip=$skip',
+              if (skip > 0) '--skip=$skip',
             ])
+            .announce()
             .runSync()
             .printNotEmptyResultFields()
             .stdout
@@ -38,11 +39,13 @@ extension GitLogAllOnContext on Context {
             .toList();
         if (result.isEmpty) return;
         yield result;
-        skip += step;
+        if (result.last.parentCommitHash == null) return;
+        skip += result.length;
       }
     }
 
-    List<GitLogAllLine> lines = generateLines().flattenedToList;
+    List<GitLogAllLine> lines = generateLines().flattenedToList.reversed
+        .toList();
     final root = GitLogAllNode.root(
       lines.firstWhere((x) => x.parentCommitHash == null),
     );
@@ -51,8 +54,11 @@ extension GitLogAllOnContext on Context {
     List<GitLogAllLine> nextLines = [];
     int oldLength = 0;
     while (lines.isNotEmpty) {
+      silent.printToConsole(
+        'Tree building for log with ${lines.length} commits',
+      );
       if (lines.length == oldLength) {
-        print('Omitting $oldLength nodes');
+        silent.printToConsole('Omitting $oldLength nodes');
         break;
       }
       oldLength = lines.length;

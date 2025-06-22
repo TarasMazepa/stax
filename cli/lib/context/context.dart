@@ -105,8 +105,12 @@ class Context {
     );
   }
 
+  bool shouldBeSilent() {
+    return !forcedLoudness && silent;
+  }
+
   void printToConsole(Object? object) {
-    if (!forcedLoudness && silent) return;
+    if (shouldBeSilent()) return;
     print(object);
   }
 
