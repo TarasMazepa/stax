@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:stax/comparison_chain.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer.dart';
+import 'package:stax/nullable_index_of.dart';
 import 'package:stax/rebase/rebase_step.dart';
 
 extension GitLogAllOnContext on Context {
@@ -94,22 +95,28 @@ class GitLogAllLine {
   );
 
   factory GitLogAllLine.parse(String line) {
-    final parts = line.split('  ').where((x) => x.isNotEmpty).toList();
-    final firstParts = parts[0].split(' ').where((x) => x.isNotEmpty).toList();
+    final firstSpace = line.indexOf(' ');
+    final secondSpace = line.indexOf(' ', firstSpace + 1);
+    final thirdSpace = line
+        .indexOf(' ', secondSpace + 1)
+        .toNullableIndexOfResult();
     return GitLogAllLine(
-      firstParts.first,
-      int.parse(firstParts[1]),
-      firstParts.elementAtOrNull(2),
-      parts.length > 1
-          ? parts.last
-                .replaceAll('(', '')
-                .replaceAll(')', '')
-                .split(', ')
-                .map((x) => x.trim())
-                .where((x) => x.isNotEmpty)
-                .whereNot((x) => x.startsWith('tag: '))
-                .toList()
-          : [],
+      line.substring(0, firstSpace),
+      int.parse(line.substring(firstSpace + 1, secondSpace)),
+      thirdSpace == null ? null : line.substring(secondSpace + 1, thirdSpace),
+      line
+              .split('  ')
+              .where((x) => x.isNotEmpty)
+              .skip(1)
+              .firstOrNull
+              ?.replaceAll('(', '')
+              .replaceAll(')', '')
+              .split(', ')
+              .map((x) => x.trim())
+              .where((x) => x.isNotEmpty)
+              .whereNot((x) => x.startsWith('tag: '))
+              .toList() ??
+          [],
     );
   }
 
