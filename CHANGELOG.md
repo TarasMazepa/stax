@@ -1,3 +1,6 @@
+0.10.8
+ * stax log -  change paging logic, now it tries to read as much as it can and if there is more - try reading again, adds some logs which could be fun to read with --loud
+
 0.10.7
  * stax log - will read git log in chunks to avoid hitting an edge case when git log would not fit into a single invocation
  * fix a bug when stax will fail on submodules/worktrees when trying to find appropriate .git directory to initialize its own repository specific settings 

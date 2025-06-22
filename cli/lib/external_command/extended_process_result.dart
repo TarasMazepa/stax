@@ -32,6 +32,7 @@ class ExtendedProcessResult {
   }
 
   ExtendedProcessResult printNotEmptyResultFields() {
+    if (context.shouldBeSilent()) return this;
     if (exitCode != 0) context.printToConsole('ExitCode: $exitCode');
     if (stdout.toString().trim().isNotEmpty) {
       context.printToConsole('Stdout:\n$stdout');
