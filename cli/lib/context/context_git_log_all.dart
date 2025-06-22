@@ -9,14 +9,16 @@ extension GitLogAllOnContext on Context {
   static GitLogAllNode? _gitLogAllAll;
 
   GitLogAllNode gitLogAll([bool showAllBranches = false]) {
-    produce() => withSilence(true)._gitLogAll().collapse(showAllBranches)!;
+    produce() => withSilence(
+      true,
+    )._gitLogAll().map((x) => x.collapse(showAllBranches)).nonNulls.first;
     if (showAllBranches) {
       return _gitLogAllAll ??= produce();
     }
     return _gitLogAllLocal ??= produce();
   }
 
-  GitLogAllNode _gitLogAll() {
+  List<GitLogAllNode> _gitLogAll() {
     final silent = withSilence(true);
     Iterable<List<GitLogAllLine>> generateLines() sync* {
       int skip = 0;
@@ -46,11 +48,15 @@ extension GitLogAllOnContext on Context {
 
     List<GitLogAllLine> lines = generateLines().flattenedToList.reversed
         .toList();
-    final root = GitLogAllNode.root(
-      lines.firstWhere((x) => x.parentCommitHash == null),
-    );
-    lines.remove(root.line);
-    final nodes = {root.line.commitHash: root};
+    final roots = lines
+        .where((x) => x.parentCommitHash == null)
+        .map((x) => GitLogAllNode.root(x))
+        .toList();
+    final nodes = <String, GitLogAllNode>{};
+    for (final root in roots) {
+      lines.remove(root.line);
+      nodes[root.line.commitHash] = root;
+    }
     List<GitLogAllLine> nextLines = [];
     int oldLength = 0;
     while (lines.isNotEmpty) {
@@ -73,7 +79,7 @@ extension GitLogAllOnContext on Context {
       }
       (lines, nextLines) = (nextLines, []);
     }
-    return root;
+    return roots;
   }
 }
 

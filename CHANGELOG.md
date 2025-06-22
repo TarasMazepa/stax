@@ -1,5 +1,8 @@
+0.10.9
+ * stax log - fix case when repo has more then one commit without parents and stax chooses the wrong one to build tree for
+
 0.10.8
- * stax log -  change paging logic, now it tries to read as much as it can and if there is more - try reading again, adds some logs which could be fun to read with --loud
+ * stax log - change paging logic, now it tries to read as much as it can and if there is more - try reading again, adds some logs which could be fun to read with --loud
 
 0.10.7
  * stax log - will read git log in chunks to avoid hitting an edge case when git log would not fit into a single invocation
