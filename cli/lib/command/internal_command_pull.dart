@@ -30,9 +30,8 @@ class InternalCommandPull extends InternalCommand {
     final hasSkipDeleteFlag = InternalCommandDeleteStale.skipDeleteFlag.hasFlag(
       args,
     );
-    final hasForceDeleteFlag = InternalCommandDeleteStale.forceDeleteFlag.hasFlag(
-      args,
-    );
+    final hasForceDeleteFlag = InternalCommandDeleteStale.forceDeleteFlag
+        .hasFlag(args);
     final currentBranch = context.getCurrentBranch();
     final targetBranch = args.elementAtOrNull(0);
     final defaultBranch = targetBranch ?? context.getDefaultBranch();
