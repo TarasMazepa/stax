@@ -34,7 +34,7 @@ extension ContextHandleGlobalFlags on Context {
   ];
 
   Context handleGlobalFlags(List<String> args) {
-    return withSilence(quietFlag.hasFlag(args))
+    return withQuiet(quietFlag.hasFlag(args))
         .withForcedLoudness(loudFlag.hasFlag(args))
         .withAcceptingAll(acceptAllFlag.hasFlag(args))
         .withDecliningAll(declineAllFlag.hasFlag(args));

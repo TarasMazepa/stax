@@ -2,7 +2,7 @@ import 'package:stax/context/context.dart';
 
 extension ContextGitIsInsideWorkTree on Context {
   bool isInsideWorkTree() {
-    return withSilence(true).git.revParseIsInsideWorkTree
+    return withQuiet(true).git.revParseIsInsideWorkTree
             .announce('Checking if inside git work tree.')
             .runSync()
             .assertSuccessfulExitCode() !=

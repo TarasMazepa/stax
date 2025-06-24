@@ -9,7 +9,7 @@ extension GitLogAllOnContext on Context {
   static GitLogAllNode? _gitLogAllAll;
 
   GitLogAllNode gitLogAll([bool showAllBranches = false]) {
-    produce() => withSilence(
+    produce() => withQuiet(
       true,
     )._gitLogAll().map((x) => x.collapse(showAllBranches)).nonNulls.first;
     if (showAllBranches) {
@@ -19,7 +19,7 @@ extension GitLogAllOnContext on Context {
   }
 
   List<GitLogAllNode> _gitLogAll() {
-    final silent = withSilence(true);
+    final silent = withQuiet(true);
     Iterable<List<GitLogAllLine>> generateLines() sync* {
       int skip = 0;
       while (true) {

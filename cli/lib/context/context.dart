@@ -42,7 +42,7 @@ class Context {
     return ExternalCommand(parts ?? [], this);
   }
 
-  Context withSilence(bool silent) {
+  Context withQuiet(bool silent) {
     if (this.silent == silent) return this;
     return Context(
       silent,
@@ -105,12 +105,12 @@ class Context {
     );
   }
 
-  bool shouldBeSilent() {
+  bool shouldBeQuiet() {
     return !forcedLoudness && silent;
   }
 
   void printToConsole(Object? object) {
-    if (shouldBeSilent()) return;
+    if (shouldBeQuiet()) return;
     print(object);
   }
 

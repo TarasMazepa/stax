@@ -21,7 +21,7 @@ class RebaseUseCase {
   RebaseData get assertRebaseData => _rebaseData!;
 
   static RebaseUseCase? create(Context context) {
-    final repositoryRoot = context.withSilence(true).getRepositoryRoot();
+    final repositoryRoot = context.withQuiet(true).getRepositoryRoot();
     if (repositoryRoot == null) return null;
     final file = File.fromUri(
       path.toUri(
