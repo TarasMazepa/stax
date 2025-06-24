@@ -108,12 +108,12 @@ Amends to the current commit and force pushes the branch
 stax amend
 ```
 
-### stax delete
+### stax delete-stale
 
 Deletes local branches with gone remotes. It is useful when you are using `stax-commit`, which pushes all
 the branches. So once they are merged and deleted from the remote, you can clean up local branches.
 
-![stax delete diagram](https://github.com/TarasMazepa/stax/assets/6552358/55be3cf5-3667-4568-a8b0-785f623ec680)
+![stax delete-stale diagram](https://github.com/TarasMazepa/stax/assets/6552358/55be3cf5-3667-4568-a8b0-785f623ec680)
 
 ### stax pull
 
