@@ -1,5 +1,5 @@
 import 'package:stax/command/internal_command.dart';
-import 'package:stax/command/internal_command_delete.dart';
+import 'package:stax/command/internal_command_delete_stale.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
@@ -17,8 +17,8 @@ class InternalCommandPull extends InternalCommand {
           'opt1': 'Optional target branch, will default to <remote>/HEAD',
         },
         flags: [
-          InternalCommandDelete.skipDeleteFlag,
-          InternalCommandDelete.forceDeleteFlag,
+          InternalCommandDeleteStale.skipDeleteFlag,
+          InternalCommandDeleteStale.forceDeleteFlag,
         ],
       );
 
@@ -27,12 +27,11 @@ class InternalCommandPull extends InternalCommand {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }
-    final hasSkipDeleteFlag = InternalCommandDelete.skipDeleteFlag.hasFlag(
+    final hasSkipDeleteFlag = InternalCommandDeleteStale.skipDeleteFlag.hasFlag(
       args,
     );
-    final hasForceDeleteFlag = InternalCommandDelete.forceDeleteFlag.hasFlag(
-      args,
-    );
+    final hasForceDeleteFlag = InternalCommandDeleteStale.forceDeleteFlag
+        .hasFlag(args);
     final currentBranch = context.getCurrentBranch();
     final targetBranch = args.elementAtOrNull(0);
     final defaultBranch = targetBranch ?? context.getDefaultBranch();

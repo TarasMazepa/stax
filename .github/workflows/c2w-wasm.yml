@@ -20,7 +20,7 @@ jobs:
       - run: mkdir -p ./guides/web/containers
       - run: .github/scripts/build_guide_docker_to_wasm amend
       - run: .github/scripts/build_guide_docker_to_wasm commit
-      - run: .github/scripts/build_guide_docker_to_wasm delete
+      - run: .github/scripts/build_guide_docker_to_wasm delete-stale
       - run: .github/scripts/build_guide_docker_to_wasm doctor
       - run: .github/scripts/build_guide_docker_to_wasm get
       - run: .github/scripts/build_guide_docker_to_wasm log

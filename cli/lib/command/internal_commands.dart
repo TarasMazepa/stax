@@ -2,7 +2,7 @@ import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_about.dart';
 import 'package:stax/command/internal_command_amend.dart';
 import 'package:stax/command/internal_command_commit.dart';
-import 'package:stax/command/internal_command_delete.dart';
+import 'package:stax/command/internal_command_delete_stale.dart';
 import 'package:stax/command/internal_command_doctor.dart';
 import 'package:stax/command/internal_command_get.dart';
 import 'package:stax/command/internal_command_help.dart';
@@ -23,7 +23,7 @@ final List<InternalCommand> internalCommands = [
   InternalCommandAbout(),
   InternalCommandAmend(),
   InternalCommandCommit(),
-  InternalCommandDelete(),
+  InternalCommandDeleteStale(),
   InternalCommandDoctor(),
   InternalCommandGet(),
   InternalCommandHelp(),
