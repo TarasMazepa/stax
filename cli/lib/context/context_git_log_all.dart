@@ -19,7 +19,7 @@ extension GitLogAllOnContext on Context {
   }
 
   List<GitLogAllNode> _gitLogAll() {
-    final silent = withQuiet(true);
+    final quiet = withQuiet(true);
     Iterable<List<GitLogAllLine>> generateLines() sync* {
       int skip = 0;
       while (true) {
@@ -60,11 +60,11 @@ extension GitLogAllOnContext on Context {
     List<GitLogAllLine> nextLines = [];
     int oldLength = 0;
     while (lines.isNotEmpty) {
-      silent.printToConsole(
+      quiet.printToConsole(
         'Tree building for log with ${lines.length} commits',
       );
       if (lines.length == oldLength) {
-        silent.printToConsole('Omitting $oldLength nodes');
+        quiet.printToConsole('Omitting $oldLength nodes');
         break;
       }
       oldLength = lines.length;

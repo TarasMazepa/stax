@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   test('implicit', () {
     final context = Context.implicit();
-    expect(context.silent, false);
+    expect(context.quiet, false);
     expect(context.workingDirectory, null);
     expect(context.forcedLoudness, false);
     expect(context.acceptAll, false);
@@ -12,15 +12,15 @@ void main() {
   });
   test('explicit', () {
     final context = Context(true, 'directory', true, true, true);
-    expect(context.silent, true);
+    expect(context.quiet, true);
     expect(context.workingDirectory, 'directory');
     expect(context.forcedLoudness, true);
     expect(context.acceptAll, true);
     expect(context.declineAll, true);
   });
-  test('implicit not changing withSilence', () {
+  test('implicit not changing withQuiet', () {
     final context = Context.implicit();
-    Context modifiedContext = context.withSilence(false);
+    Context modifiedContext = context.withQuiet(false);
     expect(context, (c) => identical(c, modifiedContext));
   });
   test('implicit not changing withWorkingDirectory', () {
@@ -33,9 +33,9 @@ void main() {
     Context modifiedContext = context.withForcedLoudness(false);
     expect(context, (c) => identical(c, modifiedContext));
   });
-  test('explicit not changing withSilence', () {
+  test('explicit not changing withQuiet', () {
     final context = Context(true, 'directory', true, true, true);
-    Context modifiedContext = context.withSilence(true);
+    Context modifiedContext = context.withQuiet(true);
     expect(context, (c) => identical(c, modifiedContext));
   });
   test('explicit not changing withWorkingDirectory', () {
@@ -48,12 +48,12 @@ void main() {
     Context modifiedContext = context.withForcedLoudness(true);
     expect(context, (c) => identical(c, modifiedContext));
   });
-  test('implicit changing withSilence', () {
+  test('implicit changing withQuiet', () {
     final context = Context.implicit();
-    Context modifiedContext = context.withSilence(true);
+    Context modifiedContext = context.withQuiet(true);
     expect(context, (c) => !identical(c, modifiedContext));
-    expect(context.silent, false);
-    expect(modifiedContext.silent, true);
+    expect(context.quiet, false);
+    expect(modifiedContext.quiet, true);
   });
   test('implicit changing withWorkingDirectory', () {
     final context = Context.implicit();
@@ -69,12 +69,12 @@ void main() {
     expect(context.forcedLoudness, false);
     expect(modifiedContext.forcedLoudness, true);
   });
-  test('explicit changing withSilence', () {
+  test('explicit changing withQuiet', () {
     final context = Context(true, 'directory', true, true, true);
-    Context modifiedContext = context.withSilence(false);
+    Context modifiedContext = context.withQuiet(false);
     expect(context, (c) => !identical(c, modifiedContext));
-    expect(context.silent, true);
-    expect(modifiedContext.silent, false);
+    expect(context.quiet, true);
+    expect(modifiedContext.quiet, false);
   });
   test('explicit changing withWorkingDirectory', () {
     final context = Context(true, 'directory', true, true, true);

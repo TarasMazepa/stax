@@ -7,7 +7,7 @@ import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_get_repository_root.dart';
 import 'package:stax/context/context_git_log_all.dart';
 import 'package:stax/file/file_read_as_string_sync_with_retry.dart';
-import 'package:stax/file/file_system_entity_delete_sync_silently.dart';
+import 'package:stax/file/file_system_entity_delete_sync_quietly.dart';
 import 'package:stax/file/file_write_as_string_sync_with_retry.dart';
 import 'package:stax/rebase/rebase_data.dart';
 
@@ -38,7 +38,7 @@ class RebaseUseCase {
         file,
       );
     } catch (_) {
-      file.deleteSyncSilently();
+      file.deleteSyncQuietly();
     }
     return RebaseUseCase(context, null, file);
   }
@@ -130,7 +130,7 @@ class RebaseUseCase {
       rebaseData = _rebaseData = null;
     }
     if (rebaseData == null) {
-      _file.deleteSyncSilently();
+      _file.deleteSyncQuietly();
       return;
     }
     _file.writeAsStringSyncWithRetry(jsonEncode(rebaseData.toJson()));

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:stax/context/context.dart';
-import 'package:stax/file/file_system_entity_delete_sync_silently.dart';
+import 'package:stax/file/file_system_entity_delete_sync_quietly.dart';
 
 import '../../test_file_original_path.dart';
 
@@ -62,7 +62,7 @@ class CliTestSetup {
   }
 
   void tearDown() {
-    Directory(testRepoPath).deleteSyncSilently(recursive: true);
+    Directory(testRepoPath).deleteSyncQuietly(recursive: true);
   }
 
   ProcessResult runSync(String command, [List<String>? args]) {

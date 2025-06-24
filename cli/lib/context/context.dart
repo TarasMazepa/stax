@@ -11,7 +11,7 @@ import 'package:stax/settings/repository_settings.dart';
 import 'package:stax/settings/settings.dart';
 
 class Context {
-  final bool silent;
+  final bool quiet;
   final String? workingDirectory;
   final bool forcedLoudness;
   final bool acceptAll;
@@ -31,7 +31,7 @@ class Context {
   Context.implicit() : this(false, null, false, false, false);
 
   Context(
-    this.silent,
+    this.quiet,
     this.workingDirectory,
     this.forcedLoudness,
     this.acceptAll,
@@ -42,10 +42,10 @@ class Context {
     return ExternalCommand(parts ?? [], this);
   }
 
-  Context withQuiet(bool silent) {
-    if (this.silent == silent) return this;
+  Context withQuiet(bool quiet) {
+    if (this.quiet == quiet) return this;
     return Context(
-      silent,
+      quiet,
       workingDirectory,
       forcedLoudness,
       acceptAll,
@@ -56,7 +56,7 @@ class Context {
   Context withForcedLoudness(bool forcedLoudness) {
     if (this.forcedLoudness == forcedLoudness) return this;
     return Context(
-      silent,
+      quiet,
       workingDirectory,
       forcedLoudness,
       acceptAll,
@@ -67,7 +67,7 @@ class Context {
   Context withWorkingDirectory(String? workingDirectory) {
     if (this.workingDirectory == workingDirectory) return this;
     return Context(
-      silent,
+      quiet,
       workingDirectory,
       forcedLoudness,
       acceptAll,
@@ -86,7 +86,7 @@ class Context {
   Context withAcceptingAll(bool acceptAll) {
     if (this.acceptAll == acceptAll) return this;
     return Context(
-      silent,
+      quiet,
       workingDirectory,
       forcedLoudness,
       acceptAll,
@@ -97,7 +97,7 @@ class Context {
   Context withDecliningAll(bool declineAll) {
     if (this.declineAll == declineAll) return this;
     return Context(
-      silent,
+      quiet,
       workingDirectory,
       forcedLoudness,
       acceptAll,
@@ -106,7 +106,7 @@ class Context {
   }
 
   bool shouldBeQuiet() {
-    return !forcedLoudness && silent;
+    return !forcedLoudness && quiet;
   }
 
   void printToConsole(Object? object) {

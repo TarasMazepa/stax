@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 import 'package:stax/file/file_read_as_string_sync_with_retry.dart';
-import 'package:stax/file/file_system_entity_delete_sync_silently.dart';
+import 'package:stax/file/file_system_entity_delete_sync_quietly.dart';
 import 'package:stax/file/file_write_as_string_sync_with_retry.dart';
 
 class KeyValueStore {
@@ -33,7 +33,7 @@ class KeyValueStore {
     try {
       return createEmptySettingsFileIfNeededAndRead();
     } catch (_) {
-      file.deleteSyncSilently();
+      file.deleteSyncQuietly();
       return createEmptySettingsFileIfNeededAndRead();
     }
   }
