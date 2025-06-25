@@ -24,6 +24,9 @@ $licenseContent
 "@
 $formattedLicense | Out-File -FilePath "$ToolsPath\LICENSE.txt" -Encoding UTF8
 
+# Calculate checksum of the downloaded zip file
+$checksumHash = (Get-FileHash -Path $outputZip -Algorithm SHA256).Hash
+
 # Create VERIFICATION.txt file (CPMR0006 requirement)
 Write-Host "Creating VERIFICATION.txt in $ToolsPath"
 $verificationContent = @"
@@ -42,15 +45,11 @@ Package can be verified like this:
    - Use Chocolatey utility 'checksum.exe'
 
    checksum type: sha256
-   checksum: [CHECKSUM_PLACEHOLDER]
+   checksum: $checksumHash
 
 File 'LICENSE.txt' is obtained from:
    https://github.com/TarasMazepa/stax/blob/main/LICENSE
 "@
-
-# Calculate checksum of the downloaded zip file
-$checksum = Get-FileHash -Path $outputZip -Algorithm SHA256
-$verificationContent = $verificationContent -replace '\[CHECKSUM_PLACEHOLDER\]', $checksum.Hash
 
 # Write verification file
 $verificationContent | Out-File -FilePath "$ToolsPath\VERIFICATION.txt" -Encoding UTF8
