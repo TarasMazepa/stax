@@ -11,4 +11,45 @@ Invoke-WebRequest -Uri $downloadUrl -OutFile $outputZip
 $ToolsPath = "chocolatey/stax/tools"
 Write-Host "Extracting stax.exe to $ToolsPath"
 Expand-Archive -Path $outputZip -DestinationPath "$ToolsPath" -Force
-Copy-Item "LICENSE" -Destination $ToolsPath
+
+# Create LICENSE.txt file with proper Chocolatey format (CPMR0005 requirement)
+Write-Host "Creating LICENSE.txt in $ToolsPath"
+$licenseContent = Get-Content "LICENSE" -Raw
+$formattedLicense = @"
+From: https://github.com/TarasMazepa/stax/blob/main/LICENSE
+
+LICENSE
+
+$licenseContent
+"@
+$formattedLicense | Out-File -FilePath "$ToolsPath\LICENSE.txt" -Encoding UTF8
+
+# Calculate checksum of the downloaded zip file
+$checksumHash = (Get-FileHash -Path $outputZip -Algorithm SHA256).Hash
+
+# Create VERIFICATION.txt file (CPMR0006 requirement)
+Write-Host "Creating VERIFICATION.txt in $ToolsPath"
+$verificationContent = @"
+VERIFICATION
+
+Verification is intended to assist the Chocolatey moderators and community
+in verifying that this package's contents are trustworthy.
+
+Package can be verified like this:
+
+1. Download the binary from the official GitHub release:
+   $downloadUrl
+
+2. You can use one of the following methods to obtain the checksum:
+   - Use powershell function 'Get-FileHash'
+   - Use Chocolatey utility 'checksum.exe'
+
+   checksum type: sha256
+   checksum: $checksumHash
+
+File 'LICENSE.txt' is obtained from:
+   https://github.com/TarasMazepa/stax/blob/main/LICENSE
+"@
+
+# Write verification file
+$verificationContent | Out-File -FilePath "$ToolsPath\VERIFICATION.txt" -Encoding UTF8
