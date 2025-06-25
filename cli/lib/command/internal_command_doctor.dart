@@ -15,7 +15,7 @@ class InternalCommandDoctor extends InternalCommand {
 
     {
       final userName = context
-          .withSilence(true)
+          .withQuiet(true)
           .git
           .configGet
           .arg('user.name')
@@ -42,7 +42,7 @@ class InternalCommandDoctor extends InternalCommand {
 
     {
       final userEmail = context
-          .withSilence(true)
+          .withQuiet(true)
           .git
           .configGet
           .arg('user.email')
@@ -69,7 +69,7 @@ class InternalCommandDoctor extends InternalCommand {
 
     {
       final autoSetupRemote = context
-          .withSilence(true)
+          .withQuiet(true)
           .git
           .configGet
           .arg('push.autoSetupRemote')
@@ -110,7 +110,7 @@ class InternalCommandDoctor extends InternalCommand {
     }
 
     if (context.isInsideWorkTree()) {
-      String? defaultBranch = context.withSilence(true).getDefaultBranch();
+      String? defaultBranch = context.withQuiet(true).getDefaultBranch();
       String remote =
           ContextGitGetDefaultBranch.remotes?.firstOrNull ?? '<remote>';
       context.printToConsole(
@@ -130,7 +130,7 @@ class InternalCommandDoctor extends InternalCommand {
       String? ghVersion;
       try {
         ghVersion = context
-            .withSilence(true)
+            .withQuiet(true)
             .command(['gh', '--version'])
             .announce('Checking if GitHub CLI is installed.')
             .runSync()
@@ -155,7 +155,7 @@ class InternalCommandDoctor extends InternalCommand {
       }
 
       final isAuthenticated = context
-          .withSilence(true)
+          .withQuiet(true)
           .command(['gh', 'auth', 'status'])
           .announce('Checking if GitHub CLI is authenticated.')
           .runSync()
@@ -175,7 +175,7 @@ class InternalCommandDoctor extends InternalCommand {
 
       if (context.isInsideWorkTree()) {
         final canAccessRepo = context
-            .withSilence(true)
+            .withQuiet(true)
             .command(['gh', 'repo', 'view'])
             .announce('Checking if GitHub CLI can access repository.')
             .runSync()

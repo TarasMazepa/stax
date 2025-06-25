@@ -11,7 +11,7 @@ void main() {
    --decline-all - Decline all the user prompts automatically.
    -h, --help - Shows help documentation for the command
    --loud - Force all the output.
-   --silent - Removes all output except user prompts.
+   -q, --quiet - Removes all output except user prompts.
 Here are available commands:
 Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.
  • about - Shows information about the stax.

@@ -43,7 +43,7 @@ class InternalCommandGet extends InternalCommand {
         .printNotEmptyResultFields();
 
     final targetNode = context
-        .withSilence(true)
+        .withQuiet(true)
         .gitLogAll(true)
         .findAnyRefThatEndsWith(targetRef);
 

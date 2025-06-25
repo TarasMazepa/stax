@@ -2,8 +2,9 @@ import 'package:stax/command/flag.dart';
 import 'package:stax/context/context.dart';
 
 extension ContextHandleGlobalFlags on Context {
-  static final silentFlag = Flag(
-    long: '--silent',
+  static final quietFlag = Flag(
+    short: '-q',
+    long: '--quiet',
     description: 'Removes all output except user prompts.',
   );
   static final loudFlag = Flag(
@@ -25,7 +26,7 @@ extension ContextHandleGlobalFlags on Context {
   );
 
   static final List<Flag> flags = [
-    silentFlag,
+    quietFlag,
     loudFlag,
     acceptAllFlag,
     declineAllFlag,
@@ -33,7 +34,7 @@ extension ContextHandleGlobalFlags on Context {
   ];
 
   Context handleGlobalFlags(List<String> args) {
-    return withSilence(silentFlag.hasFlag(args))
+    return withQuiet(quietFlag.hasFlag(args))
         .withForcedLoudness(loudFlag.hasFlag(args))
         .withAcceptingAll(acceptAllFlag.hasFlag(args))
         .withDecliningAll(declineAllFlag.hasFlag(args));

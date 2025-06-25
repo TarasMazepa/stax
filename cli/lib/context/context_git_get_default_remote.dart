@@ -10,7 +10,7 @@ extension ContextGitGetPreferredRemote on Context {
 
     if (_preferredRemote != null) return _preferredRemote;
 
-    final remotes = withSilence(true).git.remote
+    final remotes = withQuiet(true).git.remote
         .announce('Getting remotes.')
         .runSync()
         .printNotEmptyResultFields()
