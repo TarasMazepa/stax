@@ -167,6 +167,7 @@ Move has five directions:
 * https://github.com/arxanas/git-branchless
 * https://github.com/ezyang/ghstack
 * https://github.com/gitext-rs/git-stack
+* https://github.com/jj-vcs/jj
 * https://github.com/modularml/stack-pr
 * https://graphite.dev/
 * https://sapling-scm.com/
