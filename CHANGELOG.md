@@ -1,3 +1,8 @@
+0.10.10
+ * stax delete -> stax delete-stale - renaming delete to delete-stale
+ * --silent -> --quiet - renaming global flag to conform with other commandline tools
+ * stax delete-stale - fix case when remote and local branches have different names and stax delete-stale wouldn't recognize that branches as gone due to overly strict parsing
+
 0.10.9
  * stax log - fix case when repo has more then one commit without parents and stax chooses the wrong one to build tree for
 
