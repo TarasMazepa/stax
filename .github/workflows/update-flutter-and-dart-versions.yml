@@ -12,6 +12,7 @@ jobs:
       - uses: Homebrew/actions/setup-homebrew@master
       - run: |
           brew install leoafarias/fvm/fvm
+          fvm api releases -c --limit=1 --filter-channel stable
           recent_version="$(fvm api releases -c --limit=1 --filter-channel stable | jq -r '.versions[0]')"
           new_flutter_version="$(echo $recent_version | jq -r '.version')"
           new_dart_version="$(echo $recent_version | jq -r '.dart_sdk_version')"
