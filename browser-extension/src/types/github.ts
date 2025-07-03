@@ -25,3 +25,12 @@ export interface AuthState {
   user: GitHubUser | null;
   customDomain: string;
 }
+
+export interface HostConfig {
+    domain: string;
+    apiUrl: string;
+    active: boolean;
+    pat?: string;
+}
+
+export type Tab = 'main' | 'hosts';
