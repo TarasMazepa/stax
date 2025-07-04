@@ -7,8 +7,9 @@ extension ContextHandleGlobalFlags on Context {
     long: '--quiet',
     description: 'Removes all output except user prompts.',
   );
-  static final loudFlag = Flag(
-    long: '--loud',
+  static final verboseFlag = Flag(
+    short: '-v',
+    long: '--verbose',
     description: 'Force all the output.',
   );
   static final acceptAllFlag = Flag(
@@ -27,7 +28,7 @@ extension ContextHandleGlobalFlags on Context {
 
   static final List<Flag> flags = [
     quietFlag,
-    loudFlag,
+    verboseFlag,
     acceptAllFlag,
     declineAllFlag,
     helpFlag,
@@ -35,7 +36,7 @@ extension ContextHandleGlobalFlags on Context {
 
   Context handleGlobalFlags(List<String> args) {
     return withQuiet(quietFlag.hasFlag(args))
-        .withForcedLoudness(loudFlag.hasFlag(args))
+        .withForcedVerbosity(verboseFlag.hasFlag(args))
         .withAcceptingAll(acceptAllFlag.hasFlag(args))
         .withDecliningAll(declineAllFlag.hasFlag(args));
   }

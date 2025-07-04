@@ -6,7 +6,7 @@ void main() {
     final context = Context.implicit();
     expect(context.quiet, false);
     expect(context.workingDirectory, null);
-    expect(context.forcedLoudness, false);
+    expect(context.forcedVerbosity, false);
     expect(context.acceptAll, false);
     expect(context.declineAll, false);
   });
@@ -14,7 +14,7 @@ void main() {
     final context = Context(true, 'directory', true, true, true);
     expect(context.quiet, true);
     expect(context.workingDirectory, 'directory');
-    expect(context.forcedLoudness, true);
+    expect(context.forcedVerbosity, true);
     expect(context.acceptAll, true);
     expect(context.declineAll, true);
   });
@@ -28,9 +28,9 @@ void main() {
     Context modifiedContext = context.withWorkingDirectory(null);
     expect(context, (c) => identical(c, modifiedContext));
   });
-  test('implicit not changing withForcedLoudness', () {
+  test('implicit not changing withForcedVerbosity', () {
     final context = Context.implicit();
-    Context modifiedContext = context.withForcedLoudness(false);
+    Context modifiedContext = context.withForcedVerbosity(false);
     expect(context, (c) => identical(c, modifiedContext));
   });
   test('explicit not changing withQuiet', () {
@@ -43,9 +43,9 @@ void main() {
     Context modifiedContext = context.withWorkingDirectory('directory');
     expect(context, (c) => identical(c, modifiedContext));
   });
-  test('explicit not changing withForcedLoudness', () {
+  test('explicit not changing withForcedVerbosity', () {
     final context = Context(true, 'directory', true, true, true);
-    Context modifiedContext = context.withForcedLoudness(true);
+    Context modifiedContext = context.withForcedVerbosity(true);
     expect(context, (c) => identical(c, modifiedContext));
   });
   test('implicit changing withQuiet', () {
@@ -62,12 +62,12 @@ void main() {
     expect(context.workingDirectory, null);
     expect(modifiedContext.workingDirectory, 'directory');
   });
-  test('implicit changing withForcedLoudness', () {
+  test('implicit changing withForcedVerbosity', () {
     final context = Context.implicit();
-    Context modifiedContext = context.withForcedLoudness(true);
+    Context modifiedContext = context.withForcedVerbosity(true);
     expect(context, (c) => !identical(c, modifiedContext));
-    expect(context.forcedLoudness, false);
-    expect(modifiedContext.forcedLoudness, true);
+    expect(context.forcedVerbosity, false);
+    expect(modifiedContext.forcedVerbosity, true);
   });
   test('explicit changing withQuiet', () {
     final context = Context(true, 'directory', true, true, true);
@@ -83,11 +83,11 @@ void main() {
     expect(context.workingDirectory, 'directory');
     expect(modifiedContext.workingDirectory, null);
   });
-  test('explicit changing withForcedLoudness', () {
+  test('explicit changing withForcedVerbosity', () {
     final context = Context(true, 'directory', true, true, true);
-    Context modifiedContext = context.withForcedLoudness(false);
+    Context modifiedContext = context.withForcedVerbosity(false);
     expect(context, (c) => !identical(c, modifiedContext));
-    expect(context.forcedLoudness, true);
-    expect(modifiedContext.forcedLoudness, false);
+    expect(context.forcedVerbosity, true);
+    expect(modifiedContext.forcedVerbosity, false);
   });
 }
