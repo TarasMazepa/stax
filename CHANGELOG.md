@@ -1,6 +1,7 @@
 0.10.10
  * stax delete -> stax delete-stale - renaming delete to delete-stale
- * --silent -> --quiet - renaming global flag to conform with other commandline tools
+ * --silent -> --quiet - renaming global flag to conform with other commandline tools, adds -q shorthand
+ * --loud -> --verbose - renaming global flag to conform with other commandline tools, adds -v shorthand
  * stax delete-stale - fix case when remote and local branches have different names and stax delete-stale wouldn't recognize that branches as gone due to overly strict parsing
 
 0.10.9
