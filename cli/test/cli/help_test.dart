@@ -10,8 +10,8 @@ void main() {
    --accept-all - Accept all the user prompts automatically.
    --decline-all - Decline all the user prompts automatically.
    -h, --help - Shows help documentation for the command
-   -v, --verbose - Force all the output.
    -q, --quiet - Removes all output except user prompts.
+   -v, --verbose - Force all the output.
 Here are available commands:
 Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.
  • about - Shows information about the stax.
