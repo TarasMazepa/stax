@@ -13,7 +13,7 @@ import 'package:stax/settings/settings.dart';
 class Context {
   final bool quiet;
   final String? workingDirectory;
-  final bool forcedLoudness;
+  final bool verbose;
   final bool acceptAll;
   final bool declineAll;
 
@@ -33,7 +33,7 @@ class Context {
   Context(
     this.quiet,
     this.workingDirectory,
-    this.forcedLoudness,
+    this.verbose,
     this.acceptAll,
     this.declineAll,
   );
@@ -44,35 +44,17 @@ class Context {
 
   Context withQuiet(bool quiet) {
     if (this.quiet == quiet) return this;
-    return Context(
-      quiet,
-      workingDirectory,
-      forcedLoudness,
-      acceptAll,
-      declineAll,
-    );
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
-  Context withForcedLoudness(bool forcedLoudness) {
-    if (this.forcedLoudness == forcedLoudness) return this;
-    return Context(
-      quiet,
-      workingDirectory,
-      forcedLoudness,
-      acceptAll,
-      declineAll,
-    );
+  Context withVerbose(bool verbose) {
+    if (this.verbose == verbose) return this;
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
   Context withWorkingDirectory(String? workingDirectory) {
     if (this.workingDirectory == workingDirectory) return this;
-    return Context(
-      quiet,
-      workingDirectory,
-      forcedLoudness,
-      acceptAll,
-      declineAll,
-    );
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
   Context withScriptPathAsWorkingDirectory() {
@@ -85,28 +67,16 @@ class Context {
 
   Context withAcceptingAll(bool acceptAll) {
     if (this.acceptAll == acceptAll) return this;
-    return Context(
-      quiet,
-      workingDirectory,
-      forcedLoudness,
-      acceptAll,
-      declineAll,
-    );
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
   Context withDecliningAll(bool declineAll) {
     if (this.declineAll == declineAll) return this;
-    return Context(
-      quiet,
-      workingDirectory,
-      forcedLoudness,
-      acceptAll,
-      declineAll,
-    );
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
   bool shouldBeQuiet() {
-    return !forcedLoudness && quiet;
+    return !verbose && quiet;
   }
 
   void printToConsole(Object? object) {
