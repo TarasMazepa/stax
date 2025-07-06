@@ -36,7 +36,7 @@ extension ContextHandleGlobalFlags on Context {
 
   Context handleGlobalFlags(List<String> args) {
     return withQuiet(quietFlag.hasFlag(args))
-        .withForcedVerbosity(verboseFlag.hasFlag(args))
+        .withVerbose(verboseFlag.hasFlag(args))
         .withAcceptingAll(acceptAllFlag.hasFlag(args))
         .withDecliningAll(declineAllFlag.hasFlag(args));
   }

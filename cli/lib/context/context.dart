@@ -13,7 +13,7 @@ import 'package:stax/settings/settings.dart';
 class Context {
   final bool quiet;
   final String? workingDirectory;
-  final bool forcedVerbosity;
+  final bool verbose;
   final bool acceptAll;
   final bool declineAll;
 
@@ -33,7 +33,7 @@ class Context {
   Context(
     this.quiet,
     this.workingDirectory,
-    this.forcedVerbosity,
+    this.verbose,
     this.acceptAll,
     this.declineAll,
   );
@@ -47,18 +47,18 @@ class Context {
     return Context(
       quiet,
       workingDirectory,
-      forcedVerbosity,
+      verbose,
       acceptAll,
       declineAll,
     );
   }
 
-  Context withForcedVerbosity(bool forcedVerbosity) {
-    if (this.forcedVerbosity == forcedVerbosity) return this;
+  Context withVerbose(bool verbose) {
+    if (this.verbose == verbose) return this;
     return Context(
       quiet,
       workingDirectory,
-      forcedVerbosity,
+      verbose,
       acceptAll,
       declineAll,
     );
@@ -69,7 +69,7 @@ class Context {
     return Context(
       quiet,
       workingDirectory,
-      forcedVerbosity,
+      verbose,
       acceptAll,
       declineAll,
     );
@@ -88,7 +88,7 @@ class Context {
     return Context(
       quiet,
       workingDirectory,
-      forcedVerbosity,
+      verbose,
       acceptAll,
       declineAll,
     );
@@ -99,14 +99,14 @@ class Context {
     return Context(
       quiet,
       workingDirectory,
-      forcedVerbosity,
+      verbose,
       acceptAll,
       declineAll,
     );
   }
 
   bool shouldBeQuiet() {
-    return !forcedVerbosity && quiet;
+    return !verbose && quiet;
   }
 
   void printToConsole(Object? object) {
