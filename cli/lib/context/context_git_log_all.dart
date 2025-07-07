@@ -167,12 +167,12 @@ class GitLogAllNode {
     return children.sorted(
       (a, b) => ComparisonChain()
           .chainBoolReverse(
-            a.isRemoteHeadReachable(),
             b.isRemoteHeadReachable(),
+            a.isRemoteHeadReachable(),
           )
           .chain(
-            () => (b.line.branchNameOrCommitHash()).compareTo(
-              a.line.branchNameOrCommitHash(),
+            () => (a.line.branchNameOrCommitHash()).compareTo(
+              b.line.branchNameOrCommitHash(),
             ),
           )
           .chain(() => b.line.timestamp - a.line.timestamp)
@@ -300,17 +300,7 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
 
   @override
   List<GitLogAllNode> children(GitLogAllNode t) {
-    return t.children.sorted(
-      (a, b) => ComparisonChain()
-          .chainBoolReverse(isDefaultBranch(a), isDefaultBranch(b))
-          .chain(
-            () => (b.line.branchNameOrCommitHash()).compareTo(
-              a.line.branchNameOrCommitHash(),
-            ),
-          )
-          .chain(() => b.line.timestamp - a.line.timestamp)
-          .compare(),
-    );
+    return t.sortedChildren;
   }
 
   @override

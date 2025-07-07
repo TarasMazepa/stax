@@ -93,9 +93,9 @@ class InternalCommandMove extends InternalCommand {
     for (var moveDirection in moveDirections) {
       switch (moveDirection) {
         case UpMoveDirection up:
-          target = target?.children.elementAtOrNull(up.index);
+          target = target?.sortedChildren.elementAtOrNull(up.index);
         case TopMoveDirection top:
-          target = target?.children.elementAtOrNull(top.index);
+          target = target?.sortedChildren.elementAtOrNull(top.index);
           while (target?.children.length == 1) {
             target = target?.children.elementAtOrNull(0);
           }

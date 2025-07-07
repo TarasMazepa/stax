@@ -1,5 +1,6 @@
 0.10.11
  * --loud -> --verbose - renaming global flag to conform with other commandline tools, adds -v shorthand
+ * stax log, stax move - now sort child nodes in the same way
  
 0.10.10
  * stax delete -> stax delete-stale - renaming delete to delete-stale
