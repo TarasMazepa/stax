@@ -25,7 +25,7 @@ class DecoratedLogLine {
   String decorateToString(DecoratedLogLineAlignment alignment) {
     String result = '';
     result += decoration;
-    result += ' ' * (alignment.decoration - decoration.length);
+    result += ' ' * (alignment.decorationLength - decoration.length);
     result += ' ';
     if (alignment.branchNameHasBrackets && !branchNameHasBrackets) {
       result += ' $branchName';
