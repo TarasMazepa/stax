@@ -23,16 +23,16 @@ class DecoratedLogLine {
   }
 
   String decorateToString(DecoratedLogLineAlignment alignment) {
-    String result = '';
-    result += decoration;
-    result += ' ' * (alignment.decorationLength - decoration.length);
-    result += ' ';
+    final result = StringBuffer();
+    result.write(decoration);
+    result.write(' ' * (alignment.decorationLength - decoration.length));
+    result.write(' ');
     if (alignment.branchNameHasBrackets && !branchNameHasBrackets) {
-      result += ' $branchName';
+      result.write(' $branchName');
     } else {
-      result += branchName;
+      result.write(branchName);
     }
-    return result;
+    return result.toString();
   }
 
   @override
