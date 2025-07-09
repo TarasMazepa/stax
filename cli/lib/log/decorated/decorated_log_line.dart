@@ -24,15 +24,23 @@ class DecoratedLogLine {
 
   String decorateToString(DecoratedLogLineAlignment alignment) {
     final result = StringBuffer();
-    result.write(decoration);
-    result.write(' ' * (alignment.decorationLength - decoration.length));
-    result.write(' ');
-    if (alignment.branchNameHasBrackets && !branchNameHasBrackets) {
-      result.write(' $branchName');
-    } else {
-      result.write(branchName);
-    }
+    decorateToStringBuffer(alignment, result);
     return result.toString();
+  }
+
+  void decorateToStringBuffer(
+    DecoratedLogLineAlignment alignment,
+    StringBuffer buffer,
+  ) {
+    buffer
+      ..write(decoration)
+      ..write(' ' * (alignment.decorationLength - decoration.length))
+      ..write(' ');
+    if (alignment.branchNameHasBrackets && !branchNameHasBrackets) {
+      buffer.write(' $branchName');
+    } else {
+      buffer.write(branchName);
+    }
   }
 
   @override
