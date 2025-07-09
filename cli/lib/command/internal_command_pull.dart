@@ -97,7 +97,7 @@ class InternalCommandPull extends InternalCommand {
     if (branchesToDelete.isEmpty) {
       context.printToConsole('No local branches with gone remotes.');
     } else {
-      context.git.branchDelete
+      final result = context.git.branchDelete
           .args(branchesToDelete)
           .askContinueQuestion(
             "Local branches with gone remotes that would be deleted:\n${branchesToDelete.map((e) => "   • $e").join("\n")}\n",
@@ -106,7 +106,11 @@ class InternalCommandPull extends InternalCommand {
           )
           ?.announce('Deleting branches.')
           .runSync()
-          .printNotEmptyResultFields();
+          .printNotEmptyResultFields()
+          .assertSuccessfulExitCode();
+      if (result != null && needToSwitchBranches) {
+        needToSwitchBranches = !branchesToDelete.contains(currentBranch);
+      }
     }
 
     if ((needToSwitchBranches || additionalBranches.isNotEmpty) &&
