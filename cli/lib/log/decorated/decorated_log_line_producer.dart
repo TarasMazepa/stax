@@ -47,5 +47,9 @@ List<String> materializeDecoratedLogLines<T>(
   final alignment = decoratedLogLines
       .map((e) => e.getAlignment())
       .reduce((value, element) => value + element);
-  return decoratedLogLines.map((e) => e.decorateToString(alignment)).toList();
+  return decoratedLogLines.map((e) {
+    final buffer = StringBuffer();
+    e.decorateToStringBuffer(alignment, buffer);
+    return buffer.toString();
+  }).toList();
 }
