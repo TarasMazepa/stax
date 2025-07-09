@@ -134,7 +134,10 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
     }
     addToResult('note bottom of ${nodeName(initialCommitId)}');
     getTargetCommands().forEach(addToResult);
-    getTargetOutput().forEach((element) => addToResult('""$element""'));
+    getTargetOutput()
+        .split('\n')
+        .where((x) => x.isNotEmpty)
+        .forEach((element) => addToResult('""$element""'));
     addToResult('end note');
     return result.trim();
   }
@@ -174,7 +177,7 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
         .toList();
   }
 
-  List<String> getTargetOutput() {
+  String getTargetOutput() {
     return materializeDecoratedLogLines(initialCommitId, this);
   }
 

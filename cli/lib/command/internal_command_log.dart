@@ -50,7 +50,7 @@ class InternalCommandLog extends InternalCommand {
           showAllBranches,
           defaultBranch,
         ),
-      ).join('\n'),
+      ),
     );
   }
 }
