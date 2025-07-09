@@ -22,12 +22,6 @@ class DecoratedLogLine {
     );
   }
 
-  String decorateToString(DecoratedLogLineAlignment alignment) {
-    final result = StringBuffer();
-    decorateToStringBuffer(alignment, result);
-    return result.toString();
-  }
-
   void decorateToStringBuffer(
     DecoratedLogLineAlignment alignment,
     StringBuffer buffer,
