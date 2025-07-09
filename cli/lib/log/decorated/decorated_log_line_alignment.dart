@@ -11,6 +11,8 @@ class DecoratedLogLineAlignment {
     this.branchNameHasBrackets,
   );
 
+  DecoratedLogLineAlignment.zero() : this(0, 0, false);
+
   DecoratedLogLineAlignment operator +(DecoratedLogLineAlignment other) {
     return DecoratedLogLineAlignment(
       max(branchNameLength, other.branchNameLength),
