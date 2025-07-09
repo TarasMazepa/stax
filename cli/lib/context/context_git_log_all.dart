@@ -191,8 +191,9 @@ class GitLogAllNode {
   GitLogAllNode(this.line, this.parent);
 
   GitLogAllNode addChild(GitLogAllLine line) {
-    children.add(GitLogAllNode(line, this));
-    return children.last;
+    final node = GitLogAllNode(line, this);
+    children.add(node);
+    return node;
   }
 
   GitLogAllNode? collapse([bool showAllBranches = false, int depth = 1000]) {
