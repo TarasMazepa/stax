@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:stax/log/decorated/decorated_log_line.dart';
-import 'package:stax/log/decorated/map_to_string_on_list_of_decorated_log_lines.dart';
 
 abstract class DecoratedLogLineProducerAdapter<T> {
   List<T> children(T t);
@@ -44,5 +43,9 @@ List<String> materializeDecoratedLogLines<T>(
   T root,
   DecoratedLogLineProducerAdapter<T> adapter,
 ) {
-  return _produceDecoratedLogLine(root, adapter).mapToString().toList();
+  final decoratedLogLines = _produceDecoratedLogLine(root, adapter);
+  final alignment = decoratedLogLines
+      .map((e) => e.getAlignment())
+      .reduce((value, element) => value + element);
+  return decoratedLogLines.map((e) => e.decorateToString(alignment)).toList();
 }
