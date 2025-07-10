@@ -164,12 +164,15 @@ class GitLogAllNode {
   List<GitLogAllNode> children = [];
 
   List<GitLogAllNode> get sortedChildren {
+    return getSortedChildren((x) => x.isRemoteHeadReachable());
+  }
+
+  List<GitLogAllNode> getSortedChildren(
+    bool Function(GitLogAllNode) isPartOfMainBranch,
+  ) {
     return children.sorted(
       (a, b) => ComparisonChain()
-          .chainBoolReverse(
-            a.isRemoteHeadReachable(),
-            b.isRemoteHeadReachable(),
-          )
+          .chainBoolReverse(isPartOfMainBranch(a), isPartOfMainBranch(b))
           .chain(
             () => (b.line.branchNameOrCommitHash()).compareTo(
               a.line.branchNameOrCommitHash(),
@@ -301,17 +304,7 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
 
   @override
   List<GitLogAllNode> children(GitLogAllNode t) {
-    return t.children.sorted(
-      (a, b) => ComparisonChain()
-          .chainBoolReverse(isDefaultBranch(a), isDefaultBranch(b))
-          .chain(
-            () => (b.line.branchNameOrCommitHash()).compareTo(
-              a.line.branchNameOrCommitHash(),
-            ),
-          )
-          .chain(() => b.line.timestamp - a.line.timestamp)
-          .compare(),
-    );
+    return t.getSortedChildren((x) => isDefaultBranch(x));
   }
 
   @override
@@ -321,9 +314,10 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
 
   @override
   bool isDefaultBranch(GitLogAllNode t) {
+    final defaultBranch = this.defaultBranch;
     return (t.line.partsHasRemoteHead ||
             (defaultBranch != null &&
-                t.line.parts.any((x) => x.endsWith(defaultBranch!)))) ||
+                t.line.parts.any((x) => x.endsWith(defaultBranch)))) ||
         t.children.any((x) => isDefaultBranch(x));
   }
 }
