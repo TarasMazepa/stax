@@ -1,6 +1,7 @@
 0.10.11
  * --loud -> --verbose - renaming global flag to conform with other commandline tools, adds -v shorthand
  * stax pull - will not attempt to switch back to a branch that was just deleted
+ * stax log, stax move - now will see node tree in the same way, so stax move commands like stax move up 1, will select child commit with index 1, and not a random one based on stax move tree that wasn't sorted with the same method as stax log
  
 0.10.10
  * stax delete -> stax delete-stale - renaming delete to delete-stale
