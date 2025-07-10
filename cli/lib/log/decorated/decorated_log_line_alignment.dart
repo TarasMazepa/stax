@@ -3,21 +3,15 @@ import 'dart:math';
 class DecoratedLogLineAlignment {
   final int branchNameLength;
   final int decorationLength;
-  final bool branchNameHasBrackets;
 
-  DecoratedLogLineAlignment(
-    this.branchNameLength,
-    this.decorationLength,
-    this.branchNameHasBrackets,
-  );
+  DecoratedLogLineAlignment(this.branchNameLength, this.decorationLength);
 
-  DecoratedLogLineAlignment.zero() : this(0, 0, false);
+  DecoratedLogLineAlignment.zero() : this(0, 0);
 
   DecoratedLogLineAlignment operator +(DecoratedLogLineAlignment other) {
     return DecoratedLogLineAlignment(
       max(branchNameLength, other.branchNameLength),
       max(decorationLength, other.decorationLength),
-      branchNameHasBrackets || other.branchNameHasBrackets,
     );
   }
 }
