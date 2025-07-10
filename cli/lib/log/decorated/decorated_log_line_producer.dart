@@ -12,39 +12,42 @@ abstract class DecoratedLogLineProducerAdapter<T> {
   bool isCurrent(T t);
 }
 
-List<DecoratedLogLine> _produceDecoratedLogLine<T>(
+Iterable<DecoratedLogLine> _produceDecoratedLogLine<T>(
   T root,
   DecoratedLogLineProducerAdapter<T> adapter,
 ) {
   final children = adapter.children(root);
-  final emptyIndent =
+  final emptyIndentLength =
       (adapter.isDefaultBranch(root) &&
           children.isNotEmpty &&
           !adapter.isDefaultBranch(children.first))
       ? 1
       : 0;
+  late final emptyIndent = '  ' * emptyIndentLength;
   final point = adapter.isCurrent(root) ? 'x' : 'o';
   return children
       .expandIndexed(
         (i, e) => _produceDecoratedLogLine(
           e,
           adapter,
-        ).map((e) => e.withIndent('  ' * emptyIndent + '| ' * i)),
+        ).map((e) => e.withIndent(emptyIndent + '| ' * i)),
       )
       .followedBy([
         DecoratedLogLine(
           adapter.branchName(root),
-          "$point${"-┘" * (children.length - 1 + emptyIndent)}",
+          "$point${"-┘" * (children.length - 1 + emptyIndentLength)}",
         ),
-      ])
-      .toList();
+      ]);
 }
 
 String materializeDecoratedLogLines<T>(
   T root,
   DecoratedLogLineProducerAdapter<T> adapter,
 ) {
-  final decoratedLogLines = _produceDecoratedLogLine(root, adapter);
+  final decoratedLogLines = _produceDecoratedLogLine(
+    root,
+    adapter,
+  ).toList(growable: false);
   final alignment = decoratedLogLines.fold(
     DecoratedLogLineAlignment.zero(),
     (alignment, element) => alignment + element.getAlignment(),
