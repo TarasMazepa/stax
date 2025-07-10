@@ -15,11 +15,7 @@ class DecoratedLogLine {
   }
 
   DecoratedLogLineAlignment getAlignment() {
-    return DecoratedLogLineAlignment(
-      branchName.length,
-      decoration.length,
-      branchNameHasBrackets,
-    );
+    return DecoratedLogLineAlignment(branchName.length, decoration.length);
   }
 
   void decorateToStringBuffer(
@@ -29,12 +25,8 @@ class DecoratedLogLine {
     buffer
       ..write(decoration)
       ..write(' ' * (alignment.decorationLength - decoration.length))
-      ..write(' ');
-    if (alignment.branchNameHasBrackets && !branchNameHasBrackets) {
-      buffer.write(' $branchName');
-    } else {
-      buffer.write(branchName);
-    }
+      ..write(' ')
+      ..write(branchName);
   }
 
   @override
