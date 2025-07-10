@@ -50,7 +50,7 @@ String materializeDecoratedLogLines<T>(
   ).toList(growable: false);
   final alignment = decoratedLogLines.fold(
     DecoratedLogLineAlignment.zero(),
-    (alignment, element) => alignment + element.getAlignment(),
+    (alignment, element) => element.getMaxAlignment(alignment),
   );
   final buffer = StringBuffer();
   bool beyondFirst = false;

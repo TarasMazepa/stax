@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:stax/code_units.dart';
 import 'package:stax/log/decorated/decorated_log_line_alignment.dart';
 
@@ -14,8 +16,17 @@ class DecoratedLogLine {
     return DecoratedLogLine(branchName, indent + decoration);
   }
 
-  DecoratedLogLineAlignment getAlignment() {
-    return DecoratedLogLineAlignment(branchName.length, decoration.length);
+  DecoratedLogLineAlignment getMaxAlignment(
+    DecoratedLogLineAlignment alignment,
+  ) {
+    if (alignment.branchNameLength < branchName.length ||
+        alignment.decorationLength < decoration.length) {
+      return DecoratedLogLineAlignment(
+        max(branchName.length, alignment.branchNameLength),
+        max(decoration.length, alignment.decorationLength),
+      );
+    }
+    return alignment;
   }
 
   void decorateToStringBuffer(
