@@ -28,7 +28,7 @@ void main() {
             '--default-branch',
             defaultBranch,
           ]).stdout,
-          "${targetOutput.join("\n")}\n",
+          '$targetOutput\n',
         );
       });
     }

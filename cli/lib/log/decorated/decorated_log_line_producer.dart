@@ -40,7 +40,7 @@ List<DecoratedLogLine> _produceDecoratedLogLine<T>(
       .toList();
 }
 
-List<String> materializeDecoratedLogLines<T>(
+String materializeDecoratedLogLines<T>(
   T root,
   DecoratedLogLineProducerAdapter<T> adapter,
 ) {
@@ -49,9 +49,15 @@ List<String> materializeDecoratedLogLines<T>(
     DecoratedLogLineAlignment.zero(),
     (alignment, element) => alignment + element.getAlignment(),
   );
-  return decoratedLogLines.map((e) {
-    final buffer = StringBuffer();
-    e.decorateToStringBuffer(alignment, buffer);
-    return buffer.toString();
-  }).toList();
+  final buffer = StringBuffer();
+  bool beyondFirst = false;
+  for (var line in decoratedLogLines) {
+    if (beyondFirst) {
+      buffer.writeln();
+    } else {
+      beyondFirst = true;
+    }
+    line.decorateToStringBuffer(alignment, buffer);
+  }
+  return buffer.toString();
 }
