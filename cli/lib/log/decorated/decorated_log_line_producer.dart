@@ -33,10 +33,9 @@ Iterable<DecoratedLogLine> _produceDecoratedLogLine<T>(
         ).map((e) => e.withIndent(emptyIndent + '| ' * i)),
       )
       .followedBy([
-        DecoratedLogLine(
-          adapter.branchName(root),
+        DecoratedLogLine(adapter.branchName(root), [
           "$point${"-┘" * (children.length - 1 + emptyIndentLength)}",
-        ),
+        ]),
       ]);
 }
 
