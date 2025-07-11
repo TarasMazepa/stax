@@ -1,8 +1,7 @@
 class DecoratedLogLineAlignment {
-  final int branchNameLength;
   final int decorationLength;
 
-  DecoratedLogLineAlignment(this.branchNameLength, this.decorationLength);
+  DecoratedLogLineAlignment(this.decorationLength);
 
-  DecoratedLogLineAlignment.zero() : this(0, 0);
+  DecoratedLogLineAlignment.zero() : this(0);
 }
