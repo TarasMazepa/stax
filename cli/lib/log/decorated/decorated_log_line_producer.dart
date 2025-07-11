@@ -22,14 +22,13 @@ Iterable<DecoratedLogLine> _produceDecoratedLogLine<T>(
           !adapter.isDefaultBranch(children.first))
       ? 1
       : 0;
-  late final emptyIndent = '  ' * emptyIndentLength;
   final point = adapter.isCurrent(root) ? 'x' : 'o';
   return children
       .expandIndexed(
         (i, e) => _produceDecoratedLogLine(
           e,
           adapter,
-        ).map((e) => e.withIndent(emptyIndent + '| ' * i)),
+        ).map((e) => e.withIndent('  ' * emptyIndentLength + '| ' * i)),
       )
       .followedBy([
         DecoratedLogLine(adapter.branchName(root), [
