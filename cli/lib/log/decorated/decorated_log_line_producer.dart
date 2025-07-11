@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:stax/log/decorated/decorated_log_line.dart';
-import 'package:stax/log/decorated/decorated_log_line_alignment.dart';
 
 abstract class DecoratedLogLineProducerAdapter<T> {
   List<T> children(T t);
@@ -48,7 +47,7 @@ String materializeDecoratedLogLines<T>(
     adapter,
   ).toList(growable: false);
   final alignment = decoratedLogLines.fold(
-    DecoratedLogLineAlignment.zero(),
+    0,
     (alignment, element) => element.getMaxAlignment(alignment),
   );
   final buffer = StringBuffer();
