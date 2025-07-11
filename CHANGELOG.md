@@ -1,3 +1,6 @@
+0.10.12
+ * stax commit --pull-request - would perform git fetch --prune to make sure PR would not target deleted branch
+
 0.10.11
  * --loud -> --verbose - renaming global flag to conform with other commandline tools, adds -v shorthand
  * stax pull - will not attempt to switch back to a branch that was just deleted
