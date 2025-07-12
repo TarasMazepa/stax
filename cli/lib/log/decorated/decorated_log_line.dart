@@ -1,5 +1,3 @@
-import 'dart:math';
-
 class DecoratedLogLine {
   final String branchName;
   final List<String> decorations;
@@ -16,10 +14,6 @@ class DecoratedLogLine {
     decorations.add(indent);
     _decoration = null;
     return this;
-  }
-
-  int getMaxAlignment(int alignment) {
-    return max(decoration.length, alignment);
   }
 
   void decorateToStringBuffer(int alignment, StringBuffer buffer) {

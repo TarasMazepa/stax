@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:stax/log/decorated/decorated_log_line.dart';
 
@@ -22,7 +24,6 @@ Iterable<DecoratedLogLine> _produceDecoratedLogLine<T>(
           !adapter.isDefaultBranch(children.first))
       ? 1
       : 0;
-  final point = adapter.isCurrent(root) ? 'x' : 'o';
   return children
       .expandIndexed(
         (i, e) => _produceDecoratedLogLine(
@@ -32,7 +33,7 @@ Iterable<DecoratedLogLine> _produceDecoratedLogLine<T>(
       )
       .followedBy([
         DecoratedLogLine(adapter.branchName(root), [
-          "$point${"-┘" * (children.length - 1 + emptyIndentLength)}",
+          "${adapter.isCurrent(root) ? 'x' : 'o'}${"-┘" * (children.length - 1 + emptyIndentLength)}",
         ]),
       ]);
 }
@@ -45,10 +46,10 @@ String materializeDecoratedLogLines<T>(
     root,
     adapter,
   ).toList(growable: false);
-  final alignment = decoratedLogLines.fold(
-    0,
-    (alignment, element) => element.getMaxAlignment(alignment),
-  );
+  int alignment = 0;
+  for (final decoratedLogLine in decoratedLogLines) {
+    alignment = max(alignment, decoratedLogLine.decoration.length);
+  }
   final buffer = StringBuffer();
   bool beyondFirst = false;
   for (var line in decoratedLogLines) {
