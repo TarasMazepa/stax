@@ -104,6 +104,7 @@ class GitLogAllNode {
 
   GitLogAllNode addChildNode(GitLogAllNode node) {
     children.add(node);
+    node.parent = this;
     return node;
   }
 
