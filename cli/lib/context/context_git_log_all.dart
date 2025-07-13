@@ -57,7 +57,8 @@ extension GitLogAllOnContext on Context {
           nextLines.add(line);
           continue;
         }
-        final node = parent.addChild(line);
+        final node = GitLogAllNode(line);
+        parent.addChildNode(node);
         nodes[node.line.commitHash] = node;
       }
       (lines, nextLines) = (nextLines, []);
@@ -96,13 +97,12 @@ class GitLogAllNode {
       line.parentsCommitHashes.isEmpty,
       'To create root node line.parentsCommitHashes should be empty',
     );
-    return GitLogAllNode(line, null);
+    return GitLogAllNode(line);
   }
 
-  GitLogAllNode(this.line, this.parent);
+  GitLogAllNode(this.line, [this.parent]);
 
-  GitLogAllNode addChild(GitLogAllLine line) {
-    final node = GitLogAllNode(line, this);
+  GitLogAllNode addChildNode(GitLogAllNode node) {
     children.add(node);
     return node;
   }
