@@ -6,21 +6,21 @@ class GitLogAllLine {
   final String? parentCommitHash;
   final List<String> parts;
   late final bool partsHasRemoteHead = parts.any(
-        (x) => x.startsWith('refs/remotes/') && x.endsWith('/HEAD'),
+    (x) => x.startsWith('refs/remotes/') && x.endsWith('/HEAD'),
   );
   late final bool partsHasRemoteRef = parts.any(
-        (x) => x.startsWith('refs/remotes/'),
+    (x) => x.startsWith('refs/remotes/'),
   );
   late final bool isCurrent = parts.any(
-        (x) => x.startsWith('HEAD -> ') || x == 'HEAD',
+    (x) => x.startsWith('HEAD -> ') || x == 'HEAD',
   );
 
   GitLogAllLine(
-      this.commitHash,
-      this.timestamp,
-      this.parentCommitHash,
-      this.parts,
-      );
+    this.commitHash,
+    this.timestamp,
+    this.parentCommitHash,
+    this.parts,
+  );
 
   factory GitLogAllLine.parse(String line) {
     final parts = line.split('  ').where((x) => x.isNotEmpty).toList();
@@ -31,13 +31,13 @@ class GitLogAllLine {
       firstParts.elementAtOrNull(2),
       parts.length > 1
           ? parts.last
-          .replaceAll('(', '')
-          .replaceAll(')', '')
-          .split(', ')
-          .map((x) => x.trim())
-          .where((x) => x.isNotEmpty)
-          .whereNot((x) => x.startsWith('tag: '))
-          .toList()
+                .replaceAll('(', '')
+                .replaceAll(')', '')
+                .split(', ')
+                .map((x) => x.trim())
+                .where((x) => x.isNotEmpty)
+                .whereNot((x) => x.startsWith('tag: '))
+                .toList()
           : [],
     );
   }
