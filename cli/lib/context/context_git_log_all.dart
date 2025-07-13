@@ -19,34 +19,18 @@ extension GitLogAllOnContext on Context {
   }
 
   List<GitLogAllNode> _gitLogAll() {
-    final quiet = withQuiet(true);
-    Iterable<List<GitLogAllLine>> generateLines() sync* {
-      int skip = 0;
-      while (true) {
-        final result = git.log
-            .args([
-              '--decorate=full',
-              '--format=%h %ct %p %d',
-              '--all',
-              if (skip > 0) '--skip=$skip',
-            ])
-            .announce()
-            .runSync()
-            .printNotEmptyResultFields()
-            .stdout
-            .toString()
-            .split('\n')
-            .where((x) => x.isNotEmpty)
-            .map((x) => GitLogAllLine.parse(x))
-            .toList();
-        if (result.isEmpty) return;
-        yield result;
-        if (result.last.parentCommitHash == null) return;
-        skip += result.length;
-      }
-    }
-
-    List<GitLogAllLine> lines = generateLines().flattenedToList.reversed
+    List<GitLogAllLine> lines = git.log
+        .args(['--decorate=full', '--format=%h %ct %p %d', '--all'])
+        .announce()
+        .runSync()
+        .printNotEmptyResultFields()
+        .stdout
+        .toString()
+        .split('\n')
+        .where((x) => x.isNotEmpty)
+        .map((x) => GitLogAllLine.parse(x))
+        .toList()
+        .reversed
         .toList();
     final roots = lines
         .where((x) => x.parentCommitHash == null)
@@ -60,11 +44,9 @@ extension GitLogAllOnContext on Context {
     List<GitLogAllLine> nextLines = [];
     int oldLength = 0;
     while (lines.isNotEmpty) {
-      quiet.printToConsole(
-        'Tree building for log with ${lines.length} commits',
-      );
+      printToConsole('Tree building for log with ${lines.length} commits');
       if (lines.length == oldLength) {
-        quiet.printToConsole('Omitting $oldLength nodes');
+        printToConsole('Omitting $oldLength nodes');
         break;
       }
       oldLength = lines.length;
