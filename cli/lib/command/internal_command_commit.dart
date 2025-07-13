@@ -100,13 +100,6 @@ class InternalCommandCommit extends InternalCommand {
     context.printToConsole("Commit  message: '$commitMessage'");
     context.printToConsole("New branch name: '$prefixedBranchName'");
 
-    if (createPr) {
-      context.git.fetchWithPrune
-          .announce('Making sure you would not depend on deleted branch.')
-          .runSync()
-          .printNotEmptyResultFields();
-    }
-
     String? comeBackNode =
         context.getCurrentBranch() ??
         context.gitLogAll().findCurrent()?.line.branchNameOrCommitHash();
