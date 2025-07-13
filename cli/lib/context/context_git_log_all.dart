@@ -69,8 +69,30 @@ extension GitLogAllOnContext on Context {
 
 class GitLogAllNode {
   final GitLogAllLine line;
-  GitLogAllNode? parent;
+  List<GitLogAllNode> parents = [];
+  GitLogAllNode? _parent;
   List<GitLogAllNode> children = [];
+
+  GitLogAllNode? get parent {
+    return _parent ??= switch (parents) {
+      [] => null,
+      [final single] => single,
+      _ => parents.reduce((a, b) {
+        if (a.children.length < b.children.length) {
+          return a;
+        }
+        return b;
+      }),
+    };
+  }
+
+  set parent(GitLogAllNode? node) {
+    parents.clear();
+    _parent = node;
+    if (node != null) {
+      parents.add(node);
+    }
+  }
 
   List<GitLogAllNode> get sortedChildren {
     return getSortedChildren((x) => x.isRemoteHeadReachable());
@@ -100,11 +122,11 @@ class GitLogAllNode {
     return GitLogAllNode(line);
   }
 
-  GitLogAllNode(this.line, [this.parent]);
+  GitLogAllNode(this.line);
 
   GitLogAllNode addChildNode(GitLogAllNode node) {
     children.add(node);
-    node.parent = this;
+    node.parents.add(this);
     return node;
   }
 
