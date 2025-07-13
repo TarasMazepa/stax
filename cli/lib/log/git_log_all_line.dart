@@ -3,7 +3,7 @@ import 'package:collection/collection.dart';
 class GitLogAllLine {
   final String commitHash;
   final int timestamp;
-  final String? parentCommitHash;
+  final List<String> parentsCommitHashes;
   final List<String> parts;
   late final bool partsHasRemoteHead = parts.any(
     (x) => x.startsWith('refs/remotes/') && x.endsWith('/HEAD'),
@@ -15,10 +15,12 @@ class GitLogAllLine {
     (x) => x.startsWith('HEAD -> ') || x == 'HEAD',
   );
 
+  String? get parentCommitHash => parentsCommitHashes.firstOrNull;
+
   GitLogAllLine(
     this.commitHash,
     this.timestamp,
-    this.parentCommitHash,
+    this.parentsCommitHashes,
     this.parts,
   );
 
@@ -28,7 +30,7 @@ class GitLogAllLine {
     return GitLogAllLine(
       firstParts.first,
       int.parse(firstParts[1]),
-      firstParts.elementAtOrNull(2),
+      firstParts.sublist(2),
       parts.length > 1
           ? parts.last
                 .replaceAll('(', '')
