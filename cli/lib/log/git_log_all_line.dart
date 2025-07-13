@@ -72,7 +72,7 @@ class GitLogAllLine {
   @override
   String toString() {
     return "'$commitHash' '$timestamp'"
-        "${parentCommitHash == null ? "" : " '$parentCommitHash'"}"
-        "${parts.isEmpty ? "" : " ${parts.map((x) => "'$x'").join(" ")}"}";
+        "${parentsCommitHashes.map((x) => "'$x'").join(", ")}"
+        "${parts.map((x) => "'$x'").join(" ")}";
   }
 }
