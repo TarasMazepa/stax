@@ -34,7 +34,7 @@ extension GitLogAllOnContext on Context {
         .reversed
         .toList();
     final roots = lines
-        .where((x) => x.parentCommitHash == null)
+        .where((x) => x.parentsCommitHashes.isEmpty)
         .map((x) => GitLogAllNode.root(x))
         .toList();
     final nodes = <String, GitLogAllNode>{};
@@ -93,8 +93,8 @@ class GitLogAllNode {
 
   factory GitLogAllNode.root(GitLogAllLine line) {
     assert(
-      line.parentCommitHash == null,
-      'To create root node line.parentCommitHash should be null',
+      line.parentsCommitHashes.isEmpty,
+      'To create root node line.parentsCommitHashes should be empty',
     );
     return GitLogAllNode(line, null);
   }
