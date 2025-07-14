@@ -1,7 +1,7 @@
 name: chocolatey-release.yml
 on:
   workflow_run:
-    workflows: ["release-binary.yml"]
+    workflows: ["release-distribution-trigger.yml"]
     types: [completed]
     branches: [main]
   workflow_dispatch:
