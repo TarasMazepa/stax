@@ -9,10 +9,16 @@ extension GitLogAllOnContext on Context {
   static GitLogAllNode? _gitLogAllLocal;
   static GitLogAllNode? _gitLogAllAll;
 
+  List<GitLogAllNode> gitLogAllRoots([bool showAllBranches = false]) {
+    return withQuiet(true)
+        ._gitLogAll()
+        .map((x) => x.ensureSingleParent().collapse(showAllBranches))
+        .nonNulls
+        .toList();
+  }
+
   GitLogAllNode gitLogAll([bool showAllBranches = false]) {
-    produce() => withQuiet(
-      true,
-    )._gitLogAll().map((x) => x.collapse(showAllBranches)).nonNulls.first;
+    produce() => gitLogAllRoots(showAllBranches).first;
     if (showAllBranches) {
       return _gitLogAllAll ??= produce();
     }
@@ -132,7 +138,24 @@ class GitLogAllNode {
     return node;
   }
 
-  GitLogAllNode? collapse([bool showAllBranches = false, int depth = 1000]) {
+  GitLogAllNode ensureSingleParent() {
+    final nodes = [this];
+    while (nodes.isNotEmpty) {
+      GitLogAllNode node = nodes.removeLast();
+      nodes.addAll(node.children);
+      final ogParent = node.parent;
+      if (ogParent == null || node.parents.length == 1) continue;
+      for (final parent in node.parents) {
+        if (parent != ogParent) {
+          parent.children.remove(node);
+        }
+      }
+      node.parents.removeWhere((x) => !identical(x, ogParent));
+    }
+    return this;
+  }
+
+  GitLogAllNode? collapse([bool showAllBranches = false, int depth = 5000]) {
     if (depth < 0) return this;
     List<GitLogAllNode> newChildren = [];
     for (int i = 0; i < children.length; i++) {
@@ -247,10 +270,16 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
 
   @override
   bool isDefaultBranch(GitLogAllNode t) {
+    if (t.line.partsHasRemoteHead) return true;
     final defaultBranch = this.defaultBranch;
-    return (t.line.partsHasRemoteHead ||
-            (defaultBranch != null &&
-                t.line.parts.any((x) => x.endsWith(defaultBranch)))) ||
-        t.children.any((x) => isDefaultBranch(x));
+    if (defaultBranch != null) {
+      for (final part in t.line.parts) {
+        if (part.endsWith(defaultBranch)) return true;
+      }
+    }
+    for (final child in t.children) {
+      if (isDefaultBranch(child)) return true;
+    }
+    return false;
   }
 }
