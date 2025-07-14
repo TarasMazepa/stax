@@ -21,8 +21,8 @@ jobs:
           sdk: ${{ steps.get-dart-version.outputs.text }}
       - run: dart pub get
         working-directory: cli
-      - run: ./stax help
-      - run: ./stax doctor
+      - run: ./path/staxlive help
+      - run: ./path/staxlive doctor
       - run: |
           mkdir repo
           cd repo
@@ -36,4 +36,4 @@ jobs:
           touch LICENSE.md
           git add .
           git commit -m "Second commit"
-          ../stax rebase main
+          ../path/staxlive rebase main
