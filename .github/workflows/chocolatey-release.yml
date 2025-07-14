@@ -1,8 +1,13 @@
 name: chocolatey-release.yml
 on:
+  workflow_run:
+    workflows: ["release-binary.yml"]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
 jobs:
   chocolatey-release:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
