@@ -35,7 +35,7 @@ class CliTestSetup {
       path: '${repoRoot.path}/cli/.test/${randomValue()}',
     );
     final liveStax = repoRoot.replace(
-      path: "${repoRoot.path}/path/staxlive${Platform.isWindows ? ".bat" : ""}",
+      path: "${repoRoot.path}/path/staxdev${Platform.isWindows ? ".bat" : ""}",
     );
     return CliTestSetup(
       fileName,
