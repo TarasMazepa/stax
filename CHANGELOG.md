@@ -1,3 +1,6 @@
+0.10.13
+ * stax get - fix case when stax get would not search for remote refs specifically, which will result in it not being able to "get" branches
+
 0.10.12
  * stax log - and other commands that rely on it would now handle merge commits better, also fixed couple of stack overflow cases
 
