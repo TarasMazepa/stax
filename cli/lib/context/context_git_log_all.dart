@@ -195,6 +195,15 @@ class GitLogAllNode {
     return find((x) => x.line.parts.any((element) => element.endsWith(suffix)));
   }
 
+  GitLogAllNode? findAnyRemoteRefThatEndsWith(String suffix) {
+    return find(
+      (x) => x.line.parts.any(
+        (element) =>
+            element.startsWith('refs/remotes/') && element.endsWith(suffix),
+      ),
+    );
+  }
+
   GitLogAllNode? find(bool Function(GitLogAllNode) predicate) {
     if (predicate(this)) return this;
     return children.map((x) => x.find(predicate)).nonNulls.firstOrNull;
