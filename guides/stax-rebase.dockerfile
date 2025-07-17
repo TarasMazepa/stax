@@ -1,4 +1,4 @@
-FROM taras0mazepa/stax-guide-base:0.10.12
+FROM taras0mazepa/stax-guide-base:0.10.13
 
 RUN <<EOF
 touch fix-button.txt
