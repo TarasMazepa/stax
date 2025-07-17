@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:collection/collection.dart';
 import 'package:stax/comparison_chain.dart';
 import 'package:stax/context/context.dart';
@@ -10,11 +12,9 @@ extension GitLogAllOnContext on Context {
   static GitLogAllNode? _gitLogAllAll;
 
   List<GitLogAllNode> gitLogAllRoots([bool showAllBranches = false]) {
-    return withQuiet(true)
-        ._gitLogAll()
-        .map((x) => x.ensureSingleParent().collapse(showAllBranches))
-        .nonNulls
-        .toList();
+    return withQuiet(
+      true,
+    )._gitLogAll().map((x) => x.collapse(showAllBranches)).nonNulls.toList();
   }
 
   GitLogAllNode gitLogAll([bool showAllBranches = false]) {
@@ -25,7 +25,7 @@ extension GitLogAllOnContext on Context {
     return _gitLogAllLocal ??= produce();
   }
 
-  List<GitLogAllNode> _gitLogAll() {
+  Iterable<GitLogAllNode> _gitLogAll() {
     List<GitLogAllLine> lines = git.log
         .args(['--decorate=full', '--format=%h %ct %p %d', '--all'])
         .announce()
@@ -39,6 +39,7 @@ extension GitLogAllOnContext on Context {
         .toList()
         .reversed
         .toList();
+    final listQueue = ListQueue(lines.length);
     final roots = lines
         .where((x) => x.parentsCommitHashes.isEmpty)
         .map((x) => GitLogAllNode.root(x))
@@ -71,7 +72,7 @@ extension GitLogAllOnContext on Context {
       }
       (lines, nextLines) = (nextLines, []);
     }
-    return roots;
+    return roots.map((x) => x.ensureSingleParent(listQueue));
   }
 }
 
@@ -85,12 +86,28 @@ class GitLogAllNode {
     return _parent ??= switch (parents) {
       [] => null,
       [final single] => single,
-      _ => parents.reduce((a, b) {
-        if (a.children.length < b.children.length) {
-          return a;
-        }
-        return b;
-      }),
+      _ =>
+        parents
+            .map(
+              (x) => (
+                node: x,
+                isRemoteHeadReachable: x.isRemoteHeadReachable(),
+                childrenLength: x.children.length,
+              ),
+            )
+            .reduce((a, b) {
+              if (a.isRemoteHeadReachable == b.isRemoteHeadReachable) {
+                if (a.childrenLength < b.childrenLength) {
+                  return a;
+                }
+                return b;
+              }
+              if (a.isRemoteHeadReachable) {
+                return b;
+              }
+              return a;
+            })
+            .node,
     };
   }
 
@@ -138,15 +155,16 @@ class GitLogAllNode {
     return node;
   }
 
-  GitLogAllNode ensureSingleParent() {
-    final nodes = [this];
+  GitLogAllNode ensureSingleParent(final ListQueue nodes) {
+    nodes.clear();
+    nodes.add(this);
     while (nodes.isNotEmpty) {
       GitLogAllNode node = nodes.removeLast();
       nodes.addAll(node.children);
       final ogParent = node.parent;
       if (ogParent == null || node.parents.length == 1) continue;
       for (final parent in node.parents) {
-        if (parent != ogParent) {
+        if (!identical(parent, ogParent)) {
           parent.children.remove(node);
         }
       }
