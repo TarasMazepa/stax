@@ -1,3 +1,6 @@
+0.10.14
+ * stax log - fixes a bug when new logic causes stack overflow for larger repositories 
+
 0.10.13
  * stax get - fix case when stax get would not search for remote refs specifically, which will result in it not being able to "get" branches
  * stax log - making sure that merge commit resolution would not get rid of remote head tree

@@ -91,7 +91,7 @@ class GitLogAllNode {
             .map(
               (x) => (
                 node: x,
-                isRemoteHeadReachable: x.isRemoteHeadReachable(),
+                isRemoteHeadReachable: false,
                 childrenLength: x.children.length,
               ),
             )
