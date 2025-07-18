@@ -5,14 +5,24 @@ set -e
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 REPO_DIR="$SCRIPT_DIR/.."
 
+VERBOSE=false
+for arg in "$@"; do
+  case $arg in
+    -v|--verbose) VERBOSE=true ;;
+  esac
+done
+
 if [ -z "$(git -C "$REPO_DIR" status --porcelain)" ]; then
   CACHE_PATH="$REPO_DIR/.cache"
   mkdir -p "$CACHE_PATH"
   STAX_PATH="$CACHE_PATH/$(git -C "$REPO_DIR" rev-parse HEAD)"
   if [ ! -f "$STAX_PATH" ]; then
+    $VERBOSE && echo "staxdev compilation"
     dart compile exe "$REPO_DIR/cli/bin/cli.dart" -o "$STAX_PATH" -Dversion="$(cat "$REPO_DIR/VERSION")" > /dev/null
   fi
+  $VERBOSE && echo "staxdev -> $STAX_PATH"
   "$STAX_PATH" "$@"
 else
+  $VERBOSE && echo "staxdev -> staxlive"
   "$SCRIPT_DIR/staxlive" "$@"
 fi
