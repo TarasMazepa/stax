@@ -59,6 +59,7 @@ extension GitLogAllOnContext on Context {
         break;
       }
       oldLength = lines.length;
+      nextLines.clear();
       for (final line in lines) {
         final parents = line.parentsCommitHashes.map((x) => nodes[x]).toList();
         if (parents.any((x) => x == null)) {
@@ -71,7 +72,7 @@ extension GitLogAllOnContext on Context {
         }
         nodes[node.line.commitHash] = node;
       }
-      (lines, nextLines) = (nextLines, []);
+      (lines, nextLines) = (nextLines, lines);
     }
     return roots;
   }
