@@ -12,11 +12,9 @@ extension GitLogAllOnContext on Context {
   static GitLogAllNode? _gitLogAllAll;
 
   List<GitLogAllNode> gitLogAllRoots([bool showAllBranches = false]) {
-    return withQuiet(true)
-        ._gitLogAll()
-        .map((x) => x.ensureSingleParent().collapse(showAllBranches))
-        .nonNulls
-        .toList();
+    return withQuiet(
+      true,
+    )._gitLogAll().map((x) => x.collapse(showAllBranches)).nonNulls.toList();
   }
 
   GitLogAllNode gitLogAll([bool showAllBranches = false]) {
@@ -52,6 +50,7 @@ extension GitLogAllOnContext on Context {
     }
     List<GitLogAllLine> nextLines = [];
     int oldLength = 0;
+    final listQueue = <GitLogAllNode>[];
     while (lines.isNotEmpty) {
       printToConsole('Tree building for log with ${lines.length} commits');
       if (lines.length == oldLength) {
@@ -73,7 +72,7 @@ extension GitLogAllOnContext on Context {
       }
       (lines, nextLines) = (nextLines, []);
     }
-    return roots;
+    return roots.map((x) => x.ensureSingleParent(listQueue));
   }
 }
 
@@ -156,8 +155,9 @@ class GitLogAllNode {
     return node;
   }
 
-  GitLogAllNode ensureSingleParent() {
-    final nodes = [this];
+  GitLogAllNode ensureSingleParent(List<GitLogAllNode> nodes) {
+    if (nodes.isNotEmpty) nodes.clear();
+    nodes.add(this);
     while (nodes.isNotEmpty) {
       GitLogAllNode node = nodes.removeLast();
       nodes.addAll(node.children);
