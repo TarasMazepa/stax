@@ -3,7 +3,7 @@
 set -e
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
-REPO_DIR="$SCRIPT_DIR/.."
+REPO_DIR=$(realpath "$SCRIPT_DIR/..")
 
 VERBOSE=false
 for arg in "$@"; do
@@ -12,7 +12,7 @@ for arg in "$@"; do
   esac
 done
 
-if [ -z "$(git -C "$REPO_DIR" status --porcelain)" ]; then
+if [ -z "$(git -C "$REPO_DIR" status --porcelain . -- ':!cli/test')" ]; then
   CACHE_PATH="$REPO_DIR/.cache"
   mkdir -p "$CACHE_PATH"
   STAX_PATH="$CACHE_PATH/$(git -C "$REPO_DIR" rev-parse HEAD)"
