@@ -1,20 +1,19 @@
 name: chocolatey-release.yml
 on:
-  pull_request:
-    types: [closed]
-    branches: [main]
-    paths: ['chocolatey/stax/stax.nuspec']
+  push:
+    branches:
+      - main
+    paths:
+      - chocolatey/stax/stax.nuspec
   workflow_dispatch:
+
 jobs:
   chocolatey-release:
-    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'chocolatey-update-stax-to-')) }}
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-
       - run: ./.github/scripts/prepare-chocolatey.ps1
         shell: pwsh
-
       - run: choco pack chocolatey/stax/stax.nuspec
       - run: choco install stax --source . -y
       - run: stax version
