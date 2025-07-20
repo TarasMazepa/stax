@@ -1,13 +1,13 @@
 name: chocolatey-release.yml
 on:
-  workflow_run:
-    workflows: ["release-distribution-trigger.yml"]
-    types: [completed]
+  pull_request:
+    types: [closed]
     branches: [main]
+    paths: ['chocolatey/stax/stax.nuspec']
   workflow_dispatch:
 jobs:
   chocolatey-release:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'chocolatey-update-stax-to-')) }}
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
