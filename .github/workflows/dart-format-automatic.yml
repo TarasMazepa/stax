@@ -1,7 +1,8 @@
 name: dart-format-automatic.yml
 on:
   repository_dispatch:
-    types: [format-dart-code]
+    types:
+      - format-dart-code
 
 jobs:
   dart-format:

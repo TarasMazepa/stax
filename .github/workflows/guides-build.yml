@@ -1,7 +1,8 @@
 name: guides-build.yml
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
 
 jobs:
