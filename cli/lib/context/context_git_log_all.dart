@@ -15,6 +15,8 @@ extension GitLogAllOnContext on Context {
     final listQueue = <GitLogAllNode>[];
     produce() => withQuiet(true)
         ._gitLogAllLimited()
+        .map((x) => x.collapse(showAllBranches))
+        .nonNulls
         .map((x) => x.ensureSingleParent(listQueue))
         .map((x) => x.collapse(showAllBranches))
         .nonNulls
@@ -158,7 +160,7 @@ class GitLogAllNode {
             .map(
               (x) => (
                 node: x,
-                isRemoteHeadReachable: false,
+                isRemoteHeadReachable: x.isRemoteHeadReachable(),
                 childrenLength: x.children.length,
               ),
             )
@@ -267,11 +269,15 @@ class GitLogAllNode {
               x.startsWith('HEAD -> refs/heads/') ||
               x == 'HEAD',
         );
-    if (!hasInterestingParts && children.length == 1) {
-      children.first.parent = parent;
-      return children.first;
+    if (hasInterestingParts) return this;
+    if (parents.length == 1 && children.length == 1) {
+      final child = children.first;
+      if (child.parents.length == 1) {
+        child.parent = parent;
+        return child;
+      }
     }
-    if (!hasInterestingParts && children.isEmpty) {
+    if (children.isEmpty) {
       return null;
     }
     return this;
@@ -326,8 +332,13 @@ class GitLogAllNode {
   }
 
   bool isRemoteHeadReachable() {
-    return line.partsHasRemoteHead ||
-        children.any((x) => x.isRemoteHeadReachable());
+    final nodes = <GitLogAllNode>[this];
+    while (nodes.isNotEmpty) {
+      final node = nodes.removeLast();
+      if (node.line.partsHasRemoteHead) return true;
+      nodes.addAll(node.children);
+    }
+    return false;
   }
 
   @override
