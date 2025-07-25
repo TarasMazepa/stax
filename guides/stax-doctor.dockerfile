@@ -1,4 +1,4 @@
-FROM taras0mazepa/stax-guide-base:0.10.14
+FROM taras0mazepa/stax-guide-base:0.10.15
 
 RUN <<EOF
 git config --global --unset user.name
