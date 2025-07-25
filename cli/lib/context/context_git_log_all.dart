@@ -11,21 +11,15 @@ extension GitLogAllOnContext on Context {
   static GitLogAllNode? _gitLogAllLocal;
   static GitLogAllNode? _gitLogAllAll;
 
-  List<GitLogAllNode> gitLogAllRoots([bool showAllBranches = false]) {
-    return withQuiet(
-      true,
-    )._gitLogAll().map((x) => x.collapse(showAllBranches)).nonNulls.toList();
-  }
-
   GitLogAllNode gitLogAll([bool showAllBranches = false]) {
-    produce() => gitLogAllRoots(showAllBranches).first;
+    produce() => withQuiet(true)._gitLogAll(showAllBranches).first;
     if (showAllBranches) {
       return _gitLogAllAll ??= produce();
     }
     return _gitLogAllLocal ??= produce();
   }
 
-  Iterable<GitLogAllNode> _gitLogAll() {
+  Iterable<GitLogAllNode> _gitLogAll(bool showAllBranches) {
     List<GitLogAllLine> lines = git.log
         .args(['--decorate=full', '--format=%h %ct %p %d', '--all'])
         .announce()
@@ -75,13 +69,18 @@ extension GitLogAllOnContext on Context {
       }
       (lines, nextLines) = (nextLines, []);
     }
-    return roots.map((x) => x.ensureSingleParent(listQueue));
+    return roots
+        .map((x) => x.collapse(showAllBranches))
+        .nonNulls
+        .map((x) => x.ensureSingleParent(listQueue))
+        .map((x) => x.collapse(showAllBranches))
+        .nonNulls;
   }
 }
 
 class GitLogAllNode {
   final GitLogAllLine line;
-  List<GitLogAllNode> parents = [];
+  final List<GitLogAllNode> parents = [];
   GitLogAllNode? _parent;
   List<GitLogAllNode> children = [];
 
@@ -94,7 +93,7 @@ class GitLogAllNode {
             .map(
               (x) => (
                 node: x,
-                isRemoteHeadReachable: false,
+                isRemoteHeadReachable: x.isRemoteHeadReachable(),
                 childrenLength: x.children.length,
               ),
             )
@@ -171,7 +170,7 @@ class GitLogAllNode {
           parent.children.remove(node);
         }
       }
-      node.parents.removeWhere((x) => !identical(x, ogParent));
+      node.parent = ogParent;
     }
     return this;
   }
@@ -198,6 +197,9 @@ class GitLogAllNode {
               x.startsWith('HEAD -> refs/heads/') ||
               x == 'HEAD',
         );
+    if (parents.length > 1) {
+      return this;
+    }
     if (!hasInterestingParts && children.length == 1) {
       children.first.parent = parent;
       return children.first;

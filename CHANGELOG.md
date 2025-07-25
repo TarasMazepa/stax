@@ -1,3 +1,6 @@
+0.10.15
+* stax log - making sure that merge commit resolution would not get rid of remote head tree. try #2
+
 0.10.14
  * stax log - fixes a bug when new logic causes stack overflow for larger repositories 
 
