@@ -12,9 +12,11 @@ extension GitLogAllOnContext on Context {
   static GitLogAllNode? _gitLogAllAll;
 
   List<GitLogAllNode> gitLogAllRoots([bool showAllBranches = false]) {
-    return withQuiet(
-      true,
-    )._gitLogAllLimited().map((x) => x.collapse(showAllBranches)).nonNulls.toList();
+    return withQuiet(true)
+        ._gitLogAllLimited()
+        .map((x) => x.collapse(showAllBranches))
+        .nonNulls
+        .toList();
   }
 
   GitLogAllNode gitLogAll([bool showAllBranches = false]) {
