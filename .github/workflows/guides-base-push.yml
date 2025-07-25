@@ -2,10 +2,10 @@ name: guides-base-push.yml
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
-    paths: [
-      "guides/base.dockerfile",
-    ]
+    branches:
+      - main
+    paths:
+      - guides/base.dockerfile
 
 jobs:
   guides-base-push:

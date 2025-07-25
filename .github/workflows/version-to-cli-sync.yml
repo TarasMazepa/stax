@@ -1,9 +1,10 @@
 name: version-to-cli-sync.yml
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
     paths:
-      VERSION
+      - VERSION
 
 jobs:
   version-to-cli-sync:
