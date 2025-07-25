@@ -37,4 +37,5 @@ jobs:
           touch LICENSE.md
           git add .
           git commit -m "Second commit"
+          git log --decorate=full "--format=%h %ct %p %d" --all
           ../path/staxdev rebase main
