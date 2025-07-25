@@ -62,13 +62,17 @@ extension GitLogAllOnContext on Context {
       }
       oldLength = lines.length;
       for (final line in lines) {
-        final parents = line.parentsCommitHashes.map((x) => nodes[x]).toList();
-        if (parents.any((x) => x == null)) {
-          nextLines.add(line);
-          continue;
+        final parents = <GitLogAllNode>[];
+        for (final parentCommitHash in line.parentsCommitHashes) {
+          final parent = nodes[parentCommitHash];
+          if (parent == null) {
+            nextLines.add(line);
+            continue;
+          }
+          parents.add(parent);
         }
         final node = GitLogAllNode(line);
-        for (final parent in parents.nonNulls) {
+        for (final parent in parents) {
           parent.addChildNode(node);
         }
         nodes[node.line.commitHash] = node;
