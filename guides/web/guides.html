@@ -56,17 +56,16 @@
       li.appendChild(button);
       sidebar.appendChild(li);
       buttons[cmd.id] = button;
+
+      const termDiv = document.createElement('div');
+      termDiv.id = cmd.id + "-terminal";
+      termDiv.classList.add("w-full", "h-[500px]");
+      termDiv.style.display = 'none';
+      terminalContainer.appendChild(termDiv);
+      startWasi(termDiv.id, "./src/worker.js" + location.search, location.origin + cmd.container, 1);
+      terminals[cmd.id] = termDiv;
   
       button.addEventListener('click', () => {
-        if (!terminals[cmd.id]) {
-          const termDiv = document.createElement('div');
-          termDiv.id = cmd.id + "-terminal";
-          termDiv.classList.add("w-full", "h-[500px]");
-          terminalContainer.appendChild(termDiv);
-          startWasi(termDiv.id, "./src/worker.js" + location.search, location.origin + cmd.container, 1);
-          terminals[cmd.id] = termDiv;
-        }
-  
         Object.entries(terminals).forEach(([id, div]) => {
           div.style.display = id === cmd.id ? 'block' : 'none';
         });
