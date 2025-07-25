@@ -1,3 +1,6 @@
+0.10.15
+ * stax log - now only requests 100k latest commits from git log to build tree, which improves performance on repositories with larger ammount of commits
+
 0.10.14
  * stax log - fixes a bug when new logic causes stack overflow for larger repositories 
 
