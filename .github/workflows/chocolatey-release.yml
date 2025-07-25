@@ -1,15 +1,19 @@
 name: chocolatey-release.yml
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - chocolatey/stax/stax.nuspec
   workflow_dispatch:
+
 jobs:
   chocolatey-release:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-
       - run: ./.github/scripts/prepare-chocolatey.ps1
         shell: pwsh
-
       - run: choco pack chocolatey/stax/stax.nuspec
       - run: choco install stax --source . -y
       - run: stax version
