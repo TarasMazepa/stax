@@ -147,9 +147,9 @@ extension GitLogAllOnContext on Context {
 
 class GitLogAllNode {
   final GitLogAllLine line;
-  List<GitLogAllNode> parents = [];
+  final List<GitLogAllNode> parents = [];
   GitLogAllNode? _parent;
-  List<GitLogAllNode> children = [];
+  final List<GitLogAllNode> children = [];
 
   GitLogAllNode? get parent {
     return _parent ??= switch (parents) {
@@ -249,7 +249,7 @@ class GitLogAllNode {
 
   GitLogAllNode? collapse([bool showAllBranches = false, int depth = 5000]) {
     if (depth < 0) return this;
-    List<GitLogAllNode> newChildren = [];
+    int j = 0;
     for (int i = 0; i < children.length; i++) {
       GitLogAllNode? child, newChild = children[i];
       while (newChild != null && child != newChild) {
@@ -257,9 +257,9 @@ class GitLogAllNode {
         newChild = child.collapse(showAllBranches, depth - 1);
       }
       if (newChild == null) continue;
-      newChildren.add(newChild);
+      children[j++] = newChild;
     }
-    children = newChildren;
+    children.length = j;
     final hasInterestingParts =
         (showAllBranches && line.partsHasRemoteRef) ||
         line.partsHasRemoteHead ||
