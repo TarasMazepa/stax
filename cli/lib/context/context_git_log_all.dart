@@ -267,11 +267,12 @@ class GitLogAllNode {
               x.startsWith('HEAD -> refs/heads/') ||
               x == 'HEAD',
         );
-    if (!hasInterestingParts && children.length == 1) {
+    if (hasInterestingParts) return this;
+    if (children.length == 1) {
       children.first.parent = parent;
       return children.first;
     }
-    if (!hasInterestingParts && children.isEmpty) {
+    if (children.isEmpty) {
       return null;
     }
     return this;
