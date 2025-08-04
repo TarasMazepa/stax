@@ -14,8 +14,12 @@ abstract class DecoratedLogLineProducerAdapter<T> {
 
 List<DecoratedLogLine> _produceDecoratedLogLine<T>(
   T root,
-  DecoratedLogLineProducerAdapter<T> adapter,
-) {
+  DecoratedLogLineProducerAdapter<T> adapter, [
+  int depth = 0,
+]) {
+  if (depth > 500) {
+    return [DecoratedLogLine('...overflow...', ['...'])];
+  }
   final children = adapter.children(root);
   final emptyIndentLength =
       (adapter.isDefaultBranch(root) &&
@@ -26,7 +30,7 @@ List<DecoratedLogLine> _produceDecoratedLogLine<T>(
   final result = <DecoratedLogLine>[];
   for (int i = 0; i < children.length; i++) {
     result.addAll(
-      _produceDecoratedLogLine(children[i], adapter)
+      _produceDecoratedLogLine(children[i], adapter, depth + 1)
           .map((e) => e.withIndent('  ' * emptyIndentLength + '| ' * i))
           .toList(growable: false),
     );

@@ -1,5 +1,8 @@
+0.10.16
+ * stax log - if repository has many "original" commits (the ones without parent) stax will make sure to select one which has access to the remote head, as stax would ensure that each node will only have one parent
+
 0.10.15
- * stax log - now only requests 100k latest commits from git log to build tree, which improves performance on repositories with larger ammount of commits
+ * stax log - now only requests 100k latest commits from git log to build tree, which improves performance on repositories with larger amount of commits
 
 0.10.14
  * stax log - fixes a bug when new logic causes stack overflow for larger repositories 
