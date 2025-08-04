@@ -13,14 +13,23 @@ extension GitLogAllOnContext on Context {
 
   GitLogAllNode gitLogAll([bool showAllBranches = false]) {
     final listQueue = <GitLogAllNode>[];
-    produce() => withQuiet(true)
-        ._gitLogAllLimited()
-        .map((x) => x.collapse(showAllBranches))
-        .nonNulls
-        .map((x) => x.ensureSingleParent(listQueue))
-        .map((x) => x.collapse(showAllBranches))
-        .nonNulls
-        .first;
+    produce() {
+      GitLogAllNode? cache;
+      return withQuiet(true)
+              ._gitLogAllLimited()
+              .map((x) => x.collapse(showAllBranches))
+              .nonNulls
+              .map((x) => x.ensureSingleParent(listQueue))
+              .map((x) => x.collapse(showAllBranches))
+              .nonNulls
+              .where((x) {
+                cache = x;
+                return x.hasAccessToRemoteHead;
+              })
+              .firstOrNull ??
+          cache!;
+    }
+
     if (showAllBranches) {
       return _gitLogAllAll ??= produce();
     }
@@ -150,6 +159,7 @@ class GitLogAllNode {
   List<GitLogAllNode> parents = [];
   GitLogAllNode? _parent;
   List<GitLogAllNode> children = [];
+  bool hasAccessToRemoteHead = false;
 
   GitLogAllNode? get parent {
     return _parent ??= switch (parents) {
@@ -160,7 +170,7 @@ class GitLogAllNode {
             .map(
               (x) => (
                 node: x,
-                isRemoteHeadReachable: false,
+                isRemoteHeadReachable: x.hasAccessToRemoteHead,
                 childrenLength: x.children.length,
               ),
             )
@@ -230,6 +240,9 @@ class GitLogAllNode {
   }
 
   GitLogAllNode ensureSingleParent(List<GitLogAllNode> nodes) {
+    findNoRecursion(
+      (x) => x.line.partsHasRemoteHead,
+    )?.markParentsAsHaveAccessToRemoteHead();
     if (nodes.isNotEmpty) nodes.clear();
     nodes.add(this);
     while (nodes.isNotEmpty) {
@@ -302,6 +315,26 @@ class GitLogAllNode {
     return children.map((x) => x.find(predicate)).nonNulls.firstOrNull;
   }
 
+  GitLogAllNode? findNoRecursion(bool Function(GitLogAllNode) predicate) {
+    final queue = [this];
+    while (queue.isNotEmpty) {
+      final node = queue.removeLast();
+      if (predicate(node)) return node;
+      queue.addAll(node.children);
+    }
+    return null;
+  }
+
+  GitLogAllNode markParentsAsHaveAccessToRemoteHead() {
+    final queue = [this];
+    while (queue.isNotEmpty) {
+      final node = queue.removeLast();
+      node.hasAccessToRemoteHead = true;
+      queue.addAll(node.parents);
+    }
+    return this;
+  }
+
   GitLogAllNode? findCurrent() {
     return find((x) => x.line.isCurrent);
   }
@@ -372,12 +405,11 @@ class DecoratedLogLineProducerAdapterForGitLogAllNode
 
   @override
   bool isDefaultBranch(GitLogAllNode t) {
-    if (t.line.partsHasRemoteHead) return true;
     final defaultBranch = this.defaultBranch;
-    if (defaultBranch != null) {
-      for (final part in t.line.parts) {
-        if (part.endsWith(defaultBranch)) return true;
-      }
+    if (defaultBranch == null) return t.hasAccessToRemoteHead;
+    if (t.line.partsHasRemoteHead) return true;
+    for (final part in t.line.parts) {
+      if (part.endsWith(defaultBranch)) return true;
     }
     for (final child in t.children) {
       if (isDefaultBranch(child)) return true;
