@@ -231,8 +231,9 @@ class GitLogAllNode {
   }
 
   GitLogAllNode ensureSingleParent(List<GitLogAllNode> nodes) {
-    findNoRecursion((x) => x.line.partsHasRemoteHead)
-        ?.markParentsAsHaveAccessToRemoteHead();
+    findNoRecursion(
+      (x) => x.line.partsHasRemoteHead,
+    )?.markParentsAsHaveAccessToRemoteHead();
     if (nodes.isNotEmpty) nodes.clear();
     nodes.add(this);
     while (nodes.isNotEmpty) {
