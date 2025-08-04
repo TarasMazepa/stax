@@ -18,7 +18,9 @@ List<DecoratedLogLine> _produceDecoratedLogLine<T>(
   int depth = 0,
 ]) {
   if (depth > 500) {
-    return [DecoratedLogLine('...overflow...', ['...'])];
+    return [
+      DecoratedLogLine('...overflow...', ['...']),
+    ];
   }
   final children = adapter.children(root);
   final emptyIndentLength =
