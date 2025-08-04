@@ -150,6 +150,7 @@ class GitLogAllNode {
   List<GitLogAllNode> parents = [];
   GitLogAllNode? _parent;
   List<GitLogAllNode> children = [];
+  bool hasAccessToRemoteHead = false;
 
   GitLogAllNode? get parent {
     return _parent ??= switch (parents) {
@@ -160,7 +161,7 @@ class GitLogAllNode {
             .map(
               (x) => (
                 node: x,
-                isRemoteHeadReachable: false,
+                isRemoteHeadReachable: x.hasAccessToRemoteHead,
                 childrenLength: x.children.length,
               ),
             )
@@ -230,6 +231,8 @@ class GitLogAllNode {
   }
 
   GitLogAllNode ensureSingleParent(List<GitLogAllNode> nodes) {
+    findNoRecursion((x) => x.line.partsHasRemoteHead)
+        ?.markParentsAsHaveAccessToRemoteHead();
     if (nodes.isNotEmpty) nodes.clear();
     nodes.add(this);
     while (nodes.isNotEmpty) {
@@ -300,6 +303,26 @@ class GitLogAllNode {
   GitLogAllNode? find(bool Function(GitLogAllNode) predicate) {
     if (predicate(this)) return this;
     return children.map((x) => x.find(predicate)).nonNulls.firstOrNull;
+  }
+
+  GitLogAllNode? findNoRecursion(bool Function(GitLogAllNode) predicate) {
+    final queue = [this];
+    while (queue.isNotEmpty) {
+      final node = queue.removeLast();
+      if (predicate(node)) return node;
+      queue.addAll(node.children);
+    }
+    return null;
+  }
+
+  GitLogAllNode markParentsAsHaveAccessToRemoteHead() {
+    final queue = [this];
+    while (queue.isNotEmpty) {
+      final node = queue.removeLast();
+      node.hasAccessToRemoteHead = true;
+      queue.addAll(node.parents);
+    }
+    return this;
   }
 
   GitLogAllNode? findCurrent() {
