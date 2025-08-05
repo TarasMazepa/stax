@@ -1,3 +1,6 @@
+0.10.17
+ * stax log - will now detect cycles in the tree if they involve remote/HEAD
+
 0.10.16
  * stax log - if repository has many "original" commits (the ones without parent) stax will make sure to select one which has access to the remote head, as stax would ensure that each node will only have one parent
 
