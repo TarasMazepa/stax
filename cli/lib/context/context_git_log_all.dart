@@ -247,6 +247,11 @@ class GitLogAllNode {
     nodes.add(this);
     while (nodes.isNotEmpty) {
       GitLogAllNode node = nodes.removeLast();
+      int hasAccessToRemoteHeadCount = 0;
+      node.children.removeWhere((x) {
+        if (x.hasAccessToRemoteHead) hasAccessToRemoteHeadCount++;
+        return hasAccessToRemoteHeadCount > 1;
+      });
       nodes.addAll(node.children);
       final ogParent = node.parent;
       if (ogParent == null || node.parents.length == 1) continue;
