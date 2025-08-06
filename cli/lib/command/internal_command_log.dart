@@ -45,7 +45,12 @@ class InternalCommandLog extends InternalCommand {
 
     print(
       materializeDecoratedLogLines(
-        context.gitLogAll(showAllBranches),
+        context
+            .gitLogAll(showAllBranches)
+            .trimToHeight(100)
+            .collapse(showAllBranches)!
+            .trimToHeight(50)
+            .collapse(showAllBranches)!,
         DecoratedLogLineProducerAdapterForGitLogAllNode(
           showAllBranches,
           defaultBranch,

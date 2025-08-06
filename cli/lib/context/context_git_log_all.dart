@@ -160,6 +160,7 @@ class GitLogAllNode {
   GitLogAllNode? _parent;
   List<GitLogAllNode> children = [];
   bool hasAccessToRemoteHead = false;
+  int? height;
 
   GitLogAllNode? get parent {
     return _parent ??= switch (parents) {
@@ -239,6 +240,38 @@ class GitLogAllNode {
     return node;
   }
 
+  GitLogAllNode trimToHeight(int limit) {
+    final nodes = [this];
+    while (nodes.isNotEmpty) {
+      final node = nodes.last;
+      bool wasNodeAdded = false;
+      for (final child in node.children) {
+        if (child.height == null) {
+          wasNodeAdded = true;
+          nodes.add(child);
+        }
+      }
+      if (wasNodeAdded) {
+        continue;
+      }
+      nodes.removeLast();
+      node.height = node.children.fold(1, (v, n) => v! + n.height!);
+      if (node.height! > limit) {
+        final childWithRemoteHead = node.children
+            .where((x) => x.hasAccessToRemoteHead && x.height! < limit)
+            .fold<GitLogAllNode?>(
+              null,
+              (a, b) => switch (a) {
+                null => b,
+                _ => a.height! < b.height! ? b : a,
+              },
+            );
+        if (childWithRemoteHead != null) return childWithRemoteHead;
+      }
+    }
+    return this;
+  }
+
   GitLogAllNode ensureSingleParent(List<GitLogAllNode> nodes) {
     findNoRecursion(
       (x) => x.line.partsHasRemoteHead,
@@ -265,7 +298,7 @@ class GitLogAllNode {
     return this;
   }
 
-  GitLogAllNode? collapse([bool showAllBranches = false, int depth = 5000]) {
+  GitLogAllNode? collapse(bool showAllBranches, [int depth = 5000]) {
     if (depth < 0) return this;
     List<GitLogAllNode> newChildren = [];
     for (int i = 0; i < children.length; i++) {
