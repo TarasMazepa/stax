@@ -1,76 +1,50 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Stax Commands</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: white;
-    }
-    
-    #header{
-      margin:20px 0px ;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-    }
-    
-    #header a {
-      margin-left: 10px;
-      text-decoration: none;
-      color: white;
-      padding: 7px;
-      background: #007bff;
-      border-radius: 6px;
-    }
-
-    .container-content{
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
-    #content {
-      width: 80%;
-      max-width: 800px;
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-    }
-    #content h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css"
+    >
+    <title>stax - manager your git branches and stack PRs</title>
 </head>
 <body>
-  <main>
-    <div id="header">
-      <a id="github" href="https://github.com/TarasMazepa/stax" target="_blank" >GitHub</a>
-      <a id="guides" href="guides.html" >Guides</a>
-    </div>
-
-    <div class="container-content">
-      <div id="content">
-        readme
-      </div>
-    </div>
-   
-  </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
-  <script type="module">
-      fetch("https://raw.githubusercontent.com/TarasMazepa/stax/refs/heads/main/README.md")
-      .then(res => res.text())
-      .then(md => {
-        var converter = new showdown.Converter(),
-              html    = converter.makeHtml(md)
-        document.getElementById('content').innerHTML = html;
-      });
-  </script>
+<header>
+    <nav>
+        <ul>
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="guides.html">Guides</a>
+            </li>
+            <li>
+                <a href="https://github.com/TarasMazepa/stax" target="_blank">GitHub</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <article id="content">
+        <span aria-busy="true">Loading</span>
+    </article>
+</main>
+<footer>
+    By <a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
+<script type="module">
+    fetch("https://raw.githubusercontent.com/TarasMazepa/stax/refs/heads/main/README.md")
+    .then(res => res.text())
+    .then(md => {
+      var converter = new showdown.Converter(),
+            html    = converter.makeHtml(md)
+      document.getElementById('content').innerHTML = html;
+    });
+</script>
 </body>
 </html>
