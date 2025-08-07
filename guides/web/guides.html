@@ -1,92 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.1.0/css/xterm.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>Stax - Guides</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.1.0/css/xterm.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Stax - Guides</title>
 </head>
 <body class="p-10">
-  <a href="index.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+<a href="index.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
     Back
-  </a>
-  <section class="w-full flex flex-col md:flex-row gap-4 p-4 bg-gray-100">
+</a>
+<section class="w-full flex flex-col md:flex-row gap-4 p-4 bg-gray-100">
     Note: it takes roughly 7 seconds for guide to load.
     <div id="terminal" class="w-full md:w-[70%] bg-white shadow-md rounded-lg p-4 overflow-auto">
-      <!-- Terminal content will be dynamically added here -->
+        <!-- Terminal content will be dynamically added here -->
     </div>
 
     <div id="sidebar" class="w-full md:w-[30%] bg-white shadow-md rounded-lg p-4">
-      <h2 class="text-lg font-bold mb-4">Guides</h2>
-      <ul class="space-y-2">
-        <!-- Sidebar items will be dynamically added here -->
-      </ul>
+        <h2 class="text-lg font-bold mb-4">Guides</h2>
+        <ul class="space-y-2">
+            <!-- Sidebar items will be dynamically added here -->
+        </ul>
     </div>
-  </section>
+</section>
 
-  <script src="./coi-serviceworker.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xterm@5.1.0/lib/xterm.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xterm-pty@0.9.4/index.js"></script>
-  <script src="./src/stack.js"></script>
-  <script src="./worker.js"></script>
-  <script>
+<script src="./coi-serviceworker.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xterm@5.1.0/lib/xterm.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xterm-pty@0.9.4/index.js"></script>
+<script src="./src/stack.js"></script>
+<script src="./worker.js"></script>
+<script>
     const commands = [
-      { id: "stax-log", label: "stax log", container: "/containers/stax-log" },      
-      { id: "stax-delete-stale", label: "stax delete-stale", container: "/containers/stax-delete-stale" },
-      { id: "stax-pull", label: "stax pull", container: "/containers/stax-pull" },    
-      { id: "stax-commit", label: "stax commit", container: "/containers/stax-commit" },  
-      { id: "stax-amend", label: "stax amend", container: "/containers/stax-amend" },
-      { id: "stax-rebase", label: "stax rebase", container: "/containers/stax-rebase" },
-      { id: "stax-get", label: "stax get", container: "/containers/stax-get" },
-      { id: "stax-move", label: "stax move", container: "/containers/stax-move" },
-      { id: "stax-doctor", label: "stax doctor", container: "/containers/stax-doctor" },
-      { id: "stax-settings", label: "stax settings", container: "/containers/stax-settings" },
+        {id: "stax-log", label: "stax log", container: "/containers/stax-log"},
+        {id: "stax-delete-stale", label: "stax delete-stale", container: "/containers/stax-delete-stale"},
+        {id: "stax-pull", label: "stax pull", container: "/containers/stax-pull"},
+        {id: "stax-commit", label: "stax commit", container: "/containers/stax-commit"},
+        {id: "stax-amend", label: "stax amend", container: "/containers/stax-amend"},
+        {id: "stax-rebase", label: "stax rebase", container: "/containers/stax-rebase"},
+        {id: "stax-get", label: "stax get", container: "/containers/stax-get"},
+        {id: "stax-move", label: "stax move", container: "/containers/stax-move"},
+        {id: "stax-doctor", label: "stax doctor", container: "/containers/stax-doctor"},
+        {id: "stax-settings", label: "stax settings", container: "/containers/stax-settings"},
     ];
-  
+
     const sidebar = document.getElementById('sidebar').querySelector('ul');
     const terminalContainer = document.getElementById('terminal');
     const terminals = {};
     const buttons = {};
-  
-    commands.forEach((cmd, index) => {
-      const li = document.createElement('li');
-      const button = document.createElement('button');
-      button.textContent = cmd.label;
-      button.classList.add('w-full', 'text-left', 'px-2', 'py-1', 'hover:bg-gray-100');
-      li.appendChild(button);
-      sidebar.appendChild(li);
-      buttons[cmd.id] = button;
 
-      const termDiv = document.createElement('div');
-      termDiv.id = cmd.id + "-terminal";
-      termDiv.classList.add("w-full", "h-[500px]");
-      termDiv.style.display = 'none';
-      terminalContainer.appendChild(termDiv);
-      startWasi(termDiv.id, "./src/worker.js" + location.search, location.origin + cmd.container, 1);
-      terminals[cmd.id] = termDiv;
-  
-      button.addEventListener('click', () => {
-        Object.entries(terminals).forEach(([id, div]) => {
-          div.style.display = id === cmd.id ? 'block' : 'none';
+    commands.forEach((cmd, index) => {
+        const li = document.createElement('li');
+        const button = document.createElement('button');
+        button.textContent = cmd.label;
+        button.classList.add('w-full', 'text-left', 'px-2', 'py-1', 'hover:bg-gray-100');
+        li.appendChild(button);
+        sidebar.appendChild(li);
+        buttons[cmd.id] = button;
+
+        const termDiv = document.createElement('div');
+        termDiv.id = cmd.id + "-terminal";
+        termDiv.classList.add("w-full", "h-[500px]");
+        termDiv.style.display = 'none';
+        terminalContainer.appendChild(termDiv);
+        startWasi(termDiv.id, "./src/worker.js" + location.search, location.origin + cmd.container, 1);
+        terminals[cmd.id] = termDiv;
+
+        button.addEventListener('click', () => {
+            Object.entries(terminals).forEach(([id, div]) => {
+                div.style.display = id === cmd.id ? 'block' : 'none';
+            });
+
+            Object.entries(buttons).forEach(([id, btn]) => {
+                if (id === cmd.id) {
+                    btn.classList.add('bg-gray-200', 'font-semibold');
+                } else {
+                    btn.classList.remove('bg-gray-200', 'font-semibold');
+                }
+            });
         });
-  
-        Object.entries(buttons).forEach(([id, btn]) => {
-          if (id === cmd.id) {
-            btn.classList.add('bg-gray-200', 'font-semibold');
-          } else {
-            btn.classList.remove('bg-gray-200', 'font-semibold');
-          }
-        });
-      });
-  
-      if (index === 0) {
-        setTimeout(() => button.click(), 0);
-      }
+
+        if (index === 0) {
+            setTimeout(() => button.click(), 0);
+        }
     });
-  </script>
-  
-  
-  
+</script>
+
+
 </body>
 </html>
