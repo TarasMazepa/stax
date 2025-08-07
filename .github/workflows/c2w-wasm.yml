@@ -28,12 +28,7 @@ jobs:
       - run: .github/scripts/build_guide_docker_to_wasm pull
       - run: .github/scripts/build_guide_docker_to_wasm rebase
       - run: .github/scripts/build_guide_docker_to_wasm settings
-      
-      - uses: actions/upload-artifact@v4
-        with:
-          name: guides-web
-          path: guides/web
-          retention-days: 7
+
       - uses: google-github-actions/auth@v2
         with:
           service_account: brainfucksheetsgithubdeploy@youtube-355604.iam.gserviceaccount.com
