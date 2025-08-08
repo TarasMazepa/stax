@@ -241,13 +241,23 @@ class GitLogAllNode {
   }
 
   GitLogAllNode ensureSingleParent(List<GitLogAllNode> nodes) {
-    findNoRecursion(
-      (x) => x.line.partsHasRemoteHead,
-    )?.markParentsAsHaveAccessToRemoteHead();
+    final visited = {line.commitHash};
     if (nodes.isNotEmpty) nodes.clear();
     nodes.add(this);
     while (nodes.isNotEmpty) {
-      GitLogAllNode node = nodes.removeLast();
+      final node = nodes.removeLast();
+      node.hasAccessToRemoteHead = false;
+      nodes.addAll(node.children.where((x) => visited.add(x.line.commitHash)));
+    }
+    findNoRecursion(
+      (x) => x.line.partsHasRemoteHead,
+    )?.markParentsAsHaveAccessToRemoteHead();
+    visited.clear();
+    visited.add(line.commitHash);
+    if (nodes.isNotEmpty) nodes.clear();
+    nodes.add(this);
+    while (nodes.isNotEmpty) {
+      final node = nodes.removeLast();
       int hasAccessToRemoteHeadCount = 0;
       node.children.removeWhere((x) {
         if (x.hasAccessToRemoteHead) hasAccessToRemoteHeadCount++;
@@ -299,26 +309,19 @@ class GitLogAllNode {
     return this;
   }
 
-  List<String> describe() {
-    return [...children.expand((x) => x.describe()), toString()];
-  }
-
   GitLogAllNode? findAnyRefThatEndsWith(String suffix) {
-    return find((x) => x.line.parts.any((element) => element.endsWith(suffix)));
+    return findNoRecursion(
+      (x) => x.line.parts.any((element) => element.endsWith(suffix)),
+    );
   }
 
   GitLogAllNode? findAnyRemoteRefThatEndsWith(String suffix) {
-    return find(
+    return findNoRecursion(
       (x) => x.line.parts.any(
         (element) =>
             element.startsWith('refs/remotes/') && element.endsWith(suffix),
       ),
     );
-  }
-
-  GitLogAllNode? find(bool Function(GitLogAllNode) predicate) {
-    if (predicate(this)) return this;
-    return children.map((x) => x.find(predicate)).nonNulls.firstOrNull;
   }
 
   GitLogAllNode? findNoRecursion(bool Function(GitLogAllNode) predicate) {
@@ -344,11 +347,11 @@ class GitLogAllNode {
   }
 
   GitLogAllNode? findCurrent() {
-    return find((x) => x.line.isCurrent);
+    return findNoRecursion((x) => x.line.isCurrent);
   }
 
   GitLogAllNode? findRemoteHead() {
-    return find((x) => x.line.partsHasRemoteHead);
+    return findNoRecursion((x) => x.line.partsHasRemoteHead);
   }
 
   Iterable<RebaseStep> localBranchNamesInOrderForRebase() {
