@@ -1,3 +1,7 @@
+0.10.19
+ * stax log - fix braking change from last update
+ * stax log - will only output at most 100 lines (useful for stax log --all on repositories with a lot of remote branches)
+
 0.10.18
  * stax log - will survive repository with big amounts of merge commits
 
