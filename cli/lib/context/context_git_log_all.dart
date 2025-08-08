@@ -338,7 +338,7 @@ class GitLogAllNode {
     while (queue.isNotEmpty) {
       final node = queue.removeLast();
       node.hasAccessToRemoteHead = true;
-      queue.addAll(node.children.where((x) => visited.add(x.line.commitHash)));
+      queue.addAll(node.parents.where((x) => visited.add(x.line.commitHash)));
     }
     return this;
   }
