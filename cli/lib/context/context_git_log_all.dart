@@ -17,6 +17,7 @@ extension GitLogAllOnContext on Context {
       GitLogAllNode? cache;
       return withQuiet(true)
               ._gitLogAllLimited()
+              .map((x) => x.ensureSingleParent(listQueue))
               .map((x) => x.collapse(showAllBranches))
               .nonNulls
               .map((x) => x.ensureSingleParent(listQueue))
@@ -321,21 +322,23 @@ class GitLogAllNode {
   }
 
   GitLogAllNode? findNoRecursion(bool Function(GitLogAllNode) predicate) {
+    final visited = {line.commitHash};
     final queue = [this];
     while (queue.isNotEmpty) {
       final node = queue.removeLast();
       if (predicate(node)) return node;
-      queue.addAll(node.children);
+      queue.addAll(node.children.where((x) => visited.add(x.line.commitHash)));
     }
     return null;
   }
 
   GitLogAllNode markParentsAsHaveAccessToRemoteHead() {
+    final visited = {line.commitHash};
     final queue = [this];
     while (queue.isNotEmpty) {
       final node = queue.removeLast();
       node.hasAccessToRemoteHead = true;
-      queue.addAll(node.parents);
+      queue.addAll(node.children.where((x) => visited.add(x.line.commitHash)));
     }
     return this;
   }

@@ -1,3 +1,6 @@
+0.10.18
+ * stax log - will survive repository with big amounts of merge commits
+
 0.10.17
  * stax log - will now detect cycles in the tree if they involve remote/HEAD
 
