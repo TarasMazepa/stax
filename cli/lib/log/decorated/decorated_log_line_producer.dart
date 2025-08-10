@@ -12,10 +12,16 @@ abstract class DecoratedLogLineProducerAdapter<T> {
   bool isCurrent(T t);
 }
 
-List<DecoratedLogLine> _produceDecoratedLogLine<T>(
-  T root,
-  DecoratedLogLineProducerAdapter<T> adapter,
-) {
+List<DecoratedLogLine> _produceDecoratedLogLine<T>({
+  required T root,
+  required DecoratedLogLineProducerAdapter<T> adapter,
+  int depth = 0,
+}) {
+  if (depth > 5000) {
+    return [
+      DecoratedLogLine('...overflow...', ['...']),
+    ];
+  }
   final children = adapter.children(root);
   final emptyIndentLength =
       (adapter.isDefaultBranch(root) &&
@@ -26,7 +32,11 @@ List<DecoratedLogLine> _produceDecoratedLogLine<T>(
   final result = <DecoratedLogLine>[];
   for (int i = 0; i < children.length; i++) {
     result.addAll(
-      _produceDecoratedLogLine(children[i], adapter)
+      _produceDecoratedLogLine(
+            root: children[i],
+            adapter: adapter,
+            depth: depth + 1,
+          )
           .map((e) => e.withIndent('  ' * emptyIndentLength + '| ' * i))
           .toList(growable: false),
     );
@@ -39,11 +49,15 @@ List<DecoratedLogLine> _produceDecoratedLogLine<T>(
   return result;
 }
 
-String materializeDecoratedLogLines<T>(
-  T root,
-  DecoratedLogLineProducerAdapter<T> adapter,
-) {
-  final decoratedLogLines = _produceDecoratedLogLine(root, adapter);
+String materializeDecoratedLogLines<T>({
+  required T root,
+  required DecoratedLogLineProducerAdapter<T> adapter,
+  int? limit,
+}) {
+  final decoratedLogLines = _produceDecoratedLogLine(
+    root: root,
+    adapter: adapter,
+  ).take(limit ?? 100);
   int alignment = 0;
   for (final decoratedLogLine in decoratedLogLines) {
     alignment = max(alignment, decoratedLogLine.decoration.length);
