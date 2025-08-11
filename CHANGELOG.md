@@ -1,5 +1,5 @@
 0.10.20
- * Adds basic analytics logging
+ * stax log - fix overly aggressive single parent resolution
 
 0.10.19
  * stax log - fix braking change from last update

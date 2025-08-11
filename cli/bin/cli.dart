@@ -1,4 +1,3 @@
-import 'package:stax/analytics/report.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_help.dart';
 import 'package:stax/command/internal_commands.dart';
@@ -8,7 +7,7 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
 
 void main(List<String> arguments) {
-  report(arguments);
+  // report(arguments);
   mainFunctionReference = main;
   arguments = arguments.toList();
   final context = Context.implicit().handleGlobalFlags(arguments);
