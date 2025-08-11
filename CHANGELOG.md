@@ -1,3 +1,6 @@
+0.10.20
+ * Adds basic analytics logging
+
 0.10.19
  * stax log - fix braking change from last update
  * stax log - will only output at most 100 lines (useful for stax log --all on repositories with a lot of remote branches)
