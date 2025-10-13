@@ -353,14 +353,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
-  uuidv7:
-    dependency: "direct main"
-    description:
-      name: uuidv7
-      sha256: "512b53c2f50041e202fd4ee60e979e65008f97ed10a835ac841bc725dffe464b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   vm_service:
     dependency: transitive
     description:
