@@ -45,35 +45,6 @@ jobs:
         env:
           CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
 
-  release-binary-macos-x64:
-    permissions: write-all
-    runs-on: macos-13
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ env.CHECKOUT }}
-        env:
-          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
-      - uses: TarasMazepa/github-action-cat@master
-        id: get-dart-version
-        with:
-          path: DART_SDK_VERSION
-      - uses: dart-lang/setup-dart@v1
-        with:
-          sdk: ${{ steps.get-dart-version.outputs.text }}
-      - run: dart pub get
-        working-directory: cli
-      - uses: TarasMazepa/github-action-cat@master
-        id: get-stax-version
-        with:
-          path: VERSION
-      - run: dart compile exe cli/bin/cli.dart -o stax -Dversion=${{ steps.get-stax-version.outputs.text }}
-      - run: dart compile exe cli/bin/stax_daemon.dart -o stax-daemon -Dversion=${{ steps.get-stax-version.outputs.text }}
-      - run: zip macos-x64.zip stax stax-daemon
-      - run: gh release upload $CHECKOUT macos-x64.zip
-        env:
-          CHECKOUT: ${{ env.RELEASE }}${{ env.TAG }}
-
   release-binary-linux-x64:
     permissions: write-all
     runs-on: ubuntu-latest
