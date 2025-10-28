@@ -5,7 +5,7 @@ import 'internal_command.dart';
 class InternalCommandVersion extends InternalCommand {
   static final version = const String.fromEnvironment(
     'version',
-    defaultValue: '0.10.20',
+    defaultValue: '0.10.21',
   );
 
   InternalCommandVersion() : super('version', 'Version of stax');
