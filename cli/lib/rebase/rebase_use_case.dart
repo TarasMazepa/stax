@@ -46,7 +46,15 @@ class RebaseUseCase {
   RebaseUseCase(this.context, this._rebaseData, this._file);
 
   void initiate(bool hasTheirsFlag, bool hasOursFlag, String? rebaseOnto) {
-    if (_rebaseData != null) throw Exception('Rebase is already in progress');
+    if (_rebaseData != null) {
+      throw Exception('''Rebase is already in progress
+
+Take a look at `stax help rebase`
+
+To abandon: `stax rebase --abort`
+
+To continue: `stax rebase --continue`''');
+    }
 
     final root = context.gitLogAll();
 

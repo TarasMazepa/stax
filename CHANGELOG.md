@@ -1,3 +1,6 @@
+0.10.21
+ * stax rebase - adds more details into 'Rebase is already in progress' error
+
 0.10.20
  * stax log - fix overly aggressive single parent resolution
 
