@@ -4,6 +4,7 @@ import 'package:stax/commit_tree_for_test_case.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
+import '../string_clean_carrige_return_on_windows.dart';
 import 'base/cli_group.dart';
 
 void main() {
@@ -17,18 +18,18 @@ void main() {
     for (int i = 0; i < 10; i++, commitTree = commitTree.next()) {
       final skip = random.nextInt(pow(10, i) as int);
       for (int j = 0; j < skip; j++, commitTree = commitTree.next()) {}
-      final targetOutput = commitTree.getTargetOutput();
+      final targetOutput = '${commitTree.getTargetOutput()}\n';
       final defaultBranch = commitTree.commitName(commitTree.mainId);
       final commitName = commitTree.commitName(0);
       test(commitName, () {
         setup.runLiveStaxSync(['log-test-case', commitName]);
         expect(
-          setup.runLiveStaxSync([
-            'log',
-            '--default-branch',
-            defaultBranch,
-          ]).stdout,
-          '$targetOutput\n',
+          setup
+              .runLiveStaxSync(['log', '--default-branch', defaultBranch])
+              .stdout
+              .toString()
+              .cleanCarriageReturnOnWindows(),
+          targetOutput,
         );
       });
     }
