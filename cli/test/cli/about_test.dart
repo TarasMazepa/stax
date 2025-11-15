@@ -1,12 +1,19 @@
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
+import '../string_clean_carrige_return_on_windows.dart';
 import 'base/cli_group.dart';
 
 void main() {
   cliGroup('about', (setup) {
     test('about', () {
-      expect(setup.runLiveStaxSync(['about']).stdout, '''
+      expect(
+        setup
+            .runLiveStaxSync(['about'])
+            .stdout
+            .toString()
+            .cleanCarriageReturnOnWindows(),
+        '''
 stax - manage git branches and stack PRs
 
 For more information, visit: https://staxforgit.com/
@@ -27,7 +34,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 https://github.com/TarasMazepa/stax/blob/main/LICENSE
-''');
+''',
+      );
     });
   });
 }

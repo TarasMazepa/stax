@@ -1,12 +1,19 @@
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
+import '../string_clean_carrige_return_on_windows.dart';
 import 'base/cli_group.dart';
 
 void main() {
   cliGroup('help', (setup) {
     test('help', () {
-      expect(setup.runLiveStaxSync(['help']).stdout, """Global flags:
+      expect(
+        setup
+            .runLiveStaxSync(['help'])
+            .stdout
+            .toString()
+            .cleanCarriageReturnOnWindows(),
+        """Global flags:
    --accept-all - Accept all the user prompts automatically.
    --decline-all - Decline all the user prompts automatically.
    -h, --help - Shows help documentation for the command
@@ -77,7 +84,8 @@ Note: you can type first letter or couple of first letters instead of full comma
       Flags:
          -g, --global - Perform operation on global settings regardless of invocation path.
  • version - Version of stax
-""");
+""",
+      );
     });
   });
 }

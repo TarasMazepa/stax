@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 
+import '../string_clean_carrige_return_on_windows.dart';
 import 'base/cli_group.dart';
 import 'base/cli_test_setup.dart';
 
@@ -16,7 +17,11 @@ void main() {
     );
     test('log', () {
       expect(
-        setup.runLiveStaxSync(['log']).stdout,
+        setup
+            .runLiveStaxSync(['log'])
+            .stdout
+            .toString()
+            .cleanCarriageReturnOnWindows(),
         'x origin/main, origin/HEAD, main\n',
       );
     });
