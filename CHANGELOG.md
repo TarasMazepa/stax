@@ -1,3 +1,6 @@
+0.10.22
+ * stax delete-stale - now gets short command name 'd' and is invokable with `stax d`
+
 0.10.21
  * stax rebase - adds more details into 'Rebase is already in progress' error
 
