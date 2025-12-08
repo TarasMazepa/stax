@@ -20,6 +20,7 @@ class InternalCommandDeleteStale extends InternalCommand {
     : super(
         'delete-stale',
         'Deletes local branches with gone remotes.',
+        shortName: 'd',
         flags: [forceDeleteFlag, skipDeleteFlag],
       );
 
