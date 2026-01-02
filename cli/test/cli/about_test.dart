@@ -18,7 +18,7 @@ stax - manage git branches and stack PRs
 
 For more information, visit: https://staxforgit.com/
 
-Copyright (C) 2025  Taras Mazepa
+Copyright (C) ${DateTime.now().year}  Taras Mazepa
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
