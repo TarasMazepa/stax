@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:stax/command/flag.dart';
 
 void main(List<String> arguments) async {

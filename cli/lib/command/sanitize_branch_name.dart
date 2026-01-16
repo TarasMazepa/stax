@@ -1,5 +1,6 @@
 import 'package:stax/code_units.dart';
 import 'package:stax/int_range.dart';
+import 'package:stax/nullable_index_of.dart';
 
 extension ContainsOnListOfIntRanges on List<IntRange> {
   bool anyRangeContains(int number) {
@@ -33,6 +34,12 @@ bool isAcceptableSpecialSymbol(int codeUnit) {
 }
 
 String sanitizeBranchName(String branchNameCandidate) {
+  final newLineIndex = branchNameCandidate
+      .indexOf('\n')
+      .toNullableIndexOfResult();
+  if (newLineIndex != null) {
+    branchNameCandidate = branchNameCandidate.substring(0, newLineIndex);
+  }
   final substituteCharacter = String.fromCharCode(CodeUnits.dash);
 
   bool wasSpecialSymbol = false;
@@ -68,5 +75,10 @@ String sanitizeBranchName(String branchNameCandidate) {
     if (isLetterOrNumber(result.codeUnitAt(right - 1))) break;
     right--;
   }
-  return String.fromCharCodes(result.codeUnits, left, right);
+  result = String.fromCharCodes(result.codeUnits, left, right);
+  final maxBranchNameLength = 125;
+  if (result.length > maxBranchNameLength) {
+    result = result.substring(0, maxBranchNameLength);
+  }
+  return result;
 }
