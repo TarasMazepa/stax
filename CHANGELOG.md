@@ -1,3 +1,6 @@
+
+
+
 0.10.23
  * stax commit - adds a logic to limit branch name length if user provided a longer value 
  * stax commit - will only consider first line of commit message as a branch name
