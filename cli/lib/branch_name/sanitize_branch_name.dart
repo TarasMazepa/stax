@@ -1,6 +1,6 @@
+import 'package:stax/branch_name/git_check_ref_format_based_sanitization.dart';
 import 'package:stax/code_units.dart';
 import 'package:stax/int_range.dart';
-import 'package:stax/nullable_index_of.dart';
 
 extension ContainsOnListOfIntRanges on List<IntRange> {
   bool anyRangeContains(int number) {
@@ -34,51 +34,47 @@ bool isAcceptableSpecialSymbol(int codeUnit) {
 }
 
 String sanitizeBranchName(String branchNameCandidate) {
-  final newLineIndex = branchNameCandidate
-      .indexOf('\n')
-      .toNullableIndexOfResult();
-  if (newLineIndex != null) {
-    branchNameCandidate = branchNameCandidate.substring(0, newLineIndex);
-  }
   final substituteCharacter = String.fromCharCode(CodeUnits.dash);
 
   bool wasSpecialSymbol = false;
-  String result = '';
+  StringBuffer buffer = StringBuffer();
   for (var codeUnit in branchNameCandidate.codeUnits) {
     if (wasSpecialSymbol) {
       if (isLetterOrNumber(codeUnit)) {
-        result += String.fromCharCode(codeUnit);
+        buffer.writeCharCode(codeUnit);
         wasSpecialSymbol = false;
       } else {
         // skip as we do not want to have special symbols one after another one
       }
     } else {
       if (isLetterOrNumber(codeUnit)) {
-        result += String.fromCharCode(codeUnit);
+        buffer.writeCharCode(codeUnit);
       } else {
         if (isAcceptableSpecialSymbol(codeUnit)) {
-          result += String.fromCharCode(codeUnit);
+          buffer.writeCharCode(codeUnit);
         } else {
-          result += substituteCharacter;
+          buffer.write(substituteCharacter);
         }
         wasSpecialSymbol = true;
       }
     }
   }
+  String result = buffer.toString();
   int left = 0;
-  int right = result.length;
+  int right = result.codeUnits.length;
+  bool moved = false;
   while (left < right - 1) {
     if (isLetter(result.codeUnitAt(left))) break;
     left++;
+    moved = true;
   }
   while (left < right - 1) {
     if (isLetterOrNumber(result.codeUnitAt(right - 1))) break;
     right--;
+    moved = true;
   }
-  result = String.fromCharCodes(result.codeUnits, left, right);
-  final maxBranchNameLength = 125;
-  if (result.length > maxBranchNameLength) {
-    result = result.substring(0, maxBranchNameLength);
+  if (moved) {
+    result = String.fromCharCodes(result.codeUnits, left, right);
   }
-  return result;
+  return gitCheckRefFormatBasedSanitization(result);
 }

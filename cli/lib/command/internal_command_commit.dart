@@ -1,6 +1,6 @@
+import 'package:stax/branch_name/sanitize_branch_name.dart';
 import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
-import 'package:stax/command/sanitize_branch_name.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_apply_base_branch_replacement.dart';
 import 'package:stax/context/context_cleanup_flags.dart';
@@ -14,6 +14,7 @@ import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
 import 'package:stax/context/context_open_in_browser.dart';
+import 'package:stax/general/on_string.dart';
 
 class InternalCommandCommit extends InternalCommand {
   static final prFlag = Flag(
@@ -79,7 +80,7 @@ class InternalCommandCommit extends InternalCommand {
     final commitMessage = args[0];
     final String originalBranchName;
     if (args.length == 1) {
-      originalBranchName = args[0];
+      originalBranchName = args[0].getFirstLine();
       context.printToConsole(
         "Second parameter wasn't provided. Will convert commit message to new branch name.",
       );

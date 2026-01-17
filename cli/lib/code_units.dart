@@ -14,12 +14,12 @@ class CodeUnits {
     '9'.codeUnitAt(0),
   );
 
-  static final dot = '.'.codeUnitAt(0);
-  static final dash = '-'.codeUnitAt(0);
-  static final underscore = '_'.codeUnitAt(0);
-  static final slash = '/'.codeUnitAt(0);
-  static final leftSquareBracket = '['.codeUnitAt(0);
-  static final rightSquareBracket = ']'.codeUnitAt(0);
+  static const dot = 46;
+  static const dash = 45;
+  static const underscore = 95;
+  static const slash = 47;
+  static const at = 64;
+  static const leftCurlyBracket = 123;
 
   static final dotRange = IntRange.singleton(dot);
   static final dashRange = IntRange.singleton(dash);

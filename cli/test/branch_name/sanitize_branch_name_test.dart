@@ -1,4 +1,4 @@
-import 'package:stax/command/sanitize_branch_name.dart';
+import 'package:stax/branch_name/sanitize_branch_name.dart';
 import 'package:test/test.dart';
 
 void main() {
