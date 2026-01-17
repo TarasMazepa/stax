@@ -1079,9 +1079,6 @@ void main() {
   });
 
   test('newline', () {
-    expect(
-      gitCheckRefFormatBasedSanitization('\n'),
-      '',
-    );
+    expect(gitCheckRefFormatBasedSanitization('\n'), '');
   });
 }
