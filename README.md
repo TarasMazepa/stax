@@ -160,15 +160,18 @@ Move has five directions:
 
 ## Alternatives (alphabetical order)
 
-* https://ejoffe.github.io/spr/
-* https://git-town.com/
-* https://gitbutler.com/
 * https://github.com/VirtusLab/git-machete
 * https://github.com/arxanas/git-branchless
+* https://github.com/ejoffe/spr
 * https://github.com/ezyang/ghstack
+* https://github.com/facebook/sapling
+* https://github.com/git-town/git-town
+* https://github.com/gitbutlerapp/gitbutler
 * https://github.com/gitext-rs/git-stack
+* https://github.com/iOliverNguyen/git-pr
 * https://github.com/jj-vcs/jj
 * https://github.com/modularml/stack-pr
+* https://github.com/stacked-git/stgit
+* https://github.com/torbiak/git-autofixup
+* https://github.com/tummychow/git-absorb
 * https://graphite.dev/
-* https://sapling-scm.com/
-* https://stacked-git.github.io/

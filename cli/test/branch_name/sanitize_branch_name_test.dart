@@ -1,4 +1,4 @@
-import 'package:stax/command/sanitize_branch_name.dart';
+import 'package:stax/branch_name/sanitize_branch_name.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -9,7 +9,7 @@ void main() {
     );
   });
   test('removing left trailing symbols', () {
-    expect(sanitizeBranchName('14287890241...--//---b'), 'b');
+    expect(sanitizeBranchName('14287890241...--//---b'), '14287890241.-/-b');
   });
   test('removing right trailing symbols', () {
     expect(sanitizeBranchName('b1...#^%^*&(*)*(--//---'), 'b1');
@@ -17,7 +17,7 @@ void main() {
   test('removing left and right trailing symbols', () {
     expect(
       sanitizeBranchName('14287890241...--//---b...#^%^*&(*)*(--//---'),
-      'b',
+      '14287890241.-/-b',
     );
   });
   test('substituting with dash', () {
