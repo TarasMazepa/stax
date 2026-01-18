@@ -1,6 +1,6 @@
+import 'package:stax/branch_name/sanitize_branch_name.dart';
 import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
-import 'package:stax/command/sanitize_branch_name.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_apply_base_branch_replacement.dart';
 import 'package:stax/context/context_cleanup_flags.dart';
@@ -79,14 +79,24 @@ class InternalCommandCommit extends InternalCommand {
     final commitMessage = args[0];
     final String originalBranchName;
     if (args.length == 1) {
-      originalBranchName = args[0];
+      final arg0 = args[0];
+      final endIndex = arg0.indexOf('\n\n');
+      if (endIndex != -1) {
+        originalBranchName = arg0.substring(0, endIndex);
+      } else {
+        originalBranchName = arg0;
+      }
       context.printToConsole(
         "Second parameter wasn't provided. Will convert commit message to new branch name.",
       );
     } else {
       originalBranchName = args[1];
     }
-    final resultingBranchName = sanitizeBranchName(originalBranchName);
+    final resultingBranchName = sanitizeBranchName(
+      originalBranchName,
+      customRegEx:
+          context.effectiveSettings.branchNameSymbolSanitizationRegEx.value,
+    );
     final prefixedBranchName =
         context.effectiveSettings.branchPrefix.value + resultingBranchName;
 

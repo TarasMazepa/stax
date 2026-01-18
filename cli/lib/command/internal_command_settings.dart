@@ -41,6 +41,7 @@ class InternalCommandSettings extends InternalCommand {
     late final List<Setting> availableSettings = <Setting>[
       effectiveSettings.additionallyPull,
       effectiveSettings.baseBranchReplacement,
+      effectiveSettings.branchNameSymbolSanitizationRegEx,
       effectiveSettings.branchPrefix,
       effectiveSettings.defaultBranch,
       effectiveSettings.defaultRemote,
@@ -51,15 +52,24 @@ class InternalCommandSettings extends InternalCommand {
         availableSettings.firstWhere((x) => x.name == name);
     void printAvailableSettings() {
       for (final setting in availableSettings) {
-        context.printToConsole(
-          " • ${setting.name} = '${setting.rawValue}' # ${setting.description}",
-        );
+        context.printToConsole('''
+# ${setting.description}
+
+${setting.name} = '${setting.rawValue}'
+
+''');
       }
+    }
+
+    void onUnknownSetting(String name) {
+      context.printToConsole(
+        "set: unknown setting '$name'. Available settings:\n",
+      );
+      printAvailableSettings();
     }
 
     switch (args) {
       case ['show']:
-        context.printToConsole('Current settings:');
         printAvailableSettings();
       case ['show', ...]:
         context.printToConsole("'show' doesn't have arguments");
@@ -67,10 +77,7 @@ class InternalCommandSettings extends InternalCommand {
         getSettingByName(name).value = value;
         context.printToConsole("Updated setting: $name = '$value'");
       case ['set', final name, _]:
-        context.printToConsole(
-          "set: unknown setting '$name'. Available settings:",
-        );
-        printAvailableSettings();
+        onUnknownSetting(name);
       case ['set', ...]:
         context.printToConsole(
           'Usage: stax settings set <setting_name> <value>',
@@ -81,15 +88,10 @@ class InternalCommandSettings extends InternalCommand {
         context.printToConsole(
           'Cleared setting: ${setting.name} = ${setting.value}',
         );
-
       case ['clear', final name]:
-        context.printToConsole(
-          "clear: unknown setting '$name'. Available settings:",
-        );
-        printAvailableSettings();
+        onUnknownSetting(name);
       case ['clear', ...]:
         context.printToConsole('Usage: stax settings clear <setting_name>');
-
       case ['add', final name, final value] when isSettingAvailable(name):
         final setting = getSettingByName(name);
         if (setting is KeyValueListSetting) {
@@ -103,18 +105,12 @@ class InternalCommandSettings extends InternalCommand {
             "Setting '$name' is not a list setting. Use 'set' instead.",
           );
         }
-
       case ['add', final name, _]:
-        context.printToConsole(
-          "add: unknown setting '$name'. Available settings:",
-        );
-        printAvailableSettings();
-
+        onUnknownSetting(name);
       case ['add', ...]:
         context.printToConsole(
           'Usage: stax settings add <setting_name> <value>',
         );
-
       case ['remove', final name, final value] when isSettingAvailable(name):
         final setting = getSettingByName(name);
         if (setting is KeyValueListSetting) {
@@ -131,24 +127,17 @@ class InternalCommandSettings extends InternalCommand {
             "Setting '$name' is not a list setting. Use 'clear' instead.",
           );
         }
-
       case ['remove', final name, _]:
-        context.printToConsole(
-          "remove: unknown setting '$name'. Available settings:",
-        );
-        printAvailableSettings();
-
+        onUnknownSetting(name);
       case ['remove', ...]:
         context.printToConsole(
           'Usage: stax settings remove <setting_name> <value>',
         );
-
       case [final subCommand, ...]:
         context.printToConsole(
           '''Unknown sub-command '$subCommand'. Available sub-commands:
 ${availableSubCommands.map((subCommand) => " • $subCommand").join("\n")}''',
         );
-
       case []:
       default:
         context.printToConsole(
