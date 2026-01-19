@@ -27,22 +27,6 @@ class InternalCommandUpdate extends InternalCommand {
     updateViaHomebrew(context);
   }
 
-  Future<bool> needsUpdate(Context context) async {
-    final localVersion = InternalCommandVersion.version;
-
-    final response = await http.get(Uri.parse(versionUrl));
-    if (response.statusCode != 200) {
-      context.printToConsole('Failed to fetch latest version from GitHub.');
-      return false;
-    }
-    final remoteVersion = response.body.trim();
-
-    context.printToConsole('Local version: $localVersion');
-    context.printToConsole('Latest version: $remoteVersion');
-
-    return localVersion != remoteVersion;
-  }
-
   void updateViaHomebrew(Context context) {
     context.printToConsole('Checking if stax is installed via Homebrew...');
 
@@ -105,6 +89,22 @@ class InternalCommandUpdate extends InternalCommand {
         );
       }
     });
+  }
+
+  Future<bool> needsUpdate(Context context) async {
+    final localVersion = InternalCommandVersion.version;
+
+    final response = await http.get(Uri.parse(versionUrl));
+    if (response.statusCode != 200) {
+      context.printToConsole('Failed to fetch latest version from GitHub.');
+      return false;
+    }
+    final remoteVersion = response.body.trim();
+
+    context.printToConsole('Local version: $localVersion');
+    context.printToConsole('Latest version: $remoteVersion');
+
+    return localVersion != remoteVersion;
   }
 
   void _showInstallationInstructions(Context context) {
