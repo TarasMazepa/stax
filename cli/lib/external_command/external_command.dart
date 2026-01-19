@@ -9,6 +9,12 @@ class ExternalCommand {
   final List<String> parts;
   final Context context;
 
+  ExternalCommand.explicit(
+    String executable,
+    List<String> arguments,
+    this.context,
+  ) : parts = [executable, ...arguments];
+
   ExternalCommand(this.parts, this.context);
 
   ExternalCommand.raw(String command, this.context)
