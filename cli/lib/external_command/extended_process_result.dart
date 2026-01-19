@@ -13,9 +13,9 @@ class ExtendedProcessResult {
 
   int get pid => _processResult.pid;
 
-  get stderr => _processResult.stderr;
+  dynamic get stderr => _processResult.stderr;
 
-  get stdout => _processResult.stdout;
+  dynamic get stdout => _processResult.stdout;
 
   ExtendedProcessResult? assertSuccessfulExitCode() {
     return isSuccess() ? this : null;
@@ -23,6 +23,10 @@ class ExtendedProcessResult {
 
   bool isSuccess() {
     return exitCode == 0;
+  }
+
+  bool isFailure() {
+    return !isSuccess();
   }
 
   ExtendedProcessResult printNotEmptyResultFields() {
