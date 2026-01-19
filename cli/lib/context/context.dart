@@ -38,8 +38,8 @@ class Context {
     this.declineAll,
   );
 
-  ExternalCommand command([List<String>? parts]) {
-    return ExternalCommand(parts ?? [], this);
+  ExternalCommand command(List<String> parts) {
+    return ExternalCommand(parts, this);
   }
 
   Context withQuiet(bool quiet) {
