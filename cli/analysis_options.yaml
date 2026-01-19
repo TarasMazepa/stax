@@ -2,9 +2,16 @@ include: package:lints/recommended.yaml
 
 linter:
   rules:
-    - camel_case_types
-    - require_trailing_commas
-    - prefer_single_quotes
+    always_declare_return_types: true
+    always_use_package_imports: true
+    avoid_void_async: true
+    await_only_futures: true
+    camel_case_types: true
+    discarded_futures: true
+    prefer_single_quotes: true
+    require_trailing_commas: true
+    unawaited_futures: true
+    unnecessary_await_in_return: true
 
 analyzer:
   errors:
