@@ -1,4 +1,5 @@
 import 'package:stax/command/flag.dart';
+import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_rebase.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_assert_no_conflicting_flags.dart';
@@ -7,8 +8,6 @@ import 'package:stax/context/context_git_are_there_staged_changes.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
-
-import 'internal_command.dart';
 
 class InternalCommandAmend extends InternalCommand {
   static final rebaseFlag = Flag(

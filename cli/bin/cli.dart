@@ -6,13 +6,13 @@ import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
 
-void main(List<String> arguments) {
+Future<void> main(List<String> arguments) async {
   mainFunctionReference = main;
   arguments = arguments.toList();
   final context = Context.implicit().handleGlobalFlags(arguments);
   switch (arguments) {
     case []:
-      InternalCommandHelp().run([], context);
+      await InternalCommandHelp().run([], context);
     case [final commandName, ...final args]:
       final command =
           internalCommands
@@ -40,9 +40,9 @@ void main(List<String> arguments) {
         return;
       }
       if (context.hasHelpFlag(args)) {
-        InternalCommandHelp().run([command.name], context);
+        await InternalCommandHelp().run([command.name], context);
       } else {
-        command.run(args, context);
+        await command.run(args, context);
       }
   }
 }

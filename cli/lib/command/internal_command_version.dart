@@ -1,6 +1,5 @@
+import 'package:stax/command/internal_command.dart';
 import 'package:stax/context/context.dart';
-
-import 'internal_command.dart';
 
 class InternalCommandVersion extends InternalCommand {
   static final version = const String.fromEnvironment(

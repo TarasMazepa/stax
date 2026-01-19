@@ -1,9 +1,8 @@
+import 'package:stax/command/internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
-
-import 'internal_command.dart';
 
 class InternalCommandGet extends InternalCommand {
   InternalCommandGet()
