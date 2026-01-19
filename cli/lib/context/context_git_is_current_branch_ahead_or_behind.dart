@@ -12,7 +12,7 @@ extension ContextHitIsCurrentBranchAheadOrBehind on Context {
         ?.stdout
         .toString();
     if (statusSb == null) return null;
-    makeTokens(String x) => [' [$x ', ' , $x '];
+    List<String> makeTokens(String x) => [' [$x ', ' , $x '];
     final containsAhead = makeTokens('ahead').any((e) => statusSb.contains(e));
     final containsBehind = makeTokens(
       'behind',

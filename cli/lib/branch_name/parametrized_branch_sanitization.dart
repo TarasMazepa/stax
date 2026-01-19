@@ -8,7 +8,7 @@ String parametrizedBranchSanitization(String input, String acceptedRegEx) {
   final accepted = RegExp(acceptedRegEx, unicode: true);
   final result = StringBuffer();
   bool wasDash = false;
-  write(String string) {
+  void write(String string) {
     wasDash = string == _dash;
     result.write(string);
   }

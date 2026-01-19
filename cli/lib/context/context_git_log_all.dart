@@ -13,7 +13,7 @@ extension GitLogAllOnContext on Context {
 
   GitLogAllNode gitLogAll([bool showAllBranches = false]) {
     final listQueue = <GitLogAllNode>[];
-    produce() {
+    GitLogAllNode produce() {
       GitLogAllNode? cache;
       return withQuiet(true)
               ._gitLogAllLimited()

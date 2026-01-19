@@ -138,7 +138,7 @@ class InternalCommandCommit extends InternalCommand {
     late final backupPrUrl = createPr
         ? context.getPullRequestUrl(baseBranch!, prefixedBranchName)
         : null;
-    informAboutPrUrlIfNeeded() {
+    void informAboutPrUrlIfNeeded() {
       if (backupPrUrl != null) {
         context.printParagraph('PR URL would have been: $backupPrUrl');
       }
