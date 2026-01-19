@@ -1,27 +1,21 @@
 import 'dart:io';
 
 import 'package:stax/context/context.dart';
-import 'package:stax/external_command/external_command.dart';
-
-extension ExtendedProcessResultConverter on ProcessResult {
-  ExtendedProcessResult extend(ExternalCommand externalCommand) {
-    return ExtendedProcessResult(this, externalCommand.context);
-  }
-}
+import 'package:stax/context/on_context_print_extended_process_result.dart';
 
 class ExtendedProcessResult {
-  final ProcessResult processResult;
-  final Context context;
+  final ProcessResult _processResult;
+  final Context _context;
 
-  ExtendedProcessResult(this.processResult, this.context);
+  ExtendedProcessResult(this._processResult, this._context);
 
-  int get exitCode => processResult.exitCode;
+  int get exitCode => _processResult.exitCode;
 
-  int get pid => processResult.pid;
+  int get pid => _processResult.pid;
 
-  get stderr => processResult.stderr;
+  get stderr => _processResult.stderr;
 
-  get stdout => processResult.stdout;
+  get stdout => _processResult.stdout;
 
   ExtendedProcessResult? assertSuccessfulExitCode() {
     return isSuccess() ? this : null;
@@ -32,14 +26,7 @@ class ExtendedProcessResult {
   }
 
   ExtendedProcessResult printNotEmptyResultFields() {
-    if (context.shouldBeQuiet()) return this;
-    if (exitCode != 0) context.printToConsole('ExitCode: $exitCode');
-    if (stdout.toString().trim().isNotEmpty) {
-      context.printToConsole('Stdout:\n$stdout');
-    }
-    if (stderr.toString().trim().isNotEmpty) {
-      context.printToConsole('Stderr:\n$stderr');
-    }
+    _context.printExtendedProcessResult(this);
     return this;
   }
 }
