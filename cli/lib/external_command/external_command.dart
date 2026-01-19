@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:stax/context/context.dart';
 import 'package:stax/external_command/extended_process_result.dart';
+import 'package:stax/external_command/on_process_result.dart';
 
 class ExternalCommand {
   final List<String> parts;
@@ -83,25 +84,6 @@ class ExternalCommand {
     } catch (e) {
       return null;
     }
-  }
-
-  Future<ExtendedProcessResult> run({
-    Map<String, String>? environment,
-    bool includeParentEnvironment = true,
-    bool runInShell = false,
-    Encoding? stdoutEncoding = systemEncoding,
-    Encoding? stderrEncoding = systemEncoding,
-  }) {
-    return Process.run(
-      executable,
-      arguments,
-      workingDirectory: context.workingDirectory,
-      environment: environment,
-      includeParentEnvironment: includeParentEnvironment,
-      runInShell: runInShell,
-      stdoutEncoding: stdoutEncoding,
-      stderrEncoding: stderrEncoding,
-    ).then((value) => value.extend(this));
   }
 
   @override
