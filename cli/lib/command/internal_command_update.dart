@@ -24,10 +24,6 @@ class InternalCommandUpdate extends InternalCommand {
       _showInstallationInstructions(context);
       return;
     }
-    updateViaHomebrew(context);
-  }
-
-  void updateViaHomebrew(Context context) {
     context.printToConsole('Checking if stax is installed via Homebrew...');
 
     final brewCheckResult = context.command(['which', 'brew']).runSync();
