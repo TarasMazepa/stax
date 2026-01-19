@@ -27,7 +27,7 @@ class CliTestSetup {
     final repoRoot = uri.replace(
       path: uri.path.substring(0, uri.path.indexOf('/cli/test/cli/')),
     );
-    randomValue() {
+    String randomValue() {
       return '${DateTime.now().microsecondsSinceEpoch}${random.nextDouble()}';
     }
 

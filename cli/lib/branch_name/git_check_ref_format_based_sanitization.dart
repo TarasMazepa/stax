@@ -13,7 +13,7 @@ String gitCheckRefFormatBasedSanitization(String input) {
   bool wasAt = false;
   int dotLockIndex = 0;
   final dotLockString = '.lock';
-  write(String codeUnit) {
+  void write(String codeUnit) {
     wasDash = codeUnit == '-';
     wasDot = codeUnit == '.';
     wasSlash = codeUnit == '/';

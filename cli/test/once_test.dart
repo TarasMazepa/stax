@@ -5,7 +5,7 @@ void main() {
   test('Once attempt', () {
     final once = Once();
     int executions = 0;
-    call() => executions++;
+    int call() => executions++;
     expect(executions, 0);
     once.attempt(call);
     expect(executions, 1);
