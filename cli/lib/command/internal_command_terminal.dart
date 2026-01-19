@@ -17,7 +17,7 @@ class InternalCommandTerminal extends InternalCommand {
       );
 
   @override
-  void run(final List<String> args, final Context context) {
+  Future<void> run(final List<String> args, final Context context) async {
     switch (args) {
       case []:
         context.printToConsole('No arguments provided.');

@@ -10,7 +10,7 @@ class InternalCommandDoctor extends InternalCommand {
     : super('doctor', 'Helps to ensure that stax has everything to be used.');
 
   @override
-  void run(final List<String> args, Context context) {
+  Future<void> run(final List<String> args, Context context) async {
     String boolToCheckmark(bool value) => value ? 'V' : 'X';
 
     {

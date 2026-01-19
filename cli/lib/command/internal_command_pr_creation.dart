@@ -13,7 +13,7 @@ class InternalCommandPrCreation extends InternalCommand {
     : super('pull-request', 'Creates a pull request.', shortName: 'pr');
 
   @override
-  void run(final List<String> args, final Context context) {
+  Future<void> run(final List<String> args, final Context context) async {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }

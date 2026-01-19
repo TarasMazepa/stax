@@ -34,7 +34,7 @@ class InternalCommandSettings extends InternalCommand {
       );
 
   @override
-  void run(final List<String> args, final Context context) {
+  Future<void> run(final List<String> args, final Context context) async {
     final effectiveSettings = globalFlag.hasFlag(args)
         ? context.settings
         : context.effectiveSettings;

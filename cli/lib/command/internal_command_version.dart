@@ -11,7 +11,7 @@ class InternalCommandVersion extends InternalCommand {
   InternalCommandVersion() : super('version', 'Version of stax');
 
   @override
-  void run(List<String> args, Context context) {
+  Future<void> run(List<String> args, Context context) async {
     context.printToConsole(version);
   }
 }

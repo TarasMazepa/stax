@@ -19,7 +19,7 @@ abstract class InternalCommand implements Comparable<InternalCommand> {
     this.flags,
   });
 
-  void run(final List<String> args, final Context context);
+  Future<void> run(final List<String> args, final Context context);
 
   @override
   int compareTo(InternalCommand other) {

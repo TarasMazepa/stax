@@ -23,7 +23,7 @@ class InternalCommandPull extends InternalCommand {
       );
 
   @override
-  void run(List<String> args, Context context) {
+  Future<void> run(List<String> args, Context context) async {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }

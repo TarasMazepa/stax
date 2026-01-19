@@ -25,7 +25,7 @@ class InternalCommandDeleteStale extends InternalCommand {
       );
 
   @override
-  void run(final List<String> args, final Context context) {
+  Future<void> run(final List<String> args, final Context context) async {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }
