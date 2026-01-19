@@ -18,7 +18,7 @@ class InternalCommandUpdate extends InternalCommand {
       'https://raw.githubusercontent.com/TarasMazepa/stax/refs/heads/main/VERSION';
 
   @override
-  void run(final List<String> args, Context context) {
+  Future<void> run(final List<String> args, Context context) async {
     if (Platform.isMacOS || Platform.isLinux) {
       updateViaHomebrew(context);
     } else {

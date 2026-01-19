@@ -66,6 +66,26 @@ class ExternalCommand {
     ).extend(this);
   }
 
+  Future<ExtendedProcessResult> run({
+    Map<String, String>? environment,
+    bool includeParentEnvironment = true,
+    bool runInShell = false,
+    Encoding? stdoutEncoding = systemEncoding,
+    Encoding? stderrEncoding = systemEncoding,
+  }) async {
+    final processResult = await Process.run(
+      executable,
+      arguments,
+      workingDirectory: context.workingDirectory,
+      environment: environment,
+      includeParentEnvironment: includeParentEnvironment,
+      runInShell: runInShell,
+      stdoutEncoding: stdoutEncoding,
+      stderrEncoding: stderrEncoding,
+    );
+    return processResult.extend(this);
+  }
+
   ExtendedProcessResult? runSyncCatching({
     Map<String, String>? environment,
     bool includeParentEnvironment = true,

@@ -5,7 +5,7 @@ class InternalCommandAbout extends InternalCommand {
   InternalCommandAbout() : super('about', 'Shows information about the stax.');
 
   @override
-  void run(final List<String> args, Context context) {
+  Future<void> run(final List<String> args, Context context) async {
     context.printToConsole(
       '''
 stax - manage git branches and stack PRs

@@ -12,7 +12,7 @@ class InternalCommandMainBranch extends InternalCommand {
       );
 
   @override
-  void run(final List<String> args, final Context context) {
+  Future<void> run(final List<String> args, final Context context) async {
     /**
      * TODO:
      *  - Add instruction on how to set default branch using git

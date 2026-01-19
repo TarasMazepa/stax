@@ -16,7 +16,7 @@ class InternalCommandLogTestCase extends InternalCommand {
       );
 
   @override
-  void run(List<String> args, Context context) {
+  Future<void> run(List<String> args, Context context) async {
     for (final commandText in CommitTreeForTestCase.fromCompacted(
       args[0],
     ).getTargetCommands()) {

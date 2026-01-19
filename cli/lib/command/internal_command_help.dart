@@ -56,7 +56,7 @@ class InternalCommandHelp extends InternalCommand {
   }
 
   @override
-  void run(final List<String> args, final Context context) {
+  Future<void> run(final List<String> args, final Context context) async {
     final showAll = showAllFlag.hasFlag(args);
     final selectedCommand = args.elementAtOrNull(0);
     final singleCommand = selectedCommand != null;
