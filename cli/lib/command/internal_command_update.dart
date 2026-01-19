@@ -53,38 +53,35 @@ class InternalCommandUpdate extends InternalCommand {
       'stax is installed via Homebrew. Checking for updates...',
     );
 
-    needsUpdate(context).then((updateNeeded) {
-      if (!updateNeeded) {
-        context.printToConsole('stax is already at the latest version.');
-        return;
-      }
+    final updateNeeded = await needsUpdate(context);
+    if (!updateNeeded) {
+      context.printToConsole('stax is already at the latest version.');
+      return;
+    }
 
-      context
-          .command(['brew', 'update'])
-          .announce('Updating Homebrew formulae...')
-          .runSync()
-          .printNotEmptyResultFields();
+    context
+        .command(['brew', 'update'])
+        .announce('Updating Homebrew formulae...')
+        .runSync()
+        .printNotEmptyResultFields();
 
+    context.printToConsole('A new version of stax is available. Upgrading...');
+
+    final upgradeResult = context
+        .command(['brew', 'upgrade', 'TarasMazepa/stax/stax'])
+        .announce('Upgrading stax...')
+        .runSync()
+        .printNotEmptyResultFields();
+
+    if (upgradeResult.exitCode == 0) {
       context.printToConsole(
-        'A new version of stax is available. Upgrading...',
+        'stax has been successfully updated to the latest version.',
       );
-
-      final upgradeResult = context
-          .command(['brew', 'upgrade', 'TarasMazepa/stax/stax'])
-          .announce('Upgrading stax...')
-          .runSync()
-          .printNotEmptyResultFields();
-
-      if (upgradeResult.exitCode == 0) {
-        context.printToConsole(
-          'stax has been successfully updated to the latest version.',
-        );
-      } else {
-        context.printToConsole(
-          'Failed to update stax. Please try again later or update manually using: brew upgrade TarasMazepa/stax/stax',
-        );
-      }
-    });
+    } else {
+      context.printToConsole(
+        'Failed to update stax. Please try again later or update manually using: brew upgrade TarasMazepa/stax/stax',
+      );
+    }
   }
 
   Future<bool> needsUpdate(Context context) async {
