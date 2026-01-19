@@ -19,11 +19,12 @@ class InternalCommandUpdate extends InternalCommand {
 
   @override
   Future<void> run(final List<String> args, Context context) async {
-    if (Platform.isMacOS || Platform.isLinux) {
-      updateViaHomebrew(context);
-    } else {
-      showInstallationInstructions(context);
+    final isMacOsOrLinux = Platform.isMacOS || Platform.isLinux;
+    if (!isMacOsOrLinux) {
+      _showInstallationInstructions(context);
+      return;
     }
+    updateViaHomebrew(context);
   }
 
   Future<bool> needsUpdate(Context context) async {
@@ -49,7 +50,7 @@ class InternalCommandUpdate extends InternalCommand {
 
     if (brewCheckResult.exitCode != 0) {
       context.printToConsole('Homebrew is not installed on this system.');
-      showInstallationInstructions(context);
+      _showInstallationInstructions(context);
       return;
     }
 
@@ -64,7 +65,7 @@ class InternalCommandUpdate extends InternalCommand {
       context.printToConsole(
         'stax is not installed via Homebrew on this system.',
       );
-      showInstallationInstructions(context);
+      _showInstallationInstructions(context);
       return;
     }
 
@@ -106,9 +107,12 @@ class InternalCommandUpdate extends InternalCommand {
     });
   }
 
-  void showInstallationInstructions(Context context) {
+  void _showInstallationInstructions(Context context) {
     context.printParagraph(
-      'Please refer to the most recent installation instructions in the repository README file for accurate and up-to-date information. You can find the installation section here: https://github.com/TarasMazepa/stax?tab=readme-ov-file#installation',
+      'Please refer to the most recent installation instructions in the '
+      'repository README file for accurate and up-to-date information. You can '
+      'find the installation section here: '
+      'https://github.com/TarasMazepa/stax?tab=readme-ov-file#installation',
     );
   }
 }
