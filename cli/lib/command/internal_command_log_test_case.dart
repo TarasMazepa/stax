@@ -22,7 +22,7 @@ class InternalCommandLogTestCase extends InternalCommand {
     ).getTargetCommands()) {
       ExternalCommand command = context.command(commandText.split(' '));
       if (command.parts[0] == 'stax') {
-        mainFunctionReference(command.parts.sublist(1));
+        await mainFunctionReference(command.parts.sublist(1));
       } else if (Platform.isWindows && command.parts[0] == 'echo') {
         context
             .command(['powershell', '-c', ...command.parts])

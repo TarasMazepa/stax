@@ -1,3 +1,7 @@
+0.10.25
+
+* stax commit - git commit is not printing on demand so users can read what is happening with pre commit hooks
+
 0.10.24
 
 * stax commit - added `git check-ref-format` based branch name sanitization on top of existing one, ensuring validity
