@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_help.dart';
 import 'package:stax/command/internal_commands.dart';
@@ -15,13 +16,10 @@ Future<void> main(List<String> arguments) async {
       await InternalCommandHelp().run([], context);
     case [final commandName, ...final args]:
       final command =
-          internalCommands
-              .where(
-                (command) =>
-                    command.name == commandName ||
-                    command.shortName == commandName,
-              )
-              .firstOrNull ??
+          internalCommands.firstWhereOrNull(
+            (command) =>
+                command.name == commandName || command.shortName == commandName,
+          ) ??
           internalCommands.fold<InternalCommand?>(
             null,
             (current, command) => switch (command) {
