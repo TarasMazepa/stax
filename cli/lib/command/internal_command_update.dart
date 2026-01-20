@@ -19,8 +19,7 @@ class InternalCommandUpdate extends InternalCommand {
 
   @override
   Future<void> run(final List<String> args, Context context) async {
-    final isMacOsOrLinux = Platform.isMacOS || Platform.isLinux;
-    if (!isMacOsOrLinux) {
+    if (!(Platform.isMacOS || Platform.isLinux)) {
       _showInstallationInstructions(context);
       return;
     }
