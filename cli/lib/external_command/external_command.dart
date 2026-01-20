@@ -6,26 +6,28 @@ import 'package:stax/external_command/extended_process_result.dart';
 import 'package:stax/external_command/on_process_result.dart';
 
 class ExternalCommand {
-  final List<String> parts;
+  final List<String> _parts;
   final Context context;
 
   ExternalCommand.explicit(
     String executable,
     List<String> arguments,
     this.context,
-  ) : parts = [executable, ...arguments];
+  ) : _parts = [executable, ...arguments];
 
-  ExternalCommand(this.parts, this.context);
+  ExternalCommand(this._parts, this.context);
 
   ExternalCommand.raw(String command, this.context)
-    : parts = command.split(' ');
+    : _parts = command.split(' ');
 
-  String get executable => parts[0];
+  String get executable => _parts[0];
 
-  List<String> get arguments => parts.sublist(1);
+  List<String> get parts => _parts;
+
+  List<String> get arguments => _parts.sublist(1);
 
   ExternalCommand args(List<String> extra) {
-    return ExternalCommand(parts + extra, context);
+    return ExternalCommand(_parts + extra, context);
   }
 
   ExternalCommand arg(String extra) {
@@ -114,6 +116,6 @@ class ExternalCommand {
 
   @override
   String toString() {
-    return parts.map((e) => e.contains(' ') ? '"$e"' : e).join(' ');
+    return _parts.map((e) => e.contains(' ') ? '"$e"' : e).join(' ');
   }
 }
