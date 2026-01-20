@@ -22,9 +22,10 @@ class InternalCommandTerminal extends InternalCommand {
       case []:
         context.printToConsole('No arguments provided.');
       default:
-        ExternalCommand(args, context)
-            .announce('Running your command.')
-            .runSync()
+        (await ExternalCommand(
+              args,
+              context,
+            ).announce('Running your command.').run(onDemandPrint: true))
             .printNotEmptyResultFields();
     }
   }
