@@ -93,7 +93,9 @@ class ExternalCommand {
     );
     String Function(List<int>) mapper(Encoding encoding) => onDemandPrint
         ? (codeUnits) {
-            print(encoding.decode(codeUnits).removeEndingNewLine());
+            context.printToConsole(
+              encoding.decode(codeUnits).removeEndingNewLine(),
+            );
             return '';
           }
         : encoding.decode;
