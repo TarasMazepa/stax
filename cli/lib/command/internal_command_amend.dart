@@ -108,9 +108,9 @@ class InternalCommandAmend extends InternalCommand {
       rebaseUseCase.save();
     }
 
-    context.git.commitAmendNoEdit
-        .announce('Amending changes to a commit.')
-        .runSync()
+    (await context.git.commitAmendNoEdit
+            .announce('Amending changes to a commit.')
+            .run(onDemandPrint: true))
         .printNotEmptyResultFields();
     context.git.pushForce
         .announce('Force pushing to a remote.')

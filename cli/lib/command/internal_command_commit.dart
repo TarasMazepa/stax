@@ -144,12 +144,13 @@ class InternalCommandCommit extends InternalCommand {
       }
     }
 
-    final commitExitCode = context.git.commitWithMessage
-        .arg(commitMessage)
-        .announce('Committing')
-        .runSync()
-        .printNotEmptyResultFields()
-        .exitCode;
+    final commitExitCode =
+        (await context.git.commitWithMessage
+                .arg(commitMessage)
+                .announce('Committing')
+                .run(onDemandPrint: true))
+            .printNotEmptyResultFields()
+            .exitCode;
     if (commitExitCode != 0) {
       if (comeBackNode != null) {
         context.git.switch0
