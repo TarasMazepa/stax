@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:stax/context/context.dart';
 import 'package:stax/external_command/extended_process_result.dart';
 import 'package:stax/external_command/on_process_result.dart';
+import 'package:stax/general/on_string.dart';
 
 class ExternalCommand {
   final List<String> _parts;
@@ -78,20 +79,38 @@ class ExternalCommand {
     Map<String, String>? environment,
     bool includeParentEnvironment = true,
     bool runInShell = false,
-    Encoding? stdoutEncoding = systemEncoding,
-    Encoding? stderrEncoding = systemEncoding,
+    Encoding stdoutEncoding = systemEncoding,
+    Encoding stderrEncoding = systemEncoding,
+    bool onDemandPrint = false,
   }) async {
-    final processResult = await Process.run(
+    final process = await Process.start(
       executable,
       arguments,
       workingDirectory: context.workingDirectory,
       environment: environment,
       includeParentEnvironment: includeParentEnvironment,
       runInShell: runInShell,
-      stdoutEncoding: stdoutEncoding,
-      stderrEncoding: stderrEncoding,
     );
-    return processResult.extend(this);
+    String Function(List<int>) mapper(Encoding encoding) => onDemandPrint
+        ? (codeUnits) {
+            print(encoding.decode(codeUnits).removeEndingNewLine());
+            return '';
+          }
+        : encoding.decode;
+    final resultParts = await [
+      process.exitCode,
+      process.stdout.map(mapper(stdoutEncoding)).toList(),
+      process.stderr.map(mapper(stderrEncoding)).toList(),
+    ].wait;
+    String Function(dynamic d) joinStringList = onDemandPrint
+        ? (x) => ''
+        : (x) => x.join();
+    return ProcessResult(
+      process.pid,
+      resultParts[0] as int,
+      joinStringList(resultParts[1]),
+      joinStringList(resultParts[2]),
+    ).extend(this);
   }
 
   ExtendedProcessResult? runSyncCatching({
