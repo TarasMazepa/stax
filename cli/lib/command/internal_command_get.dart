@@ -65,11 +65,9 @@ class InternalCommandGet extends InternalCommand {
           .announce()
           .runSync()
           .printNotEmptyResultFields();
-      final success = context.git.pullForce
-          .announce()
-          .runSync()
-          .printNotEmptyResultFields()
-          .isSuccess();
+      final success = (await context.git.pullForce.announce().run(
+        onDemandPrint: true,
+      )).printNotEmptyResultFields().isSuccess();
       if (!success) {
         if (!exists) {
           return;
