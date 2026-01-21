@@ -1,6 +1,10 @@
+0.10.26
+
+* stax pull, get - git pull is now printing on demand so users can read what is happening during long pulls
+
 0.10.25
 
-* stax commit - git commit is not printing on demand so users can read what is happening with pre commit hooks
+* stax commit - git commit is now printing on demand so users can read what is happening with pre commit hooks
 
 0.10.24
 

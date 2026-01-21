@@ -55,11 +55,12 @@ class InternalCommandPull extends InternalCommand {
           .assertSuccessfulExitCode();
       if (result == null) return;
     }
-    result = context.git.pullPrune
-        .announce('Pulling new changes.')
-        .runSync()
-        .printNotEmptyResultFields()
-        .assertSuccessfulExitCode();
+    result =
+        (await context.git.pullPrune
+                .announce('Pulling new changes.')
+                .run(onDemandPrint: true))
+            .printNotEmptyResultFields()
+            .assertSuccessfulExitCode();
     if (result == null) {
       if (needToSwitchBranches && currentBranch != null) {
         context.git.switch0
@@ -79,9 +80,9 @@ class InternalCommandPull extends InternalCommand {
             .runSync()
             .printNotEmptyResultFields();
 
-        context.git.pullPrune
-            .announce("Pulling changes for branch '$branch'.")
-            .runSync()
+        (await context.git.pullPrune
+                .announce("Pulling changes for branch '$branch'.")
+                .run(onDemandPrint: true))
             .printNotEmptyResultFields();
       }
     }
