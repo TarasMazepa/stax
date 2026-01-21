@@ -4,7 +4,7 @@ import 'package:stax/context/context.dart';
 class InternalCommandVersion extends InternalCommand {
   static final version = const String.fromEnvironment(
     'version',
-    defaultValue: '0.10.25',
+    defaultValue: '0.10.26',
   );
 
   InternalCommandVersion() : super('version', 'Version of stax');
