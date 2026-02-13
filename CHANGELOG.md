@@ -1,3 +1,7 @@
+0.10.27
+
+* stax rebase - would mistakenly suggest --abort, while we only have --abandon
+
 0.10.26
 
 * stax pull, get - git pull is now printing on demand so users can read what is happening during long pulls
