@@ -1,4 +1,4 @@
-FROM taras0mazepa/stax-guide-base:0.10.26
+FROM taras0mazepa/stax-guide-base:0.10.27
 
 RUN <<EOF
 touch login-page.txt
