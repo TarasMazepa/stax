@@ -51,7 +51,7 @@ class RebaseUseCase {
 
 Take a look at `stax help rebase`
 
-To abandon: `stax rebase --abort`
+To abandon: `stax rebase --abandon`
 
 To continue: `stax rebase --continue`''');
     }
