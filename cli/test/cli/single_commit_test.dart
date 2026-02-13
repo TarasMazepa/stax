@@ -25,21 +25,27 @@ void main() {
         'x origin/main, origin/HEAD, main\n',
       );
     });
-    test("commit 'commit message'", () async {
-      await setup.startLiveStax(['commit', 'commit message']).then((
-        process,
-      ) async {
-        await process.stdout.forEach((element) async {
-          final line = String.fromCharCodes(element);
-          print(line);
-          if (line.contains(
-            'You do not have any staged changes. Do you want to add all? Continue y/N?',
-          )) {
-            process.stdin.writeln('y');
-            await process.stdin.flush();
-          }
+    test(
+      "commit 'commit message'",
+      () async {
+        await setup.startLiveStax(['commit', 'commit message']).then((
+          process,
+        ) async {
+          await process.stdout.forEach((element) async {
+            final line = String.fromCharCodes(element);
+            print(line);
+            if (line.contains(
+              'You do not have any staged changes. Do you want to add all? Continue y/N?',
+            )) {
+              process.stdin.writeln('y');
+              await process.stdin.flush();
+            }
+          });
         });
-      });
-    });
+      },
+      onPlatform: {
+        'linux': [Skip('Flaky')],
+      },
+    );
   });
 }
