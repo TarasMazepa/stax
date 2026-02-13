@@ -1,6 +1,7 @@
 0.10.27
 
 * stax rebase - would mistakenly suggest --abort, while we only have --abandon
+* stax rebase - more stable logic for selecting default branch when no target branch was provided
 
 0.10.26
 

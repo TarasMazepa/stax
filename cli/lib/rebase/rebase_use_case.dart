@@ -66,7 +66,7 @@ To continue: `stax rebase --continue`''');
 
     GitLogAllNode? targetNode;
 
-    rebaseOnto ??= context.getDefaultBranch();
+    rebaseOnto ??= context.getConfiguredDefaultBranch();
 
     if (rebaseOnto != null) {
       targetNode = root.findAnyRefThatEndsWith(rebaseOnto);

@@ -7,9 +7,15 @@ extension ContextGitGetDefaultBranch on Context {
   static List<String>? remotes;
   static String? defaultBranch;
 
-  String? getDefaultBranch() {
+  String? getConfiguredDefaultBranch() {
     final override = effectiveSettings.defaultBranch.value;
     if (override.isNotEmpty) return override;
+    return null;
+  }
+
+  String? getDefaultBranch() {
+    final configured = getConfiguredDefaultBranch();
+    if (configured != null) return configured;
 
     if (defaultBranch != null) return defaultBranch;
     final complainAboutEmptyOnce = Once();
