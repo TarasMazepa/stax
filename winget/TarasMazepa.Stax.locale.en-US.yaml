@@ -1,0 +1,19 @@
+# Created using wingetcreate 1.10.3.0
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.10.0.schema.json
+
+PackageIdentifier: TarasMazepa.Stax
+PackageVersion: 0.10.15
+PackageLocale: en-US
+Publisher: TarasMazepa
+PublisherUrl: https://github.com/TarasMazepa
+Author: Taras Mazepa
+PackageName: Stax
+PackageUrl: https://github.com/TarasMazepa/stax
+License: https://github.com/TarasMazepa/stax/blob/main/LICENSE
+LicenseUrl: https://github.com/TarasMazepa/stax/blob/main/LICENSE
+ShortDescription: Manage git branches and stack PRs
+ReleaseNotes: Initial release on Winget.
+ReleaseNotesUrl: https://github.com/TarasMazepa/stax/releases/tag/0.10.15
+InstallationNotes: Learn more about stax by running `stax --help` or visiting https://staxforgit.com/
+ManifestType: defaultLocale
+ManifestVersion: 1.10.0
