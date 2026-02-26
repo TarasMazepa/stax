@@ -17,7 +17,7 @@ jobs:
       - uses: flutter-actions/setup-flutter@v4
         with:
           version: ${{ steps.get-flutter-version.outputs.text }}
-      - run: flutter pub upgrade
+      - run: flutter pub upgrade --major-versions
         working-directory: ui
       - run: flutter pub get
         working-directory: ui
