@@ -5,10 +5,15 @@ import 'package:stax/context/context_assert_no_conflicting_flags.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 
 class InternalCommandRebase extends InternalCommand {
+  static final dontResolveFlag = Flag(
+    short: '-d',
+    long: '--dont-resolve',
+    description: 'Do not automatically resolve conflicts.',
+  );
   static final theirsFlag = Flag(
     short: '-m',
     long: '--prefer-moving',
-    description: 'Prefer moving changes on conflict.',
+    description: 'Prefer moving changes on conflict (default).',
   );
   static final oursFlag = Flag(
     short: '-b',
@@ -34,7 +39,7 @@ class InternalCommandRebase extends InternalCommand {
         arguments: {
           'opt1': 'Optional argument for target, will default to <remote>/HEAD',
         },
-        flags: [theirsFlag, oursFlag, continueFlag, abortFlag],
+        flags: [theirsFlag, oursFlag, dontResolveFlag, continueFlag, abortFlag],
       );
 
   @override
@@ -53,28 +58,32 @@ class InternalCommandRebase extends InternalCommand {
       return;
     }
 
-    final hasTheirsFlag = theirsFlag.hasFlag(args);
     final hasOursFlag = oursFlag.hasFlag(args);
+    final hasDontResolveFlag = dontResolveFlag.hasFlag(args);
+    final hasTheirsFlag = theirsFlag.hasFlag(args) || (!hasOursFlag && !hasDontResolveFlag);
 
     if (context.assertNoConflictingFlags([
-      if (hasTheirsFlag) theirsFlag,
+      if (theirsFlag.hasFlag(args)) theirsFlag,
       if (hasOursFlag) oursFlag,
+      if (hasDontResolveFlag) dontResolveFlag,
     ])) {
       return;
     }
 
     if (context.assertNoConflictingFlags([
       if (hasContinueFlag) continueFlag,
-      if (hasTheirsFlag) theirsFlag,
+      if (theirsFlag.hasFlag(args)) theirsFlag,
       if (hasOursFlag) oursFlag,
+      if (hasDontResolveFlag) dontResolveFlag,
     ])) {
       return;
     }
 
     if (context.assertNoConflictingFlags([
       if (hasAbortFlag) abortFlag,
-      if (hasTheirsFlag) theirsFlag,
+      if (theirsFlag.hasFlag(args)) theirsFlag,
       if (hasOursFlag) oursFlag,
+      if (hasDontResolveFlag) dontResolveFlag,
     ])) {
       return;
     }

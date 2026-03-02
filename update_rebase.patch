@@ -1,0 +1,67 @@
+--- cli/lib/command/internal_command_rebase.dart
++++ cli/lib/command/internal_command_rebase.dart
+@@ -6,11 +6,16 @@
+
+ class InternalCommandRebase extends InternalCommand {
++  static final dontResolveFlag = Flag(
++    short: '-d',
++    long: '--dont-resolve',
++    description: 'Do not automatically resolve conflicts.',
++  );
+   static final theirsFlag = Flag(
+     short: '-m',
+     long: '--prefer-moving',
+-    description: 'Prefer moving changes on conflict.',
++    description: 'Prefer moving changes on conflict (default).',
+   );
+   static final oursFlag = Flag(
+     short: '-b',
+     long: '--prefer-base',
+     description: 'Prefer base changes on conflict.',
+@@ -25,11 +30,11 @@
+         'rebase tree of branches on top of main',
+         arguments: {
+           'opt1': 'Optional argument for target, will default to <remote>/HEAD',
+         },
+-        flags: [theirsFlag, oursFlag, continueFlag, abortFlag],
++        flags: [theirsFlag, oursFlag, dontResolveFlag, continueFlag, abortFlag],
+       );
+
+   @override
+   Future<void> run(List<String> args, Context context) async {
+@@ -46,15 +51,19 @@
+
+-    final hasTheirsFlag = theirsFlag.hasFlag(args);
+     final hasOursFlag = oursFlag.hasFlag(args);
++    final hasDontResolveFlag = dontResolveFlag.hasFlag(args);
++
++    // If none of the flags are specified, prefer moving is the default behavior.
++    final hasTheirsFlag = theirsFlag.hasFlag(args) || (!hasOursFlag && !hasDontResolveFlag);
+
+     if (context.assertNoConflictingFlags([
+-      if (hasTheirsFlag) theirsFlag,
++      if (theirsFlag.hasFlag(args)) theirsFlag,
+       if (hasOursFlag) oursFlag,
++      if (hasDontResolveFlag) dontResolveFlag,
+     ])) {
+       return;
+     }
+
+     if (context.assertNoConflictingFlags([
+       if (hasContinueFlag) continueFlag,
+-      if (hasTheirsFlag) theirsFlag,
++      if (theirsFlag.hasFlag(args)) theirsFlag,
+       if (hasOursFlag) oursFlag,
++      if (hasDontResolveFlag) dontResolveFlag,
+     ])) {
+       return;
+     }
+
+     if (context.assertNoConflictingFlags([
+       if (hasAbortFlag) abortFlag,
+-      if (hasTheirsFlag) theirsFlag,
++      if (theirsFlag.hasFlag(args)) theirsFlag,
+       if (hasOursFlag) oursFlag,
++      if (hasDontResolveFlag) dontResolveFlag,
+     ])) {
+       return;

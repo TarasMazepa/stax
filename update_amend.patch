@@ -1,0 +1,102 @@
+--- cli/lib/command/internal_command_amend.dart
++++ cli/lib/command/internal_command_amend.dart
+@@ -11,10 +11,15 @@
+ class InternalCommandAmend extends InternalCommand {
++  static final rebaseDontResolveFlag = Flag(
++    short: '-d',
++    long: '--rebase-dont-resolve',
++    description: "Runs 'stax rebase ${InternalCommandRebase.dontResolveFlag.long}' afterwards on all children branches.",
++  );
+   static final rebaseFlag = Flag(
+     short: '-r',
+     long: '--rebase',
+-    description: "Runs 'stax rebase' afterwards on all children branches.",
++    description: "Runs 'stax rebase' afterwards on all children branches (default).",
+   );
+   static final rebaseTheirsFlag = Flag(
+     short: '-m',
+     long: '--rebase-prefer-moving',
+@@ -32,11 +37,12 @@
+         flags: [
+           ...ContextHandleAddAllFlag.flags,
+           rebaseFlag,
+           rebaseOursFlag,
+           rebaseTheirsFlag,
++          rebaseDontResolveFlag,
+         ],
+       );
+
+   @override
+@@ -47,15 +53,18 @@
+     }
+
+     bool hasRebaseFlag = rebaseFlag.hasFlag(args);
+     bool hasRebaseTheirsFlag = rebaseTheirsFlag.hasFlag(args);
+     bool hasRebaseOursFlag = rebaseOursFlag.hasFlag(args);
++    bool hasRebaseDontResolveFlag = rebaseDontResolveFlag.hasFlag(args);
+
+     if (context.assertNoConflictingFlags([
+       if (hasRebaseFlag) rebaseFlag,
+       if (hasRebaseTheirsFlag) rebaseTheirsFlag,
+       if (hasRebaseOursFlag) rebaseOursFlag,
++      if (hasRebaseDontResolveFlag) rebaseDontResolveFlag,
+     ])) {
+       return;
+     }
+
+     final current = context.gitLogAll().findCurrent();
+
+     bool hasAnyRebaseFlag() =>
+-        hasRebaseFlag || hasRebaseTheirsFlag || hasRebaseOursFlag;
++        hasRebaseFlag || hasRebaseTheirsFlag || hasRebaseOursFlag || hasRebaseDontResolveFlag;
+
+     if (!hasAnyRebaseFlag() && current?.children.isNotEmpty == true) {
+       switch (context.commandLineMultipleOptionsQuestion(
+         'This branch has children. Would you like to rebase them?',
+         [
+-          (key: 'r', description: 'Standard rebase'),
++          (
++            key: 'm',
++            description: 'Rebase prefer moving (default, --rebase-prefer-moving)',
++          ),
+           (
+-            key: 'm',
+-            description: 'Rebase prefer moving (--rebase-prefer-moving)',
++            key: 'r',
++            description: 'Standard rebase (--rebase)',
+           ),
+           (key: 'b', description: 'Rebase prefer base (--rebase-prefer-base)'),
+           (key: '<any>', description: 'Decline'),
+         ],
+       )) {
+-        case 'r':
+-          hasRebaseFlag = true;
+-          break;
+         case 'm':
+-          hasRebaseTheirsFlag = true;
++          hasRebaseFlag = true; // Use default rebase flag, which now defaults to prefer moving
+           break;
++        case 'r':
++          hasRebaseDontResolveFlag = true;
++          break;
+         case 'b':
+           hasRebaseOursFlag = true;
+           break;
+       }
+     }
+
+     final rebaseUseCase = context.assertRebaseUseCase;
+     final shouldDoRebase = hasAnyRebaseFlag();
+
+     if (shouldDoRebase) {
++      // Since default rebase now implies prefer moving, hasRebaseFlag also implies prefer moving
++      final actuallyPreferMoving = hasRebaseTheirsFlag || hasRebaseFlag;
++      final actuallyPreferBase = hasRebaseOursFlag;
++
+       rebaseUseCase.initiate(
+-        hasRebaseTheirsFlag,
+-        hasRebaseOursFlag,
++        actuallyPreferMoving,
++        actuallyPreferBase,
+         current!.line.branchNameOrCommitHash(),
+       );
