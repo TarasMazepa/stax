@@ -87,14 +87,8 @@ class InternalCommandAmend extends InternalCommand {
       switch (context.commandLineMultipleOptionsQuestion(
         'This branch has children. Would you like to rebase them?',
         [
-          (
-            key: 'm',
-            description: 'Rebase prefer moving (default)',
-          ),
-          (
-            key: 'r',
-            description: "Standard rebase (--rebase-dont-resolve)",
-          ),
+          (key: 'm', description: 'Rebase prefer moving (default)'),
+          (key: 'r', description: "Standard rebase (--rebase-dont-resolve)"),
           (key: 'b', description: 'Rebase prefer base (--rebase-prefer-base)'),
           (key: '<any>', description: 'Decline'),
         ],
