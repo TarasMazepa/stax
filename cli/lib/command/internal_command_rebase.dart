@@ -60,7 +60,8 @@ class InternalCommandRebase extends InternalCommand {
 
     final hasOursFlag = oursFlag.hasFlag(args);
     final hasDontResolveFlag = dontResolveFlag.hasFlag(args);
-    final hasTheirsFlag = theirsFlag.hasFlag(args) || (!hasOursFlag && !hasDontResolveFlag);
+    final hasTheirsFlag =
+        theirsFlag.hasFlag(args) || (!hasOursFlag && !hasDontResolveFlag);
 
     if (context.assertNoConflictingFlags([
       if (theirsFlag.hasFlag(args)) theirsFlag,
