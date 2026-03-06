@@ -10,10 +10,17 @@ import 'package:stax/context/context_git_log_all.dart';
 import 'package:stax/context/context_handle_add_all_flag.dart';
 
 class InternalCommandAmend extends InternalCommand {
+  static final rebaseDontResolveFlag = Flag(
+    short: '-d',
+    long: '--rebase-dont-resolve',
+    description:
+        "Runs 'stax rebase ${InternalCommandRebase.dontResolveFlag.long}' afterwards on all children branches.",
+  );
   static final rebaseFlag = Flag(
     short: '-r',
     long: '--rebase',
-    description: "Runs 'stax rebase' afterwards on all children branches.",
+    description:
+        "Runs 'stax rebase' afterwards on all children branches (default).",
   );
   static final rebaseTheirsFlag = Flag(
     short: '-m',
@@ -38,6 +45,7 @@ class InternalCommandAmend extends InternalCommand {
           rebaseFlag,
           rebaseOursFlag,
           rebaseTheirsFlag,
+          rebaseDontResolveFlag,
         ],
       );
 
@@ -56,11 +64,13 @@ class InternalCommandAmend extends InternalCommand {
     bool hasRebaseFlag = rebaseFlag.hasFlag(args);
     bool hasRebaseTheirsFlag = rebaseTheirsFlag.hasFlag(args);
     bool hasRebaseOursFlag = rebaseOursFlag.hasFlag(args);
+    bool hasRebaseDontResolveFlag = rebaseDontResolveFlag.hasFlag(args);
 
     if (context.assertNoConflictingFlags([
       if (hasRebaseFlag) rebaseFlag,
       if (hasRebaseTheirsFlag) rebaseTheirsFlag,
       if (hasRebaseOursFlag) rebaseOursFlag,
+      if (hasRebaseDontResolveFlag) rebaseDontResolveFlag,
     ])) {
       return;
     }
@@ -68,26 +78,26 @@ class InternalCommandAmend extends InternalCommand {
     final current = context.gitLogAll().findCurrent();
 
     bool hasAnyRebaseFlag() =>
-        hasRebaseFlag || hasRebaseTheirsFlag || hasRebaseOursFlag;
+        hasRebaseFlag ||
+        hasRebaseTheirsFlag ||
+        hasRebaseOursFlag ||
+        hasRebaseDontResolveFlag;
 
     if (!hasAnyRebaseFlag() && current?.children.isNotEmpty == true) {
       switch (context.commandLineMultipleOptionsQuestion(
         'This branch has children. Would you like to rebase them?',
         [
-          (key: 'r', description: 'Standard rebase'),
-          (
-            key: 'm',
-            description: 'Rebase prefer moving (--rebase-prefer-moving)',
-          ),
+          (key: 'm', description: 'Rebase prefer moving (default)'),
+          (key: 'r', description: "Standard rebase (--rebase-dont-resolve)"),
           (key: 'b', description: 'Rebase prefer base (--rebase-prefer-base)'),
           (key: '<any>', description: 'Decline'),
         ],
       )) {
-        case 'r':
+        case 'm':
           hasRebaseFlag = true;
           break;
-        case 'm':
-          hasRebaseTheirsFlag = true;
+        case 'r':
+          hasRebaseDontResolveFlag = true;
           break;
         case 'b':
           hasRebaseOursFlag = true;
@@ -99,9 +109,12 @@ class InternalCommandAmend extends InternalCommand {
     final shouldDoRebase = hasAnyRebaseFlag();
 
     if (shouldDoRebase) {
+      final actuallyPreferMoving = hasRebaseTheirsFlag || hasRebaseFlag;
+      final actuallyPreferBase = hasRebaseOursFlag;
+
       rebaseUseCase.initiate(
-        hasRebaseTheirsFlag,
-        hasRebaseOursFlag,
+        actuallyPreferMoving,
+        actuallyPreferBase,
         current!.line.branchNameOrCommitHash(),
       );
       rebaseUseCase.assertRebaseData.index++;
