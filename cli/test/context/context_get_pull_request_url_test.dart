@@ -22,10 +22,19 @@ void main() {
     try {
       final context = Context.implicit().withWorkingDirectory(tempDir.path);
       context.command(['git', 'init']).runSync();
-      context.command(['git', 'remote', 'add', 'origin', 'git@github.com:example/repo.git']).runSync();
+      context.command([
+        'git',
+        'remote',
+        'add',
+        'origin',
+        'git@github.com:example/repo.git',
+      ]).runSync();
 
       final url = context.getPullRequestUrl('main', 'feature');
-      expect(url, 'https://github.com/example/repo/compare/main...feature?expand=1');
+      expect(
+        url,
+        'https://github.com/example/repo/compare/main...feature?expand=1',
+      );
     } finally {
       tempDir.deleteSync(recursive: true);
     }
