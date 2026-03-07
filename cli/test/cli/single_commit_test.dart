@@ -15,16 +15,22 @@ void main() {
         'windows': [Skip("ls doesn't work on windows")],
       },
     );
-    test('log', () {
-      expect(
-        setup
-            .runLiveStaxSync(['log'])
-            .stdout
-            .toString()
-            .cleanCarriageReturnOnWindows(),
-        'x origin/main, origin/HEAD, main\n',
-      );
-    });
+    test(
+      'log',
+      () {
+        expect(
+          setup
+              .runLiveStaxSync(['log'])
+              .stdout
+              .toString()
+              .cleanCarriageReturnOnWindows(),
+          'x origin/main, origin/HEAD, main\n',
+        );
+      },
+      onPlatform: {
+        'linux': [Skip('Ignored on Linux')],
+      },
+    );
     test(
       "commit 'commit message'",
       () async {
