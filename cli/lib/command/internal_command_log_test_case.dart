@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:path/path.dart' as path;
 
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/main_function_reference.dart';
@@ -23,16 +24,25 @@ class InternalCommandLogTestCase extends InternalCommand {
       ExternalCommand command = context.command(commandText.split(' '));
       if (command.parts[0] == 'stax') {
         await mainFunctionReference(command.parts.sublist(1));
-      } else if (Platform.isWindows && command.parts[0] == 'echo') {
-        context
-            .command(['powershell', '-c', ...command.parts])
-            .runSync()
-            .printNotEmptyResultFields();
-      } else if (command.parts[0] == 'echo') {
-        context
-            .command(['touch', ...command.parts.sublist(1)])
-            .runSync()
-            .printNotEmptyResultFields();
+      } else if (command.parts[0] == 'echo' && command.parts.contains('>')) {
+        final redirectIndex = command.parts.indexOf('>');
+        if (redirectIndex + 1 < command.parts.length) {
+          final content = command.parts.sublist(1, redirectIndex).join(' ');
+          final filename = command.parts[redirectIndex + 1];
+          final cleanContent =
+              content.length >= 2 &&
+                      content.startsWith("'") &&
+                      content.endsWith("'")
+                  ? content.substring(1, content.length - 1)
+                  : content;
+          final workingDirectory = context.workingDirectory;
+          final file = File(
+            workingDirectory != null
+                ? path.join(workingDirectory, filename)
+                : filename,
+          );
+          file.writeAsStringSync('$cleanContent\n');
+        }
       } else {
         command.runSync().printNotEmptyResultFields();
       }
