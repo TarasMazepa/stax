@@ -111,14 +111,10 @@ extension GitLogAllOnContext on Context {
         .stdout
         .toString()
         .split('\n')
+        .reversed
         .where((x) => x.isNotEmpty)
         .map((x) => GitLogAllLine.parse(x))
         .toList();
-    for (int i = 0; i < lines.length / 2; i++) {
-      final temp = lines[i];
-      lines[i] = lines[lines.length - 1 - i];
-      lines[lines.length - 1 - i] = temp;
-    }
     final roots = lines
         .where((x) => x.parentsCommitHashes.isEmpty)
         .map((x) => GitLogAllNode.root(x))
