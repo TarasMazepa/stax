@@ -61,13 +61,14 @@ extension GitLogAllOnContext on Context {
       return root;
     }
 
-    final roots = lines
-        .where((x) => x.parentsCommitHashes.isEmpty)
-        .map((x) => newRoot(x))
-        .toList();
-    for (final root in roots) {
-      lines.remove(root.line);
-    }
+    final roots = <GitLogAllNode>[];
+    lines.removeWhere((line) {
+      if (line.parentsCommitHashes.isEmpty) {
+        roots.add(newRoot(line));
+        return true;
+      }
+      return false;
+    });
     if (roots.isEmpty) {
       roots.add(newRoot(lines.removeLast()));
     }
@@ -119,15 +120,17 @@ extension GitLogAllOnContext on Context {
       lines[i] = lines[lines.length - 1 - i];
       lines[lines.length - 1 - i] = temp;
     }
-    final roots = lines
-        .where((x) => x.parentsCommitHashes.isEmpty)
-        .map((x) => GitLogAllNode.root(x))
-        .toList();
+    final roots = <GitLogAllNode>[];
     final nodes = <String, GitLogAllNode>{};
-    for (final root in roots) {
-      lines.remove(root.line);
-      nodes[root.line.commitHash] = root;
-    }
+    lines.removeWhere((line) {
+      if (line.parentsCommitHashes.isEmpty) {
+        final root = GitLogAllNode.root(line);
+        roots.add(root);
+        nodes[line.commitHash] = root;
+        return true;
+      }
+      return false;
+    });
     List<GitLogAllLine> nextLines = [];
     int oldLength = 0;
     while (lines.isNotEmpty) {
