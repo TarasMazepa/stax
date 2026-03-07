@@ -31,10 +31,10 @@ class InternalCommandLogTestCase extends InternalCommand {
           final filename = command.parts[redirectIndex + 1];
           final cleanContent =
               content.length >= 2 &&
-                      content.startsWith("'") &&
-                      content.endsWith("'")
-                  ? content.substring(1, content.length - 1)
-                  : content;
+                  content.startsWith("'") &&
+                  content.endsWith("'")
+              ? content.substring(1, content.length - 1)
+              : content;
           final workingDirectory = context.workingDirectory;
           final file = File(
             workingDirectory != null
