@@ -1,4 +1,4 @@
-package com.example.ui
+package com.staxforgit
 
 import io.flutter.embedding.android.FlutterActivity
 
