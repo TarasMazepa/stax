@@ -64,18 +64,21 @@ void main() {
       expect(context.isInsideWorkTree(), isFalse);
     });
 
-    test('handleNotInsideGitWorkingTree returns false when inside work tree', () {
-      Process.runSync('git', ['init'], workingDirectory: tempDir.path);
-      final context = MockContext(tempDir.path);
-      final result = context.handleNotInsideGitWorkingTree();
+    test(
+      'handleNotInsideGitWorkingTree returns false when inside work tree',
+      () {
+        Process.runSync('git', ['init'], workingDirectory: tempDir.path);
+        final context = MockContext(tempDir.path);
+        final result = context.handleNotInsideGitWorkingTree();
 
-      expect(result, isFalse);
-      expect(
-        context.log.any(
-          (line) => line.contains('You are not inside git work tree.'),
-        ),
-        isFalse,
-      );
-    });
+        expect(result, isFalse);
+        expect(
+          context.log.any(
+            (line) => line.contains('You are not inside git work tree.'),
+          ),
+          isFalse,
+        );
+      },
+    );
   });
 }
