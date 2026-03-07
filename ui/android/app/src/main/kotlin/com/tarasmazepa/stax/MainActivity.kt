@@ -1,4 +1,4 @@
-package com.example.ui
+package com.tarasmazepa.stax
 
 import io.flutter.embedding.android.FlutterActivity
 
