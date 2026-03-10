@@ -1,7 +1,11 @@
 import 'package:stax/context/context.dart';
 
 extension ContextGhCreatePr on Context {
-  String? createPrWithGhCli(String baseBranch, String headBranch) {
+  String? createPrWithGhCli(
+    String baseBranch,
+    String headBranch, {
+    bool draft = false,
+  }) {
     return command([
           'gh',
           'pr',
@@ -11,6 +15,7 @@ extension ContextGhCreatePr on Context {
           '--head',
           headBranch,
           '--fill',
+          if (draft) '--draft',
         ])
         .announce('Creating PR using GitHub CLI')
         .runSyncCatching()

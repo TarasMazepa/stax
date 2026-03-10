@@ -38,6 +38,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
          -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
          -b, --branch-from-commit - Accepts branch name proposed by converting commit name to branch name.
+         -d, --draft - Creates a PR in draft mode using the GitHub CLI. Works only if you have GitHub as your remote.
          -i, --ignore-no-staged-changes - Skips check if there staged changes, helpful when your change is only rename of the file which stax can't see at the moment.
          -p, --pull-request - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
          -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.

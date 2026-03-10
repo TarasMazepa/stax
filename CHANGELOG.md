@@ -1,3 +1,7 @@
+0.10.28
+
+* stax commit - adds -d/--draft flag to create a pull request in draft mode using the GitHub CLI
+
 0.10.27
 
 * stax rebase - would mistakenly suggest --abort, while we only have --abandon

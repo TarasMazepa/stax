@@ -22,6 +22,12 @@ class InternalCommandCommit extends InternalCommand {
     description:
         'Opens PR creation page on your remote. Works only if you have GitHub as your remote.',
   );
+  static final draftPrFlag = Flag(
+    short: '-d',
+    long: '--draft',
+    description:
+        'Creates a PR in draft mode using the GitHub CLI. Works only if you have GitHub as your remote.',
+  );
   static final branchNameFlag = Flag(
     short: '-b',
     long: '--branch-from-commit',
@@ -44,6 +50,7 @@ class InternalCommandCommit extends InternalCommand {
             'branch name would be generated from commit message.',
         flags: [
           prFlag,
+          draftPrFlag,
           branchNameFlag,
           ignoreNoStagedChanges,
           ...ContextHandleAddAllFlag.flags,
@@ -62,7 +69,8 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
     context.handleAddAllFlag(args);
-    final createPr = prFlag.hasFlag(args);
+    final draftPr = draftPrFlag.hasFlag(args);
+    final createPr = prFlag.hasFlag(args) || draftPr;
     final acceptBranchName = branchNameFlag.hasFlag(args);
     if (!ignoreNoStagedChanges.hasFlag(args) &&
         context.areThereNoStagedChanges()) {
@@ -189,7 +197,11 @@ class InternalCommandCommit extends InternalCommand {
     String? prUrl;
     if (createPr) {
       context.printToConsole('Creating PR using GitHub CLI');
-      prUrl = context.createPrWithGhCli(baseBranch!, prefixedBranchName);
+      prUrl = context.createPrWithGhCli(
+        baseBranch!,
+        prefixedBranchName,
+        draft: draftPr,
+      );
 
       prUrl ??= backupPrUrl;
     }
