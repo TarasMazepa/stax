@@ -1,0 +1,43 @@
+name: ui-pub-upgrade.yml
+
+on:
+  pull_request:
+    paths:
+      - 'ui/pubspec.lock'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ui-pub-upgrade:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Read FLUTTER_VERSION
+        id: get-flutter-version
+        run: |
+          version=$(cat FLUTTER_VERSION | tr -d '\n\r')
+          echo "version=$version" >> $GITHUB_OUTPUT
+
+      - uses: flutter-actions/setup-flutter@v4
+        with:
+          version: ${{ steps.get-flutter-version.outputs.version }}
+
+      - run: flutter pub upgrade
+        working-directory: ui
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'monorepohub'
+          git config --global user.email 'git@monorepohub.com'
+          git add ui/pubspec.lock
+          git diff --staged --quiet || (git commit -m "chore: run flutter pub upgrade" && git push)
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
