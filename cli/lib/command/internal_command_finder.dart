@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 
-extension InternalCommandFinder on Iterable<InternalCommand> {
+extension OnIterableInternalCommand on Iterable<InternalCommand> {
   InternalCommand? findByNameOrPrefix(String commandName) {
     return firstWhereOrNull(
           (command) =>
