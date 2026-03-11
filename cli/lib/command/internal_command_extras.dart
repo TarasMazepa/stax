@@ -24,7 +24,7 @@ class InternalCommandExtras extends InternalCommand {
   InternalCommandExtras()
     : super(
         'extras',
-        'Extra non-primary commands.',
+        'Extra non-primary commands (about, changelog, doctor, help, settings, update, version). Run `stax extras` to see detailed list.',
         arguments: {'arg1': 'Subcommand to run'},
       );
 

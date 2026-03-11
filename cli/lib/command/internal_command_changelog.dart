@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_version.dart';
@@ -18,15 +20,19 @@ class InternalCommandChangelog extends InternalCommand {
   @override
   Future<void> run(final List<String> args, Context context) async {
     try {
-      final response = await http.get(Uri.parse(changelogUrl));
+      final request = http.Request('GET', Uri.parse(changelogUrl));
+      final response = await request.send();
+
       if (response.statusCode == 200) {
         final currentVersion = InternalCommandVersion.version;
-        final lines = response.body.split('\n');
-        for (final line in lines) {
-          if (line.contains(currentVersion)) {
-            context.printToConsole('$line <-- current version');
+        await for (final chunk
+            in response.stream
+                .transform(utf8.decoder)
+                .transform(const LineSplitter())) {
+          if (chunk.startsWith(currentVersion)) {
+            context.printToConsole('$chunk <-- current version');
           } else {
-            context.printToConsole(line);
+            context.printToConsole(chunk);
           }
         }
       } else {
