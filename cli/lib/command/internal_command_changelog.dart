@@ -30,7 +30,9 @@ class InternalCommandChangelog extends InternalCommand {
           }
         }
       } else {
-        context.printParagraph('Failed to fetch changelog. Status code: ${response.statusCode}');
+        context.printParagraph(
+          'Failed to fetch changelog. Status code: ${response.statusCode}',
+        );
       }
     } catch (e) {
       context.printParagraph('Failed to fetch changelog. Error: $e');
