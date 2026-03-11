@@ -69,19 +69,17 @@ class InternalCommandUpdate extends InternalCommand {
       return;
     }
 
-    context
+    await context
         .command(['brew', 'update'])
         .announce('Updating Homebrew formulae...')
-        .runSync()
-        .printNotEmptyResultFields();
+        .run(onDemandPrint: true);
 
     context.printToConsole('A new version of stax is available. Upgrading...');
 
-    final upgradeResult = context
+    final upgradeResult = await context
         .command(['brew', 'upgrade', 'TarasMazepa/stax/stax'])
         .announce('Upgrading stax...')
-        .runSync()
-        .printNotEmptyResultFields();
+        .run(onDemandPrint: true);
 
     if (upgradeResult.exitCode == 0) {
       context.printToConsole(
