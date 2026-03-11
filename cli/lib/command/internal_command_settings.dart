@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
+import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/settings/base_list_setting.dart';
 import 'package:stax/settings/key_value_list_setting.dart';
@@ -25,6 +26,7 @@ class InternalCommandSettings extends InternalCommand {
     : super(
         'settings',
         'View or modify stax settings',
+        type: InternalCommandType.hidden,
         arguments: {
           'arg1': 'Subcommand (${availableSubCommands.join(', ')})',
           'opt2': 'Setting name',
