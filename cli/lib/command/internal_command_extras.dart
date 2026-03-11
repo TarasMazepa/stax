@@ -25,9 +25,7 @@ class InternalCommandExtras extends InternalCommand {
     : super(
         'extras',
         'Extra non-primary commands.',
-        arguments: {
-          'arg1': 'Subcommand to run',
-        },
+        arguments: {'arg1': 'Subcommand to run'},
       );
 
   @override
