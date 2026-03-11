@@ -3,9 +3,6 @@ import 'package:test/scaffolding.dart';
 
 import '../string_clean_carrige_return_on_windows.dart';
 import 'base/cli_group.dart';
-import 'package:stax/command/internal_command_help.dart';
-import 'package:stax/context/context.dart';
-import 'dart:io';
 
 void main() {
   cliGroup('help', (setup) {
