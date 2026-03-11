@@ -1,8 +1,8 @@
-import 'package:collection/collection.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_about.dart';
 import 'package:stax/command/internal_command_changelog.dart';
 import 'package:stax/command/internal_command_doctor.dart';
+import 'package:stax/command/internal_command_finder.dart';
 import 'package:stax/command/internal_command_help.dart';
 import 'package:stax/command/internal_command_settings.dart';
 import 'package:stax/command/internal_command_update.dart';
@@ -25,6 +25,7 @@ class InternalCommandExtras extends InternalCommand {
     : super(
         'extras',
         'Extra non-primary commands (about, changelog, doctor, help, settings, update, version). Run `stax extras` to see detailed list.',
+        shortName: 'e',
         arguments: {'arg1': 'Subcommand to run'},
       );
 
@@ -40,26 +41,11 @@ class InternalCommandExtras extends InternalCommand {
           );
         }
       case [final commandName, ...final commandArgs]:
-        final command =
-            _extraCommands.firstWhereOrNull(
-              (command) =>
-                  command.name == commandName ||
-                  command.shortName == commandName,
-            ) ??
-            _extraCommands.fold<InternalCommand?>(
-              null,
-              (current, command) => switch (command) {
-                _ when !command.name.startsWith(commandName) => current,
-                _ when current == null => command,
-                _ when current.name.length > command.name.length => command,
-                _ when current.name.length < command.name.length => current,
-                _ => current,
-              },
-            );
+        final command = _extraCommands.findByNameOrPrefix(commandName);
 
         if (command == null) {
           context.printParagraph(
-            "Unknown extra command or prefix of a command '$commandName'.",
+            "Unknown extra command or prefix of a command '$commandName'. Available commands: ${_extraCommands.map((c) => c.name).join(', ')}",
           );
           return;
         }
