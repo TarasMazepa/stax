@@ -32,7 +32,6 @@ class InternalCommandExtras extends InternalCommand {
   @override
   Future<void> run(final List<String> args, Context context) async {
     switch (args) {
-      case ['help']:
       case []:
         context.printToConsole('Here are available extra commands:');
         for (final command in _extraCommands) {
