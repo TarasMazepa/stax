@@ -3,6 +3,10 @@
 * stax extras - a new command that hides axiliary commands behind itself: about, changelog, doctor, help, settings, update, version
 * stax extras changelog - shows recent entries in changelog
 
+0.10.29
+
+* stax move - adds left and right directions, to move between sibling branches
+
 0.10.28
 
 * stax commit - adds -d/--draft flag to create a pull request in draft mode using the GitHub CLI
