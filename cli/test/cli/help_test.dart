@@ -6,7 +6,7 @@ import 'base/cli_group.dart';
 
 void main() {
   cliGroup('help', (setup) {
-    test('help', () {
+    test('help', () async {
       expect(
         setup
             .runLiveStaxSync(['help'])
@@ -21,7 +21,6 @@ void main() {
    -v, --verbose - Force all the output.
 Here are available commands:
 Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.
- • about - Shows information about the stax.
  • amend, a - Amends and pushes changes.
       Flags:
          -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
@@ -46,15 +45,12 @@ Note: you can type first letter or couple of first letters instead of full comma
       Flags:
          -f, --force-delete - Force delete gone branches.
          -s, --skip-delete - Skip deletion of gone branches.
- • doctor - Helps to ensure that stax has everything to be used.
+ • extras, e - Extra non-primary commands (about, changelog, doctor, help, settings, update, version). Run `stax extras` to see detailed list.
+      Positional arguments:
+         arg1 - Subcommand to run
  • get - (Re)Checkout specified branch and all its children
       Positional arguments:
          opt1 - Name of the remote ref. Will be matched as a suffix.
- • help - List of available commands.
-      Positional arguments:
-         opt1 - Optional name of the command you want to learn about
-      Flags:
-         -a, --show-all - Show all commands including hidden.
  • log - Shows a tree of all branches.
       Flags:
          -a, --all-branches - show remote branches also
@@ -77,14 +73,6 @@ Note: you can type first letter or couple of first letters instead of full comma
          -b, --prefer-base - Prefer base changes on conflict.
          -c, --continue - Continue rebase that is in progress.
          -m, --prefer-moving - Prefer moving changes on conflict.
- • settings - View or modify stax settings
-      Positional arguments:
-         arg1 - Subcommand (add, clear, remove, set, show)
-         opt2 - Setting name
-         opt3 - Setting value
-      Flags:
-         -g, --global - Perform operation on global settings regardless of invocation path.
- • version - Version of stax
 """,
       );
     });

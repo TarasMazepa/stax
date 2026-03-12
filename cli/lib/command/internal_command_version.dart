@@ -1,4 +1,5 @@
 import 'package:stax/command/internal_command.dart';
+import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 
 class InternalCommandVersion extends InternalCommand {
@@ -7,7 +8,8 @@ class InternalCommandVersion extends InternalCommand {
     defaultValue: '0.10.28',
   );
 
-  InternalCommandVersion() : super('version', 'Version of stax');
+  InternalCommandVersion()
+    : super('version', 'Version of stax', type: InternalCommandType.hidden);
 
   @override
   Future<void> run(List<String> args, Context context) async {

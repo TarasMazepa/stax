@@ -1,4 +1,5 @@
 import 'package:stax/command/internal_command.dart';
+import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_get_default_remote.dart';
@@ -7,7 +8,11 @@ import 'package:stax/string_empty_to_null.dart';
 
 class InternalCommandDoctor extends InternalCommand {
   InternalCommandDoctor()
-    : super('doctor', 'Helps to ensure that stax has everything to be used.');
+    : super(
+        'doctor',
+        'Helps to ensure that stax has everything to be used.',
+        type: InternalCommandType.hidden,
+      );
 
   @override
   Future<void> run(final List<String> args, Context context) async {
