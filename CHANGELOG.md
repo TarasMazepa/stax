@@ -1,11 +1,8 @@
 0.11.0
 
-* stax extras - a new command that hides axiliary commands behind itself: about, changelog, doctor, help, settings, update, version
-* stax extras changelog - shows recent entries in changelog
-
-0.10.29
-
 * stax move - adds left and right directions, to move between sibling branches
+* stax extras - a new command that hides commands behind itself: about, changelog, doctor, help, settings, update, version
+* stax extras changelog - shows recent entries in changelog
 
 0.10.28
 
