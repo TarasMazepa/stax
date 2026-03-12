@@ -25,14 +25,18 @@ class BottomMoveDirection extends MoveDirection {}
 
 class HeadMoveDirection extends MoveDirection {}
 
+class LeftMoveDirection extends MoveDirection {}
+
+class RightMoveDirection extends MoveDirection {}
+
 class InternalCommandMove extends InternalCommand {
   InternalCommandMove()
     : super(
         'move',
-        "Allows you to move around log tree. Note: you can type any amount of first letters to specify direction. 'h' instead of 'head', 't' for 'top, 'd' for down, 'u' for 'up', 'b' for 'bottom'",
+        "Allows you to move around log tree. Note: you can type any amount of first letters to specify direction. 'h' instead of 'head', 't' for 'top, 'd' for down, 'u' for 'up', 'b' for 'bottom', 'l' for 'left', 'r' for 'right'",
         arguments: {
           '[arg]+':
-              'up (one up, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), down (one down), top (to the closest top parent that have at least two children or to the top most node, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), bottom (to the closest bottom parent that have at least two children or bottom most node, will stop before any direct parent of <remote>/head), head (<remote>/head)',
+              'up (one up, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), down (one down), left (previous sibling node), right (next sibling node), top (to the closest top parent that have at least two children or to the top most node, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), bottom (to the closest bottom parent that have at least two children or bottom most node, will stop before any direct parent of <remote>/head), head (<remote>/head)',
         },
       );
 
@@ -69,6 +73,10 @@ class InternalCommandMove extends InternalCommand {
         moveDirections.add(DownMoveDirection()..args.add(arg));
       } else if ('head'.startsWith(arg)) {
         moveDirections.add(HeadMoveDirection()..args.add(arg));
+      } else if ('left'.startsWith(arg)) {
+        moveDirections.add(LeftMoveDirection()..args.add(arg));
+      } else if ('right'.startsWith(arg)) {
+        moveDirections.add(RightMoveDirection()..args.add(arg));
       } else {
         context.printParagraph("Unknown direction provided '$arg'");
         return;
@@ -117,6 +125,32 @@ class InternalCommandMove extends InternalCommand {
           }
         case HeadMoveDirection _:
           target = root.findRemoteHead();
+        case LeftMoveDirection _:
+          final parent = target?.parent;
+          if (parent != null) {
+            final children = parent.sortedChildren;
+            final currentIndex = children.indexOf(target!);
+            if (currentIndex > 0) {
+              target = children[currentIndex - 1];
+            } else {
+              target = null;
+            }
+          } else {
+            target = null;
+          }
+        case RightMoveDirection _:
+          final parent = target?.parent;
+          if (parent != null) {
+            final children = parent.sortedChildren;
+            final currentIndex = children.indexOf(target!);
+            if (currentIndex >= 0 && currentIndex < children.length - 1) {
+              target = children[currentIndex + 1];
+            } else {
+              target = null;
+            }
+          } else {
+            target = null;
+          }
       }
       if (target == null) {
         context.printParagraph(
