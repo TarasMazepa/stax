@@ -51,6 +51,11 @@ Note: you can type first letter or couple of first letters instead of full comma
  • get - (Re)Checkout specified branch and all its children
       Positional arguments:
          opt1 - Name of the remote ref. Will be matched as a suffix.
+      Flags:
+         -b, --rebase-prefer-base - Runs 'stax rebase --prefer-base' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.
+         -c, --current - Force get current branch, skipping the confirmation prompt.
+         -m, --rebase-prefer-moving - Runs 'stax rebase --prefer-moving' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.
+         -r, --rebase - Runs 'stax rebase' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.
  • log - Shows a tree of all branches.
       Flags:
          -a, --all-branches - show remote branches also
