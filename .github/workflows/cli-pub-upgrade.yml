@@ -1,0 +1,43 @@
+name: cli-pub-upgrade.yml
+
+on:
+  pull_request:
+    paths:
+      - 'cli/pubspec.lock'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cli-pub-upgrade:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Read DART_SDK_VERSION
+        id: get-dart-version
+        run: |
+          version=$(cat DART_SDK_VERSION | tr -d '\n\r')
+          echo "version=$version" >> $GITHUB_OUTPUT
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ steps.get-dart-version.outputs.version }}
+
+      - run: dart pub upgrade
+        working-directory: cli
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'monorepohub'
+          git config --global user.email 'git@monorepohub.com'
+          git add cli/pubspec.lock
+          git diff --staged --quiet || (git commit -m "chore: run dart pub upgrade" && git push)
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
