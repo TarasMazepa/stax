@@ -16,19 +16,20 @@ class InternalCommandGet extends InternalCommand {
   static final rebaseFlag = Flag(
     short: '-r',
     long: '--rebase',
-    description: "Runs 'stax rebase' afterwards.",
+    description:
+        "Runs 'stax rebase' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.",
   );
   static final rebaseTheirsFlag = Flag(
     short: '-m',
     long: '--rebase-prefer-moving',
     description:
-        "Runs 'stax rebase ${InternalCommandRebase.theirsFlag.long}' afterwards.",
+        "Runs 'stax rebase ${InternalCommandRebase.theirsFlag.long}' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.",
   );
   static final rebaseOursFlag = Flag(
     short: '-b',
     long: '--rebase-prefer-base',
     description:
-        "Runs 'stax rebase ${InternalCommandRebase.oursFlag.long}' afterwards.",
+        "Runs 'stax rebase ${InternalCommandRebase.oursFlag.long}' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.",
   );
 
   InternalCommandGet()
