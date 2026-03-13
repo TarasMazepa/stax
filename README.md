@@ -2,6 +2,8 @@
 
 stax - manage git branches and stack PRs
 
+[Are you new to Git? Check out our Stax Onboarding Guide for Beginners!](guides/onboarding.md)
+
 ## Installation
 
 ### MacOS
