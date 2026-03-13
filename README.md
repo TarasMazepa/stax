@@ -74,83 +74,73 @@ stax help
 
 Here is the list of commands currently available:
 
-### stax commit
-
-Creates branch, commits current changes with the same name as a branch, and pushes.
-
-![stax commit diagram](https://github.com/TarasMazepa/stax/assets/6552358/013c5848-1697-49b2-a1b2-17f17eeea9cb)
-
 ```
-stax commit "two-in-one-commit-name-and-branch-name"
+Global flags:
+   --accept-all - Accept all the user prompts automatically.
+   --decline-all - Decline all the user prompts automatically.
+   -h, --help - Shows help documentation for the command
+   -q, --quiet - Removes all output except user prompts.
+   -v, --verbose - Force all the output.
+Here are available commands:
+Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.
+ • amend, a - Amends and pushes changes.
+      Flags:
+         -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
+         -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
+         -b, --rebase-prefer-base - Runs 'stax rebase --prefer-base' afterwards on all children branches.
+         -m, --rebase-prefer-moving - Runs 'stax rebase --prefer-moving' afterwards on all children branches.
+         -r, --rebase - Runs 'stax rebase' afterwards on all children branches.
+         -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
+ • commit - Creates a branch, commits, and pushes it to remote. First argument is mandatory commit message. Second argument is optional branch name, if not provided branch name would be generated from commit message.
+      Positional arguments:
+         arg1 - Required commit message, usually enclosed in double quotes like this: "Sample commit message".
+         opt2 - Optional branch name, if not provided commit message would be converted to branch name.
+      Flags:
+         -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
+         -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
+         -b, --branch-from-commit - Accepts branch name proposed by converting commit name to branch name.
+         -d, --draft - Creates a PR in draft mode using the GitHub CLI. Works only if you have GitHub as your remote.
+         -i, --ignore-no-staged-changes - Skips check if there staged changes, helpful when your change is only rename of the file which stax can't see at the moment.
+         -p, --pull-request - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
+         -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
+ • delete-stale, d - Deletes local branches with gone remotes.
+      Flags:
+         -f, --force-delete - Force delete gone branches.
+         -s, --skip-delete - Skip deletion of gone branches.
+ • extras, e - Extra non-primary commands (about, changelog, doctor, help, settings, update, version). Run `stax extras` to see detailed list.
+      Positional arguments:
+         arg1 - Subcommand to run
+ • get - (Re)Checkout specified branch and all its children
+      Positional arguments:
+         opt1 - Name of the remote ref. Will be matched as a suffix.
+      Flags:
+         -b, --rebase-prefer-base - Runs 'stax rebase --prefer-base' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.
+         -c, --current - Force get current branch, skipping the confirmation prompt.
+         -m, --rebase-prefer-moving - Runs 'stax rebase --prefer-moving' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.
+         -r, --rebase - Runs 'stax rebase' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.
+ • log - Shows a tree of all branches.
+      Flags:
+         -a, --all-branches - show remote branches also
+         -d, --default-branch - assume different default branch
+ • move - Allows you to move around log tree. Note: you can type any amount of first letters to specify direction. 'h' instead of 'head', 't' for 'top, 'd' for down, 'u' for 'up', 'b' for 'bottom', 'l' for 'left', 'r' for 'right'
+      Positional arguments:
+         [arg]+ - up (one up, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), down (one down), left (previous sibling node), right (next sibling node), top (to the closest top parent that have at least two children or to the top most node, optionally you can provide followup argument which would be a 0-based index of the child you want to move, by default it is 0), bottom (to the closest bottom parent that have at least two children or bottom most node, will stop before any direct parent of <remote>/head), head (<remote>/head)
+ • pull, p - Switching to main branch, pull all the changes, deleting gone branches and switching to original branch.
+      Positional arguments:
+         opt1 - Optional target branch, will default to <remote>/HEAD
+      Flags:
+         -f, --force-delete - Force delete gone branches.
+         -s, --skip-delete - Skip deletion of gone branches.
+ • pull-request, pr - Creates a pull request.
+ • rebase - rebase tree of branches on top of main
+      Positional arguments:
+         opt1 - Optional argument for target, will default to <remote>/HEAD
+      Flags:
+         -a, --abandon - Abandon rebase that is in progress, stax can't abort own rebases.
+         -b, --prefer-base - Prefer base changes on conflict.
+         -c, --continue - Continue rebase that is in progress.
+         -m, --prefer-moving - Prefer moving changes on conflict.
 ```
-
-Result:
-
-```
-commit 8161c952fbed66672aff80cd3d1233589cdc3c0c (HEAD -> two-in-one-commit-name-and-branch-name, origin/two-in-one-commit-name-and-branch-name)
-Author: Taras Mazepa <taras.mazepa@example.com>
-Date:   Fri Sep 8 14:58:04 2023 -0700
-
-    two-in-one-commit-name-and-branch-name
-
-```
-
-You can see that a branch with `two-in-one-commit-name-and-branch-name` name was created as well as
-a commit with the same name `two-in-one-commit-name-and-branch-name`.
-
-### stax amend
-
-Amends to the current commit and force pushes the branch
-
-![stax amend diagram](https://github.com/TarasMazepa/stax/assets/6552358/c3025256-2e4f-4c8f-95c1-095ab9b8b514)
-
-```
-stax amend
-```
-
-### stax delete-stale
-
-Deletes local branches with gone remotes. It is useful when you are using `stax-commit`, which pushes all
-the branches. So once they are merged and deleted from the remote, you can clean up local branches.
-
-![stax delete-stale diagram](https://github.com/TarasMazepa/stax/assets/6552358/55be3cf5-3667-4568-a8b0-785f623ec680)
-
-### stax pull
-
-Switching to the main branch, pulling all the changes, deleting gone branches, and switching to the original
-branch.
-
-![stax pull diagram](https://github.com/TarasMazepa/stax/assets/6552358/581b2384-2cce-4e78-9be2-76241e0f6c8e)
-
-### stax log
-
-Outputs tree structure of your branches.
-
-```
-> stax log
-  x Updates-stax-log-example-in-readme
-  o Adds-stax-log-example-to-readme
-o-┘ origin/main, origin/HEAD, main
-| o Promotes-version-command-to-be-not-hidden-command
-o-┘
-```
-
-### stax rebase
-
-Rebase tree of nodes on top of the <remote>/head or reference provided as first positional argument.
-
-### stax move
-
-Move has five directions:
-
-* `up` — one node up. You can optionally specify the index of the child node (as represented in the log command); the
-  default is 0.
-* `down` — one node up
-* `top` — to the topmost node, but stop on the first node with more than one child. Optionally you can specify an index
-  of the child node (as represented in log command), default is 0.
-* `bottom` — to the bottommost node, but stop on the first node that has more than one child, or stop before the node
-  that had <remote>/head as a child.
-* `head` — moves to the <remote>/head
 
 # Videos
 
