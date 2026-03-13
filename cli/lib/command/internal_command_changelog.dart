@@ -25,10 +25,16 @@ class InternalCommandChangelog extends InternalCommand {
 
       if (response.statusCode == 200) {
         final currentVersion = InternalCommandVersion.version;
+        int entries = 0;
+        final versionRegex = RegExp(r'\d+\.\d+\.\d+');
         await for (final chunk
             in response.stream
                 .transform(utf8.decoder)
                 .transform(const LineSplitter())) {
+          if (versionRegex.matchAsPrefix(chunk) != null) {
+            entries++;
+            if (entries > 5) break;
+          }
           if (chunk.startsWith(currentVersion)) {
             context.printToConsole('$chunk <-- current version');
           } else {
