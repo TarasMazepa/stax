@@ -1,0 +1,86 @@
+name: check-format-pr-status.yml
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull Request Number'
+        required: true
+        type: string
+      branch_name:
+        description: 'Branch Name'
+        required: true
+        type: string
+      retries:
+        description: 'Number of retries left'
+        required: false
+        type: string
+        default: "60"
+
+jobs:
+  check-format-pr-status:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sleep 60
+      - name: Check PR status and act
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          BRANCH_NAME: ${{ inputs.branch_name }}
+          RETRIES_LEFT: ${{ inputs.retries || '60' }}
+        run: |
+          # Fetch the PR data using gh cli
+          # We need state (OPEN, MERGED, CLOSED), mergeStateStatus, and statusCheckRollup
+          # jq filters down the output to what we need
+          pr_data=$(gh pr view $PR_NUMBER --json state,mergeStateStatus,statusCheckRollup)
+
+          state=$(echo "$pr_data" | jq -r '.state')
+          merge_state=$(echo "$pr_data" | jq -r '.mergeStateStatus')
+
+          if [ "$state" = "MERGED" ] || [ "$state" = "CLOSED" ]; then
+            echo "PR is already $state. Exiting."
+            exit 0
+          fi
+
+          echo "PR State: $state"
+          echo "Merge State Status: $merge_state"
+
+          # Determine if there is any failure in the status checks
+          # (Only look at completed ones with failure/startup_failure/etc or error states)
+          failed_checks=$(echo "$pr_data" | jq '[.statusCheckRollup[] | select((.status == "COMPLETED" and .conclusion != "SUCCESS" and .conclusion != "NEUTRAL" and .conclusion != "SKIPPED") or .state == "FAILURE" or .state == "ERROR")] | length')
+
+          # Determine if there are still pending checks
+          pending_checks=$(echo "$pr_data" | jq '[.statusCheckRollup[] | select(.status == "IN_PROGRESS" or .status == "QUEUED" or .state == "PENDING" or .state == "EXPECTED")] | length')
+
+          echo "Failed checks: $failed_checks"
+          echo "Pending checks: $pending_checks"
+
+          # If the PR has failed checks, or if it has conflicts (merge_state == DIRTY), close it
+          if [ "$failed_checks" -gt 0 ] || [ "$merge_state" = "DIRTY" ]; then
+            echo "PR has failed checks or conflicts. Closing PR and deleting branch."
+            gh pr close $PR_NUMBER -d
+            exit 0
+          fi
+
+          # If there are pending checks or the merge state is UNKNOWN/BLOCKED waiting on checks,
+          # we reschedule this workflow.
+          if [ "$pending_checks" -gt 0 ] || [ "$merge_state" = "UNKNOWN" ] || [ "$merge_state" = "BLOCKED" ]; then
+            if [ "$RETRIES_LEFT" -gt 0 ]; then
+              next_retries=$((RETRIES_LEFT - 1))
+              echo "PR is still in progress. Rescheduling workflow ($next_retries retries left)."
+              gh workflow run check-format-pr-status.yml -f pr_number=$PR_NUMBER -f branch_name=$BRANCH_NAME -f retries=$next_retries
+              exit 0
+            else
+              echo "Maximum retries reached. Leaving PR as is."
+              exit 0
+            fi
+          fi
+
+          echo "PR checks are complete but not automatically merged yet."
+          echo "It might be waiting on review or other non-action criteria."
+          # If we reach here, you might want to wait longer, or do nothing.
+          # For now, we will let it be. If auto-merge is on, it will merge when ready.
+          if [ "$merge_state" = "CLEAN" ]; then
+             echo "PR is clean. Auto-merge should handle it."
+          fi
