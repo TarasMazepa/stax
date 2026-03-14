@@ -95,8 +95,7 @@ ${setting.name} = '${setting.rawValue}'
       case ['clear', ...]:
         context.printToConsole('Usage: stax settings clear <setting_name>');
       case ['add', final name, final value] when isSettingAvailable(name):
-        final setting = getSettingByName(name);
-        switch (setting) {
+        switch (getSettingByName(name)) {
           case KeyValueListSetting s:
             s.addRaw(value);
             context.printToConsole(
@@ -117,8 +116,7 @@ ${setting.name} = '${setting.rawValue}'
           'Usage: stax settings add <setting_name> <value>',
         );
       case ['remove', final name, final value] when isSettingAvailable(name):
-        final setting = getSettingByName(name);
-        switch (setting) {
+        switch (getSettingByName(name)) {
           case KeyValueListSetting s:
             final key = value.split('=').first;
             s.removeByKey(key);
