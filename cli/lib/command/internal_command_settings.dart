@@ -99,7 +99,9 @@ ${setting.name} = '${setting.rawValue}'
         switch (setting) {
           case KeyValueListSetting s:
             s.addRaw(value);
-            context.printToConsole("Added key-value '$value' to setting: $name");
+            context.printToConsole(
+              "Added key-value '$value' to setting: $name",
+            );
           case BaseListSetting s:
             s.add(value);
             context.printToConsole("Added value '$value' to setting: $name");
