@@ -90,7 +90,6 @@ Creates a branch, commits current changes with the same name as the branch, and 
 * `-p, --pull-request`: Opens the PR creation page on your remote. Works only if you have GitHub as your remote.
 * `-u`: Runs `git add -u` before other actions. Which adds only tracked files in the whole working tree.
 
-![stax commit diagram](https://github.com/TarasMazepa/stax/assets/6552358/013c5848-1697-49b2-a1b2-17f17eeea9cb)
 
 ```shell
 stax commit "two-in-one-commit-name-and-branch-name"
@@ -118,7 +117,6 @@ Amends to the current commit and force pushes the branch.
 * `-r, --rebase`: Runs `stax rebase` afterwards on all children branches.
 * `-u`: Runs `git add -u` before other actions.
 
-![stax amend diagram](https://github.com/TarasMazepa/stax/assets/6552358/c3025256-2e4f-4c8f-95c1-095ab9b8b514)
 
 ```shell
 stax amend
@@ -133,7 +131,6 @@ Deletes local branches with gone remotes. It is useful when you are using `stax 
 * `-f, --force-delete`: Force delete gone branches.
 * `-s, --skip-delete`: Skip deletion of gone branches.
 
-![stax delete-stale diagram](https://github.com/TarasMazepa/stax/assets/6552358/55be3cf5-3667-4568-a8b0-785f623ec680)
 
 ---
 
@@ -147,7 +144,6 @@ Switching to the main branch, pulling all the changes, deleting gone branches, a
 * `-f, --force-delete`: Force delete gone branches.
 * `-s, --skip-delete`: Skip deletion of gone branches.
 
-![stax pull diagram](https://github.com/TarasMazepa/stax/assets/6552358/581b2384-2cce-4e78-9be2-76241e0f6c8e)
 
 ---
 
