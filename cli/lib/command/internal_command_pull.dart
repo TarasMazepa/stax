@@ -47,12 +47,13 @@ class InternalCommandPull extends InternalCommand {
     bool needToSwitchBranches = currentBranch != defaultBranch;
     ExtendedProcessResult? result;
     if (needToSwitchBranches) {
-      result = (await context.git.switch0
-              .arg(defaultBranch)
-              .announce("Switching to default branch '$defaultBranch'.")
-              .run())
-          .printNotEmptyResultFields()
-          .assertSuccessfulExitCode();
+      result =
+          (await context.git.switch0
+                  .arg(defaultBranch)
+                  .announce("Switching to default branch '$defaultBranch'.")
+                  .run())
+              .printNotEmptyResultFields()
+              .assertSuccessfulExitCode();
       if (result == null) return;
     }
     result =
@@ -87,28 +88,30 @@ class InternalCommandPull extends InternalCommand {
       }
     }
 
-    final branchesToDelete = (await context.git.branchVv
-            .announce('Checking if any remote branches are gone.')
-            .run())
-        .printNotEmptyResultFields()
-        .parseBranchInfo()
-        .where((e) => e.gone)
-        .map((e) => e.name)
-        .toList();
+    final branchesToDelete =
+        (await context.git.branchVv
+                .announce('Checking if any remote branches are gone.')
+                .run())
+            .printNotEmptyResultFields()
+            .parseBranchInfo()
+            .where((e) => e.gone)
+            .map((e) => e.name)
+            .toList();
     if (branchesToDelete.isEmpty) {
       context.printToConsole('No local branches with gone remotes.');
     } else {
-      final result = (await context.git.branchDelete
-              .args(branchesToDelete)
-              .askContinueQuestion(
-                "Local branches with gone remotes that would be deleted:\n${branchesToDelete.map((e) => "   • $e").join("\n")}\n",
-                assumeYes: hasForceDeleteFlag,
-                assumeNo: hasSkipDeleteFlag,
-              )
-              ?.announce('Deleting branches.')
-              .run())
-          ?.printNotEmptyResultFields()
-          ?.assertSuccessfulExitCode();
+      final result =
+          (await context.git.branchDelete
+                  .args(branchesToDelete)
+                  .askContinueQuestion(
+                    "Local branches with gone remotes that would be deleted:\n${branchesToDelete.map((e) => "   • $e").join("\n")}\n",
+                    assumeYes: hasForceDeleteFlag,
+                    assumeNo: hasSkipDeleteFlag,
+                  )
+                  ?.announce('Deleting branches.')
+                  .run())
+              ?.printNotEmptyResultFields()
+              ?.assertSuccessfulExitCode();
       if (result != null && needToSwitchBranches) {
         needToSwitchBranches = !branchesToDelete.contains(currentBranch);
       }
