@@ -3,27 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.1.0/css/xterm.css">
-    <script src="https://cdn.tailwindcss.com"></script>
     <title>Stax - Guides</title>
 </head>
-<body class="p-10">
-<a href="index.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-    Back
-</a>
-<section class="w-full flex flex-col md:flex-row gap-4 p-4 bg-gray-100">
-    Note: it takes roughly 7 seconds for guide to load.
-    <div id="terminal" class="w-full md:w-[70%] bg-white shadow-md rounded-lg p-4 overflow-auto">
-        <!-- Terminal content will be dynamically added here -->
-    </div>
-
-    <div id="sidebar" class="w-full md:w-[30%] bg-white shadow-md rounded-lg p-4">
-        <h2 class="text-lg font-bold mb-4">Guides</h2>
-        <ul class="space-y-2">
-            <!-- Sidebar items will be dynamically added here -->
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Back</a></li>
         </ul>
-    </div>
-</section>
+        <ul>
+            <li><h2>Guides</h2></li>
+        </ul>
+        <ul>
+            <li>Note: it takes roughly 7 seconds for guide to load.</li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <section style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <div id="terminal" style="flex: 1 1 60%; min-width: 300px; overflow: auto;">
+            <!-- Terminal content will be dynamically added here -->
+        </div>
+
+        <div id="sidebar" style="flex: 1 1 30%; min-width: 250px;">
+        </div>
+    </section>
+</main>
 
 <script src="./coi-serviceworker.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xterm@5.1.0/lib/xterm.min.js"></script>
@@ -44,23 +52,22 @@
         {id: "stax-settings", label: "stax settings", container: "/containers/stax-settings"},
     ];
 
-    const sidebar = document.getElementById('sidebar').querySelector('ul');
+    const sidebar = document.getElementById('sidebar');
     const terminalContainer = document.getElementById('terminal');
     const terminals = {};
     const buttons = {};
 
     commands.forEach((cmd, index) => {
-        const li = document.createElement('li');
         const button = document.createElement('button');
         button.textContent = cmd.label;
-        button.classList.add('w-full', 'text-left', 'px-2', 'py-1', 'hover:bg-gray-100');
-        li.appendChild(button);
-        sidebar.appendChild(li);
+        button.style.margin = '0.25rem';
+        sidebar.appendChild(button);
         buttons[cmd.id] = button;
 
         const termDiv = document.createElement('div');
         termDiv.id = cmd.id + "-terminal";
-        termDiv.classList.add("w-full", "h-[500px]");
+        termDiv.style.width = '100%';
+        termDiv.style.height = '500px';
         termDiv.style.display = 'none';
         terminalContainer.appendChild(termDiv);
         startWasi(termDiv.id, "./src/worker.js" + location.search, location.origin + cmd.container, 1);
@@ -73,9 +80,9 @@
 
             Object.entries(buttons).forEach(([id, btn]) => {
                 if (id === cmd.id) {
-                    btn.classList.add('bg-gray-200', 'font-semibold');
+                    btn.style.fontWeight = '900';
                 } else {
-                    btn.classList.remove('bg-gray-200', 'font-semibold');
+                    btn.style.fontWeight = null;
                 }
             });
         });
@@ -85,7 +92,5 @@
         }
     });
 </script>
-
-
 </body>
 </html>
