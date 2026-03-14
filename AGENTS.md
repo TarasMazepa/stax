@@ -7,3 +7,4 @@
 - We do not need `interface` used on classes, it doesn't add any value.
 - Do not refactor functions that return Future<void> to return void
 - In GitHub workflow files, skip name if action is named action or a one line run command
+- GitHub workflow files naming: filename, and name of workflow should be the same. Example: `dart-format.yml` (filename) `name: dart-format.yml` first line in the file, and job name should be the same but without extention: `dart-format`
