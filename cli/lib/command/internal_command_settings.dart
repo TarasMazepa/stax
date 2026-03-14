@@ -96,16 +96,17 @@ ${setting.name} = '${setting.rawValue}'
         context.printToConsole('Usage: stax settings clear <setting_name>');
       case ['add', final name, final value] when isSettingAvailable(name):
         final setting = getSettingByName(name);
-        if (setting is KeyValueListSetting) {
-          setting.addRaw(value);
-          context.printToConsole("Added key-value '$value' to setting: $name");
-        } else if (setting is BaseListSetting) {
-          setting.add(value);
-          context.printToConsole("Added value '$value' to setting: $name");
-        } else {
-          context.printToConsole(
-            "Setting '$name' is not a list setting. Use 'set' instead.",
-          );
+        switch (setting) {
+          case KeyValueListSetting s:
+            s.addRaw(value);
+            context.printToConsole("Added key-value '$value' to setting: $name");
+          case BaseListSetting s:
+            s.add(value);
+            context.printToConsole("Added value '$value' to setting: $name");
+          default:
+            context.printToConsole(
+              "Setting '$name' is not a list setting. Use 'set' instead.",
+            );
         }
       case ['add', final name, _]:
         onUnknownSetting(name);
@@ -115,19 +116,22 @@ ${setting.name} = '${setting.rawValue}'
         );
       case ['remove', final name, final value] when isSettingAvailable(name):
         final setting = getSettingByName(name);
-        if (setting is KeyValueListSetting) {
-          final key = value.split('=').first;
-          setting.removeByKey(key);
-          context.printToConsole(
-            "Removed key-value with key '$key' from setting: $name",
-          );
-        } else if (setting is BaseListSetting) {
-          setting.remove(value);
-          context.printToConsole("Removed value '$value' from setting: $name");
-        } else {
-          context.printToConsole(
-            "Setting '$name' is not a list setting. Use 'clear' instead.",
-          );
+        switch (setting) {
+          case KeyValueListSetting s:
+            final key = value.split('=').first;
+            s.removeByKey(key);
+            context.printToConsole(
+              "Removed key-value with key '$key' from setting: $name",
+            );
+          case BaseListSetting s:
+            s.remove(value);
+            context.printToConsole(
+              "Removed value '$value' from setting: $name",
+            );
+          default:
+            context.printToConsole(
+              "Setting '$name' is not a list setting. Use 'clear' instead.",
+            );
         }
       case ['remove', final name, _]:
         onUnknownSetting(name);
