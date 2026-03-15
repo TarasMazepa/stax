@@ -111,7 +111,7 @@ class InternalCommandPull extends InternalCommand {
                   ?.announce('Deleting branches.')
                   .run())
               ?.printNotEmptyResultFields()
-              ?.assertSuccessfulExitCode();
+              .assertSuccessfulExitCode();
       if (result != null && needToSwitchBranches) {
         needToSwitchBranches = !branchesToDelete.contains(currentBranch);
       }
