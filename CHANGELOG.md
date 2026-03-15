@@ -1,7 +1,3 @@
-0.11.1
-
-* stax pull - optimized performance by replacing synchronous I/O with asynchronous calls
-
 0.11.0
 
 * stax move - adds left and right directions, to move between sibling branches
