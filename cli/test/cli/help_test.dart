@@ -45,7 +45,7 @@ Note: you can type first letter or couple of first letters instead of full comma
       Flags:
          -f, --force-delete - Force delete gone branches.
          -s, --skip-delete - Skip deletion of gone branches.
- • extras, e - Extra non-primary commands (about, changelog, doctor, help, settings, update, version). Run `stax extras` to see detailed list.
+ • extras, e - Extra non-primary commands (about, agents.md, changelog, doctor, help, settings, update, version). Run `stax extras` to see detailed list.
       Positional arguments:
          arg1 - Subcommand to run
  • get - (Re)Checkout specified branch and all its children

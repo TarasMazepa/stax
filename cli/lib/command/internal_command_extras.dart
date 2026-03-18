@@ -1,5 +1,6 @@
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_about.dart';
+import 'package:stax/command/internal_command_agents.dart';
 import 'package:stax/command/internal_command_changelog.dart';
 import 'package:stax/command/internal_command_doctor.dart';
 import 'package:stax/command/internal_command_finder.dart';
@@ -13,6 +14,7 @@ import 'package:stax/context/context_handle_global_flags.dart';
 class InternalCommandExtras extends InternalCommand {
   final List<InternalCommand> _extraCommands = [
     InternalCommandAbout(),
+    InternalCommandAgents(),
     InternalCommandChangelog(),
     InternalCommandDoctor(),
     InternalCommandHelp(),
@@ -24,7 +26,7 @@ class InternalCommandExtras extends InternalCommand {
   InternalCommandExtras()
     : super(
         'extras',
-        'Extra non-primary commands (about, changelog, doctor, help, settings, update, version). Run `stax extras` to see detailed list.',
+        'Extra non-primary commands (about, agents.md, changelog, doctor, help, settings, update, version). Run `stax extras` to see detailed list.',
         shortName: 'e',
         arguments: {'arg1': 'Subcommand to run'},
       );
