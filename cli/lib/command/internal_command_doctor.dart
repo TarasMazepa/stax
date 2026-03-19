@@ -51,7 +51,9 @@ class InternalCommandDoctor extends InternalCommand {
           'name': 'git config --get user.name',
           'success': hasUserName,
           'output': userName,
-          if (!hasUserName) 'recommendation': 'git config --global user.name "<your preferred name>"',
+          if (!hasUserName)
+            'recommendation':
+                'git config --global user.name "<your preferred name>"',
         });
       } else {
         context.printToConsole(
@@ -88,7 +90,9 @@ class InternalCommandDoctor extends InternalCommand {
           'name': 'git config --get user.email',
           'success': hasUserEmail,
           'output': userEmail,
-          if (!hasUserEmail) 'recommendation': 'git config --global user.email "<your preferred email>"',
+          if (!hasUserEmail)
+            'recommendation':
+                'git config --global user.email "<your preferred email>"',
         });
       } else {
         context.printToConsole(
@@ -125,7 +129,8 @@ class InternalCommandDoctor extends InternalCommand {
           'name': 'git config --get push.autoSetupRemote',
           'success': hasAutoSetupRemote,
           'output': autoSetupRemote,
-          if (!hasAutoSetupRemote) 'recommendation': 'git config --global push.autoSetupRemote true',
+          if (!hasAutoSetupRemote)
+            'recommendation': 'git config --global push.autoSetupRemote true',
         });
       } else {
         context.printToConsole(
@@ -133,7 +138,9 @@ class InternalCommandDoctor extends InternalCommand {
         );
 
         if (!hasAutoSetupRemote) {
-          context.printToConsole('''    X Set git push.autoSetupRemote using:''');
+          context.printToConsole(
+            '''    X Set git push.autoSetupRemote using:''',
+          );
           context.printToConsole(
             '''      git config --global push.autoSetupRemote true ''',
           );
@@ -150,7 +157,8 @@ class InternalCommandDoctor extends InternalCommand {
           'name': 'git remote',
           'success': hasRemote,
           'output': remote,
-          if (!hasRemote) 'recommendation': 'git remote add origin <url to git repository>',
+          if (!hasRemote)
+            'recommendation': 'git remote add origin <url to git repository>',
         });
       } else {
         context.printToConsole(
@@ -176,7 +184,8 @@ class InternalCommandDoctor extends InternalCommand {
           'name': 'git rev-parse --abbrev-ref $remote/HEAD',
           'success': defaultBranch != null,
           'output': defaultBranch,
-          if (defaultBranch == null) 'recommendation': 'git fetch -p ; git remote set-head $remote -a',
+          if (defaultBranch == null)
+            'recommendation': 'git fetch -p ; git remote set-head $remote -a',
         });
       } else {
         context.printToConsole(
@@ -216,7 +225,8 @@ class InternalCommandDoctor extends InternalCommand {
           'name': 'gh --version',
           'success': hasGhVersion,
           'output': ghVersion,
-          if (!hasGhVersion) 'recommendation': 'https://github.com/cli/cli#installation',
+          if (!hasGhVersion)
+            'recommendation': 'https://github.com/cli/cli#installation',
         });
       } else {
         context.printToConsole(
@@ -274,7 +284,9 @@ class InternalCommandDoctor extends InternalCommand {
               'name': 'gh repo view',
               'success': canAccessRepo,
               'output': canAccessRepo ? 'has access' : 'no access',
-              if (!canAccessRepo) 'recommendation': 'Ensure you have access to this repository on GitHub',
+              if (!canAccessRepo)
+                'recommendation':
+                    'Ensure you have access to this repository on GitHub',
             });
           } else {
             context.printToConsole(

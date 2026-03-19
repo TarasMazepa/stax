@@ -7,7 +7,11 @@ import 'base/cli_group.dart';
 void main() {
   cliGroup('doctor', (setup) {
     test('doctor writes regular output without json flag', () {
-      final output = setup.runLiveStaxSync(['extras', 'doctor']).stdout.toString().cleanCarriageReturnOnWindows();
+      final output = setup
+          .runLiveStaxSync(['extras', 'doctor'])
+          .stdout
+          .toString()
+          .cleanCarriageReturnOnWindows();
       expect(output.isNotEmpty, true);
       // It should print checkmarks and command outputs
       expect(output.contains('git config --get user.name'), true);
@@ -16,7 +20,11 @@ void main() {
     });
 
     test('doctor writes json output with --json flag', () {
-      final output = setup.runLiveStaxSync(['extras', 'doctor', '--json']).stdout.toString().cleanCarriageReturnOnWindows();
+      final output = setup
+          .runLiveStaxSync(['extras', 'doctor', '--json'])
+          .stdout
+          .toString()
+          .cleanCarriageReturnOnWindows();
       expect(output.isNotEmpty, true);
 
       final parsed = jsonDecode(output) as List;
