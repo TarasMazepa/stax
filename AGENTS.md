@@ -1,5 +1,6 @@
 # Agents
 
+- Also check MORE-AGENTS.md if present
 - In dart files prefer optional named arguments over optional arguments
 - If there is a function toJson() I prefer its return type to be dynamic
 - I prefer each class to be in a separate file, if possible
