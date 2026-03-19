@@ -96,42 +96,25 @@ class InternalCommandGet extends InternalCommand {
       return;
     }
 
-    for (String branch in targetNode.remoteBranchNamesInOrderForCheckout().map(
+    final branches = targetNode.remoteBranchNamesInOrderForCheckout().map(
       (x) => x.substring(x.indexOf('/') + 1),
-    )) {
-      final exists = context.git.revParseVerify
+    ).toList();
+
+    for (String branch in branches) {
+      context.git.switchDetach
+          .announce()
+          .runSyncCatching()
+          ?.printNotEmptyResultFields();
+      context.git.branchDelete
           .arg(branch)
           .announce()
-          .runSync()
-          .printNotEmptyResultFields()
-          .isSuccess();
+          .runSyncCatching()
+          ?.printNotEmptyResultFields();
       context.git.switch0
           .arg(branch)
           .announce()
-          .runSync()
-          .printNotEmptyResultFields();
-      final success = (await context.git.pullForce.announce().run(
-        onDemandPrint: true,
-      )).printNotEmptyResultFields().isSuccess();
-      if (!success) {
-        if (!exists) {
-          return;
-        }
-        context.git.switchDetach
-            .announce()
-            .runSync()
-            .printNotEmptyResultFields();
-        context.git.branchDelete
-            .arg(branch)
-            .announce()
-            .runSync()
-            .printNotEmptyResultFields();
-        context.git.switch0
-            .arg(branch)
-            .announce()
-            .runSync()
-            .printNotEmptyResultFields();
-      }
+          .runSyncCatching()
+          ?.printNotEmptyResultFields();
     }
 
     final shouldDoRebase =
