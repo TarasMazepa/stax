@@ -1,0 +1,33 @@
+--- cli/lib/command/internal_command_doctor.dart
++++ cli/lib/command/internal_command_doctor.dart
+@@ -1,4 +1,5 @@
++import 'dart:convert';
++import 'package:stax/command/flag.dart';
+ import 'package:stax/command/internal_command.dart';
+ import 'package:stax/command/types_for_internal_command.dart';
+ import 'package:stax/context/context.dart';
+@@ -8,15 +9,25 @@
+ import 'package:stax/context/context_git_is_inside_work_tree.dart';
+ import 'package:stax/string_empty_to_null.dart';
+
+ class InternalCommandDoctor extends InternalCommand {
++  static final jsonFlag = Flag(
++    short: '-j',
++    long: '--json',
++    description: 'Output in JSON format.',
++  );
++
+   InternalCommandDoctor()
+     : super(
+         'doctor',
+         'Helps to ensure that stax has everything to be used.',
+         type: InternalCommandType.hidden,
++        flags: [jsonFlag],
+       );
+
+   @override
+   Future<void> run(final List<String> args, Context context) async {
++    final isJson = jsonFlag.hasFlag(args);
++    final List<Map<String, dynamic>> jsonResults = [];
++
+     String boolToCheckmark(bool value) => value ? 'V' : 'X';
