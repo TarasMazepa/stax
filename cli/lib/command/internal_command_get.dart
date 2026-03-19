@@ -96,9 +96,10 @@ class InternalCommandGet extends InternalCommand {
       return;
     }
 
-    final branches = targetNode.remoteBranchNamesInOrderForCheckout().map(
-      (x) => x.substring(x.indexOf('/') + 1),
-    ).toList();
+    final branches = targetNode
+        .remoteBranchNamesInOrderForCheckout()
+        .map((x) => x.substring(x.indexOf('/') + 1))
+        .toList();
 
     for (String branch in branches) {
       context.git.switchDetach
