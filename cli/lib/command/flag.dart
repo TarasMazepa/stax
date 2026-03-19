@@ -94,18 +94,20 @@ class Flag {
         final newArg = arg.replaceFirst(short![1], '');
         if (newArg.length < arg.length) {
           if (newArg == '-') {
-             args.removeAt(i);
-             if (args.length > i) {
-                final nextArg = args[i];
-                if (!nextArg.startsWith('-')) {
-                   args.removeAt(i);
-                   return FlagPresent(nextArg);
-                }
-             }
-             return FlagPresent(null);
+            args.removeAt(i);
+            if (args.length > i) {
+              final nextArg = args[i];
+              if (!nextArg.startsWith('-')) {
+                args.removeAt(i);
+                return FlagPresent(nextArg);
+              }
+            }
+            return FlagPresent(null);
           } else {
-             args[i] = newArg;
-             return FlagPresent(null); // The flag was combined (e.g., -av). No value supported for combined flags.
+            args[i] = newArg;
+            return FlagPresent(
+              null,
+            ); // The flag was combined (e.g., -av). No value supported for combined flags.
           }
         }
       }
