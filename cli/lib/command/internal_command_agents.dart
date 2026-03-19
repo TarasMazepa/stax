@@ -14,74 +14,39 @@ class InternalCommandAgents extends InternalCommand {
       '''
 # Stax for Git - LLM Agent Usage Guide
 
-This document (`agents.md`) serves as a guide for AI assistants, LLMs, and autonomous agents to understand and use the `stax` CLI effectively.
+This document (`agents.md`) provides explicit, direct instructions for AI assistants, LLMs, and autonomous agents on how to effectively use the `stax` CLI. Stax simplifies and automates multi-step Git workflows (branching, committing, pushing, and PR creation) into single commands.
 
-## Benefits of Stax
+## Explicit Commands & Usage
 
-Stax is a command-line tool designed to simplify standard Git workflows for users familiar with Git but overwhelmed by its complexity. It automates multi-step processes like branching, committing, pushing, and rebasing into unified commands.
+**1. Creating Commits and PRs (`stax commit`)**
+Use `stax commit -ubd "JIRA-1234 Ticket description"` to: add files, create branch, commit, push, and open PR in draft mode.
+*   **-u**: adds updated files.
+*   **-a**: adds added files in current or child folders.
+*   **-A**: adds added files in any folder of repository.
+*   **-b**: accepts commit message to branch conversion.
+*   **-d**: opens PR as a draft.
+*   `JIRA-1234` should be a valid JIRA ticket that is currently assigned to you and in an "In progress" state or similar that is relevant to the active project.
+*   `Ticket description` is the title of the ticket + a couple of words about the content of the PR.
+*   *See `stax help commit` for more info.*
 
-Key benefits for LLMs:
-*   **Reduced Complexity:** Instead of issuing 4-5 discrete git commands (checkout, branch, commit, push, rebase), you can achieve the same with a single stax command.
-*   **Automated PR Management:** Creates and manages stacked PRs seamlessly on GitHub.
-*   **Predictable Workflows:** Standardizes the way code is structured into discrete, reviewable units.
+**2. Moving Around the Tree (`stax move`)**
+Use `stax move head` to move back to the main branch. This works on any repository.
+*   *See `stax help move` for more info.*
 
-## Core Commands & Maximalist Examples
+**3. Amending Commits (`stax a` or `stax amend`)**
+`stax a` is perfect for amending the previous commit with new changes and force-pushing changes in one command.
+*   Use `-u` for updated files.
+*   Use `-a` or `-A` for adding new files.
+*   If working in stacks, append `-r` to ensure child branches are rebased.
+*   *See `stax help amend` for more info.*
 
-Here are the most critical `stax` commands, showcasing how to use flags to combine actions efficiently:
+**4. Force Pulling a Branch (`stax get`)**
+`stax get <branch name>` is a perfect way to force pull a branch (WARNING: it will destroy your local changes).
+*   A perfect tool if you work in parallel with someone who might force push changes (like stax amend).
+*   *See `stax help get` for more info.*
 
-### 1. Committing and Creating PRs (`stax commit`)
-The `commit` command creates a branch, commits changes, and pushes to remote in one go.
-
-*   **Maximalist Example:**
-    ```bash
-    stax commit -A -p "Implement user authentication flow" user-auth-flow
-    ```
-    *Explanation:*
-    *   `-A`: Automatically runs `git add -A` to stage all tracked and untracked changes before committing.
-    *   `-p`: Opens a pull request on the remote (e.g., GitHub).
-    *   `"Implement user authentication flow"`: The required commit message.
-    *   `user-auth-flow`: (Optional) Explicitly defines the branch name. If omitted, `stax` derives it from the commit message.
-
-### 2. Amending Existing Commits (`stax amend`)
-When you need to update an existing PR or commit, `amend` seamlessly updates the commit and force-pushes.
-
-*   **Maximalist Example:**
-    ```bash
-    stax amend -a -r
-    ```
-    *Explanation:*
-    *   `-a`: Automatically runs `git add .` to stage tracked/untracked changes in the current folder before amending.
-    *   `-r`: Automatically runs `stax rebase` afterwards on all children branches that depend on this one, keeping stacked PRs in sync.
-
-### 3. Syncing with Main (`stax pull`)
-Instead of manually checking out main, pulling, and switching back, `stax pull` handles the entire synchronization loop.
-
-*   **Example:**
-    ```bash
-    stax pull -f
-    ```
-    *Explanation:*
-    *   Switches to the main branch, pulls latest changes.
-    *   `-f`: Force deletes local branches whose remotes are gone (merged or closed).
-    *   Switches back to the original branch.
-
-### 4. Rebasing Stacked PRs (`stax rebase`)
-Rebases a tree of branches on top of main or a specified target.
-
-*   **Example:**
-    ```bash
-    stax rebase --prefer-moving
-    ```
-    *Explanation:*
-    *   Rebases the current branch structure.
-    *   `--prefer-moving` (or `-m`): In case of a conflict, automatically prefers the incoming "moving" changes (your branch's changes) over the base.
-
-## Efficient Chaining Rules for LLMs
-
-When generating bash scripts or executing commands:
-1.  **Prefer built-in flags over manual Git steps:** Use `stax commit -A` instead of `git add -A && stax commit`.
-2.  **Combine commit and PR creation:** Always use `-p` with `stax commit` if the intent is to create a PR immediately.
-3.  **Use `-r` with `amend` when working in stacks:** If you modify a branch that has dependent branches, `stax amend -r` prevents the stack from breaking.
+## Efficient Chaining Rules
+Do not leave room for interpretation. Use these specific command combinations instead of standard discrete Git operations. Never use raw Git commands when a Stax equivalent provides automated PR and branch management.
 '''
           .trim(),
     );
