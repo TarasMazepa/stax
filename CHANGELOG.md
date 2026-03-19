@@ -1,3 +1,7 @@
+0.11.1
+
+* stax commit - adds -n/--no-browser flag to skip opening the PR URL in a browser and print it instead
+
 0.11.0
 
 * stax move - adds left and right directions, to move between sibling branches
