@@ -1,4 +1,4 @@
-FROM taras0mazepa/stax:0.11.1
+FROM taras0mazepa/stax:0.11.2
 
 RUN <<EOF
 mkdir -p /home/stax/origin /home/stax/repo /home/stax/setup
