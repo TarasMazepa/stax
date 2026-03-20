@@ -53,37 +53,31 @@ class Flag {
   }
 
   String? getFlagValue(List<String> args) {
-    String? getFlagValueInternal(String? flag) {
-      if (flag == null) return null;
-      final index = args.indexOf(flag).toNullableIndexOfResult();
-      if (index == null) return null;
-      final valueIndex = index + 1;
-      if (args.length <= valueIndex) {
-        throw Exception("Value wasn't provided for '$long' flag.");
+    final result = getOptionalFlagValue(args);
+    if (result is FlagPresent) {
+      if (result.value == null) {
+        throw Exception("Value wasn't provided for '${long ?? short}' flag.");
       }
-      return args[valueIndex];
+      return result.value;
     }
-
-    return getFlagValueInternal(long) ?? getFlagValueInternal(short);
+    return null;
   }
 
   OptionalFlagResult getOptionalFlagValue(List<String> args) {
-    OptionalFlagResult getOptionalFlagValueInternal(String? flag) {
-      if (flag == null) return FlagNotPresent();
-      final index = args.indexOf(flag).toNullableIndexOfResult();
-      if (index == null) return FlagNotPresent();
-      args.removeAt(index);
-
-      if (args.length > index) {
-        final nextArg = args[index];
+    if (long != null) {
+      final index = args.indexOf(long!).toNullableIndexOfResult();
+      if (index != null) {
         args.removeAt(index);
-        return FlagPresent(nextArg);
+        if (args.length > index) {
+          final nextArg = args[index];
+          args.removeAt(index);
+          return FlagPresent(nextArg);
+        }
+        return FlagPresent(null);
       }
-      return FlagPresent(null);
     }
 
-    OptionalFlagResult getOptionalShortFlagValueInternal() {
-      if (short == null) return FlagNotPresent();
+    if (short != null) {
       for (int i = 0; i < args.length; i++) {
         final arg = args[i];
         if (arg.length < 2) continue;
@@ -107,12 +101,9 @@ class Flag {
           }
         }
       }
-      return FlagNotPresent();
     }
 
-    final longResult = getOptionalFlagValueInternal(long);
-    if (longResult is FlagPresent) return longResult;
-    return getOptionalShortFlagValueInternal();
+    return FlagNotPresent();
   }
 
   @override
