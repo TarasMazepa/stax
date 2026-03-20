@@ -27,21 +27,16 @@ class InternalCommandChangelog extends InternalCommand {
 
   @override
   Future<void> run(final List<String> args, Context context) async {
-    int? limit = 5;
-    final versionsFlagResult = versionsFlag.getOptionalFlagValue(args);
-    if (versionsFlagResult is FlagPresent) {
-      if (versionsFlagResult.value == null) {
-        limit = null;
-      } else {
-        try {
-          limit = int.parse(versionsFlagResult.value!);
-        } catch (e) {
-          context.printParagraph(
-            "Failed to parse versions limit '${versionsFlagResult.value}'.",
-          );
-          return;
-        }
-      }
+    int? limit;
+    try {
+      limit = switch (versionsFlag.getOptionalFlagValue(args)) {
+        FlagPresent(:final value?) => int.parse(value),
+        FlagPresent() => null,
+        _ => 5,
+      };
+    } catch (e) {
+      context.printParagraph('Failed to parse versions limit.');
+      return;
     }
 
     try {
