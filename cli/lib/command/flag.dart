@@ -14,8 +14,9 @@ enum FlagFindType { long, shortStandalone, shortCombined }
 class FlagFindResult {
   final int index;
   final FlagFindType type;
+  final Flag matchedFlag;
 
-  FlagFindResult(this.index, this.type);
+  FlagFindResult(this.index, this.type, this.matchedFlag);
 }
 
 class Flag {
@@ -40,19 +41,19 @@ class Flag {
   String get shortOrLong => (short ?? long)!;
 
   FlagFindResult? findAndRemoveFlag(List<String> args) {
-    if (long != null) {
-      final index = args.indexOf(long!).toNullableIndexOfResult();
+    if (long case final longFlag?) {
+      final index = args.indexOf(longFlag).toNullableIndexOfResult();
       if (index != null) {
         args.removeAt(index);
-        return FlagFindResult(index, FlagFindType.long);
+        return FlagFindResult(index, FlagFindType.long, this);
       }
     }
 
-    if (short != null) {
-      final index = args.indexOf(short!).toNullableIndexOfResult();
+    if (short case final shortFlag?) {
+      final index = args.indexOf(shortFlag).toNullableIndexOfResult();
       if (index != null) {
         args.removeAt(index);
-        return FlagFindResult(index, FlagFindType.shortStandalone);
+        return FlagFindResult(index, FlagFindType.shortStandalone, this);
       }
 
       for (int i = 0; i < args.length; i++) {
@@ -60,14 +61,14 @@ class Flag {
         if (arg.length < 2) continue;
         if (arg[0] != '-') continue;
         if (arg[1] == '-') continue;
-        final newArg = arg.replaceFirst(short![1], '');
+        final newArg = arg.replaceFirst(shortFlag[1], '');
         if (newArg.length < arg.length) {
           if (newArg == '-') {
             args.removeAt(i);
-            return FlagFindResult(i, FlagFindType.shortStandalone);
+            return FlagFindResult(i, FlagFindType.shortStandalone, this);
           } else {
             args[i] = newArg;
-            return FlagFindResult(i, FlagFindType.shortCombined);
+            return FlagFindResult(i, FlagFindType.shortCombined, this);
           }
         }
       }
@@ -84,12 +85,16 @@ class Flag {
     final findResult = findAndRemoveFlag(args);
     if (findResult != null) {
       if (findResult.type == FlagFindType.shortCombined) {
-        throw Exception("Value wasn't provided for '${long ?? short}' flag.");
+        throw Exception(
+          "Value wasn't provided for '${findResult.matchedFlag}'.",
+        );
       }
 
       final index = findResult.index;
       if (args.length <= index) {
-        throw Exception("Value wasn't provided for '${long ?? short}' flag.");
+        throw Exception(
+          "Value wasn't provided for '${findResult.matchedFlag}'.",
+        );
       }
       final value = args[index];
       args.removeAt(index);
