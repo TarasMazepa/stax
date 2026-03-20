@@ -9,6 +9,15 @@ class FlagPresent extends OptionalFlagResult {
   FlagPresent(this.value);
 }
 
+enum FlagFindType { long, shortStandalone, shortCombined }
+
+class FlagFindResult {
+  final int index;
+  final FlagFindType type;
+
+  FlagFindResult(this.index, this.type);
+}
+
 class Flag {
   final String? short;
   final String? long;
@@ -30,54 +39,12 @@ class Flag {
 
   String get shortOrLong => (short ?? long)!;
 
-  bool hasFlag(List<String> args) {
-    return switch ((short, long)) {
-      (_, String long) when args.remove(long) => true,
-      (String short, _) when args.remove(short) => true,
-      (null, _) => false,
-      (String short, _) => () {
-        for (int i = 0; i < args.length; i++) {
-          final arg = args[i];
-          if (arg.length < 2) continue;
-          if (arg[0] != '-') continue;
-          if (arg[1] == '-') continue;
-          final newArg = arg.replaceFirst(short[1], '');
-          if (newArg.length < arg.length) {
-            args[i] = newArg;
-            return true;
-          }
-        }
-        return false;
-      }(),
-    };
-  }
-
-  String? getFlagValue(List<String> args) {
-    String? getFlagValueInternal(String? flag) {
-      if (flag == null) return null;
-      final index = args.indexOf(flag).toNullableIndexOfResult();
-      if (index == null) return null;
-      final valueIndex = index + 1;
-      if (args.length <= valueIndex) {
-        throw Exception("Value wasn't provided for '$long' flag.");
-      }
-      return args[valueIndex];
-    }
-
-    return getFlagValueInternal(long) ?? getFlagValueInternal(short);
-  }
-
-  OptionalFlagResult getOptionalFlagValue(List<String> args) {
+  FlagFindResult? findAndRemoveFlag(List<String> args) {
     if (long != null) {
       final index = args.indexOf(long!).toNullableIndexOfResult();
       if (index != null) {
         args.removeAt(index);
-        if (args.length > index) {
-          final nextArg = args[index];
-          args.removeAt(index);
-          return FlagPresent(nextArg);
-        }
-        return FlagPresent(null);
+        return FlagFindResult(index, FlagFindType.long);
       }
     }
 
@@ -85,12 +52,7 @@ class Flag {
       final index = args.indexOf(short!).toNullableIndexOfResult();
       if (index != null) {
         args.removeAt(index);
-        if (args.length > index) {
-          final nextArg = args[index];
-          args.removeAt(index);
-          return FlagPresent(nextArg);
-        }
-        return FlagPresent(null);
+        return FlagFindResult(index, FlagFindType.shortStandalone);
       }
 
       for (int i = 0; i < args.length; i++) {
@@ -102,23 +64,59 @@ class Flag {
         if (newArg.length < arg.length) {
           if (newArg == '-') {
             args.removeAt(i);
-            if (args.length > i) {
-              final nextArg = args[i];
-              args.removeAt(i);
-              return FlagPresent(nextArg);
-            }
-            return FlagPresent(null);
+            return FlagFindResult(i, FlagFindType.shortStandalone);
           } else {
             args[i] = newArg;
-            return FlagPresent(
-              null,
-            ); // The flag was combined (e.g., -av). No value supported for combined flags.
+            return FlagFindResult(i, FlagFindType.shortCombined);
           }
         }
       }
     }
 
-    return FlagNotPresent();
+    return null;
+  }
+
+  bool hasFlag(List<String> args) {
+    return findAndRemoveFlag(args) != null;
+  }
+
+  String? getFlagValue(List<String> args) {
+    final findResult = findAndRemoveFlag(args);
+    if (findResult != null) {
+      if (findResult.type == FlagFindType.shortCombined) {
+        throw Exception("Value wasn't provided for '${long ?? short}' flag.");
+      }
+
+      final index = findResult.index;
+      if (args.length <= index) {
+        throw Exception("Value wasn't provided for '${long ?? short}' flag.");
+      }
+      final value = args[index];
+      args.removeAt(index);
+      return value;
+    }
+
+    return null;
+  }
+
+  OptionalFlagResult getOptionalFlagValue(List<String> args) {
+    final findResult = findAndRemoveFlag(args);
+    if (findResult == null) {
+      return FlagNotPresent();
+    }
+
+    if (findResult.type == FlagFindType.shortCombined) {
+      return FlagPresent(null);
+    }
+
+    final index = findResult.index;
+    if (args.length > index) {
+      final nextArg = args[index];
+      args.removeAt(index);
+      return FlagPresent(nextArg);
+    }
+
+    return FlagPresent(null);
   }
 
   @override
