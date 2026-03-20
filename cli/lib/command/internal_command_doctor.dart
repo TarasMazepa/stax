@@ -19,18 +19,19 @@ class InternalCommandDoctor extends InternalCommand {
     String boolToCheckmark(bool value) => value ? 'V' : 'X';
 
     {
-      final userName = (await context
-          .withQuiet(true)
-          .git
-          .configGet
-          .arg('user.name')
-          .announce('Checking for users name.')
-          .run())
-          .printNotEmptyResultFields()
-          .stdout
-          .toString()
-          .trim()
-          .emptyToNull();
+      final userName =
+          (await context
+                  .withQuiet(true)
+                  .git
+                  .configGet
+                  .arg('user.name')
+                  .announce('Checking for users name.')
+                  .run())
+              .printNotEmptyResultFields()
+              .stdout
+              .toString()
+              .trim()
+              .emptyToNull();
 
       final hasUserName = userName != null;
       context.printToConsole(
@@ -46,18 +47,19 @@ class InternalCommandDoctor extends InternalCommand {
     }
 
     {
-      final userEmail = (await context
-          .withQuiet(true)
-          .git
-          .configGet
-          .arg('user.email')
-          .announce('Checking for users email.')
-          .run())
-          .printNotEmptyResultFields()
-          .stdout
-          .toString()
-          .trim()
-          .emptyToNull();
+      final userEmail =
+          (await context
+                  .withQuiet(true)
+                  .git
+                  .configGet
+                  .arg('user.email')
+                  .announce('Checking for users email.')
+                  .run())
+              .printNotEmptyResultFields()
+              .stdout
+              .toString()
+              .trim()
+              .emptyToNull();
 
       final hasUserEmail = userEmail != null;
       context.printToConsole(
@@ -73,18 +75,21 @@ class InternalCommandDoctor extends InternalCommand {
     }
 
     {
-      final autoSetupRemote = (await context
-          .withQuiet(true)
-          .git
-          .configGet
-          .arg('push.autoSetupRemote')
-          .announce('Checking if push.autoSetupRemote set in git config.')
-          .run())
-          .printNotEmptyResultFields()
-          .stdout
-          .toString()
-          .trim()
-          .emptyToNull();
+      final autoSetupRemote =
+          (await context
+                  .withQuiet(true)
+                  .git
+                  .configGet
+                  .arg('push.autoSetupRemote')
+                  .announce(
+                    'Checking if push.autoSetupRemote set in git config.',
+                  )
+                  .run())
+              .printNotEmptyResultFields()
+              .stdout
+              .toString()
+              .trim()
+              .emptyToNull();
 
       final hasAutoSetupRemote = autoSetupRemote == 'true';
       context.printToConsole(
@@ -134,13 +139,14 @@ class InternalCommandDoctor extends InternalCommand {
     {
       String? ghVersion;
       try {
-        ghVersion = (await context
-            .withQuiet(true)
-            .command(['gh', '--version'])
-            .announce('Checking if GitHub CLI is installed.')
-            .run())
-            .stdout
-            .toString();
+        ghVersion =
+            (await context
+                    .withQuiet(true)
+                    .command(['gh', '--version'])
+                    .announce('Checking if GitHub CLI is installed.')
+                    .run())
+                .stdout
+                .toString();
       } catch (e) {
         ghVersion = null;
       }
@@ -159,12 +165,13 @@ class InternalCommandDoctor extends InternalCommand {
         return;
       }
 
-      final isAuthenticated = (await context
-          .withQuiet(true)
-          .command(['gh', 'auth', 'status'])
-          .announce('Checking if GitHub CLI is authenticated.')
-          .run())
-          .isSuccess();
+      final isAuthenticated =
+          (await context
+                  .withQuiet(true)
+                  .command(['gh', 'auth', 'status'])
+                  .announce('Checking if GitHub CLI is authenticated.')
+                  .run())
+              .isSuccess();
 
       context.printToConsole(
         '''[${boolToCheckmark(isAuthenticated)}] gh auth status # ${isAuthenticated ? "authenticated" : "not authenticated"}''',
@@ -179,12 +186,13 @@ class InternalCommandDoctor extends InternalCommand {
       }
 
       if (context.isInsideWorkTree()) {
-        final canAccessRepo = (await context
-            .withQuiet(true)
-            .command(['gh', 'repo', 'view'])
-            .announce('Checking if GitHub CLI can access repository.')
-            .run())
-            .isSuccess();
+        final canAccessRepo =
+            (await context
+                    .withQuiet(true)
+                    .command(['gh', 'repo', 'view'])
+                    .announce('Checking if GitHub CLI can access repository.')
+                    .run())
+                .isSuccess();
 
         context.printToConsole(
           '''[${boolToCheckmark(canAccessRepo)}] gh repo view # ${canAccessRepo ? "has access" : "no access"}''',
