@@ -27,11 +27,14 @@ class InternalCommandChangelog extends InternalCommand {
 
   @override
   Future<void> run(final List<String> args, Context context) async {
-    int? limit;
+    // We use a safe max value because Dart compiles to JS and can't use 2^63 safely.
+    // So 9007199254740991 (Number.MAX_SAFE_INTEGER) is a good safe maximum.
+    const safeMaxInt = 9007199254740991;
+    late final int limit;
     try {
       limit = switch (versionsFlag.getOptionalFlagValue(args)) {
         FlagPresent(:final value?) => int.parse(value),
-        FlagPresent() => null,
+        FlagPresent() => safeMaxInt,
         _ => 5,
       };
     } catch (e) {
@@ -53,7 +56,7 @@ class InternalCommandChangelog extends InternalCommand {
                 .transform(const LineSplitter())) {
           if (versionRegex.matchAsPrefix(chunk) != null) {
             entries++;
-            if (limit != null && entries > limit) break;
+            if (entries > limit) break;
           }
           if (chunk.startsWith(currentVersion)) {
             context.printToConsole('$chunk <-- current version');
