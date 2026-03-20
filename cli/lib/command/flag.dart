@@ -76,10 +76,8 @@ class Flag {
 
       if (args.length > index) {
         final nextArg = args[index];
-        if (!nextArg.startsWith('-')) {
-          args.removeAt(index);
-          return FlagPresent(nextArg);
-        }
+        args.removeAt(index);
+        return FlagPresent(nextArg);
       }
       return FlagPresent(null);
     }
@@ -97,10 +95,8 @@ class Flag {
             args.removeAt(i);
             if (args.length > i) {
               final nextArg = args[i];
-              if (!nextArg.startsWith('-')) {
-                args.removeAt(i);
-                return FlagPresent(nextArg);
-              }
+              args.removeAt(i);
+              return FlagPresent(nextArg);
             }
             return FlagPresent(null);
           } else {
