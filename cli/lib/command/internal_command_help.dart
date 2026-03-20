@@ -67,7 +67,9 @@ class InternalCommandHelp extends InternalCommand {
     bool isExtrasList = false;
 
     if (singleCommand && selectedCommand == 'extras') {
-      final extrasCmd = internalCommands.whereType<InternalCommandExtras>().first;
+      final extrasCmd = internalCommands
+          .whereType<InternalCommandExtras>()
+          .first;
       commandsToShow = extrasCmd.extraCommands;
       isExtrasList = true;
     } else {
