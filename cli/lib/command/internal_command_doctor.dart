@@ -8,12 +8,28 @@ import 'package:stax/context/context_git_get_default_remote.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/string_empty_to_null.dart';
 
-typedef DoctorCheckResult = ({
-  String name,
-  bool success,
-  String? output,
-  List<String>? errorRecommendations,
-});
+extension type DoctorCheckResult(
+  ({
+    String name,
+    bool success,
+    String? output,
+    List<String>? errorRecommendations,
+  })
+  record
+) {
+  String get name => record.name;
+  bool get success => record.success;
+  String? get output => record.output;
+  List<String>? get errorRecommendations => record.errorRecommendations;
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'success': success,
+    'output': output,
+    if (errorRecommendations != null)
+      'recommendation': errorRecommendations!.join('\n'),
+  };
+}
 
 class InternalCommandDoctor extends InternalCommand {
   static final jsonFlag = Flag(
@@ -44,7 +60,7 @@ class InternalCommandDoctor extends InternalCommand {
         .trim()
         .emptyToNull();
     final hasUserName = userName != null;
-    yield (
+    yield DoctorCheckResult((
       name: 'git config --get user.name',
       success: hasUserName,
       output: userName,
@@ -54,7 +70,7 @@ class InternalCommandDoctor extends InternalCommand {
               'Set your git user name using:',
               '  git config --global user.name "<your preferred name>"',
             ],
-    );
+    ));
 
     final userEmail = context
         .withQuiet(true)
@@ -69,7 +85,7 @@ class InternalCommandDoctor extends InternalCommand {
         .trim()
         .emptyToNull();
     final hasUserEmail = userEmail != null;
-    yield (
+    yield DoctorCheckResult((
       name: 'git config --get user.email',
       success: hasUserEmail,
       output: userEmail,
@@ -79,7 +95,7 @@ class InternalCommandDoctor extends InternalCommand {
               'Set your git user email using:',
               '  git config --global user.email "<your preferred email>"',
             ],
-    );
+    ));
 
     final autoSetupRemote = context
         .withQuiet(true)
@@ -94,7 +110,7 @@ class InternalCommandDoctor extends InternalCommand {
         .trim()
         .emptyToNull();
     final hasAutoSetupRemote = autoSetupRemote == 'true';
-    yield (
+    yield DoctorCheckResult((
       name: 'git config --get push.autoSetupRemote',
       success: hasAutoSetupRemote,
       output: autoSetupRemote,
@@ -104,12 +120,12 @@ class InternalCommandDoctor extends InternalCommand {
               'Set git push.autoSetupRemote using:',
               '  git config --global push.autoSetupRemote true',
             ],
-    );
+    ));
 
     if (context.isInsideWorkTree()) {
       final remote = context.getPreferredRemote();
       final hasRemote = remote != null;
-      yield (
+      yield DoctorCheckResult((
         name: 'git remote',
         success: hasRemote,
         output: hasRemote ? 'remote(s): $remote' : 'no remotes',
@@ -119,12 +135,12 @@ class InternalCommandDoctor extends InternalCommand {
                 'Set at least one remote using:',
                 '  git remote add origin <url to git repository>',
               ],
-      );
+      ));
 
       String? defaultBranch = context.withQuiet(true).getDefaultBranch();
       String defaultRemote =
           ContextGitGetDefaultBranch.remotes?.firstOrNull ?? '<remote>';
-      yield (
+      yield DoctorCheckResult((
         name: 'git rev-parse --abbrev-ref $defaultRemote/HEAD',
         success: defaultBranch != null,
         output: defaultBranch ?? 'not found',
@@ -134,7 +150,7 @@ class InternalCommandDoctor extends InternalCommand {
                 'Set default remote branch using:',
                 '  git fetch -p ; git remote set-head $defaultRemote -a',
               ],
-      );
+      ));
     }
 
     String? ghVersion;
@@ -153,7 +169,7 @@ class InternalCommandDoctor extends InternalCommand {
     }
 
     final hasGhVersion = ghVersion?.isNotEmpty == true;
-    yield (
+    yield DoctorCheckResult((
       name: 'gh --version',
       success: hasGhVersion,
       output: ghVersion,
@@ -163,7 +179,7 @@ class InternalCommandDoctor extends InternalCommand {
               '[Optional] Install GitHub CLI using:',
               '  https://github.com/cli/cli#installation',
             ],
-    );
+    ));
 
     if (hasGhVersion) {
       final isAuthenticated = context
@@ -173,14 +189,14 @@ class InternalCommandDoctor extends InternalCommand {
           .runSync()
           .isSuccess();
 
-      yield (
+      yield DoctorCheckResult((
         name: 'gh auth status',
         success: isAuthenticated,
         output: isAuthenticated ? 'authenticated' : 'not authenticated',
         errorRecommendations: isAuthenticated
             ? null
             : ['[Optional] Authenticate GitHub CLI using:', '  gh auth login'],
-      );
+      ));
 
       if (isAuthenticated && context.isInsideWorkTree()) {
         final canAccessRepo = context
@@ -190,14 +206,14 @@ class InternalCommandDoctor extends InternalCommand {
             .runSync()
             .isSuccess();
 
-        yield (
+        yield DoctorCheckResult((
           name: 'gh repo view',
           success: canAccessRepo,
           output: canAccessRepo ? 'has access' : 'no access',
           errorRecommendations: canAccessRepo
               ? null
               : ['[Optional] Ensure you have access to this repository on GitHub'],
-        );
+        ));
       }
     }
   }
@@ -208,7 +224,7 @@ class InternalCommandDoctor extends InternalCommand {
     String boolToCheckmark(bool value) => value ? 'V' : 'X';
 
     if (isJson) {
-      context.printToConsole('[');
+      context.printToConsole('{"checks":{');
       bool isFirst = true;
       await for (final result in _runChecks(context)) {
         if (!isFirst) {
@@ -216,16 +232,10 @@ class InternalCommandDoctor extends InternalCommand {
         }
         isFirst = false;
 
-        final item = {
-          'name': result.name,
-          'success': result.success,
-          'output': result.output,
-          if (result.errorRecommendations != null)
-            'recommendation': result.errorRecommendations!.join('\n'),
-        };
-        context.printToConsole('  ${jsonEncode(item)}');
+        final item = result.toJson();
+        context.printToConsole('  "${result.name}": ${jsonEncode(item)}');
       }
-      context.printToConsole(']');
+      context.printToConsole('}}');
     } else {
       await for (final result in _runChecks(context)) {
         context.printToConsole(
