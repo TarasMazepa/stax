@@ -12,8 +12,8 @@ class InternalCommandChangelog extends InternalCommand {
       'https://raw.githubusercontent.com/TarasMazepa/stax/refs/heads/main/CHANGELOG.md';
 
   static final Flag versionsFlag = Flag(
-    short: '-v',
-    long: '--versions',
+    short: '-s',
+    long: '--show-only-latest',
     description: 'show specific amount of versions',
   );
 
