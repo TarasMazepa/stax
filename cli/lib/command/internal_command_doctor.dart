@@ -19,13 +19,13 @@ class InternalCommandDoctor extends InternalCommand {
     String boolToCheckmark(bool value) => value ? 'V' : 'X';
 
     {
-      final userName = context
+      final userName = (await context
           .withQuiet(true)
           .git
           .configGet
           .arg('user.name')
           .announce('Checking for users name.')
-          .runSync()
+          .run())
           .printNotEmptyResultFields()
           .stdout
           .toString()
@@ -46,13 +46,13 @@ class InternalCommandDoctor extends InternalCommand {
     }
 
     {
-      final userEmail = context
+      final userEmail = (await context
           .withQuiet(true)
           .git
           .configGet
           .arg('user.email')
           .announce('Checking for users email.')
-          .runSync()
+          .run())
           .printNotEmptyResultFields()
           .stdout
           .toString()
@@ -73,13 +73,13 @@ class InternalCommandDoctor extends InternalCommand {
     }
 
     {
-      final autoSetupRemote = context
+      final autoSetupRemote = (await context
           .withQuiet(true)
           .git
           .configGet
           .arg('push.autoSetupRemote')
           .announce('Checking if push.autoSetupRemote set in git config.')
-          .runSync()
+          .run())
           .printNotEmptyResultFields()
           .stdout
           .toString()
@@ -134,11 +134,11 @@ class InternalCommandDoctor extends InternalCommand {
     {
       String? ghVersion;
       try {
-        ghVersion = context
+        ghVersion = (await context
             .withQuiet(true)
             .command(['gh', '--version'])
             .announce('Checking if GitHub CLI is installed.')
-            .runSync()
+            .run())
             .stdout
             .toString();
       } catch (e) {
@@ -159,11 +159,11 @@ class InternalCommandDoctor extends InternalCommand {
         return;
       }
 
-      final isAuthenticated = context
+      final isAuthenticated = (await context
           .withQuiet(true)
           .command(['gh', 'auth', 'status'])
           .announce('Checking if GitHub CLI is authenticated.')
-          .runSync()
+          .run())
           .isSuccess();
 
       context.printToConsole(
@@ -179,11 +179,11 @@ class InternalCommandDoctor extends InternalCommand {
       }
 
       if (context.isInsideWorkTree()) {
-        final canAccessRepo = context
+        final canAccessRepo = (await context
             .withQuiet(true)
             .command(['gh', 'repo', 'view'])
             .announce('Checking if GitHub CLI can access repository.')
-            .runSync()
+            .run())
             .isSuccess();
 
         context.printToConsole(
