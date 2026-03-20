@@ -1,7 +1,3 @@
-0.11.3
-
-* stax doctor - Add JSON output variant through -j/--json flag
-
 0.11.2
 
 * stax get - migrate branch update logic to switch detach and delete strategy
