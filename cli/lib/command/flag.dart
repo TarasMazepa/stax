@@ -53,14 +53,18 @@ class Flag {
   }
 
   String? getFlagValue(List<String> args) {
-    final result = getOptionalFlagValue(args);
-    if (result is FlagPresent) {
-      if (result.value == null) {
-        throw Exception("Value wasn't provided for '${long ?? short}' flag.");
+    String? getFlagValueInternal(String? flag) {
+      if (flag == null) return null;
+      final index = args.indexOf(flag).toNullableIndexOfResult();
+      if (index == null) return null;
+      final valueIndex = index + 1;
+      if (args.length <= valueIndex) {
+        throw Exception("Value wasn't provided for '$long' flag.");
       }
-      return result.value;
+      return args[valueIndex];
     }
-    return null;
+
+    return getFlagValueInternal(long) ?? getFlagValueInternal(short);
   }
 
   OptionalFlagResult getOptionalFlagValue(List<String> args) {
@@ -78,6 +82,17 @@ class Flag {
     }
 
     if (short != null) {
+      final index = args.indexOf(short!).toNullableIndexOfResult();
+      if (index != null) {
+        args.removeAt(index);
+        if (args.length > index) {
+          final nextArg = args[index];
+          args.removeAt(index);
+          return FlagPresent(nextArg);
+        }
+        return FlagPresent(null);
+      }
+
       for (int i = 0; i < args.length; i++) {
         final arg = args[i];
         if (arg.length < 2) continue;
