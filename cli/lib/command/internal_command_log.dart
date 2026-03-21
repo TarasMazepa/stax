@@ -19,7 +19,7 @@ class InternalCommandLog extends InternalCommand {
   static final Flag limitFlag = Flag(
     short: '-n',
     long: '--limit',
-    description: 'limit amount of commits shown to the user',
+    description: 'limit amount of log lines shown to the user',
   );
 
   InternalCommandLog()
