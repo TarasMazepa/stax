@@ -1,3 +1,7 @@
+0.11.4
+
+* stax pull - adds --stay-on-head flag to allow staying on the head/default branch after pulling
+
 0.11.3
 
 *  stax extras agents.md - new command with agents specific instructions how to use stax
