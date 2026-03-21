@@ -215,9 +215,13 @@ class InternalCommandDoctor extends InternalCommand {
       checkGh(),
     ];
 
-    final results = await Future.wait(futures);
+    Stream<String?> streamResultsInOrder(List<Future<String?>> futures) async* {
+      for (final future in futures) {
+        yield await future;
+      }
+    }
 
-    for (final result in results) {
+    await for (final result in streamResultsInOrder(futures)) {
       if (result != null) {
         context.printToConsole(result);
       }
