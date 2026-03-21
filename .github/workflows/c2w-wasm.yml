@@ -18,8 +18,7 @@ jobs:
           tar -xvf container2wasm-$VERSION-linux-amd64.tar.gz
           sudo mv c2w /usr/local/bin/
       - run: mkdir -p ./guides/web/containers
-      - run: ./guides/scripts/generate_help_html.sh
-      - run: ./guides/scripts/generate_index_html.sh
+      - run: ./guides/scripts/generate_html.sh
       - run: .github/scripts/build_guide_docker_to_wasm amend
       - run: .github/scripts/build_guide_docker_to_wasm commit
       - run: .github/scripts/build_guide_docker_to_wasm delete-stale
