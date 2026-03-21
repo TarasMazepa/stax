@@ -35,11 +35,6 @@ class InternalCommandExtras extends InternalCommand {
       case ['help']:
         await InternalCommandHelp().run(['extras'], context);
       case [final commandName, 'help', ...final commandArgs]:
-        await InternalCommandHelp().run([
-          'extras',
-          commandName,
-          ...commandArgs,
-        ], context);
       case [final commandName, ...final commandArgs]
           when context.hasHelpFlag(commandArgs):
         await InternalCommandHelp().run([
