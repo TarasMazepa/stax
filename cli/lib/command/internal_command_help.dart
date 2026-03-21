@@ -59,48 +59,45 @@ class InternalCommandHelp extends InternalCommand {
   @override
   Future<void> run(final List<String> args, final Context context) async {
     final showAll = showAllFlag.hasFlag(args);
-    final selectedCommand = args.elementAtOrNull(0);
-    final singleCommand = selectedCommand != null;
 
     Iterable<InternalCommand> commandsToShow;
-    bool isExtrasList = false;
+    String? headerMessage;
 
-    if (singleCommand && selectedCommand == 'extras') {
-      final extrasCmd = internalCommands
-          .whereType<InternalCommandExtras>()
-          .first;
-
-      final subCommandName = args.elementAtOrNull(1);
-      if (subCommandName != null) {
+    switch (args) {
+      case ['extras', final subCommandName, ...]:
+        final extrasCmd = internalCommands
+            .whereType<InternalCommandExtras>()
+            .first;
         commandsToShow = extrasCmd.extraCommands.where(
           (element) => element.name == subCommandName,
         );
-      } else {
+      case ['extras']:
+        final extrasCmd = internalCommands
+            .whereType<InternalCommandExtras>()
+            .first;
         commandsToShow = extrasCmd.extraCommands;
-        isExtrasList = true;
-      }
-    } else {
-      commandsToShow = internalCommands.where(
-        (element) => switch (element) {
-          _ when singleCommand => element.name == selectedCommand,
-          _ when showAll => true,
-          _ => element.type == InternalCommandType.public,
-        },
-      );
+        headerMessage = 'Here are available commands under `extras`:';
+      case [final selectedCommand, ...]:
+        commandsToShow = internalCommands.where(
+          (element) => element.name == selectedCommand,
+        );
+      case []:
+      default:
+        commandsToShow = internalCommands.where(
+          (element) => showAll || element.type == InternalCommandType.public,
+        );
+        headerMessage = 'Here are available commands:';
     }
 
     printFlags(context, 'Global flags', ContextHandleGlobalFlags.flags, '');
 
-    if (!singleCommand || isExtrasList) {
-      if (isExtrasList) {
-        context.printToConsole('Here are available commands under `extras`:');
-      } else {
-        context.printToConsole('Here are available commands:');
-      }
+    if (headerMessage != null) {
+      context.printToConsole(headerMessage);
       context.printToConsole(
         "Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.",
       );
     }
+
     for (final element in commandsToShow) {
       context.printToConsole(
         ' • ${element.name}${element.shortName != null ? ", ${element.shortName}" : ""} - ${element.description}',
