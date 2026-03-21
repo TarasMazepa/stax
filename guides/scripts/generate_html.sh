@@ -46,6 +46,7 @@ cat << 'HTML_EOF' > guides/web/help.html
         </ul>
         <ul>
             <li><a href="guides.html">Try live in browser</a></li>
+            <li><a href="onboarding.html">Onboarding</a></li>
             <li><a href="help.html">Help</a></li>
             <li><a href="https://github.com/TarasMazepa/stax" target="_blank">GitHub</a></li>
         </ul>
@@ -78,6 +79,7 @@ echo "Generating guides/web/index.html..."
 
 # Generate the content using showdown
 CONTENT=$(npx -y showdown@2.1.0 makehtml -i README.md)
+CONTENT="${CONTENT//guides\/onboarding.md/onboarding.html}"
 
 cat << 'HTML_EOF' > guides/web/index.html
 <!doctype html>
@@ -99,6 +101,7 @@ cat << 'HTML_EOF' > guides/web/index.html
         </ul>
         <ul>
             <li><a href="guides.html">Try live in browser</a></li>
+            <li><a href="onboarding.html">Onboarding</a></li>
             <li><a href="help.html">Help</a></li>
             <li><a href="https://github.com/TarasMazepa/stax" target="_blank">GitHub</a></li>
         </ul>
@@ -121,3 +124,52 @@ cat << 'HTML_EOF' >> guides/web/index.html
 HTML_EOF
 
 echo "Generated guides/web/index.html"
+
+echo "Generating guides/web/onboarding.html..."
+
+# Generate the content using showdown
+ONBOARDING_CONTENT=$(npx -y showdown@2.1.0 makehtml -i guides/onboarding.md)
+
+cat << 'HTML_EOF' > guides/web/onboarding.html
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css">
+    <title>stax - onboarding guide for beginners</title>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><strong>Stax for git</strong></a></li>
+            by
+            <li><a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></li>
+        </ul>
+        <ul>
+            <li><a href="guides.html">Try live in browser</a></li>
+            <li><a href="onboarding.html">Onboarding</a></li>
+            <li><a href="help.html">Help</a></li>
+            <li><a href="https://github.com/TarasMazepa/stax" target="_blank">GitHub</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <article id="content">
+HTML_EOF
+
+echo "$ONBOARDING_CONTENT" >> guides/web/onboarding.html
+
+cat << 'HTML_EOF' >> guides/web/onboarding.html
+    </article>
+</main>
+<footer>
+    <p style="text-align: center;">By <a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></p>
+</footer>
+</body>
+</html>
+HTML_EOF
+
+echo "Generated guides/web/onboarding.html"
