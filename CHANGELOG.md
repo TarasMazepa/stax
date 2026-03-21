@@ -1,6 +1,14 @@
-0.11.1
+0.11.3
 
 * stax extras changelog - adds -s/--show-only-latest flag to specify the amount of latest versions to display
+
+0.11.2
+
+* stax get - migrate branch update logic to switch detach and delete strategy
+
+0.11.1
+
+* stax commit - adds -n/--no-browser flag to skip opening the PR URL in a browser and print it instead
 
 0.11.0
 

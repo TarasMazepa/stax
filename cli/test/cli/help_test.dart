@@ -39,6 +39,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -b, --branch-from-commit - Accepts branch name proposed by converting commit name to branch name.
          -d, --draft - Creates a PR in draft mode using the GitHub CLI. Works only if you have GitHub as your remote.
          -i, --ignore-no-staged-changes - Skips check if there staged changes, helpful when your change is only rename of the file which stax can't see at the moment.
+         -n, --no-browser - Do not attempt to open the PR URL in the browser.
          -p, --pull-request - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
          -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
  • delete-stale, d - Deletes local branches with gone remotes.
