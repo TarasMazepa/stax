@@ -25,7 +25,7 @@ class InternalCommandHelp extends InternalCommand {
         },
       );
 
-  static void printIndented(
+  void printIndented(
     Context context,
     String header,
     Iterable<MapEntry<String, String>>? entries,
@@ -38,7 +38,7 @@ class InternalCommandHelp extends InternalCommand {
     }
   }
 
-  static void printFlags(
+  void printFlags(
     Context context,
     String header,
     List<Flag>? flags,
