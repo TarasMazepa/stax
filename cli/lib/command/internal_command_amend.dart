@@ -108,14 +108,32 @@ class InternalCommandAmend extends InternalCommand {
       rebaseUseCase.save();
     }
 
-    (await context.git.commitAmendNoEdit
-            .announce('Amending changes to a commit.')
-            .run(onDemandPrint: true))
-        .printNotEmptyResultFields();
-    context.git.pushForce
+    final commitExitCode =
+        (await context.git.commitAmendNoEdit
+                .announce('Amending changes to a commit.')
+                .run(onDemandPrint: true))
+            .printNotEmptyResultFields()
+            .exitCode;
+
+    if (commitExitCode != 0) {
+      if (shouldDoRebase) {
+        rebaseUseCase.abort();
+      }
+      return;
+    }
+
+    final pushExitCode = context.git.pushForce
         .announce('Force pushing to a remote.')
         .runSync()
-        .printNotEmptyResultFields();
+        .printNotEmptyResultFields()
+        .exitCode;
+
+    if (pushExitCode != 0) {
+      if (shouldDoRebase) {
+        rebaseUseCase.abort();
+      }
+      return;
+    }
 
     if (shouldDoRebase) {
       rebaseUseCase.continueRebase();
