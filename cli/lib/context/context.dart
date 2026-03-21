@@ -110,24 +110,9 @@ $object
         questionContext.isNotEmpty &&
         questionContext[questionContext.length - 1] != '\n';
     if (includeSpace) questionContext += ' ';
-
-    for (var i = 0; i < 3; i++) {
-      print('${questionContext}Continue y/N? ');
-      final response = stdin.readLineSync();
-      switch (response) {
-        case 'y' || 'Y':
-          return true;
-        case 'n' || 'N' || '' || null:
-          return false;
-        default:
-          if (i < 2) {
-            print("Inconclusive answer '$response', please type 'y' or 'n'.");
-          } else {
-            print("Inconclusive answer '$response', defaulting to 'n'.");
-          }
-      }
-    }
-    return false;
+    print('${questionContext}Continue y/N? ');
+    final response = stdin.readLineSync();
+    return response == 'y' || response == 'Y';
   }
 
   String? commandLineMultipleOptionsQuestion(

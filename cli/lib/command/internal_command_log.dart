@@ -25,6 +25,10 @@ class InternalCommandLog extends InternalCommand {
         'limit amount of log lines shown to the user (default $defaultLimit)',
   );
 
+  static int parseLimit(List<String> args) {
+    return limitFlag.getFlagValue(args)?.let(int.parse) ?? defaultLimit;
+  }
+
   InternalCommandLog()
     : super(
         'log',
@@ -44,7 +48,7 @@ class InternalCommandLog extends InternalCommand {
 
     try {
       defaultBranch = defaultBranchFlag.getFlagValue(args);
-      limit = limitFlag.getFlagValue(args)?.let(int.parse) ?? defaultLimit;
+      limit = parseLimit(args);
     } catch (e) {
       print(e);
       return;

@@ -45,12 +45,6 @@ class InternalCommandCommit extends InternalCommand {
     long: '--no-browser',
     description: 'Do not attempt to open the PR URL in the browser.',
   );
-  static final comeBackFlag = Flag(
-    short: '-c',
-    long: '--come-back',
-    description:
-        'Moves back to the branch on which user was before running commit.',
-  );
 
   InternalCommandCommit()
     : super(
@@ -63,7 +57,6 @@ class InternalCommandCommit extends InternalCommand {
           prFlag,
           draftPrFlag,
           branchNameFlag,
-          comeBackFlag,
           ignoreNoStagedChanges,
           noBrowserFlag,
           ...ContextHandleAddAllFlag.flags,
@@ -86,7 +79,6 @@ class InternalCommandCommit extends InternalCommand {
     final createPr = prFlag.hasFlag(args) || draftPr;
     final noBrowser = noBrowserFlag.hasFlag(args);
     final acceptBranchName = branchNameFlag.hasFlag(args);
-    final comeBack = comeBackFlag.hasFlag(args);
     if (!ignoreNoStagedChanges.hasFlag(args) &&
         context.areThereNoStagedChanges()) {
       context.explainToUserNoStagedChanges();
@@ -231,14 +223,6 @@ class InternalCommandCommit extends InternalCommand {
             .runSync()
             .printNotEmptyResultFields();
       }
-    }
-
-    if (comeBack && comeBackNode != null) {
-      context.git.switch0
-          .arg(comeBackNode)
-          .announce('Switching back to original checkout')
-          .runSync()
-          .printNotEmptyResultFields();
     }
   }
 }

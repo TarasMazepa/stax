@@ -28,7 +28,6 @@ Note: you can type first letter or couple of first letters instead of full comma
          -b, --rebase-prefer-base - Runs 'stax rebase --prefer-base' afterwards on all children branches.
          -m, --rebase-prefer-moving - Runs 'stax rebase --prefer-moving' afterwards on all children branches.
          -r, --rebase - Runs 'stax rebase' afterwards on all children branches.
-         --skip-rebase - Skip asking for rebase entirely.
          -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
  • commit - Creates a branch, commits, and pushes it to remote. First argument is mandatory commit message. Second argument is optional branch name, if not provided branch name would be generated from commit message.
       Positional arguments:
@@ -38,7 +37,6 @@ Note: you can type first letter or couple of first letters instead of full comma
          -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
          -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
          -b, --branch-from-commit - Accepts branch name proposed by converting commit name to branch name.
-         -c, --come-back - Moves back to the branch on which user was before running commit.
          -d, --draft - Creates a PR in draft mode using the GitHub CLI. Works only if you have GitHub as your remote.
          -i, --ignore-no-staged-changes - Skips check if there staged changes, helpful when your change is only rename of the file which stax can't see at the moment.
          -n, --no-browser - Do not attempt to open the PR URL in the browser.
@@ -77,7 +75,6 @@ Note: you can type first letter or couple of first letters instead of full comma
          opt1 - Optional target branch, will default to <remote>/HEAD
       Flags:
          -f, --force-delete - Force delete gone branches.
-         -h, --stay-on-head - Stay on the head/default branch after pulling.
          -s, --skip-delete - Skip deletion of gone branches.
  • pull-request, pr - Creates a pull request.
  • rebase - rebase tree of branches on top of main
