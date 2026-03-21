@@ -1,4 +1,4 @@
-# stax for git by Taras Mazepa
+# Stax for Git by Taras Mazepa
 
 stax for git - simplify your day to day git tasks, stacked PR ready
 
