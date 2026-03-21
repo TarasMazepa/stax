@@ -1,3 +1,7 @@
+0.11.4
+
+* stax log - limit amount of commits shown to the user via flag
+
 0.11.3
 
 *  stax extras agents.md - new command with agents specific instructions how to use stax
