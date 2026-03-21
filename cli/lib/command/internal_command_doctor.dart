@@ -220,16 +220,15 @@ class InternalCommandDoctor extends InternalCommand {
     ])) {
       if (results != null) {
         for (final r in results) {
-          final buffer = StringBuffer(
+          context.printToConsole(
             '[${boolToCheckmark(r.successful)}] ${r.name} # ${r.result}',
           );
           if (r.error != null) {
-            buffer.write('\n    X ${r.error}');
+            context.printToConsole('    X ${r.error}');
             if (r.resolution != null) {
-              buffer.write('\n      ${r.resolution}');
+              context.printToConsole('      ${r.resolution}');
             }
           }
-          context.printToConsole(buffer.toString());
         }
       }
     }
