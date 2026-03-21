@@ -32,6 +32,8 @@ Here are explicit instructions on how to use Stax for automation.
 * `stax rebase --prefer-moving --accept-all`: Rebases the current branch and its siblings on top of the default branch, then force pushes. `--prefer-moving` automatically resolves conflicts by preserving the changes made in the branch.
 
 * `stax log`: Use this to visualize the branch tree and verify your current repository state or confirm your actions.
+
+* `stax help`: Run this if you need to perform an action not listed in this guide to read the full CLI documentation. Important: If you construct a new command from the help menu, you must still append `--accept-all` to it to avoid getting stuck on prompts!
 ''');
   }
 }
