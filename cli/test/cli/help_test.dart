@@ -88,7 +88,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -b, --prefer-base - Prefer base changes on conflict.
          -c, --continue - Continue rebase that is in progress.
          -m, --prefer-moving - Prefer moving changes on conflict.
-""",
+''',
       );
     });
 
@@ -99,7 +99,7 @@ Note: you can type first letter or couple of first letters instead of full comma
             .stdout
             .toString()
             .cleanCarriageReturnOnWindows(),
-        """Global flags:
+        '''Global flags:
    --accept-all - Accept all the user prompts automatically.
    --decline-all - Decline all the user prompts automatically.
    -h, --help - Shows help documentation for the command
@@ -120,7 +120,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -n, --no-browser - Do not attempt to open the PR URL in the browser.
          -p, --pull-request - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
          -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
-""",
+''',
       );
     });
 
@@ -131,7 +131,7 @@ Note: you can type first letter or couple of first letters instead of full comma
             .stdout
             .toString()
             .cleanCarriageReturnOnWindows(),
-        """Global flags:
+        '''Global flags:
    --accept-all - Accept all the user prompts automatically.
    --decline-all - Decline all the user prompts automatically.
    -h, --help - Shows help documentation for the command
@@ -155,7 +155,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -g, --global - Perform operation on global settings regardless of invocation path.
  • update - Updates to the latest version.
  • version - Version of stax
-""",
+''',
       );
     });
 
@@ -166,7 +166,7 @@ Note: you can type first letter or couple of first letters instead of full comma
             .stdout
             .toString()
             .cleanCarriageReturnOnWindows(),
-        """Global flags:
+        '''Global flags:
    --accept-all - Accept all the user prompts automatically.
    --decline-all - Decline all the user prompts automatically.
    -h, --help - Shows help documentation for the command
