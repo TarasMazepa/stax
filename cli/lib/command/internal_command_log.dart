@@ -37,11 +37,13 @@ class InternalCommandLog extends InternalCommand {
     context = context.quietly();
 
     final String? defaultBranch;
-    final int limit;
+    int? limit;
 
     try {
       defaultBranch = defaultBranchFlag.getFlagValue(args);
-      limit = int.tryParse(limitFlag.getFlagValue(args) ?? '100000') ?? 100000;
+      if (limitFlag.hasFlag(args)) {
+        limit = int.tryParse(limitFlag.getFlagValue(args) ?? '');
+      }
     } catch (e) {
       print(e);
       return;
@@ -51,11 +53,12 @@ class InternalCommandLog extends InternalCommand {
 
     print(
       materializeDecoratedLogLines(
-        root: context.gitLogAll(showAllBranches, limit),
+        root: context.gitLogAll(showAllBranches),
         adapter: DecoratedLogLineProducerAdapterForGitLogAllNode(
           showAllBranches,
           defaultBranch,
         ),
+        limit: limit,
       ),
     );
   }

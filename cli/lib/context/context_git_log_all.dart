@@ -11,12 +11,12 @@ extension GitLogAllOnContext on Context {
   static GitLogAllNode? _gitLogAllLocal;
   static GitLogAllNode? _gitLogAllAll;
 
-  GitLogAllNode gitLogAll([bool showAllBranches = false, int limit = 100000]) {
+  GitLogAllNode gitLogAll([bool showAllBranches = false]) {
     final listQueue = <GitLogAllNode>[];
     GitLogAllNode produce() {
       GitLogAllNode? cache;
       return quietly()
-              ._gitLogAllLimited(limit)
+              ._gitLogAllLimited()
               .map((x) => x.ensureSingleParent(listQueue))
               .map((x) => x.collapse(showAllBranches))
               .nonNulls
@@ -37,9 +37,14 @@ extension GitLogAllOnContext on Context {
     return _gitLogAllLocal ??= produce();
   }
 
-  Iterable<GitLogAllNode> _gitLogAllLimited(int limit) {
+  Iterable<GitLogAllNode> _gitLogAllLimited() {
     List<GitLogAllLine> lines = git.log
-        .args(['--decorate=full', '--format=%h %ct %p %d', '--all', '-n$limit'])
+        .args([
+          '--decorate=full',
+          '--format=%h %ct %p %d',
+          '--all',
+          '-n${100_000}',
+        ])
         .announce()
         .runSync()
         .printNotEmptyResultFields()
