@@ -82,5 +82,45 @@ Note: you can type first letter or couple of first letters instead of full comma
 """,
       );
     });
+
+    test('help extras changelog variants', () async {
+      final expectedOutput = '''Global flags:
+   --accept-all - Accept all the user prompts automatically.
+   --decline-all - Decline all the user prompts automatically.
+   -h, --help - Shows help documentation for the command
+   -q, --quiet - Removes all output except user prompts.
+   -v, --verbose - Force all the output.
+ • changelog - Shows the stax changelog.
+      Flags:
+         -s, --show-only-latest - show specific amount of versions
+''';
+
+      expect(
+        setup
+            .runLiveStaxSync(['extras', 'changelog', 'help'])
+            .stdout
+            .toString()
+            .cleanCarriageReturnOnWindows(),
+        expectedOutput,
+      );
+
+      expect(
+        setup
+            .runLiveStaxSync(['extras', 'changelog', '--help'])
+            .stdout
+            .toString()
+            .cleanCarriageReturnOnWindows(),
+        expectedOutput,
+      );
+
+      expect(
+        setup
+            .runLiveStaxSync(['help', 'extras', 'changelog'])
+            .stdout
+            .toString()
+            .cleanCarriageReturnOnWindows(),
+        expectedOutput,
+      );
+    });
   });
 }

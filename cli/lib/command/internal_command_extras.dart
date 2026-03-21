@@ -36,6 +36,10 @@ class InternalCommandExtras extends InternalCommand {
       case ['help']:
         await InternalCommandHelp().run(['extras'], context);
       case [final commandName, ...final commandArgs]:
+        if (commandName == 'help' && commandArgs.isNotEmpty) {
+           await InternalCommandHelp().run([name, ...commandArgs], context);
+           return;
+        }
         final command = extraCommands.findByNameOrPrefix(commandName);
 
         if (command == null) {
@@ -45,11 +49,20 @@ class InternalCommandExtras extends InternalCommand {
           return;
         }
 
+        // If 'help' was passed as the last positional argument.
+        if (commandArgs.contains('help') && !context.hasHelpFlag(commandArgs)) {
+           await InternalCommandHelp().run([name, command.name], context);
+           return;
+        }
+
         if (context.hasHelpFlag(commandArgs)) {
           // If the extra command has its own help, we can call it.
           // Or we can just fallback to the global help.
           // The main help expects the command name as arg if we want specific help.
-          await InternalCommandHelp().run([command.name], context);
+          await InternalCommandHelp().run(
+            [name, command.name, ...commandArgs.where((a) => !a.startsWith('-'))],
+            context,
+          );
         } else {
           await command.run(commandArgs, context);
         }

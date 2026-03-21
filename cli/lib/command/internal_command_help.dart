@@ -60,25 +60,58 @@ class InternalCommandHelp extends InternalCommand {
   @override
   Future<void> run(final List<String> args, final Context context) async {
     final showAll = showAllFlag.hasFlag(args);
-    final selectedCommand = args.elementAtOrNull(0);
-    final singleCommand = selectedCommand != null;
+    final positionalArgs = args.where((arg) => !arg.startsWith('-')).toList();
+    final singleCommand = positionalArgs.isNotEmpty;
 
     Iterable<InternalCommand> commandsToShow;
     bool isExtrasList = false;
 
-    if (singleCommand && selectedCommand == 'extras') {
-      final extrasCmd = internalCommands
-          .whereType<InternalCommandExtras>()
-          .first;
-      commandsToShow = extrasCmd.extraCommands;
-      isExtrasList = true;
+    if (singleCommand) {
+      final firstCommand = positionalArgs[0];
+      if (firstCommand == 'extras' || firstCommand == 'e') {
+        final extrasCmd =
+            internalCommands.whereType<InternalCommandExtras>().first;
+        if (positionalArgs.length > 1) {
+          final subCommandName = positionalArgs[1];
+          final subCommand = extrasCmd.extraCommands.firstWhereOrNull(
+            (c) => c.name == subCommandName || c.shortName == subCommandName,
+          );
+          if (subCommand != null) {
+            commandsToShow = [subCommand];
+          } else {
+            commandsToShow = [];
+          }
+        } else {
+          commandsToShow = extrasCmd.extraCommands;
+          isExtrasList = true;
+        }
+      } else {
+        final command = internalCommands.firstWhereOrNull(
+          (c) => c.name == firstCommand || c.shortName == firstCommand,
+        );
+        if (command != null) {
+          commandsToShow = [command];
+        } else {
+          // Fallback, we might just not find it, or it was passed as prefix which is not handled here exactly like this,
+          // but we can just use the name check from before.
+          commandsToShow = internalCommands.where(
+            (element) => element.name == firstCommand,
+          );
+          if (commandsToShow.isEmpty) {
+             // Maybe it's a subcommand of extras directly requested like `changelog` without `extras` keyword?
+             final extrasCmd = internalCommands.whereType<InternalCommandExtras>().first;
+             final subCommand = extrasCmd.extraCommands.firstWhereOrNull(
+               (c) => c.name == firstCommand || c.shortName == firstCommand,
+             );
+             if (subCommand != null) {
+               commandsToShow = [subCommand];
+             }
+          }
+        }
+      }
     } else {
       commandsToShow = internalCommands.where(
-        (element) => switch (element) {
-          _ when singleCommand => element.name == selectedCommand,
-          _ when showAll => true,
-          _ => element.type == InternalCommandType.public,
-        },
+        (element) => showAll || element.type == InternalCommandType.public,
       );
     }
 
