@@ -40,11 +40,6 @@ class InternalCommandCommit extends InternalCommand {
     description:
         "Skips check if there staged changes, helpful when your change is only rename of the file which stax can't see at the moment.",
   );
-  static final noBrowserFlag = Flag(
-    short: '-n',
-    long: '--no-browser',
-    description: 'Do not attempt to open the PR URL in the browser.',
-  );
 
   InternalCommandCommit()
     : super(
@@ -58,7 +53,6 @@ class InternalCommandCommit extends InternalCommand {
           draftPrFlag,
           branchNameFlag,
           ignoreNoStagedChanges,
-          noBrowserFlag,
           ...ContextHandleAddAllFlag.flags,
         ],
         arguments: {
@@ -77,7 +71,6 @@ class InternalCommandCommit extends InternalCommand {
     context.handleAddAllFlag(args);
     final draftPr = draftPrFlag.hasFlag(args);
     final createPr = prFlag.hasFlag(args) || draftPr;
-    final noBrowser = noBrowserFlag.hasFlag(args);
     final acceptBranchName = branchNameFlag.hasFlag(args);
     if (!ignoreNoStagedChanges.hasFlag(args) &&
         context.areThereNoStagedChanges()) {
@@ -214,15 +207,11 @@ class InternalCommandCommit extends InternalCommand {
     }
 
     if (prUrl != null) {
-      if (noBrowser) {
-        context.printParagraph('PR URL: $prUrl');
-      } else {
-        context
-            .openInBrowser(prUrl)
-            .announce('Opening PR in browser window')
-            .runSync()
-            .printNotEmptyResultFields();
-      }
+      context
+          .openInBrowser(prUrl)
+          .announce('Opening PR in browser window')
+          .runSync()
+          .printNotEmptyResultFields();
     }
   }
 }

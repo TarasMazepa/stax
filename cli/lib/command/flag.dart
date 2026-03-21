@@ -1,24 +1,5 @@
 import 'package:stax/nullable_index_of.dart';
 
-sealed class OptionalFlagResult {}
-
-class FlagNotPresent extends OptionalFlagResult {}
-
-class FlagPresent extends OptionalFlagResult {
-  final String? value;
-  FlagPresent(this.value);
-}
-
-enum FlagFindType { long, shortStandalone, shortCombined }
-
-class FlagFindResult {
-  final int index;
-  final FlagFindType type;
-  final Flag matchedFlag;
-
-  FlagFindResult(this.index, this.type, this.matchedFlag);
-}
-
 class Flag {
   final String? short;
   final String? long;
@@ -40,88 +21,41 @@ class Flag {
 
   String get shortOrLong => (short ?? long)!;
 
-  FlagFindResult? findAndRemoveFlag(List<String> args) {
-    if (long case final longFlag?) {
-      final index = args.indexOf(longFlag).toNullableIndexOfResult();
-      if (index != null) {
-        args.removeAt(index);
-        return FlagFindResult(index, FlagFindType.long, this);
-      }
-    }
-
-    if (short case final shortFlag?) {
-      final index = args.indexOf(shortFlag).toNullableIndexOfResult();
-      if (index != null) {
-        args.removeAt(index);
-        return FlagFindResult(index, FlagFindType.shortStandalone, this);
-      }
-
-      for (int i = 0; i < args.length; i++) {
-        final arg = args[i];
-        if (arg.length < 2) continue;
-        if (arg[0] != '-') continue;
-        if (arg[1] == '-') continue;
-        final newArg = arg.replaceFirst(shortFlag[1], '');
-        if (newArg.length < arg.length) {
-          if (newArg == '-') {
-            args.removeAt(i);
-            return FlagFindResult(i, FlagFindType.shortStandalone, this);
-          } else {
+  bool hasFlag(List<String> args) {
+    return switch ((short, long)) {
+      (_, String long) when args.remove(long) => true,
+      (String short, _) when args.remove(short) => true,
+      (null, _) => false,
+      (String short, _) => () {
+        for (int i = 0; i < args.length; i++) {
+          final arg = args[i];
+          if (arg.length < 2) continue;
+          if (arg[0] != '-') continue;
+          if (arg[1] == '-') continue;
+          final newArg = arg.replaceFirst(short[1], '');
+          if (newArg.length < arg.length) {
             args[i] = newArg;
-            return FlagFindResult(i, FlagFindType.shortCombined, this);
+            return true;
           }
         }
-      }
-    }
-
-    return null;
-  }
-
-  bool hasFlag(List<String> args) {
-    return findAndRemoveFlag(args) != null;
+        return false;
+      }(),
+    };
   }
 
   String? getFlagValue(List<String> args) {
-    final findResult = findAndRemoveFlag(args);
-    if (findResult != null) {
-      if (findResult.type == FlagFindType.shortCombined) {
-        throw Exception(
-          "Value wasn't provided for '${findResult.matchedFlag}'.",
-        );
+    String? getFlagValueInternal(String? flag) {
+      if (flag == null) return null;
+      final index = args.indexOf(flag).toNullableIndexOfResult();
+      if (index == null) return null;
+      final valueIndex = index + 1;
+      if (args.length <= valueIndex) {
+        throw Exception("Value wasn't provided for '$long' flag.");
       }
-
-      final index = findResult.index;
-      if (args.length <= index) {
-        throw Exception(
-          "Value wasn't provided for '${findResult.matchedFlag}'.",
-        );
-      }
-      final value = args[index];
-      args.removeAt(index);
-      return value;
+      return args[valueIndex];
     }
 
-    return null;
-  }
-
-  OptionalFlagResult getOptionalFlagValue(List<String> args) {
-    final findResult = findAndRemoveFlag(args);
-    if (findResult == null) {
-      return FlagNotPresent();
-    }
-
-    if (findResult.type == FlagFindType.shortCombined) {
-      return FlagPresent(null);
-    }
-
-    final index = findResult.index;
-    if (args.length > index) {
-      final nextArg = args[index];
-      args.removeAt(index);
-      return FlagPresent(nextArg);
-    }
-
-    return FlagPresent(null);
+    return getFlagValueInternal(long) ?? getFlagValueInternal(short);
   }
 
   @override

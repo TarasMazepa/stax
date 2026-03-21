@@ -9,7 +9,7 @@ import 'package:stax/settings/settings.dart';
 
 class RepositorySettings extends KeyValueStore with BaseSettings {
   static RepositorySettings? load(Context context, Settings settings) {
-    final root = context.quietly().getRepositoryRoot();
+    final root = context.withQuiet(true).getRepositoryRoot();
     if (root == null) return null;
     return RepositorySettings(
       path.join(
