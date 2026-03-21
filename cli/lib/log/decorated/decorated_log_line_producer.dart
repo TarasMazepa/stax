@@ -52,12 +52,12 @@ List<DecoratedLogLine> _produceDecoratedLogLine<T>({
 String materializeDecoratedLogLines<T>({
   required T root,
   required DecoratedLogLineProducerAdapter<T> adapter,
-  int? limit,
+  required int limit,
 }) {
   final decoratedLogLines = _produceDecoratedLogLine(
     root: root,
     adapter: adapter,
-  ).take(limit ?? 100);
+  ).take(limit);
   int alignment = 0;
   for (final decoratedLogLine in decoratedLogLines) {
     alignment = max(alignment, decoratedLogLine.decoration.length);

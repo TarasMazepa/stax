@@ -56,7 +56,7 @@ To abandon: `stax rebase --abandon`
 To continue: `stax rebase --continue`''');
     }
 
-    final root = context.gitLogAll();
+    final root = context.gitLogAll(100000);
 
     final current = root.findCurrent();
 

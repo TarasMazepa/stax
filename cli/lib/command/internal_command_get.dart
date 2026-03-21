@@ -88,7 +88,7 @@ class InternalCommandGet extends InternalCommand {
 
     final targetNode = context
         .quietly()
-        .gitLogAll(true)
+        .gitLogAll(100000, true)
         .findAnyRemoteRefThatEndsWith(targetRef);
 
     if (targetNode == null) {

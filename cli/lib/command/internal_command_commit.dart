@@ -135,12 +135,12 @@ class InternalCommandCommit extends InternalCommand {
 
     String? comeBackNode =
         context.getCurrentBranch() ??
-        context.gitLogAll().findCurrent()?.line.branchNameOrCommitHash();
+        context.gitLogAll(100000).findCurrent()?.line.branchNameOrCommitHash();
     String? baseBranch;
     if (createPr) {
       baseBranch = context.applyBaseBranchReplacement(
         context.getCurrentBranch() ??
-            context.gitLogAll().findCurrent()?.line.branchName() ??
+            context.gitLogAll(100000).findCurrent()?.line.branchName() ??
             context.getDefaultBranch(),
       );
     }

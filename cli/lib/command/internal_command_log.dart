@@ -1,3 +1,4 @@
+import 'package:monolib_dart/monolib_dart.dart';
 import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/context/context.dart';
@@ -6,6 +7,12 @@ import 'package:stax/context/context_git_log_all.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 
 class InternalCommandLog extends InternalCommand {
+  static const int defaultLimit = 100;
+  static final Flag limitFlag = Flag(
+    short: '-n',
+    long: '--limit',
+    description: 'limit the number of commits shown (default $defaultLimit)',
+  );
   static final Flag defaultBranchFlag = Flag(
     short: '-d',
     long: '--default-branch',
@@ -21,7 +28,7 @@ class InternalCommandLog extends InternalCommand {
     : super(
         'log',
         'Shows a tree of all branches.',
-        flags: [defaultBranchFlag, allBranchesFlag],
+        flags: [limitFlag, defaultBranchFlag, allBranchesFlag],
       );
 
   @override
@@ -41,10 +48,12 @@ class InternalCommandLog extends InternalCommand {
     }
 
     final showAllBranches = allBranchesFlag.hasFlag(args);
+    final limit = limitFlag.getFlagValue(args)?.let(int.parse) ?? defaultLimit;
 
     print(
       materializeDecoratedLogLines(
-        root: context.gitLogAll(showAllBranches),
+        limit: limit,
+        root: context.gitLogAll(limit, showAllBranches),
         adapter: DecoratedLogLineProducerAdapterForGitLogAllNode(
           showAllBranches,
           defaultBranch,

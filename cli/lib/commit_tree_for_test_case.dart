@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
+import 'package:stax/command/internal_command_log.dart';
 import 'package:stax/comparison_chain.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 
@@ -178,7 +179,11 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
   }
 
   String getTargetOutput() {
-    return materializeDecoratedLogLines(root: initialCommitId, adapter: this);
+    return materializeDecoratedLogLines(
+      root: initialCommitId,
+      adapter: this,
+      limit: InternalCommandLog.defaultLimit,
+    );
   }
 
   @override

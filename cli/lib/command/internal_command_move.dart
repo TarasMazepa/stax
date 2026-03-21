@@ -88,7 +88,7 @@ class InternalCommandMove extends InternalCommand {
       return;
     }
 
-    final root = context.gitLogAll();
+    final root = context.gitLogAll(100000);
 
     final current = root.findCurrent();
 

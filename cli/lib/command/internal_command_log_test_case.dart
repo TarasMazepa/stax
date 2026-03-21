@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:stax/command/internal_command.dart';
+import 'package:stax/command/internal_command_log.dart';
 import 'package:stax/command/main_function_reference.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/commit_tree_for_test_case.dart';
@@ -12,6 +13,7 @@ class InternalCommandLogTestCase extends InternalCommand {
     : super(
         'log-test-case',
         'shows test case for log command',
+        flags: [InternalCommandLog.limitFlag],
         type: InternalCommandType.hidden,
       );
 

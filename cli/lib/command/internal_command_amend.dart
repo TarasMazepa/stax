@@ -72,7 +72,7 @@ class InternalCommandAmend extends InternalCommand {
       return;
     }
 
-    final current = context.gitLogAll().findCurrent();
+    final current = context.gitLogAll(100000).findCurrent();
 
     bool hasAnyRebaseFlag() =>
         hasRebaseFlag || hasRebaseTheirsFlag || hasRebaseOursFlag;
