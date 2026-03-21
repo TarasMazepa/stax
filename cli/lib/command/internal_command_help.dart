@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_extras.dart';
+import 'package:stax/command/internal_command_finder.dart';
 import 'package:stax/command/internal_commands.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
@@ -65,24 +66,32 @@ class InternalCommandHelp extends InternalCommand {
     Iterable<InternalCommand> commandsToShow;
     bool isExtrasList = false;
 
-    if (singleCommand && selectedCommand == 'extras') {
-      final extrasCmd = internalCommands
-          .whereType<InternalCommandExtras>()
-          .first;
-
-      final subCommandName = args.elementAtOrNull(1);
-      if (subCommandName != null) {
-        commandsToShow = extrasCmd.extraCommands.where(
-          (element) => element.name == subCommandName,
-        );
+    if (singleCommand) {
+      final resolvedCommand = internalCommands.findByNameOrPrefix(
+        selectedCommand,
+      );
+      if (resolvedCommand is InternalCommandExtras) {
+        final extrasCmd = resolvedCommand;
+        final subCommandName = args.elementAtOrNull(1);
+        if (subCommandName != null) {
+          final resolvedSubCommand = extrasCmd.extraCommands.findByNameOrPrefix(
+            subCommandName,
+          );
+          commandsToShow = extrasCmd.extraCommands.where(
+            (element) => element == resolvedSubCommand,
+          );
+        } else {
+          commandsToShow = extrasCmd.extraCommands;
+          isExtrasList = true;
+        }
       } else {
-        commandsToShow = extrasCmd.extraCommands;
-        isExtrasList = true;
+        commandsToShow = internalCommands.where(
+          (element) => element == resolvedCommand,
+        );
       }
     } else {
       commandsToShow = internalCommands.where(
         (element) => switch (element) {
-          _ when singleCommand => element.name == selectedCommand,
           _ when showAll => true,
           _ => element.type == InternalCommandType.public,
         },

@@ -13,7 +13,7 @@ void main() {
             .stdout
             .toString()
             .cleanCarriageReturnOnWindows(),
-        """Global flags:
+        '''Global flags:
    --accept-all - Accept all the user prompts automatically.
    --decline-all - Decline all the user prompts automatically.
    -h, --help - Shows help documentation for the command
@@ -92,6 +92,38 @@ Note: you can type first letter or couple of first letters instead of full comma
       );
     });
 
+    test('help command prefix match', () async {
+      expect(
+        setup
+            .runLiveStaxSync(['help', 'c'])
+            .stdout
+            .toString()
+            .cleanCarriageReturnOnWindows(),
+        """Global flags:
+   --accept-all - Accept all the user prompts automatically.
+   --decline-all - Decline all the user prompts automatically.
+   -h, --help - Shows help documentation for the command
+   --log - Output log after finishing running requested command
+   -q, --quiet - Removes all output except user prompts.
+   -v, --verbose - Force all the output.
+ • commit - Creates a branch, commits, and pushes it to remote. First argument is mandatory commit message. Second argument is optional branch name, if not provided branch name would be generated from commit message.
+      Positional arguments:
+         arg1 - Required commit message, usually enclosed in double quotes like this: "Sample commit message".
+         opt2 - Optional branch name, if not provided commit message would be converted to branch name.
+      Flags:
+         -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
+         -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
+         -b, --branch-from-commit - Accepts branch name proposed by converting commit name to branch name.
+         -c, --come-back - Moves back to the branch on which user was before running commit.
+         -d, --draft - Creates a PR in draft mode using the GitHub CLI. Works only if you have GitHub as your remote.
+         -i, --ignore-no-staged-changes - Skips check if there staged changes, helpful when your change is only rename of the file which stax can't see at the moment.
+         -n, --no-browser - Do not attempt to open the PR URL in the browser.
+         -p, --pull-request - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
+         -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
+""",
+      );
+    });
+
     test('extras help', () async {
       expect(
         setup
@@ -124,6 +156,25 @@ Note: you can type first letter or couple of first letters instead of full comma
  • update - Updates to the latest version.
  • version - Version of stax
 """,
+      );
+    });
+
+    test('extras help subcommand prefix match', () async {
+      expect(
+        setup
+            .runLiveStaxSync(['help', 'e', 'ab'])
+            .stdout
+            .toString()
+            .cleanCarriageReturnOnWindows(),
+        """Global flags:
+   --accept-all - Accept all the user prompts automatically.
+   --decline-all - Decline all the user prompts automatically.
+   -h, --help - Shows help documentation for the command
+   --log - Output log after finishing running requested command
+   -q, --quiet - Removes all output except user prompts.
+   -v, --verbose - Force all the output.
+ • about - Shows information about the stax.
+''',
       );
     });
   });
