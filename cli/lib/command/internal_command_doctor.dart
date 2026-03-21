@@ -206,7 +206,7 @@ class InternalCommandDoctor extends InternalCommand {
       }
     }
 
-    await for (final r in streamResultsInOrder([
+    await for (final result in streamResultsInOrder([
       checkUserName(),
       checkUserEmail(),
       checkRemote(),
@@ -215,14 +215,14 @@ class InternalCommandDoctor extends InternalCommand {
       checkGhAuthStatus(),
       checkGhRepoView(),
     ])) {
-      if (r == null) continue;
+      if (result == null) continue;
       context.printToConsole(
-        '[${boolToCheckmark(r.successful)}] ${r.name} # ${r.result}',
+        '[${boolToCheckmark(result.successful)}] ${result.name} # ${result.result}',
       );
-      if (r.error != null) {
-        context.printToConsole('    X ${r.error}');
-        if (r.resolution != null) {
-          context.printToConsole('      ${r.resolution}');
+      if (result.error != null) {
+        context.printToConsole('    X ${result.error}');
+        if (result.resolution != null) {
+          context.printToConsole('      ${result.resolution}');
         }
       }
     }
