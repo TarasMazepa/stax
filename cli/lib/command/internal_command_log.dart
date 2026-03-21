@@ -19,7 +19,7 @@ class InternalCommandLog extends InternalCommand {
   static final Flag limitFlag = Flag(
     short: '-n',
     long: '--limit',
-    description: 'limit amount of log lines shown to the user',
+    description: 'limit amount of log lines shown to the user (default 100)',
   );
 
   InternalCommandLog()
@@ -37,13 +37,12 @@ class InternalCommandLog extends InternalCommand {
     context = context.quietly();
 
     final String? defaultBranch;
-    int? limit;
+    final int limit;
 
     try {
       defaultBranch = defaultBranchFlag.getFlagValue(args);
-      if (limitFlag.hasFlag(args)) {
-        limit = int.tryParse(limitFlag.getFlagValue(args) ?? '');
-      }
+      final limitString = limitFlag.getFlagValue(args);
+      limit = limitString != null ? int.parse(limitString) : 100;
     } catch (e) {
       print(e);
       return;
