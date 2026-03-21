@@ -86,13 +86,13 @@ class InternalCommandHelp extends InternalCommand {
 
     if (!singleCommand || isExtrasList) {
       if (isExtrasList) {
-        context.printToConsole('Here are available extra commands:');
+        context.printToConsole('Here are available commands under `extras`:');
       } else {
         context.printToConsole('Here are available commands:');
-        context.printToConsole(
-          "Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.",
-        );
       }
+      context.printToConsole(
+        "Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.",
+      );
     }
     for (final element in commandsToShow) {
       context.printToConsole(
