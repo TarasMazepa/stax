@@ -87,5 +87,38 @@ Note: you can type first letter or couple of first letters instead of full comma
 """,
       );
     });
+
+    test('extras help', () async {
+      expect(
+        setup
+            .runLiveStaxSync(['extras', 'help'])
+            .stdout
+            .toString()
+            .cleanCarriageReturnOnWindows(),
+        """Global flags:
+   --accept-all - Accept all the user prompts automatically.
+   --decline-all - Decline all the user prompts automatically.
+   -h, --help - Shows help documentation for the command
+   -q, --quiet - Removes all output except user prompts.
+   -v, --verbose - Force all the output.
+Here are available commands under `extras`:
+Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.
+ • about - Shows information about the stax.
+ • changelog - Shows the stax changelog.
+      Flags:
+         -s, --show-only-latest - show specific amount of versions
+ • doctor - Helps to ensure that stax has everything to be used.
+ • settings - View or modify stax settings
+      Positional arguments:
+         arg1 - Subcommand (add, clear, remove, set, show)
+         opt2 - Setting name
+         opt3 - Setting value
+      Flags:
+         -g, --global - Perform operation on global settings regardless of invocation path.
+ • update - Updates to the latest version.
+ • version - Version of stax
+""",
+      );
+    });
   });
 }
