@@ -6,6 +6,14 @@ import 'package:stax/context/context_git_get_default_remote.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/string_empty_to_null.dart';
 
+typedef DoctorResult = ({
+  bool successful,
+  String name,
+  String result,
+  String? error,
+  String? resolution,
+});
+
 class InternalCommandDoctor extends InternalCommand {
   InternalCommandDoctor()
     : super(
@@ -20,7 +28,7 @@ class InternalCommandDoctor extends InternalCommand {
 
     final isInsideWorkTree = context.isInsideWorkTree();
 
-    Future<String> checkUserName() async {
+    Future<List<DoctorResult>> checkUserName() async {
       final userName =
           (await context
                   .quietly()
@@ -36,20 +44,21 @@ class InternalCommandDoctor extends InternalCommand {
               .emptyToNull();
 
       final hasUserName = userName != null;
-      final result = StringBuffer(
-        '''[${boolToCheckmark(hasUserName)}] git config --get user.name # $userName''',
-      );
 
-      if (!hasUserName) {
-        result.write('\n    X Set your git user name using:');
-        result.write(
-          '\n      git config --global user.name "<your preferred name>" ',
-        );
-      }
-      return result.toString();
+      return [
+        (
+          successful: hasUserName,
+          name: 'git config --get user.name',
+          result: userName ?? 'null',
+          error: hasUserName ? null : 'Set your git user name using:',
+          resolution: hasUserName
+              ? null
+              : 'git config --global user.name "<your preferred name>" ',
+        ),
+      ];
     }
 
-    Future<String> checkUserEmail() async {
+    Future<List<DoctorResult>> checkUserEmail() async {
       final userEmail =
           (await context
                   .quietly()
@@ -65,53 +74,63 @@ class InternalCommandDoctor extends InternalCommand {
               .emptyToNull();
 
       final hasUserEmail = userEmail != null;
-      final result = StringBuffer(
-        '''[${boolToCheckmark(hasUserEmail)}] git config --get user.email # $userEmail''',
-      );
 
-      if (!hasUserEmail) {
-        result.write('\n    X Set your git user email using:');
-        result.write(
-          '\n      git config --global user.email "<your preferred email>" ',
-        );
-      }
-      return result.toString();
+      return [
+        (
+          successful: hasUserEmail,
+          name: 'git config --get user.email',
+          result: userEmail ?? 'null',
+          error: hasUserEmail ? null : 'Set your git user email using:',
+          resolution: hasUserEmail
+              ? null
+              : 'git config --global user.email "<your preferred email>" ',
+        ),
+      ];
     }
 
-    Future<String?> checkRemote() async {
-      if (!isInsideWorkTree) return null;
+    Future<List<DoctorResult>> checkRemote() async {
+      if (!isInsideWorkTree) return [];
 
       final remote = context.getPreferredRemote();
       final hasRemote = remote != null;
-      final result = StringBuffer(
-        """[${boolToCheckmark(hasRemote)}] git remote # ${hasRemote ? "remote(s): $remote" : "no remotes"}""",
-      );
 
-      if (!hasRemote) {
-        result.write('\n    X Set at least one remote using:');
-        result.write('\n      git remote add origin <url to git repository>');
-      }
-      return result.toString();
+      return [
+        (
+          successful: hasRemote,
+          name: 'git remote',
+          result: hasRemote ? "remote(s): $remote" : "no remotes",
+          error: hasRemote ? null : 'Set at least one remote using:',
+          resolution: hasRemote
+              ? null
+              : 'git remote add origin <url to git repository>',
+        ),
+      ];
     }
 
-    Future<String?> checkDefaultBranch() async {
-      if (!isInsideWorkTree) return null;
+    Future<List<DoctorResult>> checkDefaultBranch() async {
+      if (!isInsideWorkTree) return [];
 
       String? defaultBranch = context.quietly().getDefaultBranch();
       String remote =
           ContextGitGetDefaultBranch.remotes?.firstOrNull ?? '<remote>';
-      final result = StringBuffer(
-        """[${boolToCheckmark(defaultBranch != null)}] git rev-parse --abbrev-ref $remote/HEAD # ${defaultBranch ?? "not found"}""",
-      );
 
-      if (defaultBranch == null) {
-        result.write('\n    X Set default remote branch using:');
-        result.write('\n      git fetch -p ; git remote set-head $remote -a');
-      }
-      return result.toString();
+      final hasDefaultBranch = defaultBranch != null;
+
+      return [
+        (
+          successful: hasDefaultBranch,
+          name: 'git rev-parse --abbrev-ref $remote/HEAD',
+          result: defaultBranch ?? "not found",
+          error: hasDefaultBranch ? null : 'Set default remote branch using:',
+          resolution: hasDefaultBranch
+              ? null
+              : 'git fetch -p ; git remote set-head $remote -a',
+        ),
+      ];
     }
 
-    Future<String> checkGh() async {
+    Future<List<DoctorResult>> checkGh() async {
+      final results = <DoctorResult>[];
       String? ghVersion;
       try {
         ghVersion =
@@ -126,14 +145,17 @@ class InternalCommandDoctor extends InternalCommand {
         ghVersion = null;
       }
 
-      final result = StringBuffer(
-        '''[${boolToCheckmark(ghVersion?.isNotEmpty == true)}] gh --version # $ghVersion''',
-      );
+      final hasGh = ghVersion?.isNotEmpty == true;
+      results.add((
+        successful: hasGh,
+        name: 'gh --version',
+        result: ghVersion ?? 'null',
+        error: hasGh ? null : '[Optional] Install GitHub CLI using:',
+        resolution: hasGh ? null : 'https://github.com/cli/cli#installation',
+      ));
 
-      if (ghVersion?.isNotEmpty != true) {
-        result.write('\n    X [Optional] Install GitHub CLI using:');
-        result.write('\n      https://github.com/cli/cli#installation');
-        return result.toString();
+      if (!hasGh) {
+        return results;
       }
 
       final isAuthenticated =
@@ -144,14 +166,18 @@ class InternalCommandDoctor extends InternalCommand {
                   .run())
               .isSuccess();
 
-      result.write(
-        '''\n[${boolToCheckmark(isAuthenticated)}] gh auth status # ${isAuthenticated ? "authenticated" : "not authenticated"}''',
-      );
+      results.add((
+        successful: isAuthenticated,
+        name: 'gh auth status',
+        result: isAuthenticated ? "authenticated" : "not authenticated",
+        error: isAuthenticated
+            ? null
+            : '[Optional] Authenticate GitHub CLI using:',
+        resolution: isAuthenticated ? null : 'gh auth login',
+      ));
 
       if (!isAuthenticated) {
-        result.write('\n    X [Optional] Authenticate GitHub CLI using:');
-        result.write('\n      gh auth login');
-        return result.toString();
+        return results;
       }
 
       if (isInsideWorkTree) {
@@ -163,35 +189,45 @@ class InternalCommandDoctor extends InternalCommand {
                     .run())
                 .isSuccess();
 
-        result.write(
-          '''\n[${boolToCheckmark(canAccessRepo)}] gh repo view # ${canAccessRepo ? "has access" : "no access"}''',
-        );
-
-        if (!canAccessRepo) {
-          result.write(
-            '\n    X [Optional] Ensure you have access to this repository on GitHub',
-          );
-        }
+        results.add((
+          successful: canAccessRepo,
+          name: 'gh repo view',
+          result: canAccessRepo ? "has access" : "no access",
+          error: canAccessRepo
+              ? null
+              : '[Optional] Ensure you have access to this repository on GitHub',
+          resolution: null,
+        ));
       }
 
-      return result.toString();
+      return results;
     }
 
-    Stream<String?> streamResultsInOrder(List<Future<String?>> futures) async* {
+    Stream<List<DoctorResult>> streamResultsInOrder(
+      List<Future<List<DoctorResult>>> futures,
+    ) async* {
       for (final future in futures) {
         yield await future;
       }
     }
 
-    await for (final result in streamResultsInOrder([
+    await for (final results in streamResultsInOrder([
       checkUserName(),
       checkUserEmail(),
       checkRemote(),
       checkDefaultBranch(),
       checkGh(),
     ])) {
-      if (result != null) {
-        context.printToConsole(result);
+      for (final r in results) {
+        context.printToConsole(
+          '[${boolToCheckmark(r.successful)}] ${r.name} # ${r.result}',
+        );
+        if (r.error != null) {
+          context.printToConsole('    X ${r.error}');
+          if (r.resolution != null) {
+            context.printToConsole('      ${r.resolution}');
+          }
+        }
       }
     }
   }
