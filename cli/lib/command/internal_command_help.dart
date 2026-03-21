@@ -18,7 +18,6 @@ class InternalCommandHelp extends InternalCommand {
     : super(
         'help',
         'List of available commands.',
-        type: InternalCommandType.hidden,
         flags: [showAllFlag],
         arguments: {
           'opt1': 'Optional name of the command you want to learn about',
