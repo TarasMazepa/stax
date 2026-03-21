@@ -25,6 +25,10 @@ extension ContextHandleGlobalFlags on Context {
     long: '--help',
     description: 'Shows help documentation for the command',
   );
+  static final logFlag = Flag(
+    long: '--log',
+    description: 'Output log after finishing running requested command',
+  );
 
   static final List<Flag> flags = [
     quietFlag,
@@ -32,13 +36,15 @@ extension ContextHandleGlobalFlags on Context {
     acceptAllFlag,
     declineAllFlag,
     helpFlag,
+    logFlag,
   ];
 
   Context handleGlobalFlags(List<String> args) {
     return withQuiet(quietFlag.hasFlag(args))
         .withVerbose(verboseFlag.hasFlag(args))
         .withAcceptingAll(acceptAllFlag.hasFlag(args))
-        .withDecliningAll(declineAllFlag.hasFlag(args));
+        .withDecliningAll(declineAllFlag.hasFlag(args))
+        .withShowLogAfter(logFlag.hasFlag(args));
   }
 
   bool hasHelpFlag(List<String> args) {

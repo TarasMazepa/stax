@@ -17,6 +17,7 @@ void main() {
    --accept-all - Accept all the user prompts automatically.
    --decline-all - Decline all the user prompts automatically.
    -h, --help - Shows help documentation for the command
+   --log - Output log after finishing running requested command
    -q, --quiet - Removes all output except user prompts.
    -v, --verbose - Force all the output.
 Here are available commands:
@@ -99,6 +100,7 @@ Note: you can type first letter or couple of first letters instead of full comma
    --accept-all - Accept all the user prompts automatically.
    --decline-all - Decline all the user prompts automatically.
    -h, --help - Shows help documentation for the command
+   --log - Output log after finishing running requested command
    -q, --quiet - Removes all output except user prompts.
    -v, --verbose - Force all the output.
 Here are available commands under `extras`:

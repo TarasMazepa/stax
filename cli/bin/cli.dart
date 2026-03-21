@@ -25,5 +25,8 @@ Future<void> main(List<String> arguments) async {
       } else {
         await command.run(args, context);
       }
+      if (context.showLogAfter) {
+        await internalCommands.findByNameOrPrefix('log')?.run([], context);
+      }
   }
 }
