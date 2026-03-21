@@ -87,7 +87,7 @@ class InternalCommandGet extends InternalCommand {
         .printNotEmptyResultFields();
 
     final targetNode = context
-        .quietly()
+        .withQuiet(true)
         .gitLogAll(true)
         .findAnyRemoteRefThatEndsWith(targetRef);
 
@@ -101,19 +101,16 @@ class InternalCommandGet extends InternalCommand {
         .map((x) => x.substring(x.indexOf('/') + 1))
         .toList();
 
-    if (branches.isNotEmpty) {
+    for (String branch in branches) {
       context.git.switchDetach
           .announce()
           .runSyncCatching()
           ?.printNotEmptyResultFields();
       context.git.branchDelete
-          .args(branches)
+          .arg(branch)
           .announce()
           .runSyncCatching()
           ?.printNotEmptyResultFields();
-    }
-
-    for (String branch in branches) {
       context.git.switch0
           .arg(branch)
           .announce()

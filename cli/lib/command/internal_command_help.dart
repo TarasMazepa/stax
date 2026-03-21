@@ -18,6 +18,7 @@ class InternalCommandHelp extends InternalCommand {
     : super(
         'help',
         'List of available commands.',
+        type: InternalCommandType.hidden,
         flags: [showAllFlag],
         arguments: {
           'opt1': 'Optional name of the command you want to learn about',
@@ -68,8 +69,9 @@ class InternalCommandHelp extends InternalCommand {
     if (singleCommand) {
       final firstCommand = positionalArgs[0];
       if (firstCommand == 'extras' || firstCommand == 'e') {
-        final extrasCmd =
-            internalCommands.whereType<InternalCommandExtras>().first;
+        final extrasCmd = internalCommands
+            .whereType<InternalCommandExtras>()
+            .first;
         if (positionalArgs.length > 1) {
           final subCommandName = positionalArgs[1];
           final subCommand = extrasCmd.extraCommands.firstWhereOrNull(
@@ -97,14 +99,16 @@ class InternalCommandHelp extends InternalCommand {
             (element) => element.name == firstCommand,
           );
           if (commandsToShow.isEmpty) {
-             // Maybe it's a subcommand of extras directly requested like `changelog` without `extras` keyword?
-             final extrasCmd = internalCommands.whereType<InternalCommandExtras>().first;
-             final subCommand = extrasCmd.extraCommands.firstWhereOrNull(
-               (c) => c.name == firstCommand || c.shortName == firstCommand,
-             );
-             if (subCommand != null) {
-               commandsToShow = [subCommand];
-             }
+            // Maybe it's a subcommand of extras directly requested like `changelog` without `extras` keyword?
+            final extrasCmd = internalCommands
+                .whereType<InternalCommandExtras>()
+                .first;
+            final subCommand = extrasCmd.extraCommands.firstWhereOrNull(
+              (c) => c.name == firstCommand || c.shortName == firstCommand,
+            );
+            if (subCommand != null) {
+              commandsToShow = [subCommand];
+            }
           }
         }
       }

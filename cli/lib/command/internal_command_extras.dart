@@ -15,6 +15,7 @@ class InternalCommandExtras extends InternalCommand {
     InternalCommandAbout(),
     InternalCommandChangelog(),
     InternalCommandDoctor(),
+    InternalCommandHelp(),
     InternalCommandSettings(),
     InternalCommandUpdate(),
     InternalCommandVersion(),
@@ -23,7 +24,7 @@ class InternalCommandExtras extends InternalCommand {
   InternalCommandExtras()
     : super(
         'extras',
-        'Extra non-primary commands (about, changelog, doctor, settings, update, version). Run `stax extras` to see detailed list.',
+        'Extra non-primary commands (about, changelog, doctor, help, settings, update, version). Run `stax extras` to see detailed list.',
         shortName: 'e',
         arguments: {'arg1': 'Subcommand to run'},
       );
@@ -36,8 +37,8 @@ class InternalCommandExtras extends InternalCommand {
         await InternalCommandHelp().run(['extras'], context);
       case [final commandName, ...final commandArgs]:
         if (commandName == 'help' && commandArgs.isNotEmpty) {
-           await InternalCommandHelp().run([name, ...commandArgs], context);
-           return;
+          await InternalCommandHelp().run([name, ...commandArgs], context);
+          return;
         }
         final command = extraCommands.findByNameOrPrefix(commandName);
 
@@ -50,18 +51,19 @@ class InternalCommandExtras extends InternalCommand {
 
         // If 'help' was passed as the last positional argument.
         if (commandArgs.contains('help') && !context.hasHelpFlag(commandArgs)) {
-           await InternalCommandHelp().run([name, command.name], context);
-           return;
+          await InternalCommandHelp().run([name, command.name], context);
+          return;
         }
 
         if (context.hasHelpFlag(commandArgs)) {
           // If the extra command has its own help, we can call it.
           // Or we can just fallback to the global help.
           // The main help expects the command name as arg if we want specific help.
-          await InternalCommandHelp().run(
-            [name, command.name, ...commandArgs.where((a) => !a.startsWith('-'))],
-            context,
-          );
+          await InternalCommandHelp().run([
+            name,
+            command.name,
+            ...commandArgs.where((a) => !a.startsWith('-')),
+          ], context);
         } else {
           await command.run(commandArgs, context);
         }
