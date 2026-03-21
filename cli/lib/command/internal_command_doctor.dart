@@ -4,6 +4,8 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_get_default_remote.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
+import 'package:monolib_dart/json_encode_async.dart' as monolib;
+import 'package:stax/command/flag.dart';
 import 'package:stax/string_empty_to_null.dart';
 
 typedef DoctorResult = ({
@@ -15,15 +17,24 @@ typedef DoctorResult = ({
 });
 
 class InternalCommandDoctor extends InternalCommand {
+  static final flagJson = Flag(
+    short: '-j',
+    long: '--json',
+    description: 'output in json format',
+  );
+
   InternalCommandDoctor()
     : super(
         'doctor',
         'Helps to ensure that stax has everything to be used.',
         type: InternalCommandType.hidden,
+        flags: [flagJson],
       );
 
   @override
   Future<void> run(final List<String> args, Context context) async {
+    final isJson = flagJson.hasFlag(args);
+
     String boolToCheckmark(bool value) => value ? 'V' : 'X';
 
     final isInsideWorkTree = context.isInsideWorkTree();
@@ -206,6 +217,8 @@ class InternalCommandDoctor extends InternalCommand {
       }
     }
 
+    final jsonResults = <Map<String, dynamic>>[];
+
     await for (final result in streamResultsInOrder([
       checkUserName(),
       checkUserEmail(),
@@ -216,15 +229,32 @@ class InternalCommandDoctor extends InternalCommand {
       checkGhRepoView(),
     ])) {
       if (result == null) continue;
-      context.printToConsole(
-        '[${boolToCheckmark(result.successful)}] ${result.name} # ${result.result}',
-      );
-      if (result.error != null) {
-        context.printToConsole('    X ${result.error}');
-        if (result.resolution != null) {
-          context.printToConsole('      ${result.resolution}');
+
+      if (isJson) {
+        jsonResults.add({
+          'successful': result.successful,
+          'name': result.name,
+          'result': result.result,
+          if (result.error != null) 'error': result.error,
+          if (result.resolution != null) 'resolution': result.resolution,
+        });
+      } else {
+        context.printToConsole(
+          '[${boolToCheckmark(result.successful)}] ${result.name} # ${result.result}',
+        );
+        if (result.error != null) {
+          context.printToConsole('    X ${result.error}');
+          if (result.resolution != null) {
+            context.printToConsole('      ${result.resolution}');
+          }
         }
       }
+    }
+
+    if (isJson) {
+      final buffer = StringBuffer();
+      await monolib.jsonEncodeAsync({'checks': jsonResults}, buffer);
+      context.printToConsole(buffer.toString());
     }
   }
 }

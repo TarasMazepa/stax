@@ -114,6 +114,8 @@ Note: you can type first letter or couple of first letters instead of full comma
       Flags:
          -s, --show-only-latest - show specific amount of versions
  • doctor - Helps to ensure that stax has everything to be used.
+      Flags:
+         -j, --json - output in json format
  • settings - View or modify stax settings
       Positional arguments:
          arg1 - Subcommand (add, clear, remove, set, show)
