@@ -2,6 +2,7 @@
 
 * stax extras changelog - adds -s/--show-only-latest flag to specify the amount of latest versions to display
 * stax extras doctor - would no longer ask for `push.autoSetupRemote` git config to be `true` and would instead set it as argument to git invocation when stax needs it
+* stax get - now would delete all branches in one go before getting them
 
 0.11.2
 
