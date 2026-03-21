@@ -55,6 +55,13 @@ void main() {
     expect(context.quiet, false);
     expect(modifiedContext.quiet, true);
   });
+  test('implicit changing quietly', () {
+    final context = Context.implicit();
+    Context modifiedContext = context.quietly();
+    expect(context, (c) => !identical(c, modifiedContext));
+    expect(context.quiet, false);
+    expect(modifiedContext.quiet, true);
+  });
   test('implicit changing withWorkingDirectory', () {
     final context = Context.implicit();
     Context modifiedContext = context.withWorkingDirectory('directory');

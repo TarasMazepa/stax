@@ -15,7 +15,7 @@ extension GitLogAllOnContext on Context {
     final listQueue = <GitLogAllNode>[];
     GitLogAllNode produce() {
       GitLogAllNode? cache;
-      return withQuiet(true)
+      return quietly()
               ._gitLogAllLimited()
               .map((x) => x.ensureSingleParent(listQueue))
               .map((x) => x.collapse(showAllBranches))
