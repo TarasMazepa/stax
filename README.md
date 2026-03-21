@@ -1,6 +1,6 @@
-# Stax
+# stax for git by Taras Mazepa
 
-stax - manage git branches and stack PRs
+stax for git - simplify your day to day git tasks, stacked PR ready
 
 [Are you new to Git? Check out our Stax Onboarding Guide for Beginners!](guides/onboarding.md)
 
