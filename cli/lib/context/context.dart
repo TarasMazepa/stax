@@ -47,6 +47,8 @@ class Context {
     return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
+  Context quietly() => withQuiet(true);
+
   Context withVerbose(bool verbose) {
     if (this.verbose == verbose) return this;
     return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);

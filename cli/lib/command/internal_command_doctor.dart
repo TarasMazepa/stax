@@ -18,10 +18,12 @@ class InternalCommandDoctor extends InternalCommand {
   Future<void> run(final List<String> args, Context context) async {
     String boolToCheckmark(bool value) => value ? 'V' : 'X';
 
-    {
+    final isInsideWorkTree = context.isInsideWorkTree();
+
+    Future<String> checkUserName() async {
       final userName =
           (await context
-                  .withQuiet(true)
+                  .quietly()
                   .git
                   .configGet
                   .arg('user.name')
@@ -34,22 +36,23 @@ class InternalCommandDoctor extends InternalCommand {
               .emptyToNull();
 
       final hasUserName = userName != null;
-      context.printToConsole(
+      final result = StringBuffer(
         '''[${boolToCheckmark(hasUserName)}] git config --get user.name # $userName''',
       );
 
       if (!hasUserName) {
-        context.printToConsole('''    X Set your git user name using:''');
-        context.printToConsole(
-          '''      git config --global user.name "<your preferred name>" ''',
+        result.write('\n    X Set your git user name using:');
+        result.write(
+          '\n      git config --global user.name "<your preferred name>" ',
         );
       }
+      return result.toString();
     }
 
-    {
+    Future<String> checkUserEmail() async {
       final userEmail =
           (await context
-                  .withQuiet(true)
+                  .quietly()
                   .git
                   .configGet
                   .arg('user.email')
@@ -62,22 +65,23 @@ class InternalCommandDoctor extends InternalCommand {
               .emptyToNull();
 
       final hasUserEmail = userEmail != null;
-      context.printToConsole(
+      final result = StringBuffer(
         '''[${boolToCheckmark(hasUserEmail)}] git config --get user.email # $userEmail''',
       );
 
       if (!hasUserEmail) {
-        context.printToConsole('''    X Set your git user email using:''');
-        context.printToConsole(
-          '''      git config --global user.email "<your preferred email>" ''',
+        result.write('\n    X Set your git user email using:');
+        result.write(
+          '\n      git config --global user.email "<your preferred email>" ',
         );
       }
+      return result.toString();
     }
 
-    {
+    Future<String> checkAutoSetupRemote() async {
       final autoSetupRemote =
           (await context
-                  .withQuiet(true)
+                  .quietly()
                   .git
                   .configGet
                   .arg('push.autoSetupRemote')
@@ -92,56 +96,56 @@ class InternalCommandDoctor extends InternalCommand {
               .emptyToNull();
 
       final hasAutoSetupRemote = autoSetupRemote == 'true';
-      context.printToConsole(
+      final result = StringBuffer(
         '''[${boolToCheckmark(hasAutoSetupRemote)}] git config --get push.autoSetupRemote # $hasAutoSetupRemote''',
       );
 
       if (!hasAutoSetupRemote) {
-        context.printToConsole('''    X Set git push.autoSetupRemote using:''');
-        context.printToConsole(
-          '''      git config --global push.autoSetupRemote true ''',
-        );
+        result.write('\n    X Set git push.autoSetupRemote using:');
+        result.write('\n      git config --global push.autoSetupRemote true ');
       }
+      return result.toString();
     }
 
-    if (context.isInsideWorkTree()) {
+    Future<String?> checkRemote() async {
+      if (!isInsideWorkTree) return null;
+
       final remote = context.getPreferredRemote();
       final hasRemote = remote != null;
-      context.printToConsole(
+      final result = StringBuffer(
         """[${boolToCheckmark(hasRemote)}] git remote # ${hasRemote ? "remote(s): $remote" : "no remotes"}""",
       );
 
       if (!hasRemote) {
-        context.printToConsole('''    X Set at least one remote using:''');
-        context.printToConsole(
-          '''      git remote add origin <url to git repository>''',
-        );
+        result.write('\n    X Set at least one remote using:');
+        result.write('\n      git remote add origin <url to git repository>');
       }
+      return result.toString();
     }
 
-    if (context.isInsideWorkTree()) {
-      String? defaultBranch = context.withQuiet(true).getDefaultBranch();
+    Future<String?> checkDefaultBranch() async {
+      if (!isInsideWorkTree) return null;
+
+      String? defaultBranch = context.quietly().getDefaultBranch();
       String remote =
           ContextGitGetDefaultBranch.remotes?.firstOrNull ?? '<remote>';
-      context.printToConsole(
+      final result = StringBuffer(
         """[${boolToCheckmark(defaultBranch != null)}] git rev-parse --abbrev-ref $remote/HEAD # ${defaultBranch ?? "not found"}""",
       );
 
       if (defaultBranch == null) {
-        context.printToConsole('''    X Set default remote branch using:''');
-        context.printToConsole(
-          '''      git fetch -p ; git remote set-head $remote -a''',
-        );
+        result.write('\n    X Set default remote branch using:');
+        result.write('\n      git fetch -p ; git remote set-head $remote -a');
       }
+      return result.toString();
     }
 
-    // Check gh CLI installation and authentication
-    {
+    Future<String> checkGh() async {
       String? ghVersion;
       try {
         ghVersion =
             (await context
-                    .withQuiet(true)
+                    .quietly()
                     .command(['gh', '--version'])
                     .announce('Checking if GitHub CLI is installed.')
                     .run())
@@ -151,58 +155,73 @@ class InternalCommandDoctor extends InternalCommand {
         ghVersion = null;
       }
 
-      context.printToConsole(
+      final result = StringBuffer(
         '''[${boolToCheckmark(ghVersion?.isNotEmpty == true)}] gh --version # $ghVersion''',
       );
 
       if (ghVersion?.isNotEmpty != true) {
-        context.printToConsole(
-          '''    X [Optional] Install GitHub CLI using:''',
-        );
-        context.printToConsole(
-          '''      https://github.com/cli/cli#installation''',
-        );
-        return;
+        result.write('\n    X [Optional] Install GitHub CLI using:');
+        result.write('\n      https://github.com/cli/cli#installation');
+        return result.toString();
       }
 
       final isAuthenticated =
           (await context
-                  .withQuiet(true)
+                  .quietly()
                   .command(['gh', 'auth', 'status'])
                   .announce('Checking if GitHub CLI is authenticated.')
                   .run())
               .isSuccess();
 
-      context.printToConsole(
-        '''[${boolToCheckmark(isAuthenticated)}] gh auth status # ${isAuthenticated ? "authenticated" : "not authenticated"}''',
+      result.write(
+        '''\n[${boolToCheckmark(isAuthenticated)}] gh auth status # ${isAuthenticated ? "authenticated" : "not authenticated"}''',
       );
 
       if (!isAuthenticated) {
-        context.printToConsole(
-          '''    X [Optional] Authenticate GitHub CLI using:''',
-        );
-        context.printToConsole('''      gh auth login''');
-        return;
+        result.write('\n    X [Optional] Authenticate GitHub CLI using:');
+        result.write('\n      gh auth login');
+        return result.toString();
       }
 
-      if (context.isInsideWorkTree()) {
+      if (isInsideWorkTree) {
         final canAccessRepo =
             (await context
-                    .withQuiet(true)
+                    .quietly()
                     .command(['gh', 'repo', 'view'])
                     .announce('Checking if GitHub CLI can access repository.')
                     .run())
                 .isSuccess();
 
-        context.printToConsole(
-          '''[${boolToCheckmark(canAccessRepo)}] gh repo view # ${canAccessRepo ? "has access" : "no access"}''',
+        result.write(
+          '''\n[${boolToCheckmark(canAccessRepo)}] gh repo view # ${canAccessRepo ? "has access" : "no access"}''',
         );
 
         if (!canAccessRepo) {
-          context.printToConsole(
-            '''    X [Optional] Ensure you have access to this repository on GitHub''',
+          result.write(
+            '\n    X [Optional] Ensure you have access to this repository on GitHub',
           );
         }
+      }
+
+      return result.toString();
+    }
+
+    Stream<String?> streamResultsInOrder(List<Future<String?>> futures) async* {
+      for (final future in futures) {
+        yield await future;
+      }
+    }
+
+    await for (final result in streamResultsInOrder([
+      checkUserName(),
+      checkUserEmail(),
+      checkAutoSetupRemote(),
+      checkRemote(),
+      checkDefaultBranch(),
+      checkGh(),
+    ])) {
+      if (result != null) {
+        context.printToConsole(result);
       }
     }
   }
