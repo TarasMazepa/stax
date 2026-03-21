@@ -4,6 +4,7 @@ import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_extras.dart';
 import 'package:stax/command/internal_commands.dart';
 import 'package:stax/command/types_for_internal_command.dart';
+import 'package:stax/command/internal_command_finder.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
 
@@ -68,9 +69,10 @@ class InternalCommandHelp extends InternalCommand {
         final extrasCmd = internalCommands
             .whereType<InternalCommandExtras>()
             .first;
-        commandsToShow = extrasCmd.extraCommands.where(
-          (element) => element.name == subCommandName,
+        final command = extrasCmd.extraCommands.findByNameOrPrefix(
+          subCommandName,
         );
+        commandsToShow = command != null ? [command] : [];
       case ['extras']:
         final extrasCmd = internalCommands
             .whereType<InternalCommandExtras>()
@@ -78,9 +80,8 @@ class InternalCommandHelp extends InternalCommand {
         commandsToShow = extrasCmd.extraCommands;
         headerMessage = 'Here are available commands under `extras`:';
       case [final selectedCommand, ...]:
-        commandsToShow = internalCommands.where(
-          (element) => element.name == selectedCommand,
-        );
+        final command = internalCommands.findByNameOrPrefix(selectedCommand);
+        commandsToShow = command != null ? [command] : [];
       case []:
       default:
         commandsToShow = internalCommands.where(
