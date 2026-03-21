@@ -1,3 +1,7 @@
+0.11.1
+
+* stax extras changelog - adds -s/--show-only-latest flag to specify the amount of latest versions to display
+
 0.11.0
 
 * stax move - adds left and right directions, to move between sibling branches
