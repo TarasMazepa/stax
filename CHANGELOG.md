@@ -1,3 +1,7 @@
+0.11.5
+
+* stax pull - changes --stay-on-head to --no-switch-back (-n) to avoid clashing with global help flag
+
 0.11.4
 
 * stax any - adds `--log` global flag to automatically execute `stax log` after finishing the requested command
