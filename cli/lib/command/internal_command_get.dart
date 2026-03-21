@@ -87,7 +87,7 @@ class InternalCommandGet extends InternalCommand {
         .printNotEmptyResultFields();
 
     final targetNode = context
-        .withQuiet(true)
+        .quietly()
         .gitLogAll(true)
         .findAnyRemoteRefThatEndsWith(targetRef);
 
@@ -96,42 +96,29 @@ class InternalCommandGet extends InternalCommand {
       return;
     }
 
-    for (String branch in targetNode.remoteBranchNamesInOrderForCheckout().map(
-      (x) => x.substring(x.indexOf('/') + 1),
-    )) {
-      final exists = context.git.revParseVerify
-          .arg(branch)
+    final branches = targetNode
+        .remoteBranchNamesInOrderForCheckout()
+        .map((x) => x.substring(x.indexOf('/') + 1))
+        .toList();
+
+    if (branches.isNotEmpty) {
+      context.git.switchDetach
           .announce()
-          .runSync()
-          .printNotEmptyResultFields()
-          .isSuccess();
+          .runSyncCatching()
+          ?.printNotEmptyResultFields();
+      context.git.branchDelete
+          .args(branches)
+          .announce()
+          .runSyncCatching()
+          ?.printNotEmptyResultFields();
+    }
+
+    for (String branch in branches) {
       context.git.switch0
           .arg(branch)
           .announce()
-          .runSync()
-          .printNotEmptyResultFields();
-      final success = (await context.git.pullForce.announce().run(
-        onDemandPrint: true,
-      )).printNotEmptyResultFields().isSuccess();
-      if (!success) {
-        if (!exists) {
-          return;
-        }
-        context.git.switchDetach
-            .announce()
-            .runSync()
-            .printNotEmptyResultFields();
-        context.git.branchDelete
-            .arg(branch)
-            .announce()
-            .runSync()
-            .printNotEmptyResultFields();
-        context.git.switch0
-            .arg(branch)
-            .announce()
-            .runSync()
-            .printNotEmptyResultFields();
-      }
+          .runSyncCatching()
+          ?.printNotEmptyResultFields();
     }
 
     final shouldDoRebase =

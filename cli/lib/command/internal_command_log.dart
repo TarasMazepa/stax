@@ -29,7 +29,7 @@ class InternalCommandLog extends InternalCommand {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }
-    context = context.withQuiet(true);
+    context = context.quietly();
 
     final String? defaultBranch;
 

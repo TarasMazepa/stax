@@ -1,0 +1,73 @@
+#!/bin/bash
+set -e
+
+# Change to the root of the project to ensure relative paths work consistently
+cd "$(dirname "$0")/../.."
+
+# Run stax help and capture output
+cd cli
+HELP_OUTPUT=$(dart run bin/cli.dart help)
+cd ..
+
+# Generate help.html
+cat << 'HTML_EOF' > guides/web/help.html
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css">
+    <title>stax help - command reference</title>
+    <style>
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            padding: 1rem;
+            background-color: var(--pico-code-background-color);
+            border-radius: var(--pico-border-radius);
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        main {
+            padding-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html"><strong>Stax for git</strong></a></li>
+            by
+            <li><a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></li>
+        </ul>
+        <ul>
+            <li><a href="guides.html">Try live in browser</a></li>
+            <li><a href="help.html">Help</a></li>
+            <li><a href="https://github.com/TarasMazepa/stax" target="_blank">GitHub</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <article id="content">
+        <h1>Stax Command Reference</h1>
+        <p>This is the output of the <code>stax help</code> command.</p>
+        <pre id="help-content">
+HTML_EOF
+
+# HTML escape the help output
+echo "$HELP_OUTPUT" | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' >> guides/web/help.html
+
+cat << 'HTML_EOF' >> guides/web/help.html
+        </pre>
+    </article>
+</main>
+<footer>
+    <p style="text-align: center;">By <a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></p>
+</footer>
+</body>
+</html>
+HTML_EOF
+
+echo "Generated guides/web/help.html"

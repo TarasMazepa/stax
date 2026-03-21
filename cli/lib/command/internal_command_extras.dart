@@ -12,12 +12,11 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
 
 class InternalCommandExtras extends InternalCommand {
-  final List<InternalCommand> _extraCommands = [
+  final List<InternalCommand> extraCommands = [
     InternalCommandAbout(),
     InternalCommandAgents(),
     InternalCommandChangelog(),
     InternalCommandDoctor(),
-    InternalCommandHelp(),
     InternalCommandSettings(),
     InternalCommandUpdate(),
     InternalCommandVersion(),
@@ -26,7 +25,7 @@ class InternalCommandExtras extends InternalCommand {
   InternalCommandExtras()
     : super(
         'extras',
-        'Extra non-primary commands (about, agents.md, changelog, doctor, help, settings, update, version). Run `stax extras` to see detailed list.',
+        'Extra non-primary commands (about, agents.md, changelog, doctor, settings, update, version). Run `stax extras` to see detailed list.',
         shortName: 'e',
         arguments: {'arg1': 'Subcommand to run'},
       );
@@ -35,18 +34,14 @@ class InternalCommandExtras extends InternalCommand {
   Future<void> run(final List<String> args, Context context) async {
     switch (args) {
       case []:
-        context.printToConsole('Here are available extra commands:');
-        for (final command in _extraCommands) {
-          context.printToConsole(
-            ' • ${command.name}${command.shortName != null ? ", ${command.shortName}" : ""} - ${command.description}',
-          );
-        }
+      case ['help']:
+        await InternalCommandHelp().run(['extras'], context);
       case [final commandName, ...final commandArgs]:
-        final command = _extraCommands.findByNameOrPrefix(commandName);
+        final command = extraCommands.findByNameOrPrefix(commandName);
 
         if (command == null) {
           context.printParagraph(
-            "Unknown extra command or prefix of a command '$commandName'. Available commands: ${_extraCommands.map((c) => c.name).join(', ')}",
+            "Unknown extra command or prefix of a command '$commandName'. Available commands: ${extraCommands.map((c) => c.name).join(', ')}",
           );
           return;
         }

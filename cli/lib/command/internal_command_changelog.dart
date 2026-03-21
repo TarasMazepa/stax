@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_version.dart';
 import 'package:stax/command/types_for_internal_command.dart';
@@ -10,15 +11,36 @@ class InternalCommandChangelog extends InternalCommand {
   static const String changelogUrl =
       'https://raw.githubusercontent.com/TarasMazepa/stax/refs/heads/main/CHANGELOG.md';
 
+  static final Flag versionsFlag = Flag(
+    short: '-s',
+    long: '--show-only-latest',
+    description: 'show specific amount of versions',
+  );
+
   InternalCommandChangelog()
     : super(
         'changelog',
         'Shows the stax changelog.',
         type: InternalCommandType.hidden,
+        flags: [versionsFlag],
       );
 
   @override
   Future<void> run(final List<String> args, Context context) async {
+    late final int limit;
+    final versionsFlagResult = versionsFlag.getOptionalFlagValue(args);
+    try {
+      limit = switch (versionsFlagResult) {
+        FlagPresent(:final value?) => int.parse(value),
+        FlagPresent() => 9007199254740991,
+        _ => 5,
+      };
+    } catch (e) {
+      final value = (versionsFlagResult as FlagPresent).value;
+      context.printParagraph("'$value' should be a valid integer.");
+      return;
+    }
+
     try {
       final request = http.Request('GET', Uri.parse(changelogUrl));
       final response = await request.send();
@@ -33,7 +55,7 @@ class InternalCommandChangelog extends InternalCommand {
                 .transform(const LineSplitter())) {
           if (versionRegex.matchAsPrefix(chunk) != null) {
             entries++;
-            if (entries > 5) break;
+            if (entries > limit) break;
           }
           if (chunk.startsWith(currentVersion)) {
             context.printToConsole('$chunk <-- current version');

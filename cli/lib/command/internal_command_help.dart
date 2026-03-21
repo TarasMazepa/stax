@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
+import 'package:stax/command/internal_command_extras.dart';
 import 'package:stax/command/internal_commands.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
@@ -17,7 +18,6 @@ class InternalCommandHelp extends InternalCommand {
     : super(
         'help',
         'List of available commands.',
-        type: InternalCommandType.hidden,
         flags: [showAllFlag],
         arguments: {
           'opt1': 'Optional name of the command you want to learn about',
@@ -61,16 +61,34 @@ class InternalCommandHelp extends InternalCommand {
     final showAll = showAllFlag.hasFlag(args);
     final selectedCommand = args.elementAtOrNull(0);
     final singleCommand = selectedCommand != null;
-    final commandsToShow = internalCommands.where(
-      (element) => switch (element) {
-        _ when singleCommand => element.name == selectedCommand,
-        _ when showAll => true,
-        _ => element.type == InternalCommandType.public,
-      },
-    );
+
+    Iterable<InternalCommand> commandsToShow;
+    bool isExtrasList = false;
+
+    if (singleCommand && selectedCommand == 'extras') {
+      final extrasCmd = internalCommands
+          .whereType<InternalCommandExtras>()
+          .first;
+      commandsToShow = extrasCmd.extraCommands;
+      isExtrasList = true;
+    } else {
+      commandsToShow = internalCommands.where(
+        (element) => switch (element) {
+          _ when singleCommand => element.name == selectedCommand,
+          _ when showAll => true,
+          _ => element.type == InternalCommandType.public,
+        },
+      );
+    }
+
     printFlags(context, 'Global flags', ContextHandleGlobalFlags.flags, '');
-    if (!singleCommand) {
-      context.printToConsole('Here are available commands:');
+
+    if (!singleCommand || isExtrasList) {
+      if (isExtrasList) {
+        context.printToConsole('Here are available commands under `extras`:');
+      } else {
+        context.printToConsole('Here are available commands:');
+      }
       context.printToConsole(
         "Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.",
       );
