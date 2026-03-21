@@ -32,7 +32,7 @@ jobs:
         working-directory: cli
       - run: dart analyze
         working-directory: cli
-      - uses: TarasMazepa/github-action-cat@master
+      - uses: TarasMazepa/github-action-cat@main
         id: get-flutter-version
         with:
           path: FLUTTER_VERSION
