@@ -19,6 +19,7 @@ class Git {
   late final diff = rawEc('git diff');
   late final diffCachedQuiet = diff.args(['--cached', '--quiet']);
   late final fetch = rawEc('git fetch');
+  late final forEachRef = rawEc('git for-each-ref');
   late final fetchWithPrune = fetch.arg('-p');
   late final log = rawEc('git log');
   late final logOneLineNoDecorate = log.args(['--oneline', '--no-decorate']);

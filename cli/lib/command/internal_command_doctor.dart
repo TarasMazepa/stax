@@ -105,8 +105,7 @@ class InternalCommandDoctor extends InternalCommand {
       if (!isInsideWorkTree) return null;
 
       String? defaultBranch = context.quietly().getDefaultBranch();
-      String remote =
-          ContextGitGetDefaultBranch.remotes?.firstOrNull ?? '<remote>';
+      String remote = context.quietly().getPreferredRemote() ?? '<remote>';
 
       final hasDefaultBranch = defaultBranch != null;
 
