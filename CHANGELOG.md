@@ -1,6 +1,6 @@
 0.11.4
 
-* stax pull - adds -m/--stay-on-main flag to allow staying on the main branch after pulling
+* stax pull - adds --stay-on-head flag to allow staying on the head/default branch after pulling
 
 0.11.3
 
