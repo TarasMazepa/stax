@@ -1,4 +1,5 @@
 import 'package:stax/context/context.dart';
+import 'package:stax/context/context_git_get_default_remote.dart';
 import 'package:stax/external_command/external_command.dart';
 
 class Git {
@@ -27,8 +28,17 @@ class Git {
   late final pull = rawEc('git pull');
   late final pullForce = pull.arg('--force');
   late final pullPrune = pull.arg('--prune');
-  late final push = rawEc('git -c push.autoSetupRemote=true push');
-  late final pushForce = push.arg('--force');
+
+  ExternalCommand get push {
+    final cmd = rawEc('git -c push.autoSetupRemote=true push');
+    final remote = context.getPreferredRemote();
+    if (remote != null) {
+      return cmd.arg(remote);
+    }
+    return cmd;
+  }
+
+  ExternalCommand get pushForce => push.arg('--force');
   late final rebase = rawEc('git rebase');
   late final remote = rawEc('git remote');
   late final remoteGetUrl = remote.arg('get-url');
