@@ -10,8 +10,8 @@ import 'package:stax/git/branch_info.dart';
 
 class InternalCommandPull extends InternalCommand {
   static final stayOnHeadFlag = Flag(
-    short: '-h',
-    long: '--stay-on-head',
+    short: '-n',
+    long: '--no-switch-back',
     description: 'Stay on the head/default branch after pulling.',
   );
 
