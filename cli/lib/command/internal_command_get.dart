@@ -101,21 +101,10 @@ class InternalCommandGet extends InternalCommand {
         .map((x) => x.substring(x.indexOf('/') + 1))
         .toList();
 
-    if (branches.isNotEmpty) {
-      context.git.switchDetach
-          .announce()
-          .runSyncCatching()
-          ?.printNotEmptyResultFields();
-      context.git.branchDelete
-          .args(branches)
-          .announce()
-          .runSyncCatching()
-          ?.printNotEmptyResultFields();
-    }
-
     for (String branch in branches) {
-      context.git.switch0
+      context.git.switchForceCreate
           .arg(branch)
+          .arg('origin/$branch')
           .announce()
           .runSyncCatching()
           ?.printNotEmptyResultFields();

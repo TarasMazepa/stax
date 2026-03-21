@@ -48,6 +48,7 @@ class Git {
   late final switch0 = rawEc('git switch');
   late final switchCreate = switch0.arg('--create');
   late final switchDetach = switch0.arg('--detach');
+  late final switchForceCreate = switch0.arg('-C');
 
   final Context context;
 
