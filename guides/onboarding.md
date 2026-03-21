@@ -108,3 +108,6 @@ Here is a quick cheat sheet grouping the most important commands. Note that many
     *   *Example:* `stax a -u` adds updated files to the existing commit.
 
 Welcome to a simpler way to build software. Happy coding with Stax!
+
+🤖 Using an AI Assistant or Agent?
+If you are using an autonomous AI agent or a tool like Cursor to write code, Stax has built-in instructions optimized for machines. Just have your agent run stax extras agents.md to get its tailored cheat sheet!

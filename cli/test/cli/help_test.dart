@@ -104,6 +104,7 @@ Note: you can type first letter or couple of first letters instead of full comma
 Here are available commands under `extras`:
 Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.
  • about - Shows information about the stax.
+ • agents.md - Outputs a Markdown-formatted set of explicit instructions designed specifically for LLMs and autonomous agents to learn how to effectively use Stax.
  • changelog - Shows the stax changelog.
       Flags:
          -s, --show-only-latest - show specific amount of versions

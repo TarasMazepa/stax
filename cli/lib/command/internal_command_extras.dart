@@ -7,6 +7,7 @@ import 'package:stax/command/internal_command_help.dart';
 import 'package:stax/command/internal_command_settings.dart';
 import 'package:stax/command/internal_command_update.dart';
 import 'package:stax/command/internal_command_version.dart';
+import 'package:stax/command/internal_command_agents.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
 
@@ -18,6 +19,7 @@ class InternalCommandExtras extends InternalCommand {
     InternalCommandSettings(),
     InternalCommandUpdate(),
     InternalCommandVersion(),
+    InternalCommandAgents(),
   ]..sort();
 
   InternalCommandExtras()
