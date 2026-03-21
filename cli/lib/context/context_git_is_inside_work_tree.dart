@@ -4,7 +4,7 @@ extension ContextGitIsInsideWorkTree on Context {
   static bool? _isInsideWorkTree;
 
   bool isInsideWorkTree() {
-    if (_isInsideWorkTree != null) return _isInsideWorkTree!;
+    if (_isInsideWorkTree case final isInsideWorkTree?) return isInsideWorkTree;
     return _isInsideWorkTree =
         withQuiet(true).git.revParseIsInsideWorkTree
             .announce('Checking if inside git work tree.')
