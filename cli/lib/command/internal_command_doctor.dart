@@ -129,8 +129,7 @@ class InternalCommandDoctor extends InternalCommand {
       ];
     }
 
-    Future<List<DoctorResult>> checkGh() async {
-      final results = <DoctorResult>[];
+    Future<List<DoctorResult>> checkGhVersion() async {
       String? ghVersion;
       try {
         ghVersion =
@@ -146,50 +145,62 @@ class InternalCommandDoctor extends InternalCommand {
       }
 
       final hasGh = ghVersion?.isNotEmpty == true;
-      results.add((
-        successful: hasGh,
-        name: 'gh --version',
-        result: ghVersion ?? 'null',
-        error: hasGh ? null : '[Optional] Install GitHub CLI using:',
-        resolution: hasGh ? null : 'https://github.com/cli/cli#installation',
-      ));
+      return [
+        (
+          successful: hasGh,
+          name: 'gh --version',
+          result: ghVersion ?? 'null',
+          error: hasGh ? null : '[Optional] Install GitHub CLI using:',
+          resolution: hasGh ? null : 'https://github.com/cli/cli#installation',
+        ),
+      ];
+    }
 
-      if (!hasGh) {
-        return results;
+    Future<List<DoctorResult>> checkGhAuthStatus() async {
+      bool isAuthenticated = false;
+      try {
+        isAuthenticated =
+            (await context
+                    .quietly()
+                    .command(['gh', 'auth', 'status'])
+                    .announce('Checking if GitHub CLI is authenticated.')
+                    .run())
+                .isSuccess();
+      } catch (e) {
+        isAuthenticated = false;
       }
 
-      final isAuthenticated =
-          (await context
-                  .quietly()
-                  .command(['gh', 'auth', 'status'])
-                  .announce('Checking if GitHub CLI is authenticated.')
-                  .run())
-              .isSuccess();
+      return [
+        (
+          successful: isAuthenticated,
+          name: 'gh auth status',
+          result: isAuthenticated ? 'authenticated' : 'not authenticated',
+          error: isAuthenticated
+              ? null
+              : '[Optional] Authenticate GitHub CLI using:',
+          resolution: isAuthenticated ? null : 'gh auth login',
+        ),
+      ];
+    }
 
-      results.add((
-        successful: isAuthenticated,
-        name: 'gh auth status',
-        result: isAuthenticated ? 'authenticated' : 'not authenticated',
-        error: isAuthenticated
-            ? null
-            : '[Optional] Authenticate GitHub CLI using:',
-        resolution: isAuthenticated ? null : 'gh auth login',
-      ));
+    Future<List<DoctorResult>> checkGhRepoView() async {
+      if (!isInsideWorkTree) return [];
 
-      if (!isAuthenticated) {
-        return results;
-      }
-
-      if (isInsideWorkTree) {
-        final canAccessRepo =
+      bool canAccessRepo = false;
+      try {
+        canAccessRepo =
             (await context
                     .quietly()
                     .command(['gh', 'repo', 'view'])
                     .announce('Checking if GitHub CLI can access repository.')
                     .run())
                 .isSuccess();
+      } catch (e) {
+        canAccessRepo = false;
+      }
 
-        results.add((
+      return [
+        (
           successful: canAccessRepo,
           name: 'gh repo view',
           result: canAccessRepo ? 'has access' : 'no access',
@@ -197,10 +208,8 @@ class InternalCommandDoctor extends InternalCommand {
               ? null
               : '[Optional] Ensure you have access to this repository on GitHub',
           resolution: null,
-        ));
-      }
-
-      return results;
+        ),
+      ];
     }
 
     Stream<List<DoctorResult>> streamResultsInOrder(
@@ -216,7 +225,9 @@ class InternalCommandDoctor extends InternalCommand {
       checkUserEmail(),
       checkRemote(),
       checkDefaultBranch(),
-      checkGh(),
+      checkGhVersion(),
+      checkGhAuthStatus(),
+      checkGhRepoView(),
     ])) {
       for (final r in results) {
         context.printToConsole(
