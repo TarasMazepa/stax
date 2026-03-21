@@ -28,6 +28,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -b, --rebase-prefer-base - Runs 'stax rebase --prefer-base' afterwards on all children branches.
          -m, --rebase-prefer-moving - Runs 'stax rebase --prefer-moving' afterwards on all children branches.
          -r, --rebase - Runs 'stax rebase' afterwards on all children branches.
+         --skip-rebase - Skip asking for rebase entirely.
          -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
  • commit - Creates a branch, commits, and pushes it to remote. First argument is mandatory commit message. Second argument is optional branch name, if not provided branch name would be generated from commit message.
       Positional arguments:
