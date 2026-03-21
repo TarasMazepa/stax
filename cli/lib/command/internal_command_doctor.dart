@@ -98,7 +98,7 @@ class InternalCommandDoctor extends InternalCommand {
         (
           successful: hasRemote,
           name: 'git remote',
-          result: hasRemote ? "remote(s): $remote" : "no remotes",
+          result: hasRemote ? 'remote(s): $remote' : 'no remotes',
           error: hasRemote ? null : 'Set at least one remote using:',
           resolution: hasRemote
               ? null
@@ -120,7 +120,7 @@ class InternalCommandDoctor extends InternalCommand {
         (
           successful: hasDefaultBranch,
           name: 'git rev-parse --abbrev-ref $remote/HEAD',
-          result: defaultBranch ?? "not found",
+          result: defaultBranch ?? 'not found',
           error: hasDefaultBranch ? null : 'Set default remote branch using:',
           resolution: hasDefaultBranch
               ? null
@@ -169,7 +169,7 @@ class InternalCommandDoctor extends InternalCommand {
       results.add((
         successful: isAuthenticated,
         name: 'gh auth status',
-        result: isAuthenticated ? "authenticated" : "not authenticated",
+        result: isAuthenticated ? 'authenticated' : 'not authenticated',
         error: isAuthenticated
             ? null
             : '[Optional] Authenticate GitHub CLI using:',
@@ -192,7 +192,7 @@ class InternalCommandDoctor extends InternalCommand {
         results.add((
           successful: canAccessRepo,
           name: 'gh repo view',
-          result: canAccessRepo ? "has access" : "no access",
+          result: canAccessRepo ? 'has access' : 'no access',
           error: canAccessRepo
               ? null
               : '[Optional] Ensure you have access to this repository on GitHub',
