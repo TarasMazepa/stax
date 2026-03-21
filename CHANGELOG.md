@@ -1,3 +1,7 @@
+0.11.3
+
+* stax extras changelog - adds -s/--show-only-latest flag to specify the amount of latest versions to display
+
 0.11.2
 
 * stax get - migrate branch update logic to switch detach and delete strategy
