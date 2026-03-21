@@ -111,7 +111,7 @@ $object
         questionContext[questionContext.length - 1] != '\n';
     if (includeSpace) questionContext += ' ';
 
-    while (true) {
+    for (var i = 0; i < 3; i++) {
       print('${questionContext}Continue y/N? ');
       final response = stdin.readLineSync();
       if (response == 'y' || response == 'Y') {
@@ -123,8 +123,13 @@ $object
           response == null) {
         return false;
       }
-      print("Inconclusive answer '$response', please type 'y' or 'n'.");
+      if (i < 2) {
+        print("Inconclusive answer '$response', please type 'y' or 'n'.");
+      } else {
+        print("Inconclusive answer '$response', defaulting to 'n'.");
+      }
     }
+    return false;
   }
 
   String? commandLineMultipleOptionsQuestion(
