@@ -40,6 +40,25 @@ class InternalCommandExtras extends InternalCommand {
           commandName,
           ...commandArgs,
         ], context);
+      case [final commandName, ...final commandArgs]
+          when context.hasHelpFlag(commandArgs):
+        final command = extraCommands.findByNameOrPrefix(commandName);
+
+        if (command == null) {
+          context.printParagraph(
+            "Unknown extra command or prefix of a command '$commandName'. Available commands: ${extraCommands.map((c) => c.name).join(', ')}",
+          );
+          return;
+        }
+
+        // If the extra command has its own help, we can call it.
+        // Or we can just fallback to the global help.
+        // The main help expects the command name as arg if we want specific help.
+        await InternalCommandHelp().run([
+          'extras',
+          command.name,
+          ...commandArgs,
+        ], context);
       case [final commandName, ...final commandArgs]:
         final command = extraCommands.findByNameOrPrefix(commandName);
 
@@ -50,18 +69,7 @@ class InternalCommandExtras extends InternalCommand {
           return;
         }
 
-        if (context.hasHelpFlag(commandArgs)) {
-          // If the extra command has its own help, we can call it.
-          // Or we can just fallback to the global help.
-          // The main help expects the command name as arg if we want specific help.
-          await InternalCommandHelp().run([
-            'extras',
-            command.name,
-            ...commandArgs,
-          ], context);
-        } else {
-          await command.run(commandArgs, context);
-        }
+        await command.run(commandArgs, context);
     }
   }
 }
