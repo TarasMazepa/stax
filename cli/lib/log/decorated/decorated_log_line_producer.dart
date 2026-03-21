@@ -52,7 +52,7 @@ List<DecoratedLogLine> _produceDecoratedLogLine<T>({
 String materializeDecoratedLogLines<T>({
   required T root,
   required DecoratedLogLineProducerAdapter<T> adapter,
-  int limit = 100,
+  required int limit,
 }) {
   final decoratedLogLines = _produceDecoratedLogLine(
     root: root,

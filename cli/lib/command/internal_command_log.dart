@@ -16,10 +16,12 @@ class InternalCommandLog extends InternalCommand {
     long: '--all-branches',
     description: 'show remote branches also',
   );
+  static const int defaultLimit = 100;
   static final Flag limitFlag = Flag(
     short: '-n',
     long: '--limit',
-    description: 'limit amount of log lines shown to the user (default 100)',
+    description:
+        'limit amount of log lines shown to the user (default $defaultLimit)',
   );
 
   InternalCommandLog()
@@ -42,7 +44,7 @@ class InternalCommandLog extends InternalCommand {
     try {
       defaultBranch = defaultBranchFlag.getFlagValue(args);
       final limitString = limitFlag.getFlagValue(args);
-      limit = limitString != null ? int.parse(limitString) : 100;
+      limit = limitString != null ? int.parse(limitString) : defaultLimit;
     } catch (e) {
       print(e);
       return;

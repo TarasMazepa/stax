@@ -178,7 +178,11 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
   }
 
   String getTargetOutput() {
-    return materializeDecoratedLogLines(root: initialCommitId, adapter: this);
+    return materializeDecoratedLogLines(
+      root: initialCommitId,
+      adapter: this,
+      limit: 100,
+    );
   }
 
   @override
