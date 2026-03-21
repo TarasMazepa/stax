@@ -18,7 +18,7 @@ jobs:
           tar -xvf container2wasm-$VERSION-linux-amd64.tar.gz
           sudo mv c2w /usr/local/bin/
       - run: mkdir -p ./guides/web/containers
-      - uses: TarasMazepa/github-action-cat@master
+      - uses: TarasMazepa/github-action-cat@main
         id: get-dart-version
         with:
           path: DART_SDK_VERSION

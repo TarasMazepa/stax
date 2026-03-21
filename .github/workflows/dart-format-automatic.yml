@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.client_payload.ref }}
-      - uses: TarasMazepa/github-action-cat@master
+      - uses: TarasMazepa/github-action-cat@main
         id: get-dart-version
         with:
           path: DART_SDK_VERSION

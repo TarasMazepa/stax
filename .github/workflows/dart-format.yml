@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: TarasMazepa/github-action-cat@master
+      - uses: TarasMazepa/github-action-cat@main
         id: get-dart-version
         with:
           path: DART_SDK_VERSION
