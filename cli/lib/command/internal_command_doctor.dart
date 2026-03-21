@@ -206,22 +206,20 @@ class InternalCommandDoctor extends InternalCommand {
       return result.toString();
     }
 
-    final futures = <Future<String?>>[
-      checkUserName(),
-      checkUserEmail(),
-      checkAutoSetupRemote(),
-      checkRemote(),
-      checkDefaultBranch(),
-      checkGh(),
-    ];
-
     Stream<String?> streamResultsInOrder(List<Future<String?>> futures) async* {
       for (final future in futures) {
         yield await future;
       }
     }
 
-    await for (final result in streamResultsInOrder(futures)) {
+    await for (final result in streamResultsInOrder([
+      checkUserName(),
+      checkUserEmail(),
+      checkAutoSetupRemote(),
+      checkRemote(),
+      checkDefaultBranch(),
+      checkGh(),
+    ])) {
       if (result != null) {
         context.printToConsole(result);
       }
