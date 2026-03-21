@@ -6,7 +6,7 @@ extension ContextGitIsInsideWorkTree on Context {
   bool isInsideWorkTree() {
     if (_isInsideWorkTree case final isInsideWorkTree?) return isInsideWorkTree;
     return _isInsideWorkTree =
-        withQuiet(true).git.revParseIsInsideWorkTree
+        quietly().git.revParseIsInsideWorkTree
             .announce('Checking if inside git work tree.')
             .runSync()
             .assertSuccessfulExitCode() !=

@@ -23,7 +23,7 @@ class InternalCommandDoctor extends InternalCommand {
     Future<String> checkUserName() async {
       final userName =
           (await context
-                  .withQuiet(true)
+                  .quietly()
                   .git
                   .configGet
                   .arg('user.name')
@@ -52,7 +52,7 @@ class InternalCommandDoctor extends InternalCommand {
     Future<String> checkUserEmail() async {
       final userEmail =
           (await context
-                  .withQuiet(true)
+                  .quietly()
                   .git
                   .configGet
                   .arg('user.email')
@@ -81,7 +81,7 @@ class InternalCommandDoctor extends InternalCommand {
     Future<String> checkAutoSetupRemote() async {
       final autoSetupRemote =
           (await context
-                  .withQuiet(true)
+                  .quietly()
                   .git
                   .configGet
                   .arg('push.autoSetupRemote')
@@ -126,7 +126,7 @@ class InternalCommandDoctor extends InternalCommand {
     Future<String?> checkDefaultBranch() async {
       if (!isInsideWorkTree) return null;
 
-      String? defaultBranch = context.withQuiet(true).getDefaultBranch();
+      String? defaultBranch = context.quietly().getDefaultBranch();
       String remote =
           ContextGitGetDefaultBranch.remotes?.firstOrNull ?? '<remote>';
       final result = StringBuffer(
@@ -145,7 +145,7 @@ class InternalCommandDoctor extends InternalCommand {
       try {
         ghVersion =
             (await context
-                    .withQuiet(true)
+                    .quietly()
                     .command(['gh', '--version'])
                     .announce('Checking if GitHub CLI is installed.')
                     .run())
@@ -167,7 +167,7 @@ class InternalCommandDoctor extends InternalCommand {
 
       final isAuthenticated =
           (await context
-                  .withQuiet(true)
+                  .quietly()
                   .command(['gh', 'auth', 'status'])
                   .announce('Checking if GitHub CLI is authenticated.')
                   .run())
@@ -186,7 +186,7 @@ class InternalCommandDoctor extends InternalCommand {
       if (isInsideWorkTree) {
         final canAccessRepo =
             (await context
-                    .withQuiet(true)
+                    .quietly()
                     .command(['gh', 'repo', 'view'])
                     .announce('Checking if GitHub CLI can access repository.')
                     .run())
