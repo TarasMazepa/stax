@@ -18,6 +18,15 @@ jobs:
           tar -xvf container2wasm-$VERSION-linux-amd64.tar.gz
           sudo mv c2w /usr/local/bin/
       - run: mkdir -p ./guides/web/containers
+      - uses: TarasMazepa/github-action-cat@master
+        id: get-dart-version
+        with:
+          path: DART_SDK_VERSION
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ steps.get-dart-version.outputs.text }}
+      - run: dart pub get
+        working-directory: cli
       - run: ./guides/scripts/generate_html.sh
       - run: .github/scripts/build_guide_docker_to_wasm amend
       - run: .github/scripts/build_guide_docker_to_wasm commit
