@@ -130,7 +130,9 @@ class InternalCommandAmend extends InternalCommand {
         .assertSuccessfulExitCode();
 
     if (pushResult == null) {
-      context.printParagraph("Push wasn't successful. Retry it yourself: `git push --force`");
+      context.printParagraph(
+        "Push wasn't successful. Retry it yourself: `git push --force`",
+      );
       return;
     }
 
