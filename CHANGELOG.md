@@ -1,10 +1,11 @@
 0.11.4
 
 * stax any - adds `--log` global flag to automatically execute `stax log` after finishing the requested command
+* stax pull - adds --stay-on-head flag to allow staying on the head/default branch after pulling
 
 0.11.3
 
-*  stax extras agents.md - new command with agents specific instructions how to use stax
+* stax extras agents.md - new command with agents specific instructions how to use stax
 * stax extras changelog - adds -s/--show-only-latest flag to specify the amount of latest versions to display
 * stax extras doctor - would no longer ask for `push.autoSetupRemote` git config to be `true` and would instead set it as argument to git invocation when stax needs it
 * stax get - now would delete all branches in one go before getting them

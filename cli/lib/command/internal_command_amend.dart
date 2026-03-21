@@ -27,6 +27,10 @@ class InternalCommandAmend extends InternalCommand {
     description:
         "Runs 'stax rebase ${InternalCommandRebase.oursFlag.long}' afterwards on all children branches.",
   );
+  static final skipRebaseFlag = Flag(
+    long: '--skip-rebase',
+    description: 'Skip asking for rebase entirely.',
+  );
 
   InternalCommandAmend()
     : super(
@@ -38,6 +42,7 @@ class InternalCommandAmend extends InternalCommand {
           rebaseFlag,
           rebaseOursFlag,
           rebaseTheirsFlag,
+          skipRebaseFlag,
         ],
       );
 
@@ -56,11 +61,13 @@ class InternalCommandAmend extends InternalCommand {
     bool hasRebaseFlag = rebaseFlag.hasFlag(args);
     bool hasRebaseTheirsFlag = rebaseTheirsFlag.hasFlag(args);
     bool hasRebaseOursFlag = rebaseOursFlag.hasFlag(args);
+    bool hasSkipRebaseFlag = skipRebaseFlag.hasFlag(args);
 
     if (context.assertNoConflictingFlags([
       if (hasRebaseFlag) rebaseFlag,
       if (hasRebaseTheirsFlag) rebaseTheirsFlag,
       if (hasRebaseOursFlag) rebaseOursFlag,
+      if (hasSkipRebaseFlag) skipRebaseFlag,
     ])) {
       return;
     }
@@ -70,7 +77,9 @@ class InternalCommandAmend extends InternalCommand {
     bool hasAnyRebaseFlag() =>
         hasRebaseFlag || hasRebaseTheirsFlag || hasRebaseOursFlag;
 
-    if (!hasAnyRebaseFlag() && current?.children.isNotEmpty == true) {
+    if (!hasAnyRebaseFlag() &&
+        !hasSkipRebaseFlag &&
+        current?.children.isNotEmpty == true) {
       switch (context.commandLineMultipleOptionsQuestion(
         'This branch has children. Would you like to rebase them?',
         [
