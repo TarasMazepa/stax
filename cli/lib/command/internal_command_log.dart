@@ -1,5 +1,6 @@
 import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
+import 'package:monolib_dart/monolib_dart.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
@@ -43,8 +44,7 @@ class InternalCommandLog extends InternalCommand {
 
     try {
       defaultBranch = defaultBranchFlag.getFlagValue(args);
-      final limitString = limitFlag.getFlagValue(args);
-      limit = limitString != null ? int.parse(limitString) : defaultLimit;
+      limit = limitFlag.getFlagValue(args)?.let(int.parse) ?? defaultLimit;
     } catch (e) {
       print(e);
       return;
