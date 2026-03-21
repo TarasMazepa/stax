@@ -61,7 +61,6 @@ stax doctor
 ```
 [V] git config --get user.name # Taras Mazepa
 [V] git config --get user.email # 6552358+TarasMazepa@users.noreply.github.com
-[V] git config --get push.autoSetupRemote # true
 [V] git remote # remote(s): origin
 [V] git rev-parse --abbrev-ref origin/HEAD # main
 ```
