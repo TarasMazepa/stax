@@ -26,7 +26,9 @@ Here are explicit instructions on how to use Stax for automation:
 
 * `stax get <branch name>`: A sure way to get a remote branch when local and remote have diverged.
 
-* `stax pull --force-delete`: Switches to the default branch, pulls changes, and deletes stale branches.
+* `stax pull --force-delete`: Switches to the default branch, pulls changes, and deletes stale branches and returns back to the original branch.
+
+* `stax rebase --prefer-moving`: Rebases current branch and its siblings on top of the default branch and force pushes. `--prefer-moving` would automatically resolve conflicts by preserving changes done in the branch.
 ''');
   }
 }
