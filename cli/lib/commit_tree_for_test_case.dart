@@ -118,7 +118,7 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
     );
   }
 
-  String toUmlString() {
+  String toUmlString({required int limit}) {
     String result = '';
     void addToResult(String string) {
       result += '$string\n';
@@ -133,8 +133,8 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
       });
     }
     addToResult('note bottom of ${nodeName(initialCommitId)}');
-    getTargetCommands().forEach(addToResult);
-    getTargetOutput()
+    getTargetCommands(limit: limit).forEach(addToResult);
+    getTargetOutput(limit: limit)
         .split('\n')
         .where((x) => x.isNotEmpty)
         .forEach((element) => addToResult('""$element""'));
@@ -142,7 +142,7 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
     return result.trim();
   }
 
-  List<String> getTargetCommands() {
+  List<String> getTargetCommands({required int limit}) {
     String previousValue = '';
     bool haveSeenNonCheckout = false;
     List<String> gitLines(int id) => [
@@ -172,12 +172,15 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
               })
               .toList()
               .reversed
-              .followedBy(['git checkout ${commitName(currentId)}']),
+              .followedBy([
+                'git checkout ${commitName(currentId)}',
+                'stax log -n $limit',
+              ]),
         )
         .toList();
   }
 
-  String getTargetOutput({int limit = 100}) {
+  String getTargetOutput({required int limit}) {
     return materializeDecoratedLogLines(
       root: initialCommitId,
       adapter: this,
