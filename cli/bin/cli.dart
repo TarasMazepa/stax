@@ -1,5 +1,6 @@
 import 'package:stax/command/internal_command_finder.dart';
 import 'package:stax/command/internal_command_help.dart';
+import 'package:stax/command/internal_command_log.dart';
 import 'package:stax/command/internal_commands.dart';
 import 'package:stax/command/main_function_reference.dart';
 import 'package:stax/context/context.dart';
@@ -9,6 +10,7 @@ Future<void> main(List<String> arguments) async {
   mainFunctionReference = main;
   arguments = arguments.toList();
   final context = Context.implicit().handleGlobalFlags(arguments);
+  final shouldLogAfterwards = context.hasLogFlag(arguments);
   switch (arguments) {
     case []:
       await InternalCommandHelp().run([], context);
@@ -25,8 +27,8 @@ Future<void> main(List<String> arguments) async {
       } else {
         await command.run(args, context);
       }
-      if (context.hasLogFlag(arguments)) {
-        await internalCommands.findByNameOrPrefix('log')?.run([], context);
-      }
+  }
+  if (shouldLogAfterwards) {
+    await InternalCommandLog().run([], context);
   }
 }
