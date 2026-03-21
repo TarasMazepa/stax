@@ -47,12 +47,13 @@ class InternalCommandPull extends InternalCommand {
     bool needToSwitchBranches = currentBranch != defaultBranch;
     ExtendedProcessResult? result;
     if (needToSwitchBranches) {
-      result = context.git.switch0
-          .arg(defaultBranch)
-          .announce("Switching to default branch '$defaultBranch'.")
-          .runSync()
-          .printNotEmptyResultFields()
-          .assertSuccessfulExitCode();
+      result =
+          (await context.git.switch0
+                  .arg(defaultBranch)
+                  .announce("Switching to default branch '$defaultBranch'.")
+                  .run())
+              .printNotEmptyResultFields()
+              .assertSuccessfulExitCode();
       if (result == null) return;
     }
     result =
@@ -63,10 +64,10 @@ class InternalCommandPull extends InternalCommand {
             .assertSuccessfulExitCode();
     if (result == null) {
       if (needToSwitchBranches && currentBranch != null) {
-        context.git.switch0
-            .arg(currentBranch)
-            .announce("Switching back to original branch '$currentBranch'.")
-            .runSync()
+        (await context.git.switch0
+                .arg(currentBranch)
+                .announce("Switching back to original branch '$currentBranch'.")
+                .run())
             .printNotEmptyResultFields();
       }
       return;
@@ -74,10 +75,10 @@ class InternalCommandPull extends InternalCommand {
 
     for (final branch in additionalBranches) {
       if (branch.isNotEmpty) {
-        context.git.switch0
-            .arg(branch)
-            .announce("Switching to additional branch '$branch'.")
-            .runSync()
+        (await context.git.switch0
+                .arg(branch)
+                .announce("Switching to additional branch '$branch'.")
+                .run())
             .printNotEmptyResultFields();
 
         (await context.git.pullPrune
@@ -87,28 +88,30 @@ class InternalCommandPull extends InternalCommand {
       }
     }
 
-    final branchesToDelete = context.git.branchVv
-        .announce('Checking if any remote branches are gone.')
-        .runSync()
-        .printNotEmptyResultFields()
-        .parseBranchInfo()
-        .where((e) => e.gone)
-        .map((e) => e.name)
-        .toList();
+    final branchesToDelete =
+        (await context.git.branchVv
+                .announce('Checking if any remote branches are gone.')
+                .run())
+            .printNotEmptyResultFields()
+            .parseBranchInfo()
+            .where((e) => e.gone)
+            .map((e) => e.name)
+            .toList();
     if (branchesToDelete.isEmpty) {
       context.printToConsole('No local branches with gone remotes.');
     } else {
-      final result = context.git.branchDelete
-          .args(branchesToDelete)
-          .askContinueQuestion(
-            "Local branches with gone remotes that would be deleted:\n${branchesToDelete.map((e) => "   • $e").join("\n")}\n",
-            assumeYes: hasForceDeleteFlag,
-            assumeNo: hasSkipDeleteFlag,
-          )
-          ?.announce('Deleting branches.')
-          .runSync()
-          .printNotEmptyResultFields()
-          .assertSuccessfulExitCode();
+      final result =
+          (await context.git.branchDelete
+                  .args(branchesToDelete)
+                  .askContinueQuestion(
+                    "Local branches with gone remotes that would be deleted:\n${branchesToDelete.map((e) => "   • $e").join("\n")}\n",
+                    assumeYes: hasForceDeleteFlag,
+                    assumeNo: hasSkipDeleteFlag,
+                  )
+                  ?.announce('Deleting branches.')
+                  .run())
+              ?.printNotEmptyResultFields()
+              .assertSuccessfulExitCode();
       if (result != null && needToSwitchBranches) {
         needToSwitchBranches = !branchesToDelete.contains(currentBranch);
       }
@@ -116,10 +119,10 @@ class InternalCommandPull extends InternalCommand {
 
     if ((needToSwitchBranches || additionalBranches.isNotEmpty) &&
         currentBranch != null) {
-      context.git.switch0
-          .arg(currentBranch)
-          .announce("Switching back to original branch '$currentBranch'.")
-          .runSync()
+      (await context.git.switch0
+              .arg(currentBranch)
+              .announce("Switching back to original branch '$currentBranch'.")
+              .run())
           .printNotEmptyResultFields();
     }
   }
