@@ -46,7 +46,7 @@ Note: you can type first letter or couple of first letters instead of full comma
       Flags:
          -f, --force-delete - Force delete gone branches.
          -s, --skip-delete - Skip deletion of gone branches.
- • extras, e - Extra non-primary commands (about, changelog, doctor, help, settings, update, version). Run `stax extras` to see detailed list.
+ • extras, e - Extra non-primary commands (about, changelog, doctor, settings, update, version). Run `stax extras` to see detailed list.
       Positional arguments:
          arg1 - Subcommand to run
  • get - (Re)Checkout specified branch and all its children
@@ -57,6 +57,11 @@ Note: you can type first letter or couple of first letters instead of full comma
          -c, --current - Force get current branch, skipping the confirmation prompt.
          -m, --rebase-prefer-moving - Runs 'stax rebase --prefer-moving' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.
          -r, --rebase - Runs 'stax rebase' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.
+ • help - List of available commands.
+      Positional arguments:
+         opt1 - Optional name of the command you want to learn about
+      Flags:
+         -a, --show-all - Show all commands including hidden.
  • log - Shows a tree of all branches.
       Flags:
          -a, --all-branches - show remote branches also
