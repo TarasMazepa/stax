@@ -78,35 +78,6 @@ class InternalCommandDoctor extends InternalCommand {
       return result.toString();
     }
 
-    Future<String> checkAutoSetupRemote() async {
-      final autoSetupRemote =
-          (await context
-                  .quietly()
-                  .git
-                  .configGet
-                  .arg('push.autoSetupRemote')
-                  .announce(
-                    'Checking if push.autoSetupRemote set in git config.',
-                  )
-                  .run())
-              .printNotEmptyResultFields()
-              .stdout
-              .toString()
-              .trim()
-              .emptyToNull();
-
-      final hasAutoSetupRemote = autoSetupRemote == 'true';
-      final result = StringBuffer(
-        '''[${boolToCheckmark(hasAutoSetupRemote)}] git config --get push.autoSetupRemote # $hasAutoSetupRemote''',
-      );
-
-      if (!hasAutoSetupRemote) {
-        result.write('\n    X Set git push.autoSetupRemote using:');
-        result.write('\n      git config --global push.autoSetupRemote true ');
-      }
-      return result.toString();
-    }
-
     Future<String?> checkRemote() async {
       if (!isInsideWorkTree) return null;
 
@@ -215,7 +186,6 @@ class InternalCommandDoctor extends InternalCommand {
     await for (final result in streamResultsInOrder([
       checkUserName(),
       checkUserEmail(),
-      checkAutoSetupRemote(),
       checkRemote(),
       checkDefaultBranch(),
       checkGh(),

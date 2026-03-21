@@ -27,7 +27,7 @@ class Git {
   late final pull = rawEc('git pull');
   late final pullForce = pull.arg('--force');
   late final pullPrune = pull.arg('--prune');
-  late final push = rawEc('git push');
+  late final push = rawEc('git -c push.autoSetupRemote=true push');
   late final pushForce = push.arg('--force');
   late final rebase = rawEc('git rebase');
   late final remote = rawEc('git remote');
