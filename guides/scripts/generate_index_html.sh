@@ -1,3 +1,13 @@
+#!/bin/bash
+set -e
+
+# Change to the root of the project to ensure relative paths work consistently
+cd "$(dirname "$0")/../.."
+
+# Generate the content using showdown
+CONTENT=$(npx -y showdown makehtml -i README.md)
+
+cat << 'HTML_EOF' > guides/web/index.html
 <!doctype html>
 <html lang="en">
 <head>
@@ -24,16 +34,18 @@
 </header>
 <main>
     <article id="content">
-        <span aria-busy="true">Loading ...</span>
+HTML_EOF
+
+echo "$CONTENT" >> guides/web/index.html
+
+cat << 'HTML_EOF' >> guides/web/index.html
     </article>
 </main>
 <footer>
     <p style="text-align: center;">By <a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></p>
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
-<script type="module">
-    const response = await fetch("https://raw.githubusercontent.com/TarasMazepa/stax/refs/heads/main/README.md");
-    document.getElementById('content').innerHTML = new showdown.Converter().makeHtml(await response.text());
-</script>
 </body>
 </html>
+HTML_EOF
+
+echo "Generated guides/web/index.html"
