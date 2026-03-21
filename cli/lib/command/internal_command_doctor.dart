@@ -88,8 +88,8 @@ class InternalCommandDoctor extends InternalCommand {
       ];
     }
 
-    Future<List<DoctorResult>?> checkRemote() async {
-      if (!isInsideWorkTree) return null;
+    Future<List<DoctorResult>> checkRemote() async {
+      if (!isInsideWorkTree) return [];
 
       final remote = context.getPreferredRemote();
       final hasRemote = remote != null;
@@ -107,8 +107,8 @@ class InternalCommandDoctor extends InternalCommand {
       ];
     }
 
-    Future<List<DoctorResult>?> checkDefaultBranch() async {
-      if (!isInsideWorkTree) return null;
+    Future<List<DoctorResult>> checkDefaultBranch() async {
+      if (!isInsideWorkTree) return [];
 
       String? defaultBranch = context.quietly().getDefaultBranch();
       String remote =
@@ -203,8 +203,8 @@ class InternalCommandDoctor extends InternalCommand {
       return results;
     }
 
-    Stream<List<DoctorResult>?> streamResultsInOrder(
-      List<Future<List<DoctorResult>?>> futures,
+    Stream<List<DoctorResult>> streamResultsInOrder(
+      List<Future<List<DoctorResult>>> futures,
     ) async* {
       for (final future in futures) {
         yield await future;
@@ -218,16 +218,14 @@ class InternalCommandDoctor extends InternalCommand {
       checkDefaultBranch(),
       checkGh(),
     ])) {
-      if (results != null) {
-        for (final r in results) {
-          context.printToConsole(
-            '[${boolToCheckmark(r.successful)}] ${r.name} # ${r.result}',
-          );
-          if (r.error != null) {
-            context.printToConsole('    X ${r.error}');
-            if (r.resolution != null) {
-              context.printToConsole('      ${r.resolution}');
-            }
+      for (final r in results) {
+        context.printToConsole(
+          '[${boolToCheckmark(r.successful)}] ${r.name} # ${r.result}',
+        );
+        if (r.error != null) {
+          context.printToConsole('    X ${r.error}');
+          if (r.resolution != null) {
+            context.printToConsole('      ${r.resolution}');
           }
         }
       }
