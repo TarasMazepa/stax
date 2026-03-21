@@ -43,11 +43,14 @@ extension ContextHandleGlobalFlags on Context {
     return withQuiet(quietFlag.hasFlag(args))
         .withVerbose(verboseFlag.hasFlag(args))
         .withAcceptingAll(acceptAllFlag.hasFlag(args))
-        .withDecliningAll(declineAllFlag.hasFlag(args))
-        .withShowLogAfter(logFlag.hasFlag(args));
+        .withDecliningAll(declineAllFlag.hasFlag(args));
   }
 
   bool hasHelpFlag(List<String> args) {
     return helpFlag.hasFlag(args);
+  }
+
+  bool hasLogFlag(List<String> args) {
+    return logFlag.hasFlag(args);
   }
 }

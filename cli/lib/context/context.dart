@@ -16,7 +16,6 @@ class Context {
   final bool verbose;
   final bool acceptAll;
   final bool declineAll;
-  final bool showLogAfter;
 
   late final Git git = Git(this);
   late final Settings settings = Settings();
@@ -29,7 +28,7 @@ class Context {
 
   RebaseUseCase get assertRebaseUseCase => rebaseUseCase!;
 
-  Context.implicit() : this(false, null, false, false, false, false);
+  Context.implicit() : this(false, null, false, false, false);
 
   Context(
     this.quiet,
@@ -37,7 +36,6 @@ class Context {
     this.verbose,
     this.acceptAll,
     this.declineAll,
-    this.showLogAfter,
   );
 
   ExternalCommand command(List<String> parts) {
@@ -46,40 +44,19 @@ class Context {
 
   Context withQuiet(bool quiet) {
     if (this.quiet == quiet) return this;
-    return Context(
-      quiet,
-      workingDirectory,
-      verbose,
-      acceptAll,
-      declineAll,
-      showLogAfter,
-    );
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
   Context quietly() => withQuiet(true);
 
   Context withVerbose(bool verbose) {
     if (this.verbose == verbose) return this;
-    return Context(
-      quiet,
-      workingDirectory,
-      verbose,
-      acceptAll,
-      declineAll,
-      showLogAfter,
-    );
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
   Context withWorkingDirectory(String? workingDirectory) {
     if (this.workingDirectory == workingDirectory) return this;
-    return Context(
-      quiet,
-      workingDirectory,
-      verbose,
-      acceptAll,
-      declineAll,
-      showLogAfter,
-    );
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
   Context withScriptPathAsWorkingDirectory() {
@@ -92,38 +69,12 @@ class Context {
 
   Context withAcceptingAll(bool acceptAll) {
     if (this.acceptAll == acceptAll) return this;
-    return Context(
-      quiet,
-      workingDirectory,
-      verbose,
-      acceptAll,
-      declineAll,
-      showLogAfter,
-    );
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
   Context withDecliningAll(bool declineAll) {
     if (this.declineAll == declineAll) return this;
-    return Context(
-      quiet,
-      workingDirectory,
-      verbose,
-      acceptAll,
-      declineAll,
-      showLogAfter,
-    );
-  }
-
-  Context withShowLogAfter(bool showLogAfter) {
-    if (this.showLogAfter == showLogAfter) return this;
-    return Context(
-      quiet,
-      workingDirectory,
-      verbose,
-      acceptAll,
-      declineAll,
-      showLogAfter,
-    );
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
   bool shouldBeQuiet() {
