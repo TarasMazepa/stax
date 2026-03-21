@@ -130,10 +130,7 @@ class InternalCommandAmend extends InternalCommand {
         .assertSuccessfulExitCode();
 
     if (pushResult == null) {
-      context.printParagraph("Can't rebase, amend wasn't successful.");
-      if (shouldDoRebase) {
-        rebaseUseCase.abort();
-      }
+      context.printParagraph("Push wasn't successful. Retry it yourself: `git push --force`");
       return;
     }
 
