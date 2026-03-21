@@ -1,3 +1,4 @@
+import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_delete_stale.dart';
 import 'package:stax/context/context.dart';
@@ -8,6 +9,12 @@ import 'package:stax/external_command/extended_process_result.dart';
 import 'package:stax/git/branch_info.dart';
 
 class InternalCommandPull extends InternalCommand {
+  static final stayOnMainFlag = Flag(
+    short: '-m',
+    long: '--stay-on-main',
+    description: 'Stay on the main/target branch after pulling.',
+  );
+
   InternalCommandPull()
     : super(
         'pull',
@@ -17,8 +24,9 @@ class InternalCommandPull extends InternalCommand {
           'opt1': 'Optional target branch, will default to <remote>/HEAD',
         },
         flags: [
-          InternalCommandDeleteStale.skipDeleteFlag,
           InternalCommandDeleteStale.forceDeleteFlag,
+          stayOnMainFlag,
+          InternalCommandDeleteStale.skipDeleteFlag,
         ],
       );
 
@@ -32,6 +40,7 @@ class InternalCommandPull extends InternalCommand {
     );
     final hasForceDeleteFlag = InternalCommandDeleteStale.forceDeleteFlag
         .hasFlag(args);
+    final hasStayOnMainFlag = stayOnMainFlag.hasFlag(args);
     final currentBranch = context.getCurrentBranch();
     final targetBranch = args.elementAtOrNull(0);
     final defaultBranch = targetBranch ?? context.getDefaultBranch();
@@ -63,7 +72,7 @@ class InternalCommandPull extends InternalCommand {
             .printNotEmptyResultFields()
             .assertSuccessfulExitCode();
     if (result == null) {
-      if (needToSwitchBranches && currentBranch != null) {
+      if (!hasStayOnMainFlag && needToSwitchBranches && currentBranch != null) {
         (await context.git.switch0
                 .arg(currentBranch)
                 .announce("Switching back to original branch '$currentBranch'.")
@@ -117,7 +126,8 @@ class InternalCommandPull extends InternalCommand {
       }
     }
 
-    if ((needToSwitchBranches || additionalBranches.isNotEmpty) &&
+    if (!hasStayOnMainFlag &&
+        (needToSwitchBranches || additionalBranches.isNotEmpty) &&
         currentBranch != null) {
       (await context.git.switch0
               .arg(currentBranch)

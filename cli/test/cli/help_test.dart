@@ -74,6 +74,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          opt1 - Optional target branch, will default to <remote>/HEAD
       Flags:
          -f, --force-delete - Force delete gone branches.
+         -m, --stay-on-main - Stay on the main/target branch after pulling.
          -s, --skip-delete - Skip deletion of gone branches.
  • pull-request, pr - Creates a pull request.
  • rebase - rebase tree of branches on top of main
