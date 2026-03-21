@@ -21,7 +21,13 @@ Future<void> main(List<String> arguments) async {
         return;
       }
       if (context.hasHelpFlag(args)) {
-        await InternalCommandHelp().run([command.name], context);
+        final positionalArgs = args
+            .where((arg) => !arg.startsWith('-'))
+            .toList();
+        await InternalCommandHelp().run([
+          command.name,
+          ...positionalArgs,
+        ], context);
       } else {
         await command.run(args, context);
       }

@@ -69,8 +69,16 @@ class InternalCommandHelp extends InternalCommand {
       final extrasCmd = internalCommands
           .whereType<InternalCommandExtras>()
           .first;
-      commandsToShow = extrasCmd.extraCommands;
-      isExtrasList = true;
+
+      final subCommandName = args.elementAtOrNull(1);
+      if (subCommandName != null) {
+        commandsToShow = extrasCmd.extraCommands.where(
+          (element) => element.name == subCommandName,
+        );
+      } else {
+        commandsToShow = extrasCmd.extraCommands;
+        isExtrasList = true;
+      }
     } else {
       commandsToShow = internalCommands.where(
         (element) => switch (element) {

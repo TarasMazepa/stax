@@ -44,11 +44,11 @@ class InternalCommandExtras extends InternalCommand {
           return;
         }
 
-        if (context.hasHelpFlag(commandArgs)) {
+        if (context.hasHelpFlag(commandArgs) || commandArgs.contains('help')) {
           // If the extra command has its own help, we can call it.
           // Or we can just fallback to the global help.
           // The main help expects the command name as arg if we want specific help.
-          await InternalCommandHelp().run([command.name], context);
+          await InternalCommandHelp().run(['extras', command.name], context);
         } else {
           await command.run(commandArgs, context);
         }
