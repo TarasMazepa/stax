@@ -1,11 +1,13 @@
+import 'dart:io';
+
+import 'package:monolib_dart/json_encode_async.dart';
+import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_get_default_remote.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
-import 'package:monolib_dart/json_encode_async.dart';
-import 'package:stax/command/flag.dart';
 import 'package:stax/string_empty_to_null.dart';
 
 extension type DoctorResult(
@@ -226,8 +228,7 @@ class InternalCommandDoctor extends InternalCommand {
       List<Future<DoctorResult?>> futures,
     ) async* {
       for (final future in futures) {
-        final result = await future;
-        if (result != null) yield result;
+        if (await future case final result?) yield result;
       }
     }
 
@@ -242,19 +243,19 @@ class InternalCommandDoctor extends InternalCommand {
     ]);
 
     if (isJson) {
-      final buffer = StringBuffer();
-      await jsonEncodeAsync({'checks': checksStream}, buffer);
-      context.printToConsole(buffer.toString());
-    } else {
-      await for (final result in checksStream) {
-        context.printToConsole(
-          '[${boolToCheckmark(result._.successful)}] ${result._.name} # ${result._.result}',
-        );
-        if (result._.error != null) {
-          context.printToConsole('    X ${result._.error}');
-          if (result._.resolution != null) {
-            context.printToConsole('      ${result._.resolution}');
-          }
+      await jsonEncodeAsync({
+        'checks': checksStream.map((r) => r.toJson()),
+      }, stdout);
+      return;
+    }
+    await for (final result in checksStream) {
+      context.printToConsole(
+        '[${boolToCheckmark(result._.successful)}] ${result._.name} # ${result._.result}',
+      );
+      if (result._.error != null) {
+        context.printToConsole('    X ${result._.error}');
+        if (result._.resolution != null) {
+          context.printToConsole('      ${result._.resolution}');
         }
       }
     }
