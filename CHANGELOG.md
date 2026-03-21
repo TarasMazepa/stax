@@ -1,3 +1,7 @@
+0.11.4
+
+* stax any - adds `--log` global flag to automatically execute `stax log` after finishing the requested command
+
 0.11.3
 
 *  stax extras agents.md - new command with agents specific instructions how to use stax
