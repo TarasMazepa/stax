@@ -84,9 +84,18 @@ class InternalCommandHelp extends InternalCommand {
         commandsToShow = command != null ? [command] : [];
       case []:
       default:
-        commandsToShow = internalCommands.where(
-          (element) => showAll || element.type == InternalCommandType.public,
-        );
+        commandsToShow = internalCommands
+            .where(
+              (element) =>
+                  showAll || element.type == InternalCommandType.public,
+            )
+            .sorted((a, b) {
+              if (a is InternalCommandExtras && b is! InternalCommandExtras)
+                return 1;
+              if (a is! InternalCommandExtras && b is InternalCommandExtras)
+                return -1;
+              return a.compareTo(b);
+            });
         headerMessage = 'Here are available commands:';
     }
 

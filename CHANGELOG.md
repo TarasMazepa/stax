@@ -1,5 +1,6 @@
 0.11.4
 
+* stax help - Make extras command to be listed last.
 * stax commit - adds -c/--come-back flag to move back to the branch on which user was before running commit
 * stax extras nuke - new command that resets working directory and index to HEAD and cleans all untracked files
 * stax * - adds `--log` global flag to automatically execute `stax log` after finishing the requested command
