@@ -16,6 +16,8 @@ class Git {
   late final commitWithMessage = commit.arg('-m');
   late final config = rawEc('git config');
   late final configGet = config.args(['--get']);
+  late final clean = rawEc('git clean');
+  late final cleanFd = clean.args(['-f', '-d']);
   late final diff = rawEc('git diff');
   late final diffCachedQuiet = diff.args(['--cached', '--quiet']);
   late final fetch = rawEc('git fetch');
@@ -32,6 +34,8 @@ class Git {
   late final rebase = rawEc('git rebase');
   late final remote = rawEc('git remote');
   late final remoteGetUrl = remote.arg('get-url');
+  late final reset = rawEc('git reset');
+  late final resetHardHead = reset.args(['--hard', 'HEAD']);
   late final revList = rawEc('git rev-list');
   late final revListCount = revList.arg('--count');
   late final revParse = rawEc('git rev-parse');
