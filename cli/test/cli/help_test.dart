@@ -49,7 +49,7 @@ Note: you can type first letter or couple of first letters instead of full comma
       Flags:
          -f, --force-delete - Force delete gone branches.
          -s, --skip-delete - Skip deletion of gone branches.
- • extras, e - Extra non-primary commands (about, changelog, doctor, settings, update, version). Run `stax extras` to see detailed list.
+ • extras, e - Extra non-primary commands (about, changelog, doctor, nuke, settings, update, version). Run `stax extras` to see detailed list.
       Positional arguments:
          arg1 - Subcommand to run
  • get - (Re)Checkout specified branch and all its children
@@ -116,6 +116,7 @@ Note: you can type first letter or couple of first letters instead of full comma
  • doctor - Helps to ensure that stax has everything to be used.
       Flags:
          -j, --json - output in json format
+ • nuke - Resets working directory and index to HEAD and cleans all untracked files.
  • settings - View or modify stax settings
       Positional arguments:
          arg1 - Subcommand (add, clear, remove, set, show)

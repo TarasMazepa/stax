@@ -3,6 +3,7 @@ import 'package:stax/command/internal_command_about.dart';
 import 'package:stax/command/internal_command_changelog.dart';
 import 'package:stax/command/internal_command_doctor.dart';
 import 'package:stax/command/internal_command_finder.dart';
+import 'package:stax/command/internal_command_nuke.dart';
 import 'package:stax/command/internal_command_help.dart';
 import 'package:stax/command/internal_command_settings.dart';
 import 'package:stax/command/internal_command_update.dart';
@@ -16,6 +17,7 @@ class InternalCommandExtras extends InternalCommand {
     InternalCommandAbout(),
     InternalCommandChangelog(),
     InternalCommandDoctor(),
+    InternalCommandNuke(),
     InternalCommandSettings(),
     InternalCommandUpdate(),
     InternalCommandVersion(),
@@ -25,7 +27,7 @@ class InternalCommandExtras extends InternalCommand {
   InternalCommandExtras()
     : super(
         'extras',
-        'Extra non-primary commands (about, changelog, doctor, settings, update, version). Run `stax extras` to see detailed list.',
+        'Extra non-primary commands (about, changelog, doctor, nuke, settings, update, version). Run `stax extras` to see detailed list.',
         shortName: 'e',
         arguments: {'arg1': 'Subcommand to run'},
       );

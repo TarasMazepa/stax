@@ -1,5 +1,6 @@
 0.11.4
 
+* stax extras nuke - new command that resets working directory and index to HEAD and cleans all untracked files
 * stax * - adds `--log` global flag to automatically execute `stax log` after finishing the requested command
 * stax pull - adds -n/--no-switch-back flag to allow staying on the head/default branch after pulling
 
