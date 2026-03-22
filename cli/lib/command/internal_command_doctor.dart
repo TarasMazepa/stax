@@ -10,26 +10,13 @@ import 'package:stax/context/context_git_get_default_remote.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/string_empty_to_null.dart';
 
-extension type DoctorResult(
-  ({
-    bool successful,
-    String name,
-    String result,
-    String? error,
-    String? resolution,
-  })
-  _
-) {
-  dynamic toJson() {
-    return {
-      'successful': _.successful,
-      'name': _.name,
-      'result': _.result,
-      if (_.error != null) 'error': _.error,
-      if (_.resolution != null) 'resolution': _.resolution,
-    };
-  }
-}
+typedef DoctorResult = ({
+  bool successful,
+  String name,
+  String result,
+  String? error,
+  String? resolution,
+});
 
 class InternalCommandDoctor extends InternalCommand {
   static final flagJson = Flag(
@@ -71,7 +58,7 @@ class InternalCommandDoctor extends InternalCommand {
 
       final hasUserName = userName != null;
 
-      return DoctorResult((
+      return (
         successful: hasUserName,
         name: 'git config --get user.name',
         result: userName ?? 'null',
@@ -79,7 +66,7 @@ class InternalCommandDoctor extends InternalCommand {
         resolution: hasUserName
             ? null
             : 'git config --global user.name "<your preferred name>" ',
-      ));
+      );
     }
 
     Future<DoctorResult?> checkUserEmail() async {
@@ -99,7 +86,7 @@ class InternalCommandDoctor extends InternalCommand {
 
       final hasUserEmail = userEmail != null;
 
-      return DoctorResult((
+      return (
         successful: hasUserEmail,
         name: 'git config --get user.email',
         result: userEmail ?? 'null',
@@ -107,7 +94,7 @@ class InternalCommandDoctor extends InternalCommand {
         resolution: hasUserEmail
             ? null
             : 'git config --global user.email "<your preferred email>" ',
-      ));
+      );
     }
 
     Future<DoctorResult?> checkRemote() async {
@@ -116,7 +103,7 @@ class InternalCommandDoctor extends InternalCommand {
       final remote = context.getPreferredRemote();
       final hasRemote = remote != null;
 
-      return DoctorResult((
+      return (
         successful: hasRemote,
         name: 'git remote',
         result: hasRemote ? 'remote(s): $remote' : 'no remotes',
@@ -124,7 +111,7 @@ class InternalCommandDoctor extends InternalCommand {
         resolution: hasRemote
             ? null
             : 'git remote add origin <url to git repository>',
-      ));
+      );
     }
 
     Future<DoctorResult?> checkDefaultBranch() async {
@@ -136,7 +123,7 @@ class InternalCommandDoctor extends InternalCommand {
 
       final hasDefaultBranch = defaultBranch != null;
 
-      return DoctorResult((
+      return (
         successful: hasDefaultBranch,
         name: 'git rev-parse --abbrev-ref $remote/HEAD',
         result: defaultBranch ?? 'not found',
@@ -144,7 +131,7 @@ class InternalCommandDoctor extends InternalCommand {
         resolution: hasDefaultBranch
             ? null
             : 'git fetch -p ; git remote set-head $remote -a',
-      ));
+      );
     }
 
     Future<DoctorResult?> checkGhVersion() async {
@@ -163,13 +150,13 @@ class InternalCommandDoctor extends InternalCommand {
       }
 
       final hasGh = ghVersion?.isNotEmpty == true;
-      return DoctorResult((
+      return (
         successful: hasGh,
         name: 'gh --version',
         result: ghVersion ?? 'null',
         error: hasGh ? null : '[Optional] Install GitHub CLI using:',
         resolution: hasGh ? null : 'https://github.com/cli/cli#installation',
-      ));
+      );
     }
 
     Future<DoctorResult?> checkGhAuthStatus() async {
@@ -186,7 +173,7 @@ class InternalCommandDoctor extends InternalCommand {
         isAuthenticated = false;
       }
 
-      return DoctorResult((
+      return (
         successful: isAuthenticated,
         name: 'gh auth status',
         result: isAuthenticated ? 'authenticated' : 'not authenticated',
@@ -194,7 +181,7 @@ class InternalCommandDoctor extends InternalCommand {
             ? null
             : '[Optional] Authenticate GitHub CLI using:',
         resolution: isAuthenticated ? null : 'gh auth login',
-      ));
+      );
     }
 
     Future<DoctorResult?> checkGhRepoView() async {
@@ -213,7 +200,7 @@ class InternalCommandDoctor extends InternalCommand {
         canAccessRepo = false;
       }
 
-      return DoctorResult((
+      return (
         successful: canAccessRepo,
         name: 'gh repo view',
         result: canAccessRepo ? 'has access' : 'no access',
@@ -221,41 +208,46 @@ class InternalCommandDoctor extends InternalCommand {
             ? null
             : '[Optional] Ensure you have access to this repository on GitHub',
         resolution: null,
-      ));
+      );
     }
 
-    Stream<DoctorResult> streamResultsInOrder(
-      List<Future<DoctorResult?>> futures,
-    ) async* {
-      for (final future in futures) {
-        if (await future case final result?) yield result;
+    final checksStream = () async* {
+      for (final future in [
+        checkUserName(),
+        checkUserEmail(),
+        checkRemote(),
+        checkDefaultBranch(),
+        checkGhVersion(),
+        checkGhAuthStatus(),
+        checkGhRepoView(),
+      ]) {
+        final result = await future;
+        if (result != null) yield result;
       }
-    }
-
-    final checksStream = streamResultsInOrder([
-      checkUserName(),
-      checkUserEmail(),
-      checkRemote(),
-      checkDefaultBranch(),
-      checkGhVersion(),
-      checkGhAuthStatus(),
-      checkGhRepoView(),
-    ]);
+    }();
 
     if (isJson) {
       await jsonEncodeAsync({
-        'checks': checksStream.map((r) => r.toJson()),
+        'checks': checksStream.map(
+          (result) => {
+            'successful': result.successful,
+            'name': result.name,
+            'result': result.result,
+            'error': ?result.error,
+            'resolution': ?result.resolution,
+          },
+        ),
       }, stdout);
       return;
     }
     await for (final result in checksStream) {
       context.printToConsole(
-        '[${boolToCheckmark(result._.successful)}] ${result._.name} # ${result._.result}',
+        '[${boolToCheckmark(result.successful)}] ${result.name} # ${result.result}',
       );
-      if (result._.error != null) {
-        context.printToConsole('    X ${result._.error}');
-        if (result._.resolution != null) {
-          context.printToConsole('      ${result._.resolution}');
+      if (result.error case final error?) {
+        context.printToConsole('    X $error');
+        if (result.resolution case final resolution?) {
+          context.printToConsole('      $resolution');
         }
       }
     }
