@@ -1,6 +1,6 @@
 0.11.4
 
-* stax any - adds `--log` global flag to automatically execute `stax log` after finishing the requested command
+* stax * - adds `--log` global flag to automatically execute `stax log` after finishing the requested command
 * stax pull - adds -n/--no-switch-back flag to allow staying on the head/default branch after pulling
 
 0.11.3
@@ -107,7 +107,7 @@
 
 0.10.11
 
-* --loud -> --verbose - renaming global flag to conform with other commandline tools, adds -v shorthand
+* stax * - renaming --loud to --verbose global flag to conform with other commandline tools, adds -v shorthand
 * stax pull - will not attempt to switch back to a branch that was just deleted
 * stax log, stax move - now will see node tree in the same way, so stax move commands like stax move up 1, will select
   child commit with index 1, and not a random one based on stax move tree that wasn't sorted with the same method as
@@ -115,8 +115,8 @@
 
 0.10.10
 
-* stax delete -> stax delete-stale - renaming delete to delete-stale
-* --silent -> --quiet - renaming global flag to conform with other commandline tools, adds -q shorthand
+* stax delete - renaming to delete-stale
+* stax * - renaming --silent to --quiet global flag to conform with other commandline tools, adds -q shorthand
 * stax delete-stale - fix case when remote and local branches have different names and stax delete-stale wouldn't
   recognize that branches as gone due to overly strict parsing
 
@@ -134,12 +134,12 @@
 
 * stax log - will read git log in chunks to avoid hitting an edge case when git log would not fit into a single
   invocation
-* fix a bug when stax will fail on submodules/worktrees when trying to find appropriate .git directory to initialize its
+* stax * - fix a bug when stax will fail on submodules/worktrees when trying to find appropriate .git directory to initialize its
   own repository specific settings
 
 0.10.6
 
-* flags now have verbose versions
+* stax * - flags now have verbose versions
 * stax amend - gets short name `a`
 * stax move - fix case when move can't navigate to detached commits
 
@@ -152,9 +152,9 @@
 * stax pull-request - will honor base branch replacement setting
 * stax commit - will come back to original branch even if user haven't used Pull Request creation flag
 * stax about - new command with brief information about stax, link to the website and basic license information
-* git checkout -> git switch - replaced all internal invocations of git checkout to git switch
+* stax * - replaced all internal invocations of git checkout to git switch
 * stax help - now accepts optional argument to show help only for one command
-* --help is new global flag which you can call on any stax command you run
+* stax * - adds --help new global flag which you can call on any stax command you run
 * stax pull - now does git pull with prune so it doesn't need to run git fetch --prune to check gone branches
 
 0.10.3
@@ -164,7 +164,7 @@
 
 0.10.2
 
-* technical release
+* stax * - technical release
 
 0.10.1
 
