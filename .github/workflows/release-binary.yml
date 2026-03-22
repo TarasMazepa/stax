@@ -20,7 +20,7 @@ jobs:
     permissions: write-all
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ env.CHECKOUT }}
         env:
@@ -29,27 +29,9 @@ jobs:
         id: get-dart-version
         with:
           path: DART_SDK_VERSION
-      - name: Cache Dart SDK
-        uses: actions/cache@v4
-        with:
-          path: ${{ runner.tool_cache }}/dart
-          key: ${{ runner.os }}-dart-${{ steps.get-dart-version.outputs.text }}
-          restore-keys: |
-            ${{ runner.os }}-dart-
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: ${{ steps.get-dart-version.outputs.text }}
-      - name: Cache Pub dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.pub-cache/hosted
-            ~/.pub-cache/git
-            ~/AppData/Local/Pub/Cache/hosted
-            ~/AppData/Local/Pub/Cache/git
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pub-
       - run: dart pub get
         working-directory: cli
       - uses: TarasMazepa/github-action-cat@main
@@ -67,7 +49,7 @@ jobs:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ env.CHECKOUT }}
         env:
@@ -76,27 +58,9 @@ jobs:
         id: get-dart-version
         with:
           path: DART_SDK_VERSION
-      - name: Cache Dart SDK
-        uses: actions/cache@v4
-        with:
-          path: ${{ runner.tool_cache }}/dart
-          key: ${{ runner.os }}-dart-${{ steps.get-dart-version.outputs.text }}
-          restore-keys: |
-            ${{ runner.os }}-dart-
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: ${{ steps.get-dart-version.outputs.text }}
-      - name: Cache Pub dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.pub-cache/hosted
-            ~/.pub-cache/git
-            ~/AppData/Local/Pub/Cache/hosted
-            ~/AppData/Local/Pub/Cache/git
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pub-
       - run: dart pub get
         working-directory: cli
       - uses: TarasMazepa/github-action-cat@main
@@ -114,7 +78,7 @@ jobs:
     permissions: write-all
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ env.CHECKOUT }}
         env:
@@ -123,27 +87,9 @@ jobs:
         id: get-dart-version
         with:
           path: DART_SDK_VERSION
-      - name: Cache Dart SDK
-        uses: actions/cache@v4
-        with:
-          path: ${{ runner.tool_cache }}/dart
-          key: ${{ runner.os }}-dart-${{ steps.get-dart-version.outputs.text }}
-          restore-keys: |
-            ${{ runner.os }}-dart-
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: ${{ steps.get-dart-version.outputs.text }}
-      - name: Cache Pub dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.pub-cache/hosted
-            ~/.pub-cache/git
-            ~/AppData/Local/Pub/Cache/hosted
-            ~/AppData/Local/Pub/Cache/git
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pub-
       - run: dart pub get
         working-directory: cli
       - uses: TarasMazepa/github-action-cat@main
@@ -161,7 +107,7 @@ jobs:
   release-binary-docker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ env.CHECKOUT }}
         env:

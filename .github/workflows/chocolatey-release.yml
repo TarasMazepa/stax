@@ -11,7 +11,7 @@ jobs:
   chocolatey-release:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: ./.github/scripts/prepare-chocolatey.ps1
         shell: pwsh
       - run: choco pack chocolatey/stax/stax.nuspec

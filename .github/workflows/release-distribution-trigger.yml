@@ -11,7 +11,7 @@ jobs:
   release-distribution-trigger-homebrew:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - id: get-version
         run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
       - run: |
@@ -27,7 +27,7 @@ jobs:
   release-distribution-trigger-chocolatey:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - id: get-version
         run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
       - run: |
@@ -46,7 +46,7 @@ jobs:
   release-distribution-trigger-guides:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - id: get-version
         run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
       - run: |
