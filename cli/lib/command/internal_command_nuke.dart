@@ -1,5 +1,4 @@
 import 'package:stax/command/internal_command.dart';
-import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 
 class InternalCommandNuke extends InternalCommand {
@@ -7,7 +6,6 @@ class InternalCommandNuke extends InternalCommand {
     : super(
         'nuke',
         'Resets working directory and index to HEAD and cleans all untracked files.',
-        type: InternalCommandType.hidden,
       );
 
   @override
