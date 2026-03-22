@@ -20,9 +20,27 @@ jobs:
           sed -i "s+FROM taras0mazepa/dart-fastlane:.*+FROM taras0mazepa/dart-fastlane:$DART_SDK_VERSION AS build+" Dockerfile
         env:
           DART_SDK_VERSION: ${{ steps.get-dart-version.outputs.dart_sdk_version }}
+      - name: Cache Dart SDK
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.tool_cache }}/dart
+          key: ${{ runner.os }}-dart-${{ steps.get-dart-version.outputs.dart_sdk_version }}
+          restore-keys: |
+            ${{ runner.os }}-dart-
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: ${{ steps.get-dart-version.outputs.dart_sdk_version }}
+      - name: Cache Pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache/hosted
+            ~/.pub-cache/git
+            ~/AppData/Local/Pub/Cache/hosted
+            ~/AppData/Local/Pub/Cache/git
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
       - run: dart pub get
         working-directory: cli
       - run: |
@@ -39,6 +57,8 @@ jobs:
           trim: true
       - uses: flutter-actions/setup-flutter@v4
         with:
+          cache: true
+          cache-sdk: true
           version: ${{ steps.get-flutter-version.outputs.text }}
       - run: flutter pub get
         working-directory: ui

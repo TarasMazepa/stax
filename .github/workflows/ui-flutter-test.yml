@@ -21,6 +21,8 @@ jobs:
           trim: true
       - uses: flutter-actions/setup-flutter@v4
         with:
+          cache: true
+          cache-sdk: true
           version: ${{ steps.get-flutter-version.outputs.text }}
       - run: flutter pub get
         working-directory: ui

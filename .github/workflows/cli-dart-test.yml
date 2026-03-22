@@ -18,9 +18,27 @@ jobs:
         id: get-dart-version
         with:
           path: DART_SDK_VERSION
+      - name: Cache Dart SDK
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.tool_cache }}/dart
+          key: ${{ runner.os }}-dart-${{ steps.get-dart-version.outputs.text }}
+          restore-keys: |
+            ${{ runner.os }}-dart-
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: ${{ steps.get-dart-version.outputs.text }}
+      - name: Cache Pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache/hosted
+            ~/.pub-cache/git
+            ~/AppData/Local/Pub/Cache/hosted
+            ~/AppData/Local/Pub/Cache/git
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
       - run: dart pub get
         working-directory: cli
       - run: dart format . -o none --set-exit-if-changed
