@@ -17,7 +17,7 @@ class InternalCommandNuke extends InternalCommand {
             .run(onDemandPrint: true))
         .printNotEmptyResultFields();
     (await context.git.cleanFd
-            .announce('Deleting all not tracked files')
+            .announce('Deleting all untracked files')
             .run(onDemandPrint: true))
         .printNotEmptyResultFields();
   }
