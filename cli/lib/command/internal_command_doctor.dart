@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:monolib_dart/json_encode_async.dart';
+import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
@@ -15,15 +19,24 @@ typedef DoctorResult = ({
 });
 
 class InternalCommandDoctor extends InternalCommand {
+  static final flagJson = Flag(
+    short: '-j',
+    long: '--json',
+    description: 'output in json format',
+  );
+
   InternalCommandDoctor()
     : super(
         'doctor',
         'Helps to ensure that stax has everything to be used.',
         type: InternalCommandType.hidden,
+        flags: [flagJson],
       );
 
   @override
   Future<void> run(final List<String> args, Context context) async {
+    final isJson = flagJson.hasFlag(args);
+
     String boolToCheckmark(bool value) => value ? 'V' : 'X';
 
     final isInsideWorkTree = context.isInsideWorkTree();
@@ -198,31 +211,43 @@ class InternalCommandDoctor extends InternalCommand {
       );
     }
 
-    Stream<DoctorResult?> streamResultsInOrder(
-      List<Future<DoctorResult?>> futures,
-    ) async* {
-      for (final future in futures) {
-        yield await future;
+    final checksStream = () async* {
+      for (final future in [
+        checkUserName(),
+        checkUserEmail(),
+        checkRemote(),
+        checkDefaultBranch(),
+        checkGhVersion(),
+        checkGhAuthStatus(),
+        checkGhRepoView(),
+      ]) {
+        final result = await future;
+        if (result != null) yield result;
       }
-    }
+    }();
 
-    await for (final result in streamResultsInOrder([
-      checkUserName(),
-      checkUserEmail(),
-      checkRemote(),
-      checkDefaultBranch(),
-      checkGhVersion(),
-      checkGhAuthStatus(),
-      checkGhRepoView(),
-    ])) {
-      if (result == null) continue;
+    if (isJson) {
+      await jsonEncodeAsync({
+        'checks': checksStream.map(
+          (result) => {
+            'successful': result.successful,
+            'name': result.name,
+            'result': result.result,
+            'error': ?result.error,
+            'resolution': ?result.resolution,
+          },
+        ),
+      }, stdout);
+      return;
+    }
+    await for (final result in checksStream) {
       context.printToConsole(
         '[${boolToCheckmark(result.successful)}] ${result.name} # ${result.result}',
       );
-      if (result.error != null) {
-        context.printToConsole('    X ${result.error}');
-        if (result.resolution != null) {
-          context.printToConsole('      ${result.resolution}');
+      if (result.error case final error?) {
+        context.printToConsole('    X $error');
+        if (result.resolution case final resolution?) {
+          context.printToConsole('      $resolution');
         }
       }
     }
