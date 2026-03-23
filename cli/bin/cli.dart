@@ -1,3 +1,4 @@
+import 'package:stax/command/internal_command_extras.dart';
 import 'package:stax/command/internal_command_finder.dart';
 import 'package:stax/command/internal_command_help.dart';
 import 'package:stax/command/internal_command_log.dart';
@@ -15,7 +16,9 @@ Future<void> main(List<String> arguments) async {
     case []:
       await InternalCommandHelp().run([], context);
     case [final commandName, ...final args]:
-      final command = internalCommands.findByNameOrPrefix(commandName);
+      final command =
+          internalCommands.findByNameOrPrefix(commandName) ??
+          extraCommands.findByNameOrPrefix(commandName);
       if (command == null) {
         context.printParagraph(
           "Unknown command or prefix of a command '$commandName'.",
