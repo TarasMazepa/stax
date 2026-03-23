@@ -1,3 +1,7 @@
+0.11.5
+
+* stax extras pull-get-rebase - new command that performs pull, get, and rebase sequentially
+
 0.11.4
 
 * stax commit - adds -c/--come-back flag to move back to the branch on which user was before running commit

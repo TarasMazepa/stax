@@ -85,7 +85,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -b, --prefer-base - Prefer base changes on conflict.
          -c, --continue - Continue rebase that is in progress.
          -m, --prefer-moving - Prefer moving changes on conflict.
- • extras, e - Extra non-primary commands (about, agents.md, changelog, doctor, nuke, settings, update, version). Run `stax extras` to see detailed list.
+ • extras, e - Extra non-primary commands (about, agents.md, changelog, doctor, nuke, pull-get-rebase, settings, update, version). Run `stax extras` to see detailed list.
       Positional arguments:
          arg1 - Subcommand to run
 """,
@@ -117,6 +117,19 @@ Note: you can type first letter or couple of first letters instead of full comma
       Flags:
          -j, --json - output in json format
  • nuke - Resets working directory and index to HEAD and cleans all untracked files.
+ • pull-get-rebase - Pulls, gets, and rebases sequentially.
+      Positional arguments:
+         opt1 - Optional target branch, will default to <remote>/HEAD
+      Flags:
+         -C, --continue - Continue rebase that is in progress.
+         -a, --abandon - Abandon rebase that is in progress, stax can't abort own rebases.
+         -b, --rebase-prefer-base - Runs 'stax rebase --prefer-base' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.
+         -c, --current - Force get current branch, skipping the confirmation prompt.
+         -f, --force-delete - Force delete gone branches.
+         -m, --rebase-prefer-moving - Runs 'stax rebase --prefer-moving' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.
+         -n, --no-switch-back - Stay on the head/default branch after pulling.
+         -r, --rebase - Runs 'stax rebase' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.
+         -s, --skip-delete - Skip deletion of gone branches.
  • settings - View or modify stax settings
       Positional arguments:
          arg1 - Subcommand (add, clear, remove, set, show)
