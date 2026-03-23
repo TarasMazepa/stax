@@ -7,7 +7,7 @@ jobs:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: TarasMazepa/github-action-cat@main
         id: get-dart-version
         with:

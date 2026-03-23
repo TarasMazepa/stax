@@ -20,7 +20,7 @@ jobs:
     permissions: write-all
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ env.CHECKOUT }}
         env:
@@ -49,7 +49,7 @@ jobs:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ env.CHECKOUT }}
         env:
@@ -78,7 +78,7 @@ jobs:
     permissions: write-all
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ env.CHECKOUT }}
         env:
@@ -107,7 +107,7 @@ jobs:
   release-binary-docker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ env.CHECKOUT }}
         env:

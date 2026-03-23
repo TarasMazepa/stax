@@ -10,7 +10,7 @@ jobs:
   version-to-cli-sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - id: get-version
         run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
       - run: |
