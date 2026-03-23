@@ -86,8 +86,10 @@ Creates a branch, commits current changes with the same name as the branch, and 
 * `-A`: Runs `git add -A` before other actions. Which adds tracked and untracked files in the whole working tree.
 * `-a`: Runs `git add .` before other actions. Which adds tracked and untracked files in the current folder and subfolders.
 * `-b, --branch-from-commit`: Accepts the branch name proposed by converting the commit name to the branch name.
+* `-c, --come-back`: Moves back to the branch on which user was before running commit.
 * `-d, --draft`: Creates a PR in draft mode using the GitHub CLI. Works only if you have GitHub as your remote.
 * `-i, --ignore-no-staged-changes`: Skips checking for staged changes, helpful when your change is only a rename of the file which stax can't see at the moment.
+* `-n, --no-browser`: Do not attempt to open the PR URL in the browser.
 * `-p, --pull-request`: Opens the PR creation page on your remote. Works only if you have GitHub as your remote.
 * `-u`: Runs `git add -u` before other actions. Which adds only tracked files in the whole working tree.
 
@@ -116,6 +118,7 @@ Amends to the current commit and force pushes the branch.
 * `-b, --rebase-prefer-base`: Runs `stax rebase --prefer-base` afterwards on all children branches.
 * `-m, --rebase-prefer-moving`: Runs `stax rebase --prefer-moving` afterwards on all children branches.
 * `-r, --rebase`: Runs `stax rebase` afterwards on all children branches.
+* `--skip-rebase`: Skip asking for rebase entirely.
 * `-u`: Runs `git add -u` before other actions.
 
 
@@ -130,6 +133,7 @@ Deletes local branches with gone remotes. It is useful when you are using `stax 
 
 **Flags:**
 * `-f, --force-delete`: Force delete gone branches.
+* `-n, --no-switch-back`: Stay on the head/default branch after pulling.
 * `-s, --skip-delete`: Skip deletion of gone branches.
 
 
@@ -214,7 +218,7 @@ Creates a pull request.
 ---
 
 ### `stax extras` (alias: `e`)
-Extra non-primary commands (`about`, `changelog`, `doctor`, `help`, `settings`, `update`, `version`). Run `stax extras` to see detailed list.
+Extra non-primary commands (`about`, `agents.md`, `changelog`, `doctor`, `help`, `nuke`, `settings`, `update`, `version`). Run `stax extras` to see detailed list.
 
 **Positional arguments:**
 * `arg1`: Subcommand to run.
@@ -226,6 +230,7 @@ These flags apply globally to most commands:
 * `--accept-all`: Accept all the user prompts automatically.
 * `--decline-all`: Decline all the user prompts automatically.
 * `-h, --help`: Shows help documentation for the command.
+* `--log`: Output log after finishing running requested command.
 * `-q, --quiet`: Removes all output except user prompts.
 * `-v, --verbose`: Force all the output.
 
