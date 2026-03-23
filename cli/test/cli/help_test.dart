@@ -85,7 +85,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -b, --prefer-base - Prefer base changes on conflict.
          -c, --continue - Continue rebase that is in progress.
          -m, --prefer-moving - Prefer moving changes on conflict.
- • extras, e - Extra non-primary commands (about, changelog, doctor, nuke, settings, update, version). Run `stax extras` to see detailed list.
+ • extras, e - Extra non-primary commands (about, agents.md, changelog, doctor, nuke, settings, update, version). Run `stax extras` to see detailed list.
       Positional arguments:
          arg1 - Subcommand to run
 """,

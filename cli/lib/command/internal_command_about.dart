@@ -1,14 +1,8 @@
 import 'package:stax/command/internal_command.dart';
-import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 
 class InternalCommandAbout extends InternalCommand {
-  InternalCommandAbout()
-    : super(
-        'about',
-        'Shows information about the stax.',
-        type: InternalCommandType.hidden,
-      );
+  InternalCommandAbout() : super('about', 'Shows information about the stax.');
 
   @override
   Future<void> run(final List<String> args, Context context) async {

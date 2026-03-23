@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_version.dart';
-import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 
 class InternalCommandChangelog extends InternalCommand {
@@ -18,12 +17,7 @@ class InternalCommandChangelog extends InternalCommand {
   );
 
   InternalCommandChangelog()
-    : super(
-        'changelog',
-        'Shows the stax changelog.',
-        type: InternalCommandType.hidden,
-        flags: [versionsFlag],
-      );
+    : super('changelog', 'Shows the stax changelog.', flags: [versionsFlag]);
 
   @override
   Future<void> run(final List<String> args, Context context) async {

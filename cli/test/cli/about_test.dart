@@ -9,7 +9,7 @@ void main() {
     test('about', () {
       expect(
         setup
-            .runLiveStaxSync(['about'])
+            .runLiveStaxSync(['extras', 'about'])
             .stdout
             .toString()
             .cleanCarriageReturnOnWindows(),
