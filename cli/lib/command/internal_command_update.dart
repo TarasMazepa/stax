@@ -3,16 +3,10 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_version.dart';
-import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 
 class InternalCommandUpdate extends InternalCommand {
-  InternalCommandUpdate()
-    : super(
-        'update',
-        'Updates to the latest version.',
-        type: InternalCommandType.hidden,
-      );
+  InternalCommandUpdate() : super('update', 'Updates to the latest version.');
 
   static const String versionUrl =
       'https://raw.githubusercontent.com/TarasMazepa/stax/refs/heads/main/VERSION';

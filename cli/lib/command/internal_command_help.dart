@@ -66,18 +66,10 @@ class InternalCommandHelp extends InternalCommand {
 
     switch (args) {
       case ['extras', final subCommandName, ...]:
-        final extrasCmd = internalCommands
-            .whereType<InternalCommandExtras>()
-            .first;
-        final command = extrasCmd.extraCommands.findByNameOrPrefix(
-          subCommandName,
-        );
+        final command = extraCommands.findByNameOrPrefix(subCommandName);
         commandsToShow = command != null ? [command] : [];
       case ['extras']:
-        final extrasCmd = internalCommands
-            .whereType<InternalCommandExtras>()
-            .first;
-        commandsToShow = extrasCmd.extraCommands;
+        commandsToShow = extraCommands;
         headerMessage = 'Here are available commands under `extras`:';
       case [final selectedCommand, ...]:
         final command = internalCommands.findByNameOrPrefix(selectedCommand);

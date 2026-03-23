@@ -9,25 +9,26 @@ import 'package:stax/command/internal_command_settings.dart';
 import 'package:stax/command/internal_command_update.dart';
 import 'package:stax/command/internal_command_version.dart';
 import 'package:stax/command/internal_command_agents.dart';
+import 'package:stax/command/types_for_internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
 
-class InternalCommandExtras extends InternalCommand {
-  final List<InternalCommand> extraCommands = [
-    InternalCommandAbout(),
-    InternalCommandChangelog(),
-    InternalCommandDoctor(),
-    InternalCommandNuke(),
-    InternalCommandSettings(),
-    InternalCommandUpdate(),
-    InternalCommandVersion(),
-    InternalCommandAgents(),
-  ]..sort();
+final List<InternalCommand> extraCommands = [
+  InternalCommandAbout(),
+  InternalCommandChangelog(),
+  InternalCommandDoctor(),
+  InternalCommandNuke(),
+  InternalCommandSettings(),
+  InternalCommandUpdate(),
+  InternalCommandVersion(),
+  InternalCommandAgents(),
+]..sort();
 
+class InternalCommandExtras extends InternalCommand {
   InternalCommandExtras()
     : super(
         'extras',
-        'Extra non-primary commands (about, changelog, doctor, nuke, settings, update, version). Run `stax extras` to see detailed list.',
+        'Extra non-primary commands (${extraCommands.where((c) => c.type.isPublic).map((c) => c.name).join(', ')}). Run `stax extras` to see detailed list.',
         shortName: 'e',
         arguments: {'arg1': 'Subcommand to run'},
       );
