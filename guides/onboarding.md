@@ -6,8 +6,8 @@ Welcome to Stax! If you use Git but find it confusing or overwhelming, this guid
 
 First time using Stax? We have commands to help you get started easily.
 
-*   `stax doctor` : Helps you configure everything Stax needs for the first time, including optional setup steps.
-*   `stax settings` : Allows you to configure Stax for your environment. For example, you can set `branch_prefix` to automatically add a prefix to your branch names.
+*   `stax extras doctor` : Helps you configure everything Stax needs for the first time, including optional setup steps.
+*   `stax extras settings` : Allows you to configure Stax for your environment. For example, you can set `branch_prefix` to automatically add a prefix to your branch names.
 
 ## The Core Concept
 
@@ -85,8 +85,8 @@ Here is a quick cheat sheet grouping the most important commands. Note that many
 ### Daily Usage
 
 *   `stax l` or `stax log`: Shows you a tree of branches. Use the `-a` flag to show remote branches too.
-*   `stax p` or `stax pull`: Does `git checkout/switch` to the default branch, pulls it, and returns back to the original branch. Will also check for any local branches that need a clean up.
-*   `stax m` or `stax move`: Is a `git checkout/switch` alternative that uses directional movement based on a stax log graph. Directions are: `up`, `down`, `top`, `bottom`, `head` (a universal name for the default repository branch).
+*   `stax p` or `stax pull`: Does `git checkout/switch` to the default branch, pulls it, and returns back to the original branch. Will also check for any local branches that need a clean up. Use `-n` to stay on the head/default branch after pulling.
+*   `stax m` or `stax move`: Is a `git checkout/switch` alternative that uses directional movement based on a stax log graph. Directions are: `up`, `down`, `left`, `right`, `top`, `bottom`, `head` (a universal name for the default repository branch).
 *   `stax r` or `stax rebase`: Similar to `git rebase` but you do not need to supply any arguments; it rebases the current branch on top of the head branch of the repository. Use the `-m` flag to not lose any changes from your branch.
 
 ### Committing
@@ -96,6 +96,10 @@ Here is a quick cheat sheet grouping the most important commands. Note that many
     *   `-a`: add all files in current folder and its parents.
     *   `-A`: add all files in all the folders of the repository.
     *   `-b`: accept branch name automatically.
+    *   `-c`: move back to the branch on which user was before running commit.
+    *   `-d`: create a PR in draft mode using the GitHub CLI.
+    *   `-i`: ignore check for staged changes.
+    *   `-n`: bypass the browser when opening a PR.
     *   `-p`: open PR page.
     *   *Example:* `stax c -ubp "Commit message"` adds updated files, accepts the branch name automatically, and opens a PR page.
 
@@ -106,6 +110,15 @@ Here is a quick cheat sheet grouping the most important commands. Note that many
     *   `-a`: add all files in current folder and its parents.
     *   `-A`: add all files in all the folders of the repository.
     *   *Example:* `stax a -u` adds updated files to the existing commit.
+
+### Helpful Extras Commands
+*   `stax extras nuke`: Resets your working directory and cleans all untracked files. A powerful tool when you need a completely fresh state.
+
+### Global Flags
+These flags apply to almost all Stax commands:
+*   `--log`: Output the branch tree log after finishing the requested command.
+*   `-q` or `--quiet`: Removes all output except user prompts.
+*   `-v` or `--verbose`: Forces all the output, useful for reading detailed git operations.
 
 Welcome to a simpler way to build software. Happy coding with Stax!
 
