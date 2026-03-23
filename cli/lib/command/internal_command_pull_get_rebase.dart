@@ -20,7 +20,8 @@ class InternalCommandPullGetRebase extends InternalCommand {
         'Pulls, gets, and rebases sequentially.',
         type: InternalCommandType.public,
         arguments: {
-          'opt1': 'Optional target branch, will default to <remote>/HEAD',
+          'opt1':
+              'Optional target branch name that stax should "get", will default to <remote>/HEAD',
         },
         flags: [
           continueFlag,

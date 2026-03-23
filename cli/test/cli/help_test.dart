@@ -119,7 +119,7 @@ Note: you can type first letter or couple of first letters instead of full comma
  • nuke - Resets working directory and index to HEAD and cleans all untracked files.
  • pull-get-rebase - Pulls, gets, and rebases sequentially.
       Positional arguments:
-         opt1 - Optional target branch, will default to <remote>/HEAD
+         opt1 - Optional target branch name that stax should "get", will default to <remote>/HEAD
       Flags:
          -C, --continue - Continue rebase that is in progress.
          -a, --abandon - Abandon rebase that is in progress, stax can't abort own rebases.
