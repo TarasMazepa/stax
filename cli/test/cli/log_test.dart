@@ -22,7 +22,7 @@ void main() {
       final defaultBranch = commitTree.commitName(commitTree.mainId);
       final commitName = commitTree.commitName(0);
       test(commitName, () {
-        setup.runLiveStaxSync(['log-test-case', commitName]);
+        setup.runLiveStaxSync(['extras', 'log-test-case', commitName]);
         expect(
           setup
               .runLiveStaxSync(['log', '--default-branch', defaultBranch])
