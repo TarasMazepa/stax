@@ -6,14 +6,10 @@ import 'package:stax/command/internal_command_extras.dart';
 import 'package:stax/command/internal_command_get.dart';
 import 'package:stax/command/internal_command_help.dart';
 import 'package:stax/command/internal_command_log.dart';
-import 'package:stax/command/internal_command_log_test_case.dart';
-import 'package:stax/command/internal_command_main_branch.dart';
 import 'package:stax/command/internal_command_move.dart';
 import 'package:stax/command/internal_command_pr_creation.dart';
 import 'package:stax/command/internal_command_pull.dart';
 import 'package:stax/command/internal_command_rebase.dart';
-import 'package:stax/command/internal_command_terminal.dart';
-import 'package:stax/command/internal_command_update_prompt.dart';
 
 final List<InternalCommand> internalCommands = [
   InternalCommandAmend(),
@@ -23,12 +19,8 @@ final List<InternalCommand> internalCommands = [
   InternalCommandGet(),
   InternalCommandHelp(),
   InternalCommandLog(),
-  InternalCommandLogTestCase(),
-  InternalCommandMainBranch(),
   InternalCommandMove(),
   InternalCommandPrCreation(),
   InternalCommandPull(),
   InternalCommandRebase(),
-  InternalCommandTerminal(),
-  InternalCommandUpdatePrompt(),
 ]..sort();

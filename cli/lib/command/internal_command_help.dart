@@ -69,7 +69,9 @@ class InternalCommandHelp extends InternalCommand {
         final command = extraCommands.findByNameOrPrefix(subCommandName);
         commandsToShow = command != null ? [command] : [];
       case ['extras']:
-        commandsToShow = extraCommands;
+        commandsToShow = extraCommands.where(
+          (element) => showAll || element.type == InternalCommandType.public,
+        );
         headerMessage = 'Here are available commands under `extras`:';
       case [final selectedCommand, ...]:
         final command =

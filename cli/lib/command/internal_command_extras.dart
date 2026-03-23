@@ -3,10 +3,14 @@ import 'package:stax/command/internal_command_about.dart';
 import 'package:stax/command/internal_command_changelog.dart';
 import 'package:stax/command/internal_command_doctor.dart';
 import 'package:stax/command/internal_command_finder.dart';
+import 'package:stax/command/internal_command_log_test_case.dart';
+import 'package:stax/command/internal_command_main_branch.dart';
 import 'package:stax/command/internal_command_nuke.dart';
 import 'package:stax/command/internal_command_help.dart';
 import 'package:stax/command/internal_command_settings.dart';
+import 'package:stax/command/internal_command_terminal.dart';
 import 'package:stax/command/internal_command_update.dart';
+import 'package:stax/command/internal_command_update_prompt.dart';
 import 'package:stax/command/internal_command_version.dart';
 import 'package:stax/command/internal_command_agents.dart';
 import 'package:stax/command/types_for_internal_command.dart';
@@ -17,9 +21,13 @@ final List<InternalCommand> extraCommands = [
   InternalCommandAbout(),
   InternalCommandChangelog(),
   InternalCommandDoctor(),
+  InternalCommandLogTestCase(),
+  InternalCommandMainBranch(),
   InternalCommandNuke(),
   InternalCommandSettings(),
+  InternalCommandTerminal(),
   InternalCommandUpdate(),
+  InternalCommandUpdatePrompt(),
   InternalCommandVersion(),
   InternalCommandAgents(),
 ]..sort();
