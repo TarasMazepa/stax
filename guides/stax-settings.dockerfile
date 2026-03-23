@@ -1,4 +1,4 @@
-FROM taras0mazepa/stax-guide-base:0.11.3
+FROM taras0mazepa/stax-guide-base:0.11.4
 
 RUN <<EOF
 touch LICENSE.md
