@@ -49,9 +49,6 @@ Note: you can type first letter or couple of first letters instead of full comma
       Flags:
          -f, --force-delete - Force delete gone branches.
          -s, --skip-delete - Skip deletion of gone branches.
- • extras, e - Extra non-primary commands (about, agents.md, changelog, doctor, nuke, settings, update, version). Run `stax extras` to see detailed list.
-      Positional arguments:
-         arg1 - Subcommand to run
  • get - (Re)Checkout specified branch and all its children
       Positional arguments:
          opt1 - Name of the remote ref. Will be matched as a suffix.
@@ -88,6 +85,9 @@ Note: you can type first letter or couple of first letters instead of full comma
          -b, --prefer-base - Prefer base changes on conflict.
          -c, --continue - Continue rebase that is in progress.
          -m, --prefer-moving - Prefer moving changes on conflict.
+ • extras, e - Extra non-primary commands (about, agents.md, changelog, doctor, nuke, settings, update, version). Run `stax extras` to see detailed list.
+      Positional arguments:
+         arg1 - Subcommand to run
 """,
       );
     });

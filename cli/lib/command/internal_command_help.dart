@@ -79,6 +79,9 @@ class InternalCommandHelp extends InternalCommand {
         commandsToShow = internalCommands.where(
           (element) => showAll || element.type == InternalCommandType.public,
         );
+        commandsToShow = commandsToShow
+            .whereNot((command) => command is InternalCommandExtras)
+            .followedBy(commandsToShow.whereType<InternalCommandExtras>());
         headerMessage = 'Here are available commands:';
     }
 
