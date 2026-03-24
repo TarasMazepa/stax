@@ -42,44 +42,37 @@ class InternalCommandPullGetRebase extends InternalCommand {
     final hasAbortFlag = InternalCommandRebase.abortFlag.hasFlag(args);
 
     if (hasContinueFlag || hasAbortFlag) {
-      final rebaseArgs = <String>[];
-      if (hasContinueFlag) {
-        rebaseArgs.add(InternalCommandRebase.continueFlag.shortOrLong);
-      }
-      if (hasAbortFlag) {
-        rebaseArgs.add(InternalCommandRebase.abortFlag.shortOrLong);
-      }
+      final rebaseArgs = <String>[
+        if (hasContinueFlag) InternalCommandRebase.continueFlag.shortOrLong,
+        if (hasAbortFlag) InternalCommandRebase.abortFlag.shortOrLong,
+      ];
       await InternalCommandRebase().run(rebaseArgs, context);
       return;
     }
 
-    final pullArgs = <String>[];
-    if (InternalCommandDeleteStale.forceDeleteFlag.hasFlag(args)) {
-      pullArgs.add(InternalCommandDeleteStale.forceDeleteFlag.shortOrLong);
-    }
-    if (InternalCommandDeleteStale.skipDeleteFlag.hasFlag(args)) {
-      pullArgs.add(InternalCommandDeleteStale.skipDeleteFlag.shortOrLong);
-    }
-    pullArgs.add(InternalCommandPull.stayOnHeadFlag.shortOrLong);
+    final pullArgs = <String>[
+      if (InternalCommandDeleteStale.forceDeleteFlag.hasFlag(args))
+        InternalCommandDeleteStale.forceDeleteFlag.shortOrLong,
+      if (InternalCommandDeleteStale.skipDeleteFlag.hasFlag(args))
+        InternalCommandDeleteStale.skipDeleteFlag.shortOrLong,
+      InternalCommandPull.stayOnHeadFlag.shortOrLong,
+    ];
 
     await InternalCommandPull().run(pullArgs, context);
 
-    final getArgs = <String>[];
-    if (InternalCommandGet.currentFlag.hasFlag(args)) {
-      getArgs.add(InternalCommandGet.currentFlag.shortOrLong);
-    }
-    if (InternalCommandGet.rebaseOursFlag.hasFlag(args)) {
-      getArgs.add(InternalCommandGet.rebaseOursFlag.shortOrLong);
-    } else if (InternalCommandGet.rebaseTheirsFlag.hasFlag(args)) {
-      getArgs.add(InternalCommandGet.rebaseTheirsFlag.shortOrLong);
-    } else {
-      getArgs.add(InternalCommandGet.rebaseFlag.shortOrLong);
-    }
-
     final targetBranch = args.where((arg) => !arg.startsWith('-')).firstOrNull;
-    if (targetBranch != null) {
-      getArgs.add(targetBranch);
-    }
+
+    final getArgs = <String>[
+      if (InternalCommandGet.currentFlag.hasFlag(args))
+        InternalCommandGet.currentFlag.shortOrLong,
+      if (InternalCommandGet.rebaseOursFlag.hasFlag(args))
+        InternalCommandGet.rebaseOursFlag.shortOrLong
+      else if (InternalCommandGet.rebaseTheirsFlag.hasFlag(args))
+        InternalCommandGet.rebaseTheirsFlag.shortOrLong
+      else
+        InternalCommandGet.rebaseFlag.shortOrLong,
+      if (targetBranch != null) targetBranch,
+    ];
 
     await InternalCommandGet().run(getArgs, context);
   }
