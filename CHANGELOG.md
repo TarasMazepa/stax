@@ -1,6 +1,6 @@
 0.11.5
 
-* stax extras pull-get-rebase - new command that performs pull, get, and rebase sequentially
+* stax get - now switches to default branch and does pull instead of fetch
 
 0.11.4
 

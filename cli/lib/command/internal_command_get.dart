@@ -4,6 +4,7 @@ import 'package:stax/command/internal_command_rebase.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_assert_no_conflicting_flags.dart';
 import 'package:stax/context/context_git_get_current_branch.dart';
+import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
 import 'package:stax/context/context_git_log_all.dart';
 
@@ -81,9 +82,18 @@ class InternalCommandGet extends InternalCommand {
       }
     }
 
-    context.git.fetchWithPrune
-        .announce('Fetching latest changes from the remote')
-        .runSync()
+    final defaultBranch = context.getDefaultBranch();
+    if (defaultBranch != null) {
+      (await context.git.switch0
+              .arg(defaultBranch)
+              .announce("Switching to default branch '$defaultBranch'.")
+              .run())
+          .printNotEmptyResultFields();
+    }
+
+    (await context.git.pullPrune
+            .announce('Pulling new changes.')
+            .run(onDemandPrint: true))
         .printNotEmptyResultFields();
 
     final targetNode = context

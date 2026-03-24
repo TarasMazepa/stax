@@ -6,7 +6,6 @@ import 'package:stax/command/internal_command_finder.dart';
 import 'package:stax/command/internal_command_log_test_case.dart';
 import 'package:stax/command/internal_command_main_branch.dart';
 import 'package:stax/command/internal_command_nuke.dart';
-import 'package:stax/command/internal_command_pull_get_rebase.dart';
 import 'package:stax/command/internal_command_help.dart';
 import 'package:stax/command/internal_command_settings.dart';
 import 'package:stax/command/internal_command_terminal.dart';
@@ -25,7 +24,6 @@ final List<InternalCommand> extraCommands = [
   InternalCommandLogTestCase(),
   InternalCommandMainBranch(),
   InternalCommandNuke(),
-  InternalCommandPullGetRebase(),
   InternalCommandSettings(),
   InternalCommandTerminal(),
   InternalCommandUpdate(),
