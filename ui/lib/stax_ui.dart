@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ui/main.dart';
 
 class StaxUi extends StatefulWidget {
   const StaxUi({super.key});
@@ -44,13 +43,13 @@ class StaxUiState extends State<StaxUi> {
                         alignment: Alignment.bottomLeft,
                         child: SelectableText(
                           consoleText,
-                          style: const TextStyle(fontSize: fontSize),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                     ),
                     TextField(
                       controller: controller,
-                      style: const TextStyle(fontSize: fontSize),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
@@ -59,7 +58,7 @@ class StaxUiState extends State<StaxUi> {
               Expanded(
                 child: SelectableText(
                   logText,
-                  style: const TextStyle(fontSize: fontSize),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
             ],
