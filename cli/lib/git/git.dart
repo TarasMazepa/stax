@@ -47,7 +47,11 @@ class Git {
   late final revParseVerify = revParse.arg('--verify');
   late final showBranch = rawEc('git show-branch');
   late final showBranchSha1Name = showBranch.arg('--sha1-name');
+  late final stash = rawEc('git stash');
+  late final stashPop = rawEc('git stash pop');
   late final status = rawEc('git status');
+  late final statusPorcelain = status.arg('--porcelain');
+  late final statusPorcelainUno = statusPorcelain.arg('-uno');
   late final statusSb = status.arg('-sb');
   late final switch0 = rawEc('git switch');
   late final switchCreate = switch0.arg('--create');

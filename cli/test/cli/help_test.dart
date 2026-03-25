@@ -27,6 +27,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
          -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
          -b, --rebase-prefer-base - Runs 'stax rebase --prefer-base' afterwards on all children branches.
+         -g, --get-first - Runs 'git stash ; stax get --current ; git stash pop' before performing amend sequence.
          -m, --rebase-prefer-moving - Runs 'stax rebase --prefer-moving' afterwards on all children branches.
          -r, --rebase - Runs 'stax rebase' afterwards on all children branches.
          --skip-rebase - Skip asking for rebase entirely.

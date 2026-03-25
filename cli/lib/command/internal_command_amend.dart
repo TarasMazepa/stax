@@ -1,6 +1,9 @@
 import 'package:stax/command/flag.dart';
 import 'package:stax/command/internal_command.dart';
+import 'package:stax/command/internal_command_extras.dart';
+import 'package:stax/command/internal_command_finder.dart';
 import 'package:stax/command/internal_command_rebase.dart';
+import 'package:stax/command/internal_commands.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_assert_no_conflicting_flags.dart';
 import 'package:stax/context/context_explain_to_user_no_staged_changes.dart';
@@ -14,6 +17,12 @@ class InternalCommandAmend extends InternalCommand {
     short: '-r',
     long: '--rebase',
     description: "Runs 'stax rebase' afterwards on all children branches.",
+  );
+  static final getFirstFlag = Flag(
+    short: '-g',
+    long: '--get-first',
+    description:
+        "Runs 'git stash ; stax get --current ; git stash pop' before performing amend sequence.",
   );
   static final rebaseTheirsFlag = Flag(
     short: '-m',
@@ -39,6 +48,7 @@ class InternalCommandAmend extends InternalCommand {
         shortName: 'a',
         flags: [
           ...ContextHandleAddAllFlag.flags,
+          getFirstFlag,
           rebaseFlag,
           rebaseOursFlag,
           rebaseTheirsFlag,
@@ -51,6 +61,41 @@ class InternalCommandAmend extends InternalCommand {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }
+
+    bool hasGetFirstFlag = getFirstFlag.hasFlag(args);
+
+    if (hasGetFirstFlag) {
+      final hasChanges = context.git.statusPorcelainUno
+          .runSync()
+          .stdout
+          .trim()
+          .isNotEmpty;
+      if (hasChanges) {
+        (await context.git.stash
+                .announce('Stashing changes before getting current branch.')
+                .run())
+            .exitCode;
+      }
+      await (internalCommands.findByNameOrPrefix('get') ??
+              extraCommands.findByNameOrPrefix('get'))
+          ?.run(['--current'], context);
+      if (hasChanges) {
+        final exitCode =
+            (await context.git.stashPop
+                    .announce(
+                      'Popping stashed changes after getting current branch.',
+                    )
+                    .run())
+                .exitCode;
+        if (exitCode != 0) {
+          context.printParagraph(
+            'Stash pop resulted in conflicts. Please resolve them before amending.',
+          );
+          return;
+        }
+      }
+    }
+
     context.handleAddAllFlag(args);
 
     if (context.areThereNoStagedChanges()) {
