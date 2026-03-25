@@ -48,12 +48,12 @@ class InternalCommandAmend extends InternalCommand {
         shortName: 'a',
         flags: [
           ...ContextHandleAddAllFlag.flags,
-          rebaseOursFlag,
           getFirstFlag,
-          rebaseTheirsFlag,
           rebaseFlag,
+          rebaseOursFlag,
+          rebaseTheirsFlag,
           skipRebaseFlag,
-        ]..sort((a, b) => (a.short ?? a.long!).compareTo(b.short ?? b.long!)),
+        ],
       );
 
   @override
