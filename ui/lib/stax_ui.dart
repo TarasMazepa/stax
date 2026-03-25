@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ui/main.dart';
 
 class StaxUi extends StatefulWidget {
   const StaxUi({super.key});
