@@ -102,56 +102,6 @@ extension GitLogAllOnContext on Context {
     }
     return roots;
   }
-
-  Iterable<GitLogAllNode> _gitLogAll() {
-    List<GitLogAllLine> lines = git.log
-        .args(['--decorate=full', '--format=%h %ct %p %d', '--all'])
-        .announce()
-        .runSync()
-        .printNotEmptyResultFields()
-        .stdout
-        .toString()
-        .split('\n')
-        .reversed
-        .where((x) => x.isNotEmpty)
-        .map((x) => GitLogAllLine.parse(x))
-        .toList();
-    final roots = <GitLogAllNode>[];
-    final nodes = <String, GitLogAllNode>{};
-    lines.removeWhere((line) {
-      if (line.parentsCommitHashes.isEmpty) {
-        final root = GitLogAllNode.root(line);
-        roots.add(root);
-        nodes[line.commitHash] = root;
-        return true;
-      }
-      return false;
-    });
-    List<GitLogAllLine> nextLines = [];
-    int oldLength = 0;
-    while (lines.isNotEmpty) {
-      printToConsole('Tree building for log with ${lines.length} commits');
-      if (lines.length == oldLength) {
-        printToConsole('Omitting $oldLength nodes');
-        break;
-      }
-      oldLength = lines.length;
-      for (final line in lines) {
-        final parents = line.parentsCommitHashes.map((x) => nodes[x]).toList();
-        if (parents.any((x) => x == null)) {
-          nextLines.add(line);
-          continue;
-        }
-        final node = GitLogAllNode(line);
-        for (final parent in parents.nonNulls) {
-          parent.addChildNode(node);
-        }
-        nodes[node.line.commitHash] = node;
-      }
-      (lines, nextLines) = (nextLines, []);
-    }
-    return roots;
-  }
 }
 
 class GitLogAllNode {
