@@ -156,15 +156,12 @@ class GitLogAllNode {
     bool Function(GitLogAllNode) isPartOfMainBranch,
   ) {
     return children.sorted(
-      (a, b) => ComparisonChain()
-          .chainBoolReverse(isPartOfMainBranch(a), isPartOfMainBranch(b))
-          .chain(
-            () => (b.line.branchNameOrCommitHash()).compareTo(
-              a.line.branchNameOrCommitHash(),
-            ),
-          )
-          .chain(() => b.line.timestamp - a.line.timestamp)
-          .compare(),
+      (a, b) =>
+          isPartOfMainBranch(a).compareChainReverse(isPartOfMainBranch(b)) ??
+          b.line.branchNameOrCommitHash().compareChain(
+            a.line.branchNameOrCommitHash(),
+          ) ??
+          (b.line.timestamp - a.line.timestamp),
     );
   }
 
