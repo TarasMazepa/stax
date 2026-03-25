@@ -13,6 +13,3 @@ linter:
     unawaited_futures: true
     unnecessary_await_in_return: true
 
-analyzer:
-  errors:
-    unused_element: ignore
