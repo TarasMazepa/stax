@@ -1,7 +1,5 @@
 import 'package:characters/characters.dart';
 import 'package:stax/branch_name/gits_ref_name_disposition.dart';
-import 'package:stax/general/on_object.dart';
-import 'package:stax/general/on_string.dart';
 
 final isUnicodeSeparatorOrControl = RegExp(r'\p{Z}|\p{Cc}', unicode: true);
 
@@ -29,8 +27,8 @@ String gitCheckRefFormatBasedSanitization(String input) {
 
   for (final character in input.characters) {
     late final forbidden = switch (character.codeUnits) {
-      [final codeUnit] => gitsRefNameDisposition.elementAtOrNull(codeUnit).isIn(
-        {4, 5},
+      [final codeUnit] => {4, 5}.contains(
+        codeUnit < gitsRefNameDisposition.length ? gitsRefNameDisposition[codeUnit] : null,
       ),
       _ => isUnicodeSeparatorOrControl.hasMatch(character),
     };
@@ -67,5 +65,5 @@ String gitCheckRefFormatBasedSanitization(String input) {
     result = result.substring(0, result.length - 1);
   }
   if (result == '@') return '';
-  return result.enforceMaxLength(250);
+  return result.length > 250 ? result.substring(0, 250) : result;
 }

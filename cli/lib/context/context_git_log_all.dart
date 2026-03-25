@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:collection/collection.dart';
-import 'package:stax/comparison_chain.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 import 'package:stax/log/git_log_all_line.dart';
@@ -155,17 +154,17 @@ class GitLogAllNode {
   List<GitLogAllNode> getSortedChildren(
     bool Function(GitLogAllNode) isPartOfMainBranch,
   ) {
-    return children.sorted(
-      (a, b) => ComparisonChain()
-          .chainBoolReverse(isPartOfMainBranch(a), isPartOfMainBranch(b))
-          .chain(
-            () => (b.line.branchNameOrCommitHash()).compareTo(
-              a.line.branchNameOrCommitHash(),
-            ),
-          )
-          .chain(() => b.line.timestamp - a.line.timestamp)
-          .compare(),
-    );
+    return children.sorted((a, b) {
+      int cmp = (isPartOfMainBranch(a) ? 0 : 1).compareTo(
+        isPartOfMainBranch(b) ? 0 : 1,
+      );
+      if (cmp != 0) return cmp;
+      cmp = b.line.branchNameOrCommitHash().compareTo(
+        a.line.branchNameOrCommitHash(),
+      );
+      if (cmp != 0) return cmp;
+      return b.line.timestamp - a.line.timestamp;
+    });
   }
 
   factory GitLogAllNode.root(GitLogAllLine line) {
