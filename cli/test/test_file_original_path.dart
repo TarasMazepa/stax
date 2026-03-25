@@ -7,4 +7,3 @@ String? getTestFileUriString() {
 String assertTestFileUriString() {
   return getTestFileUriString()!;
 }
-
