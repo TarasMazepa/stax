@@ -1,3 +1,7 @@
+0.11.6
+
+* stax amend - adds -g/--get-first flag which will stash changes, run `stax get --current`, and pop stash before performing amend sequence
+
 0.11.5
 
 * stax get - now switches to default branch and does pull instead of fetch
