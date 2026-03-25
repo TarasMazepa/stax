@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:stax/context/context.dart';
 import 'package:stax/external_command/extended_process_result.dart';
 import 'package:stax/external_command/on_process_result.dart';
+import 'package:stax/general/on_string.dart';
 
 class ExternalCommand {
   final List<String> _parts;
@@ -92,11 +93,9 @@ class ExternalCommand {
     );
     String Function(List<int>) mapper(Encoding encoding) => onDemandPrint
         ? (codeUnits) {
-            var decoded = encoding.decode(codeUnits);
-            if (decoded.isNotEmpty && decoded.endsWith('\n')) {
-              decoded = decoded.substring(0, decoded.length - 1);
-            }
-            context.printToConsole(decoded);
+            context.printToConsole(
+              encoding.decode(codeUnits).removeEndingNewLine(),
+            );
             return '';
           }
         : encoding.decode;
