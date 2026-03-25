@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/stax_ui.dart';
 
-
 void main() {
   runApp(
     MaterialApp(
