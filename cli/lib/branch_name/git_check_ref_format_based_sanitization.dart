@@ -28,7 +28,9 @@ String gitCheckRefFormatBasedSanitization(String input) {
   for (final character in input.characters) {
     late final forbidden = switch (character.codeUnits) {
       [final codeUnit] => {4, 5}.contains(
-        codeUnit < gitsRefNameDisposition.length ? gitsRefNameDisposition[codeUnit] : null,
+        codeUnit < gitsRefNameDisposition.length
+            ? gitsRefNameDisposition[codeUnit]
+            : null,
       ),
       _ => isUnicodeSeparatorOrControl.hasMatch(character),
     };
