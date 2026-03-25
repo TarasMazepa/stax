@@ -52,7 +52,6 @@ class Git {
   late final status = rawEc('git status');
   late final statusPorcelain = status.arg('--porcelain');
   late final statusPorcelainUno = statusPorcelain.arg('-uno');
-  late final statusSb = status.arg('-sb');
   late final switch0 = rawEc('git switch');
   late final switchCreate = switch0.arg('--create');
   late final switchDetach = switch0.arg('--detach');
