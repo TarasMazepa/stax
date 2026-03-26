@@ -1,5 +1,5 @@
 import 'package:stax/context/context.dart';
-import 'package:stax/map_on_string.dart';
+import 'package:monolib_dart/monolib_dart.dart';
 import 'package:stax/on_empty_on_iterable.dart';
 import 'package:stax/once.dart';
 
@@ -62,6 +62,6 @@ extension ContextGitGetDefaultBranch on Context {
           ),
         )
         .firstOrNull
-        ?.map((x) => x == 'HEAD' ? null : x);
+        ?.let((x) => x == 'HEAD' ? null : x);
   }
 }
