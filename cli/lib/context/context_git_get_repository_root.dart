@@ -1,5 +1,5 @@
 import 'package:stax/context/context.dart';
-import 'package:stax/map_on_string.dart';
+import 'package:monolib_dart/monolib_dart.dart';
 
 extension ContextGitGetRepositoryRoot on Context {
   static String? _repositoryRoot;
@@ -16,6 +16,6 @@ extension ContextGitGetRepositoryRoot on Context {
         ?.stdout
         .toString()
         .trim()
-        .map((string) => string.substring(0, string.indexOf('.git') - 1));
+        .let((string) => string.substring(0, string.indexOf('.git') - 1));
   }
 }
