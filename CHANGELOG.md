@@ -1,7 +1,3 @@
-0.11.7
-
-* stax * - Specify Android Application ID
-
 0.11.6
 
 * stax amend - adds -g/--get-first flag which will stash changes, run `stax get --current`, and pop stash before performing amend sequence
