@@ -72,11 +72,7 @@ extension GitLogAllOnContext on Context {
     if (roots.isEmpty) {
       roots.add(newRoot(lines.removeLast()));
     }
-    for (int i = 0; i < lines.length / 2; i++) {
-      final temp = lines[i];
-      lines[i] = lines[lines.length - 1 - i];
-      lines[lines.length - 1 - i] = temp;
-    }
+    lines = lines.reversed.toList();
     List<GitLogAllLine> nextLines = [];
     int oldLength = 0;
     while (lines.isNotEmpty) {
