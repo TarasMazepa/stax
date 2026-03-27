@@ -51,6 +51,11 @@ class InternalCommandCommit extends InternalCommand {
     description:
         'Moves back to the branch on which user was before running commit.',
   );
+  static final cookieFlag = Flag(
+    short: '-k',
+    long: '--cookie',
+    description: 'Add an optional string to the branch name after the prefix.',
+  );
 
   InternalCommandCommit()
     : super(
@@ -66,6 +71,7 @@ class InternalCommandCommit extends InternalCommand {
           comeBackFlag,
           ignoreNoStagedChanges,
           noBrowserFlag,
+          cookieFlag,
           ...ContextHandleAddAllFlag.flags,
         ],
         arguments: {
@@ -87,6 +93,7 @@ class InternalCommandCommit extends InternalCommand {
     final noBrowser = noBrowserFlag.hasFlag(args);
     final acceptBranchName = branchNameFlag.hasFlag(args);
     final comeBack = comeBackFlag.hasFlag(args);
+    final cookie = cookieFlag.getFlagValue(args);
     if (!ignoreNoStagedChanges.hasFlag(args) &&
         context.areThereNoStagedChanges()) {
       context.explainToUserNoStagedChanges();
@@ -121,7 +128,9 @@ class InternalCommandCommit extends InternalCommand {
           context.effectiveSettings.branchNameSymbolSanitizationRegEx.value,
     );
     final prefixedBranchName =
-        context.effectiveSettings.branchPrefix.value + resultingBranchName;
+        context.effectiveSettings.branchPrefix.value +
+        (cookie ?? '') +
+        resultingBranchName;
 
     if (!acceptBranchName && originalBranchName != prefixedBranchName) {
       if (!context.commandLineContinueQuestion(

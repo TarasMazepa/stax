@@ -43,6 +43,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -c, --come-back - Moves back to the branch on which user was before running commit.
          -d, --draft - Creates a PR in draft mode using the GitHub CLI. Works only if you have GitHub as your remote.
          -i, --ignore-no-staged-changes - Skips check if there staged changes, helpful when your change is only rename of the file which stax can't see at the moment.
+         -k, --cookie - Add an optional string to the branch name after the prefix.
          -n, --no-browser - Do not attempt to open the PR URL in the browser.
          -p, --pull-request - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
          -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
@@ -156,6 +157,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -c, --come-back - Moves back to the branch on which user was before running commit.
          -d, --draft - Creates a PR in draft mode using the GitHub CLI. Works only if you have GitHub as your remote.
          -i, --ignore-no-staged-changes - Skips check if there staged changes, helpful when your change is only rename of the file which stax can't see at the moment.
+         -k, --cookie - Add an optional string to the branch name after the prefix.
          -n, --no-browser - Do not attempt to open the PR URL in the browser.
          -p, --pull-request - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
          -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.

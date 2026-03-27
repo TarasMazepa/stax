@@ -1,3 +1,7 @@
+0.11.7
+
+* stax commit - adds -k/--cookie flag to add an optional string to the generated branch name
+
 0.11.6
 
 * stax amend - adds -g/--get-first flag which will stash changes, run `stax get --current`, and pop stash before performing amend sequence
