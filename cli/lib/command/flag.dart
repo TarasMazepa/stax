@@ -1,4 +1,4 @@
-import 'package:stax/nullable_index_of.dart';
+import 'package:stax/base/nullable_index_of.dart';
 
 sealed class OptionalFlagResult {}
 
