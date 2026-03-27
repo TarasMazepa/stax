@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:stax/comparison_chain.dart';
+import 'package:stax/base/comparison_chain.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 
 class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {

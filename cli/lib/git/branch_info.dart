@@ -1,5 +1,5 @@
 import 'package:stax/external_command/extended_process_result.dart';
-import 'package:stax/nullable_index_of.dart';
+import 'package:stax/base/nullable_index_of.dart';
 
 extension ParseBranchInfoOnExtendedProcessResult on ExtendedProcessResult {
   List<BranchInfo> parseBranchInfo() {
