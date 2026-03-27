@@ -1,3 +1,7 @@
+0.11.7
+
+* stax * - Remove debug logging in browser extension
+
 0.11.6
 
 * stax amend - adds -g/--get-first flag which will stash changes, run `stax get --current`, and pop stash before performing amend sequence

@@ -11,11 +11,6 @@ export default function Popup() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        console.log('Extension OAuth Config:', {
-            redirectUrl: browser.identity.getRedirectURL(),
-            extensionId: browser.runtime.id,
-        });
-
         loadAuthState();
     }, []);
 
