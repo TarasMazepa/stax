@@ -19,7 +19,7 @@ cat << 'HTML_EOF' > guides/web/help.html
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="./pico.zinc.min.css">
+    <link rel="stylesheet" href="./pico.classless.zinc.min.css">
     <title>stax help - command reference</title>
     <style>
         pre {
@@ -37,7 +37,7 @@ cat << 'HTML_EOF' > guides/web/help.html
     </style>
 </head>
 <body>
-<header class="container">
+<header>
     <nav>
         <ul>
             <li><a href="index.html"><strong>Stax for git</strong></a></li>
@@ -53,7 +53,7 @@ cat << 'HTML_EOF' > guides/web/help.html
         </ul>
     </nav>
 </header>
-<main class="container">
+<main>
     <article id="content">
         <h1>Stax Command Reference</h1>
         <p>This is the output of the <code>stax help</code> command.</p>
@@ -67,7 +67,7 @@ cat << 'HTML_EOF' >> guides/web/help.html
         </pre>
     </article>
 </main>
-<footer class="container">
+<footer>
     <p style="text-align: center;">By <a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></p>
 </footer>
 </body>
@@ -89,11 +89,11 @@ cat << 'HTML_EOF' > guides/web/index.html
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="./pico.zinc.min.css">
+    <link rel="stylesheet" href="./pico.classless.zinc.min.css">
     <title>stax - manage your git branches and stack PRs</title>
 </head>
 <body>
-<header class="container">
+<header>
     <nav>
         <ul>
             <li><a href="index.html"><strong>Stax for git</strong></a></li>
@@ -109,7 +109,7 @@ cat << 'HTML_EOF' > guides/web/index.html
         </ul>
     </nav>
 </header>
-<main class="container">
+<main>
     <article id="content">
 HTML_EOF
 
@@ -118,7 +118,7 @@ echo "$CONTENT" >> guides/web/index.html
 cat << 'HTML_EOF' >> guides/web/index.html
     </article>
 </main>
-<footer class="container">
+<footer>
     <p style="text-align: center;">By <a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></p>
 </footer>
 </body>
@@ -139,11 +139,11 @@ cat << 'HTML_EOF' > guides/web/onboarding.html
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="./pico.zinc.min.css">
+    <link rel="stylesheet" href="./pico.classless.zinc.min.css">
     <title>stax - onboarding guide for beginners</title>
 </head>
 <body>
-<header class="container">
+<header>
     <nav>
         <ul>
             <li><a href="index.html"><strong>Stax for git</strong></a></li>
@@ -159,7 +159,7 @@ cat << 'HTML_EOF' > guides/web/onboarding.html
         </ul>
     </nav>
 </header>
-<main class="container">
+<main>
     <article id="content">
 HTML_EOF
 
@@ -168,7 +168,7 @@ echo "$ONBOARDING_CONTENT" >> guides/web/onboarding.html
 cat << 'HTML_EOF' >> guides/web/onboarding.html
     </article>
 </main>
-<footer class="container">
+<footer>
     <p style="text-align: center;">By <a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></p>
 </footer>
 </body>
@@ -195,11 +195,11 @@ cat << 'HTML_EOF' > guides/web/agents.html
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="./pico.zinc.min.css">
+    <link rel="stylesheet" href="./pico.classless.zinc.min.css">
     <title>stax - agents.md</title>
 </head>
 <body>
-<header class="container">
+<header>
     <nav>
         <ul>
             <li><a href="index.html"><strong>Stax for git</strong></a></li>
@@ -215,7 +215,7 @@ cat << 'HTML_EOF' > guides/web/agents.html
         </ul>
     </nav>
 </header>
-<main class="container">
+<main>
     <article id="content">
 HTML_EOF
 
@@ -224,7 +224,7 @@ echo "$AGENTS_CONTENT" >> guides/web/agents.html
 cat << 'HTML_EOF' >> guides/web/agents.html
     </article>
 </main>
-<footer class="container">
+<footer>
     <p style="text-align: center;">By <a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></p>
 </footer>
 </body>
