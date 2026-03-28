@@ -29,6 +29,10 @@ extension ContextHandleGlobalFlags on Context {
     long: '--log',
     description: 'Output log after finishing running requested command',
   );
+  static final showPathFlag = Flag(
+    long: '--show-path',
+    description: 'Prepend working directory to all announcements.',
+  );
 
   static final List<Flag> flags = [
     quietFlag,
@@ -37,13 +41,15 @@ extension ContextHandleGlobalFlags on Context {
     declineAllFlag,
     helpFlag,
     logFlag,
+    showPathFlag,
   ];
 
   Context handleGlobalFlags(List<String> args) {
     return withQuiet(quietFlag.hasFlag(args))
         .withVerbose(verboseFlag.hasFlag(args))
         .withAcceptingAll(acceptAllFlag.hasFlag(args))
-        .withDecliningAll(declineAllFlag.hasFlag(args));
+        .withDecliningAll(declineAllFlag.hasFlag(args))
+        .withShowPath(showPathFlag.hasFlag(args));
   }
 
   bool hasHelpFlag(List<String> args) {

@@ -51,6 +51,8 @@ class ExternalCommand {
     if (announcement != null) context.printToConsole('# $announcement');
     String path = context.workingDirectory != null
         ? '[${context.workingDirectory}] '
+        : context.showPath
+        ? '[${Directory.current.path}] '
         : '';
     context.printToConsole('$path> ${toString()}');
     return this;

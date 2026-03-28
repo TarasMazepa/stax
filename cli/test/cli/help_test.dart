@@ -19,6 +19,7 @@ void main() {
    -h, --help - Shows help documentation for the command
    --log - Output log after finishing running requested command
    -q, --quiet - Removes all output except user prompts.
+   --show-path - Prepend working directory to all announcements.
    -v, --verbose - Force all the output.
 Here are available commands:
 Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.
@@ -107,6 +108,7 @@ Note: you can type first letter or couple of first letters instead of full comma
    -h, --help - Shows help documentation for the command
    --log - Output log after finishing running requested command
    -q, --quiet - Removes all output except user prompts.
+   --show-path - Prepend working directory to all announcements.
    -v, --verbose - Force all the output.
 Here are available commands under `extras`:
 Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.
@@ -145,6 +147,7 @@ Note: you can type first letter or couple of first letters instead of full comma
    -h, --help - Shows help documentation for the command
    --log - Output log after finishing running requested command
    -q, --quiet - Removes all output except user prompts.
+   --show-path - Prepend working directory to all announcements.
    -v, --verbose - Force all the output.
  • commit - Creates a branch, commits, and pushes it to remote. First argument is mandatory commit message. Second argument is optional branch name, if not provided branch name would be generated from commit message.
       Positional arguments:
