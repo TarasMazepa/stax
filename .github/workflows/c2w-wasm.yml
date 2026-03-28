@@ -1,6 +1,8 @@
 name: c2w-wasm.yml
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'
 
 jobs:
   c2w:
