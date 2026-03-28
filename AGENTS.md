@@ -10,3 +10,4 @@
 - In GitHub workflow files, skip name if action is named action or a one line run command
 - GitHub workflow files naming: filename, and name of workflow should be the same. Example: `dart-format.yml` (filename) `name: dart-format.yml` first line in the file, and job name should be the same but without extention: `dart-format`
 - I prefer conrete types over `var`. So define mutable variables using concrete type.
+- when writing scripts make sure that could be invoked from any location and if they provide any commands output them in a separate line
