@@ -15,7 +15,7 @@ echo 'echo "Opening URL: $1"' >> /usr/local/bin/open
 echo 'echo "This would open a browser to create a pull request in a real environment."' >> /usr/local/bin/open
 echo 'echo "============================"' >> /usr/local/bin/open
 
-echo 'echo -e "\n===== stax commit demo =====\n"' > /home/stax/.bashrc
+echo 'echo -e "\n===== stax commit demo =====\n"' >> /home/stax/.bashrc
 echo 'echo "This demo shows how to use stax commit command:"' >> /home/stax/.bashrc
 echo 'echo -e "\nUsage: stax commit \"commit message\" [branch name]"' >> /home/stax/.bashrc
 echo 'echo -e "\nThe commit message is required and should be in quotes, like: \"Fix button styling\""' >> /home/stax/.bashrc
@@ -28,7 +28,6 @@ echo 'echo " * -b     - Accept branch name generated from commit message"' >> /h
 echo 'echo " * -i     - Skip check for staged changes (useful for renames)"' >> /home/stax/.bashrc
 echo 'echo " * -p     - Create and open PR after pushing (GitHub only)"' >> /home/stax/.bashrc
 echo 'echo -e "\nExample: stax commit -a \"Fix button styling\" button-fix\n"' >> /home/stax/.bashrc
-echo 'cd /home/stax/repo' >> /home/stax/.bashrc
 EOF
 
 ENV ENV=/home/stax/.bashrc

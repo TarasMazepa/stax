@@ -20,7 +20,7 @@ git push
 cd /home/stax/origin
 git branch -D registration-form outdated-ui-design
 
-echo 'echo -e "\n===== stax delete-stale demo =====\n"' > /home/stax/.bashrc
+echo 'echo -e "\n===== stax delete-stale demo =====\n"' >> /home/stax/.bashrc
 echo 'echo "This demo has following branches:"' >> /home/stax/.bashrc
 echo 'echo " * login-page-refactor and new-button-component - branches with their remotes in tact"' >> /home/stax/.bashrc
 echo 'echo " * registration-form and outdated-ui-design - branches whose remote counterparts were deleted (gone)"' >> /home/stax/.bashrc

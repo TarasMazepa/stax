@@ -70,14 +70,13 @@ git add dark-theme.txt && git commit -m "Add theme switcher" && git push
 cd /home/stax/repo
 git fetch
 
-echo 'echo -e "\n===== stax get demo =====\n"' > /home/stax/.bashrc
+echo 'echo -e "\n===== stax get demo =====\n"' >> /home/stax/.bashrc
 echo 'echo "This demo shows how to use stax get command:"' >> /home/stax/.bashrc
 echo 'echo -e "\nstax get <branch-name> - (Re)Checkout specified branch and all its children && pull latest changes"' >> /home/stax/.bashrc
 echo 'echo " * The branch name will be matched as a suffix"' >> /home/stax/.bashrc
 echo 'echo " * For example: stax get main - will checkout main branch"' >> /home/stax/.bashrc
 echo 'echo " * For example: stax get feature - will checkout any branch ending with feature"' >> /home/stax/.bashrc
 echo 'echo -e "\nTry checking out the main branch by running \"stax get main\"\n"' >> /home/stax/.bashrc
-echo 'cd /home/stax/repo' >> /home/stax/.bashrc
 EOF
 
 ENV ENV=/home/stax/.bashrc

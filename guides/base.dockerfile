@@ -21,6 +21,8 @@ git push
 cd /home/stax/repo
 rm -rf /home/stax/setup
 git clone /home/stax/origin .
+
+echo "export PS1='\033[01;32m\w\033[00m \033[01;36m\$(git branch --show-current 2>/dev/null)\033[00m $ '" > /home/stax/.bashrc
 EOF
 
 WORKDIR /home/stax/repo
