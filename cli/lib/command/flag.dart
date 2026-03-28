@@ -1,4 +1,3 @@
-
 import 'package:monolib_dart/monolib_dart.dart';
 
 sealed class OptionalFlagResult {}
