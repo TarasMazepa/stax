@@ -74,9 +74,7 @@ class BranchInfo {
     String? remote;
     if (raw[i] == '[') {
       i++;
-      final clothingBracketIndex = raw
-          .indexOf(']', i)
-          .asNullableIndex;
+      final clothingBracketIndex = raw.indexOf(']', i).asNullableIndex;
       if (clothingBracketIndex != null) {
         commitMessageStarIndex = clothingBracketIndex + 2;
         final remoteInfo = raw.substring(i, clothingBracketIndex).split(':');
