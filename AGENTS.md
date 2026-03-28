@@ -11,3 +11,4 @@
 - GitHub workflow files naming: filename, and name of workflow should be the same. Example: `dart-format.yml` (filename) `name: dart-format.yml` first line in the file, and job name should be the same but without extention: `dart-format`
 - I prefer conrete types over `var`. So define mutable variables using concrete type.
 - when writing scripts make sure that could be invoked from any location and if they provide any commands output them in a separate line
+- when naming dart extentions I prefer name of the extention to read same or similar to the type, so if extention is "on String" so i would name it "OnString", this also applies to nested types like "OnListOfLists" or "OnNullableListOfStreamControllers"
