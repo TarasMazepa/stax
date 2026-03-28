@@ -4,26 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.zinc.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.1.0/css/xterm.css">
     <title>Stax - Guides</title>
 </head>
 <body>
-<header>
+<header class="container">
     <nav>
-        <ul>
-            <li><a href="index.html">Back</a></li>
-            <li><a href="help.html">Help</a></li>
-        </ul>
         <ul>
             <li><h2>Guides</h2></li>
         </ul>
         <ul>
-            <li>Note: it takes roughly 7 seconds for guide to load.</li>
+            <li>
+                <details class="dropdown">
+                    <summary>Menu</summary>
+                    <ul dir="rtl">
+                        <li><a href="index.html">Back</a></li>
+                        <li><a href="help.html">Help</a></li>
+                        <li>Note: it takes roughly 7 seconds for guide to load.</li>
+                    </ul>
+                </details>
+            </li>
         </ul>
     </nav>
 </header>
-<main>
+<main class="container">
     <section style="display: flex; gap: 1rem; flex-wrap: wrap;">
         <div id="terminal" style="flex: 1 1 60%; min-width: 300px; overflow: auto;">
             <!-- Terminal content will be dynamically added here -->

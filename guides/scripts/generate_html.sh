@@ -19,7 +19,7 @@ cat << 'HTML_EOF' > guides/web/help.html
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.zinc.min.css">
     <title>stax help - command reference</title>
     <style>
         pre {
@@ -37,7 +37,7 @@ cat << 'HTML_EOF' > guides/web/help.html
     </style>
 </head>
 <body>
-<header>
+<header class="container">
     <nav>
         <ul>
             <li><a href="index.html"><strong>Stax for git</strong></a></li>
@@ -45,15 +45,22 @@ cat << 'HTML_EOF' > guides/web/help.html
             <li><a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></li>
         </ul>
         <ul>
-            <li><a href="guides.html">Try live in browser</a></li>
-            <li><a href="onboarding.html">Onboarding</a></li>
-            <li><a href="agents.html">Agents</a></li>
-            <li><a href="help.html">Help</a></li>
-            <li><a href="https://github.com/TarasMazepa/stax" target="_blank">GitHub</a></li>
+            <li>
+                <details class="dropdown">
+                    <summary>Menu</summary>
+                    <ul dir="rtl">
+                        <li><a href="guides.html">Try live in browser</a></li>
+                        <li><a href="onboarding.html">Onboarding</a></li>
+                        <li><a href="agents.html">Agents</a></li>
+                        <li><a href="help.html">Help</a></li>
+                        <li><a href="https://github.com/TarasMazepa/stax" target="_blank">GitHub</a></li>
+                    </ul>
+                </details>
+            </li>
         </ul>
     </nav>
 </header>
-<main>
+<main class="container">
     <article id="content">
         <h1>Stax Command Reference</h1>
         <p>This is the output of the <code>stax help</code> command.</p>
@@ -67,7 +74,7 @@ cat << 'HTML_EOF' >> guides/web/help.html
         </pre>
     </article>
 </main>
-<footer>
+<footer class="container">
     <p style="text-align: center;">By <a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></p>
 </footer>
 </body>
@@ -89,11 +96,11 @@ cat << 'HTML_EOF' > guides/web/index.html
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.zinc.min.css">
     <title>stax - manage your git branches and stack PRs</title>
 </head>
 <body>
-<header>
+<header class="container">
     <nav>
         <ul>
             <li><a href="index.html"><strong>Stax for git</strong></a></li>
@@ -101,15 +108,22 @@ cat << 'HTML_EOF' > guides/web/index.html
             <li><a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></li>
         </ul>
         <ul>
-            <li><a href="guides.html">Try live in browser</a></li>
-            <li><a href="onboarding.html">Onboarding</a></li>
-            <li><a href="agents.html">Agents</a></li>
-            <li><a href="help.html">Help</a></li>
-            <li><a href="https://github.com/TarasMazepa/stax" target="_blank">GitHub</a></li>
+            <li>
+                <details class="dropdown">
+                    <summary>Menu</summary>
+                    <ul dir="rtl">
+                        <li><a href="guides.html">Try live in browser</a></li>
+                        <li><a href="onboarding.html">Onboarding</a></li>
+                        <li><a href="agents.html">Agents</a></li>
+                        <li><a href="help.html">Help</a></li>
+                        <li><a href="https://github.com/TarasMazepa/stax" target="_blank">GitHub</a></li>
+                    </ul>
+                </details>
+            </li>
         </ul>
     </nav>
 </header>
-<main>
+<main class="container">
     <article id="content">
 HTML_EOF
 
@@ -118,7 +132,7 @@ echo "$CONTENT" >> guides/web/index.html
 cat << 'HTML_EOF' >> guides/web/index.html
     </article>
 </main>
-<footer>
+<footer class="container">
     <p style="text-align: center;">By <a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></p>
 </footer>
 </body>
@@ -139,11 +153,11 @@ cat << 'HTML_EOF' > guides/web/onboarding.html
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.zinc.min.css">
     <title>stax - onboarding guide for beginners</title>
 </head>
 <body>
-<header>
+<header class="container">
     <nav>
         <ul>
             <li><a href="index.html"><strong>Stax for git</strong></a></li>
@@ -151,15 +165,22 @@ cat << 'HTML_EOF' > guides/web/onboarding.html
             <li><a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></li>
         </ul>
         <ul>
-            <li><a href="guides.html">Try live in browser</a></li>
-            <li><a href="onboarding.html">Onboarding</a></li>
-            <li><a href="agents.html">Agents</a></li>
-            <li><a href="help.html">Help</a></li>
-            <li><a href="https://github.com/TarasMazepa/stax" target="_blank">GitHub</a></li>
+            <li>
+                <details class="dropdown">
+                    <summary>Menu</summary>
+                    <ul dir="rtl">
+                        <li><a href="guides.html">Try live in browser</a></li>
+                        <li><a href="onboarding.html">Onboarding</a></li>
+                        <li><a href="agents.html">Agents</a></li>
+                        <li><a href="help.html">Help</a></li>
+                        <li><a href="https://github.com/TarasMazepa/stax" target="_blank">GitHub</a></li>
+                    </ul>
+                </details>
+            </li>
         </ul>
     </nav>
 </header>
-<main>
+<main class="container">
     <article id="content">
 HTML_EOF
 
@@ -168,7 +189,7 @@ echo "$ONBOARDING_CONTENT" >> guides/web/onboarding.html
 cat << 'HTML_EOF' >> guides/web/onboarding.html
     </article>
 </main>
-<footer>
+<footer class="container">
     <p style="text-align: center;">By <a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></p>
 </footer>
 </body>
@@ -195,11 +216,11 @@ cat << 'HTML_EOF' > guides/web/agents.html
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.zinc.min.css">
     <title>stax - agents.md</title>
 </head>
 <body>
-<header>
+<header class="container">
     <nav>
         <ul>
             <li><a href="index.html"><strong>Stax for git</strong></a></li>
@@ -207,15 +228,22 @@ cat << 'HTML_EOF' > guides/web/agents.html
             <li><a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></li>
         </ul>
         <ul>
-            <li><a href="guides.html">Try live in browser</a></li>
-            <li><a href="onboarding.html">Onboarding</a></li>
-            <li><a href="agents.html">Agents</a></li>
-            <li><a href="help.html">Help</a></li>
-            <li><a href="https://github.com/TarasMazepa/stax" target="_blank">GitHub</a></li>
+            <li>
+                <details class="dropdown">
+                    <summary>Menu</summary>
+                    <ul dir="rtl">
+                        <li><a href="guides.html">Try live in browser</a></li>
+                        <li><a href="onboarding.html">Onboarding</a></li>
+                        <li><a href="agents.html">Agents</a></li>
+                        <li><a href="help.html">Help</a></li>
+                        <li><a href="https://github.com/TarasMazepa/stax" target="_blank">GitHub</a></li>
+                    </ul>
+                </details>
+            </li>
         </ul>
     </nav>
 </header>
-<main>
+<main class="container">
     <article id="content">
 HTML_EOF
 
@@ -224,7 +252,7 @@ echo "$AGENTS_CONTENT" >> guides/web/agents.html
 cat << 'HTML_EOF' >> guides/web/agents.html
     </article>
 </main>
-<footer>
+<footer class="container">
     <p style="text-align: center;">By <a href="https://tarasmazepa.com" target="_blank">Taras Mazepa</a></p>
 </footer>
 </body>
