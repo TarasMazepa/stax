@@ -7,7 +7,7 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_get_default_remote.dart';
 import 'package:stax/context/context_git_is_inside_work_tree.dart';
-import 'package:stax/base/string_empty_to_null.dart';
+import 'package:monolib_dart/monolib_dart.dart';
 
 typedef DoctorResult = ({
   bool successful,

@@ -1,5 +1,5 @@
 import 'package:stax/external_command/extended_process_result.dart';
-import 'package:stax/base/nullable_index_of.dart';
+import 'package:monolib_dart/monolib_dart.dart';
 
 extension ParseBranchInfoOnExtendedProcessResult on ExtendedProcessResult {
   List<BranchInfo> parseBranchInfo() {
@@ -76,7 +76,7 @@ class BranchInfo {
       i++;
       final clothingBracketIndex = raw
           .indexOf(']', i)
-          .toNullableIndexOfResult();
+          .asNullableIndex;
       if (clothingBracketIndex != null) {
         commitMessageStarIndex = clothingBracketIndex + 2;
         final remoteInfo = raw.substring(i, clothingBracketIndex).split(':');
