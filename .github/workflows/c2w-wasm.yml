@@ -5,29 +5,7 @@ on:
     - cron: '0 0 * * 0'
 
 jobs:
-  check-changes:
-    runs-on: ubuntu-latest
-    outputs:
-      should_run: ${{ steps.check.outputs.should_run }}
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 50
-      - id: check
-        run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "should_run=true" >> $GITHUB_OUTPUT
-          else
-            if git log --since="8 days ago" --name-only --oneline | grep -qE '^guides/|^README\.md$|^AGENTS\.md$|^cli/'; then
-              echo "should_run=true" >> $GITHUB_OUTPUT
-            else
-              echo "should_run=false" >> $GITHUB_OUTPUT
-            fi
-          fi
-
   c2w:
-    needs: check-changes
-    if: needs.check-changes.outputs.should_run == 'true'
     permissions:
       contents: 'read'
       id-token: 'write'
