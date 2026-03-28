@@ -40,6 +40,7 @@ echo 'echo "This demo shows how to update your local repository:"' >> /home/stax
 echo 'echo -e "\n * Run \"stax pull\" to switch to remote HEAD, pull latest changes, and return to your branch"' >> /home/stax/.bashrc
 echo 'echo " * Use \"stax pull -f\" to force delete gone branches"' >> /home/stax/.bashrc
 echo 'echo " * Use \"stax pull -s\" to skip deletion of gone branches"' >> /home/stax/.bashrc
+echo 'echo " * Use \"stax pull -n\" to stay on the head/default branch after pulling"' >> /home/stax/.bashrc
 echo 'echo " * Optionally specify a target branch, e.g. \"stax pull origin/main\""' >> /home/stax/.bashrc
 echo 'echo -e "\nTry running \"git branch -vv\" before and after to see the changes!\n"' >> /home/stax/.bashrc
 EOF

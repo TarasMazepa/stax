@@ -28,6 +28,7 @@ echo 'echo -e "\n===== stax log demo =====\n"' >> /home/stax/.bashrc
 echo 'echo "This demo shows how to view your branch tree."' >> /home/stax/.bashrc
 echo 'echo -e "\n * Run \"stax log\" to see the local branch tree"' >> /home/stax/.bashrc
 echo 'echo " * Run \"stax log -a\" to see local and remote branches"' >> /home/stax/.bashrc
+echo 'echo " * Run \"stax log -d <branch>\" to assume a different default branch"' >> /home/stax/.bashrc
 echo 'echo -e "\nTry running \"stax log -a\"\n"' >> /home/stax/.bashrc
 EOF
 

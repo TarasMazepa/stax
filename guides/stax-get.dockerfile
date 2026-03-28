@@ -76,6 +76,11 @@ echo 'echo -e "\nstax get <branch-name> - (Re)Checkout specified branch and all 
 echo 'echo " * The branch name will be matched as a suffix"' >> /home/stax/.bashrc
 echo 'echo " * For example: stax get main - will checkout main branch"' >> /home/stax/.bashrc
 echo 'echo " * For example: stax get feature - will checkout any branch ending with feature"' >> /home/stax/.bashrc
+echo 'echo -e "\nFlags:"' >> /home/stax/.bashrc
+echo 'echo " * -c, --current            - Force get current branch, skipping the confirmation prompt"' >> /home/stax/.bashrc
+echo 'echo " * -r, --rebase             - Run stax rebase afterwards starting from the branch requested"' >> /home/stax/.bashrc
+echo 'echo " * -b, --rebase-prefer-base - Run stax rebase --prefer-base afterwards starting from the branch requested"' >> /home/stax/.bashrc
+echo 'echo " * -m, --rebase-prefer-moving - Run stax rebase --prefer-moving afterwards starting from the branch requested"' >> /home/stax/.bashrc
 echo 'echo -e "\nTry checking out the main branch by running \"stax get main\"\n"' >> /home/stax/.bashrc
 EOF
 

@@ -17,7 +17,12 @@ git checkout fix-button
 
 echo 'echo -e "\n===== stax rebase demo =====\n"' >> /home/stax/.bashrc
 echo 'echo "This demo shows how to rebase branch trees."' >> /home/stax/.bashrc
-echo 'echo "Run \"stax rebase\" to rebase fix-button onto updated main"' >> /home/stax/.bashrc
+echo 'echo -e "\nFlags:"' >> /home/stax/.bashrc
+echo 'echo " * -a, --abandon       - Abandon rebase that is in progress"' >> /home/stax/.bashrc
+echo 'echo " * -c, --continue      - Continue rebase that is in progress"' >> /home/stax/.bashrc
+echo 'echo " * -b, --prefer-base   - Prefer base changes on conflict"' >> /home/stax/.bashrc
+echo 'echo " * -m, --prefer-moving - Prefer moving changes on conflict"' >> /home/stax/.bashrc
+echo 'echo -e "\nRun \"stax rebase\" to rebase fix-button onto updated main"' >> /home/stax/.bashrc
 echo 'echo -e "Check \"stax log\" to see the updated history\n"' >> /home/stax/.bashrc
 EOF
 

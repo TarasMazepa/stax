@@ -74,11 +74,13 @@ git checkout ui-feature
 echo 'echo -e "\n===== stax move demo =====\n"' >> /home/stax/.bashrc
 echo 'echo "This demo shows how to use stax move command:"' >> /home/stax/.bashrc
 echo 'echo -e "\nstax move <direction> [child-index] - Move around the git log tree"' >> /home/stax/.bashrc
-echo 'echo " * up (u) - Move one commit up. Optional child-index (0-based) to select which child to move to"' >> /home/stax/.bashrc
-echo 'echo " * down (d) - Move one commit down"' >> /home/stax/.bashrc
-echo 'echo " * top (t) - Move to closest parent with multiple children or topmost node. Optional child-index"' >> /home/stax/.bashrc
+echo 'echo " * up (u)     - Move one node up. Optional child-index (0-based) to select which child to move to"' >> /home/stax/.bashrc
+echo 'echo " * down (d)   - Move one node down"' >> /home/stax/.bashrc
+echo 'echo " * left (l)   - Move to previous sibling node"' >> /home/stax/.bashrc
+echo 'echo " * right (r)  - Move to next sibling node"' >> /home/stax/.bashrc
+echo 'echo " * top (t)    - Move to closest parent with multiple children or topmost node. Optional child-index"' >> /home/stax/.bashrc
 echo 'echo " * bottom (b) - Move to closest parent with multiple children or bottom node"' >> /home/stax/.bashrc
-echo 'echo " * head (h) - Move to remote HEAD"' >> /home/stax/.bashrc
+echo 'echo " * head (h)   - Move to remote HEAD"' >> /home/stax/.bashrc
 echo 'echo -e "Try moving up the tree by running \"stax move up\" or \"stax move u\"\n"' >> /home/stax/.bashrc
 EOF
 

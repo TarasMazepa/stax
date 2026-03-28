@@ -14,14 +14,14 @@ echo 'echo " * default_remote - Override for default remote (empty means use fir
 echo 'echo " * base_branch_replacement - Auto-substitute specific branch when creating PR"' >> /home/stax/.bashrc
 echo 'echo " * additionally_pull - Additional branches to pull besides default_branch"' >> /home/stax/.bashrc
 echo 'echo -e "\nCommands:"' >> /home/stax/.bashrc
-echo 'echo " * stax settings set <name> <value> - Set a single value"' >> /home/stax/.bashrc
-echo 'echo " * stax settings add <name> <value> - Add to a list setting"' >> /home/stax/.bashrc
-echo 'echo " * stax settings remove <name> <value> - Remove from a list setting"' >> /home/stax/.bashrc
-echo 'echo " * stax settings clear <name> - Clear a setting"' >> /home/stax/.bashrc
-echo 'echo " * stax settings show - Show all settings"' >> /home/stax/.bashrc
+echo 'echo " * stax extras settings set <name> <value> - Set a single value"' >> /home/stax/.bashrc
+echo 'echo " * stax extras settings add <name> <value> - Add to a list setting"' >> /home/stax/.bashrc
+echo 'echo " * stax extras settings remove <name> <value> - Remove from a list setting"' >> /home/stax/.bashrc
+echo 'echo " * stax extras settings clear <name> - Clear a setting"' >> /home/stax/.bashrc
+echo 'echo " * stax extras settings show - Show all settings"' >> /home/stax/.bashrc
 echo 'echo -e "\nFlags:"' >> /home/stax/.bashrc
 echo 'echo " -g, --global - Perform operation on global settings regardless of invocation path"' >> /home/stax/.bashrc
-echo 'echo -e "\nTry setting branch_prefix: \"stax settings set branch_prefix feature/\"\n"' >> /home/stax/.bashrc
+echo 'echo -e "\nTry setting branch_prefix: \"stax extras settings set branch_prefix feature/\"\n"' >> /home/stax/.bashrc
 EOF
 
 ENV ENV=/home/stax/.bashrc
