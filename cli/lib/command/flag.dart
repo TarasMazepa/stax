@@ -1,4 +1,4 @@
-import 'package:stax/base/nullable_index_of.dart';
+import 'package:monolib_dart/monolib_dart.dart';
 
 sealed class OptionalFlagResult {}
 
@@ -42,7 +42,7 @@ class Flag {
 
   FlagFindResult? findAndRemoveFlag(List<String> args) {
     if (long case final longFlag?) {
-      final index = args.indexOf(longFlag).toNullableIndexOfResult();
+      final index = args.indexOf(longFlag).asNullableIndex;
       if (index != null) {
         args.removeAt(index);
         return FlagFindResult(index, FlagFindType.long, this);
@@ -50,7 +50,7 @@ class Flag {
     }
 
     if (short case final shortFlag?) {
-      final index = args.indexOf(shortFlag).toNullableIndexOfResult();
+      final index = args.indexOf(shortFlag).asNullableIndex;
       if (index != null) {
         args.removeAt(index);
         return FlagFindResult(index, FlagFindType.shortStandalone, this);

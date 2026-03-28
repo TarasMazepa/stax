@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:stax/base/comparison_chain.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer.dart';
+import 'package:monolib_dart/monolib_dart.dart';
 
 class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
   static final _alphabet =

@@ -1,11 +1,11 @@
 import 'dart:collection';
 
 import 'package:collection/collection.dart';
-import 'package:stax/base/comparison_chain.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 import 'package:stax/log/git_log_all_line.dart';
 import 'package:stax/rebase/rebase_step.dart';
+import 'package:monolib_dart/monolib_dart.dart';
 
 extension GitLogAllOnContext on Context {
   static GitLogAllNode? _gitLogAllLocal;
