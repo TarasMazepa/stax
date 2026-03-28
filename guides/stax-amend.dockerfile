@@ -23,9 +23,11 @@ echo 'echo "This demo shows how to use stax amend command:"' >> /home/stax/.bash
 echo 'echo -e "\n * stax amend -A - adds tracked and untracked files in whole working tree before amending"' >> /home/stax/.bashrc
 echo 'echo " * stax amend -a - adds tracked and untracked files in current folder before amending"' >> /home/stax/.bashrc
 echo 'echo " * stax amend -u - adds only tracked files in whole working tree before amending"' >> /home/stax/.bashrc
+echo 'echo " * stax amend -g - runs get --current to ensure updated base before amending"' >> /home/stax/.bashrc
 echo 'echo " * stax amend -r - runs rebase afterwards on all children branches"' >> /home/stax/.bashrc
 echo 'echo " * stax amend -m - runs rebase with prefer-moving afterwards on children"' >> /home/stax/.bashrc
 echo 'echo " * stax amend -b - runs rebase with prefer-base afterwards on children"' >> /home/stax/.bashrc
+echo 'echo " * stax amend --skip-rebase - skip asking for rebase entirely"' >> /home/stax/.bashrc
 echo 'echo -e "\nTry updating the changes by running \"stax amend -u\"\n"' >> /home/stax/.bashrc
 EOF
 

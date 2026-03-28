@@ -25,7 +25,11 @@ echo 'echo " * -A     - Add all tracked and untracked files in entire working tr
 echo 'echo " * -a     - Add all tracked and untracked files in current folder and subfolders"' >> /home/stax/.bashrc
 echo 'echo " * -u     - Add only tracked files in entire working tree"' >> /home/stax/.bashrc
 echo 'echo " * -b     - Accept branch name generated from commit message"' >> /home/stax/.bashrc
+echo 'echo " * -c     - Move back to the branch you were on before running commit"' >> /home/stax/.bashrc
+echo 'echo " * -d     - Create a PR in draft mode using the GitHub CLI"' >> /home/stax/.bashrc
 echo 'echo " * -i     - Skip check for staged changes (useful for renames)"' >> /home/stax/.bashrc
+echo 'echo " * -k     - Add an optional string to the branch name after the prefix"' >> /home/stax/.bashrc
+echo 'echo " * -n     - Do not attempt to open the PR URL in the browser"' >> /home/stax/.bashrc
 echo 'echo " * -p     - Create and open PR after pushing (GitHub only)"' >> /home/stax/.bashrc
 echo 'echo -e "\nExample: stax commit -a \"Fix button styling\" button-fix\n"' >> /home/stax/.bashrc
 EOF
