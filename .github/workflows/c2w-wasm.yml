@@ -28,6 +28,7 @@ jobs:
       - run: dart pub get
         working-directory: cli
       - run: ./guides/scripts/generate_html.sh
+      - run: wget https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.zinc.min.css -O guides/web/pico.zinc.min.css
       - run: .github/scripts/build_guide_docker_to_wasm amend
       - run: .github/scripts/build_guide_docker_to_wasm commit
       - run: .github/scripts/build_guide_docker_to_wasm delete-stale
