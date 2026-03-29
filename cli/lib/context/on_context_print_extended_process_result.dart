@@ -7,12 +7,12 @@ extension OnContextPrintExtendedProcessResult on Context {
     if (shouldBeQuiet()) return;
     if (result.exitCode != 0) printToConsole('ExitCode: ${result.exitCode}');
 
-    result.stdout.toString().trim().emptyToNull()?.let((stdout) {
+    if (result.stdout.toString().trim().emptyToNull() case final stdout?) {
       printToConsole('Stdout:\n$stdout');
-    });
+    }
 
-    result.stderr.toString().trim().emptyToNull()?.let((stderr) {
+    if (result.stderr.toString().trim().emptyToNull() case final stderr?) {
       printToConsole('Stderr:\n$stderr');
-    });
+    }
   }
 }
