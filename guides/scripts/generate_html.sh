@@ -4,6 +4,9 @@ set -e
 # Change to the root of the project to ensure relative paths work consistently
 cd "$(dirname "$0")/../.."
 
+echo "Downloading pico.classless.zinc.min.css..."
+wget -q https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css -O guides/web/pico.classless.zinc.min.css
+
 echo "Generating guides/web/help.html..."
 
 # Run stax help and capture output
