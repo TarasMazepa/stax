@@ -221,7 +221,7 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
   @override
   List<int> children(int id) {
     return _children(id).sorted(
-      (a, b) =>
+      compare: (a, b) =>
           isDefaultBranchOrHasDefaultBranchAsAChild(
             a,
           ).compareChainReverse(isDefaultBranchOrHasDefaultBranchAsAChild(b)) ??

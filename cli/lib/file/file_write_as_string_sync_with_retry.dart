@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:monolib_dart/monolib_dart.dart';
+
 extension FileWriteAsStringSyncWithRetry on File {
   void writeAsStringSyncWithRetry(
     String contents, {
@@ -9,21 +11,9 @@ extension FileWriteAsStringSyncWithRetry on File {
     bool flush = true,
     int retry = 3,
   }) {
-    dynamic error;
-    for (int i = 0; i < retry && retry > 0; i++) {
-      try {
-        createSync(recursive: true);
-        writeAsStringSync(
-          contents,
-          mode: mode,
-          encoding: encoding,
-          flush: flush,
-        );
-        return;
-      } catch (e) {
-        error ??= e;
-      }
-    }
-    throw error;
+    (() {
+      createSync(recursive: true);
+      writeAsStringSync(contents, mode: mode, encoding: encoding, flush: flush);
+    }).callWithRetryOnFailure(times: retry);
   }
 }
