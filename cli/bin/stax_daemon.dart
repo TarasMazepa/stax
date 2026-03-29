@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:stax/command/flag.dart';
+import 'package:stax/base/flag.dart';
 
 void main(List<String> arguments) async {
   int daemonPort = 62261;

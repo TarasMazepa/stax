@@ -1,5 +1,5 @@
 import 'package:stax/branch_name/sanitize_branch_name.dart';
-import 'package:stax/command/flag.dart';
+import 'package:stax/base/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_apply_base_branch_replacement.dart';

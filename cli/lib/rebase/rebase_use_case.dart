@@ -6,9 +6,9 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_get_repository_root.dart';
 import 'package:stax/context/context_git_log_all.dart';
-import 'package:stax/file/file_read_as_string_sync_with_retry.dart';
+import 'package:stax/base/file_read_as_string_sync_with_retry.dart';
 import 'package:stax/file/file_system_entity_delete_sync_quietly.dart';
-import 'package:stax/file/file_write_as_string_sync_with_retry.dart';
+import 'package:stax/base/file_write_as_string_sync_with_retry.dart';
 import 'package:stax/rebase/rebase_data.dart';
 
 class RebaseUseCase {
