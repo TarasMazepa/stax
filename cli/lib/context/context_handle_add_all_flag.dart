@@ -1,4 +1,4 @@
-import 'package:stax/command/flag.dart';
+import 'package:stax/base/flag.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_are_there_staged_changes.dart';
 

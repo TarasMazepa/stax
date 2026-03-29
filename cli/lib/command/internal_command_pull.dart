@@ -1,4 +1,4 @@
-import 'package:stax/command/flag.dart';
+import 'package:stax/base/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_delete_stale.dart';
 import 'package:stax/context/context.dart';
