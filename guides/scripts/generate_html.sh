@@ -4,6 +4,9 @@ set -e
 # Change to the root of the project to ensure relative paths work consistently
 cd "$(dirname "$0")/../.."
 
+echo "Downloading pico.classless.zinc.min.css..."
+wget -q https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css -O guides/web/pico.classless.zinc.min.css
+
 echo "Generating guides/web/help.html..."
 
 # Run stax help and capture output
@@ -19,7 +22,7 @@ cat << 'HTML_EOF' > guides/web/help.html
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css">
+    <link rel="stylesheet" href="./pico.classless.zinc.min.css">
     <title>stax help - command reference</title>
     <style>
         pre {
@@ -89,7 +92,7 @@ cat << 'HTML_EOF' > guides/web/index.html
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css">
+    <link rel="stylesheet" href="./pico.classless.zinc.min.css">
     <title>stax - manage your git branches and stack PRs</title>
 </head>
 <body>
@@ -139,7 +142,7 @@ cat << 'HTML_EOF' > guides/web/onboarding.html
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css">
+    <link rel="stylesheet" href="./pico.classless.zinc.min.css">
     <title>stax - onboarding guide for beginners</title>
 </head>
 <body>
@@ -195,7 +198,7 @@ cat << 'HTML_EOF' > guides/web/agents.html
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.zinc.min.css">
+    <link rel="stylesheet" href="./pico.classless.zinc.min.css">
     <title>stax - agents.md</title>
 </head>
 <body>
