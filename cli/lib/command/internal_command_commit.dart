@@ -186,17 +186,17 @@ class InternalCommandCommit extends InternalCommand {
             .exitCode;
     if (commitExitCode != 0) {
       if (comeBackNode != null) {
-        context.git.switch0
-            .arg(comeBackNode)
-            .announce('Switching back to original checkout')
-            .runSync()
+        (await context.git.switch0
+                .arg(comeBackNode)
+                .announce('Switching back to original checkout')
+                .run())
             .printNotEmptyResultFields();
       }
 
-      context.git.branchDelete
-          .arg(prefixedBranchName)
-          .announce('Deleting created branch')
-          .runSync()
+      (await context.git.branchDelete
+              .arg(prefixedBranchName)
+              .announce('Deleting created branch')
+              .run())
           .printNotEmptyResultFields();
 
       context.printParagraph(
@@ -233,19 +233,19 @@ class InternalCommandCommit extends InternalCommand {
       if (noBrowser) {
         context.printParagraph('PR URL: $prUrl');
       } else {
-        context
-            .openInBrowser(prUrl)
-            .announce('Opening PR in browser window')
-            .runSync()
+        (await context
+                .openInBrowser(prUrl)
+                .announce('Opening PR in browser window')
+                .run())
             .printNotEmptyResultFields();
       }
     }
 
     if (comeBack && comeBackNode != null) {
-      context.git.switch0
-          .arg(comeBackNode)
-          .announce('Switching back to original checkout')
-          .runSync()
+      (await context.git.switch0
+              .arg(comeBackNode)
+              .announce('Switching back to original checkout')
+              .run())
           .printNotEmptyResultFields();
     }
   }
