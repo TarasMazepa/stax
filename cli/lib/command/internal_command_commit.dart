@@ -87,7 +87,7 @@ class InternalCommandCommit extends InternalCommand {
     if (context.handleNotInsideGitWorkingTree()) {
       return;
     }
-    context.handleAddAllFlag(args);
+    await context.handleAddAllFlag(args);
     final draftPr = draftPrFlag.hasFlag(args);
     final createPr = prFlag.hasFlag(args) || draftPr;
     final noBrowser = noBrowserFlag.hasFlag(args);
@@ -95,7 +95,7 @@ class InternalCommandCommit extends InternalCommand {
     final comeBack = comeBackFlag.hasFlag(args);
     final cookie = cookieFlag.getFlagValue(args);
     if (!ignoreNoStagedChanges.hasFlag(args) &&
-        context.areThereNoStagedChanges()) {
+        await context.areThereNoStagedChanges()) {
       context.explainToUserNoStagedChanges();
       return;
     }
@@ -143,12 +143,12 @@ class InternalCommandCommit extends InternalCommand {
     context.printToConsole("New branch name: '$prefixedBranchName'");
 
     String? comeBackNode =
-        context.getCurrentBranch() ??
+        await context.getCurrentBranch() ??
         context.gitLogAll().findCurrent()?.line.branchNameOrCommitHash();
     String? baseBranch;
     if (createPr) {
       baseBranch = context.applyBaseBranchReplacement(
-        context.getCurrentBranch() ??
+        await context.getCurrentBranch() ??
             context.gitLogAll().findCurrent()?.line.branchName() ??
             context.getDefaultBranch(),
       );

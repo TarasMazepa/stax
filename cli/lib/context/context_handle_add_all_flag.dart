@@ -25,7 +25,7 @@ extension ContextHandleAddAllFlag on Context {
     updateAllFlag,
   ];
 
-  void handleAddAllFlag(List<String> args) {
+  Future<void> handleAddAllFlag(List<String> args) async {
     final hasAddEverything = addEverythingFlag.hasFlag(args);
     final hasAddAll = addAllFlag.hasFlag(args);
     final hasUpdateAll = updateAllFlag.hasFlag(args);
@@ -33,7 +33,7 @@ extension ContextHandleAddAllFlag on Context {
       final selectedAddAll = hasAddEverything
           ? git.addEverything
           : (hasAddAll ? git.addAll : git.addUpdate);
-      if (areThereStagedChanges()) {
+      if (await areThereStagedChanges()) {
         selectedAddAll
             .askContinueQuestion(
               'You already have some staged changes. Do you really want to proceed?',
@@ -48,7 +48,7 @@ extension ContextHandleAddAllFlag on Context {
             .printNotEmptyResultFields();
       }
     } else {
-      if (areThereNoStagedChanges()) {
+      if (await areThereNoStagedChanges()) {
         git.addEverything
             .askContinueQuestion(
               'You do not have any staged changes. Do you want to add all?',

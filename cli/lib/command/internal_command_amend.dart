@@ -96,9 +96,9 @@ class InternalCommandAmend extends InternalCommand {
       }
     }
 
-    context.handleAddAllFlag(args);
+    await context.handleAddAllFlag(args);
 
-    if (context.areThereNoStagedChanges()) {
+    if (await context.areThereNoStagedChanges()) {
       context.explainToUserNoStagedChanges();
       return;
     }
