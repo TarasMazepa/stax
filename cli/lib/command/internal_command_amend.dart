@@ -65,9 +65,7 @@ class InternalCommandAmend extends InternalCommand {
     bool hasGetFirstFlag = getFirstFlag.hasFlag(args);
 
     if (hasGetFirstFlag) {
-      final hasChanges = context.git.statusPorcelainUno
-          .runSync()
-          .stdout
+      final hasChanges = (await context.git.statusPorcelainUno.run()).stdout
           .trim()
           .isNotEmpty;
       if (hasChanges) {
