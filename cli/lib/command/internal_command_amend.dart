@@ -177,11 +177,12 @@ class InternalCommandAmend extends InternalCommand {
       return;
     }
 
-    final pushResult = context.git.pushForce
-        .announce('Force pushing to a remote.')
-        .runSync()
-        .printNotEmptyResultFields()
-        .assertSuccessfulExitCode();
+    final pushResult =
+        (await context.git.pushForce
+                .announce('Force pushing to a remote.')
+                .run())
+            .printNotEmptyResultFields()
+            .assertSuccessfulExitCode();
 
     if (pushResult == null) {
       context.printParagraph("Can't rebase, amend wasn't successful.");
