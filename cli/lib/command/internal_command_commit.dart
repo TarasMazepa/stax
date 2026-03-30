@@ -84,7 +84,7 @@ class InternalCommandCommit extends InternalCommand {
 
   @override
   Future<void> run(final List<String> args, final Context context) async {
-    if (context.handleNotInsideGitWorkingTree()) {
+    if (await context.handleNotInsideGitWorkingTree()) {
       return;
     }
     await context.handleAddAllFlag(args);

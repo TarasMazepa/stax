@@ -26,7 +26,7 @@ class InternalCommandLog extends InternalCommand {
 
   @override
   Future<void> run(List<String> args, Context context) async {
-    if (context.handleNotInsideGitWorkingTree()) {
+    if (await context.handleNotInsideGitWorkingTree()) {
       return;
     }
     context = context.quietly();
