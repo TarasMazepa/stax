@@ -17,9 +17,7 @@ extension ContextGitGetDefaultBranch on Context {
 
     if (defaultBranch != null) return defaultBranch;
     final complainAboutEmptyOnce = Once();
-    remotes = (await git.remote
-            .announce('Checking name of your remote.')
-            .run())
+    remotes = (await git.remote.announce('Checking name of your remote.').run())
         .printNotEmptyResultFields()
         .stdout
         .toString()
@@ -39,15 +37,16 @@ extension ContextGitGetDefaultBranch on Context {
 
     List<({String remote, List<String> parts})> results = [];
     for (final remote in remotes!) {
-      final result = (await git.revParseAbbrevRef
-              .arg('$remote/HEAD')
-              .announce("Checking default branch on '$remote' remote.")
-              .run())
-          .printNotEmptyResultFields()
-          .stdout
-          .toString()
-          .trim()
-          .split('/');
+      final result =
+          (await git.revParseAbbrevRef
+                  .arg('$remote/HEAD')
+                  .announce("Checking default branch on '$remote' remote.")
+                  .run())
+              .printNotEmptyResultFields()
+              .stdout
+              .toString()
+              .trim()
+              .split('/');
       results.add((remote: remote, parts: result));
     }
 
