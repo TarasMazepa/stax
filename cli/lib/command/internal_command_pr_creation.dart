@@ -47,10 +47,10 @@ class InternalCommandPrCreation extends InternalCommand {
       return;
     }
 
-    context
-        .openInBrowser(prUrl)
-        .announce('Opening PR creation page in browser')
-        .runSync()
+    (await context
+            .openInBrowser(prUrl)
+            .announce('Opening PR creation page in browser')
+            .run())
         .printNotEmptyResultFields();
   }
 }
