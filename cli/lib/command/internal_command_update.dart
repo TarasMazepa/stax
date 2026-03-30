@@ -19,7 +19,7 @@ class InternalCommandUpdate extends InternalCommand {
     }
     context.printToConsole('Checking if stax is installed via Homebrew...');
 
-    final brewCheckResult = context.command(['which', 'brew']).runSync();
+    final brewCheckResult = await context.command(['which', 'brew']).run();
 
     if (brewCheckResult.exitCode != 0) {
       context.printToConsole('Homebrew is not installed on this system.');
@@ -27,11 +27,11 @@ class InternalCommandUpdate extends InternalCommand {
       return;
     }
 
-    final brewListResult = context.command([
+    final brewListResult = await context.command([
       'brew',
       'list',
       '--formula',
-    ]).runSync();
+    ]).run();
 
     if (brewListResult.exitCode != 0 ||
         !brewListResult.stdout.toString().contains('stax')) {
