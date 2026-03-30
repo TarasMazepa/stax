@@ -66,14 +66,14 @@ class InternalCommandGet extends InternalCommand {
 
     if (targetRef == null) {
       if (hasCurrentFlag) {
-        targetRef = context.getCurrentBranch();
+        targetRef = await context.getCurrentBranch();
       } else {
         if (!context.commandLineContinueQuestion(
           'No target ref specified. Will use current branch.',
         )) {
           return;
         }
-        targetRef = context.getCurrentBranch();
+        targetRef = await context.getCurrentBranch();
       }
 
       if (targetRef == null) {

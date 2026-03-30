@@ -4,16 +4,15 @@ import 'package:monolib_dart/monolib_dart.dart';
 extension ContextGitGetCurrentBranch on Context {
   static String? currentBranch;
 
-  String? getCurrentBranch({
+  Future<String?> getCurrentBranch({
     String? announcement = 'Checking what is the current branch.',
-  }) {
-    return currentBranch ??= git.branchCurrent
-        .announce(announcement)
-        .runSync()
-        .printNotEmptyResultFields()
-        .stdout
-        .toString()
-        .trim()
-        .emptyToNull();
+  }) async {
+    return currentBranch ??=
+        (await git.branchCurrent.announce(announcement).run())
+            .printNotEmptyResultFields()
+            .stdout
+            .toString()
+            .trim()
+            .emptyToNull();
   }
 }

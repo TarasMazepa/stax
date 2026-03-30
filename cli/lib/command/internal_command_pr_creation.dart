@@ -18,7 +18,7 @@ class InternalCommandPrCreation extends InternalCommand {
       return;
     }
 
-    final currentBranch = context.getCurrentBranch();
+    final currentBranch = await context.getCurrentBranch();
     if (currentBranch == null) {
       context.printToConsole("Can't determine current branch.");
       return;
