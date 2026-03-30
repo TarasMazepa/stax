@@ -33,7 +33,7 @@ class InternalCommandPrCreation extends InternalCommand {
     }
 
     final baseBranch = context.applyBaseBranchReplacement(
-      current.parent?.line.branchName() ?? context.getDefaultBranch(),
+      current.parent?.line.branchName() ?? await context.getDefaultBranch(),
     );
 
     if (baseBranch == null) {

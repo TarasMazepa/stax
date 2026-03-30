@@ -115,7 +115,7 @@ class InternalCommandDoctor extends InternalCommand {
     Future<DoctorResult?> checkDefaultBranch() async {
       if (!isInsideWorkTree) return null;
 
-      String? defaultBranch = context.quietly().getDefaultBranch();
+      String? defaultBranch = await context.quietly().getDefaultBranch();
       String remote =
           ContextGitGetDefaultBranch.remotes?.firstOrNull ?? '<remote>';
 
