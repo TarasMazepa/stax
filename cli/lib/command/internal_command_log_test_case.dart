@@ -24,17 +24,18 @@ class InternalCommandLogTestCase extends InternalCommand {
       if (command.parts[0] == 'stax') {
         await mainFunctionReference(command.parts.sublist(1));
       } else if (Platform.isWindows && command.parts[0] == 'echo') {
-        context
-            .command(['powershell', '-c', ...command.parts])
-            .runSync()
-            .printNotEmptyResultFields();
+        (await context.command([
+          'powershell',
+          '-c',
+          ...command.parts,
+        ]).run()).printNotEmptyResultFields();
       } else if (command.parts[0] == 'echo') {
-        context
-            .command(['touch', ...command.parts.sublist(1)])
-            .runSync()
-            .printNotEmptyResultFields();
+        (await context.command([
+          'touch',
+          ...command.parts.sublist(1),
+        ]).run()).printNotEmptyResultFields();
       } else {
-        command.runSync().printNotEmptyResultFields();
+        (await command.run()).printNotEmptyResultFields();
       }
     }
   }
