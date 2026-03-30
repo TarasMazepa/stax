@@ -82,7 +82,7 @@ class InternalCommandGet extends InternalCommand {
       }
     }
 
-    final defaultBranch = context.getDefaultBranch();
+    final defaultBranch = await context.getDefaultBranch();
     if (defaultBranch != null) {
       (await context.git.switch0
               .arg(defaultBranch)

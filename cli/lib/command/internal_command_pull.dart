@@ -43,7 +43,7 @@ class InternalCommandPull extends InternalCommand {
     final hasStayOnHeadFlag = stayOnHeadFlag.hasFlag(args);
     final currentBranch = await context.getCurrentBranch();
     final targetBranch = args.elementAtOrNull(0);
-    final defaultBranch = targetBranch ?? context.getDefaultBranch();
+    final defaultBranch = targetBranch ?? await context.getDefaultBranch();
     if (defaultBranch == null) {
       context.printToConsole(
         "Can't do pull on default branch, as can't identify one.",

@@ -150,7 +150,7 @@ class InternalCommandCommit extends InternalCommand {
       baseBranch = context.applyBaseBranchReplacement(
         await context.getCurrentBranch() ??
             context.gitLogAll().findCurrent()?.line.branchName() ??
-            context.getDefaultBranch(),
+            await context.getDefaultBranch(),
       );
     }
 

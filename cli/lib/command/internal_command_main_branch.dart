@@ -13,7 +13,7 @@ class InternalCommandMainBranch extends InternalCommand {
 
   @override
   Future<void> run(final List<String> args, final Context context) async {
-    final defaultBranch = context.getDefaultBranch();
+    final defaultBranch = await context.getDefaultBranch();
     if (defaultBranch != null) {
       context.printToConsole("Your default branch is '$defaultBranch'");
     }

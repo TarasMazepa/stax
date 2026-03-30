@@ -11,15 +11,13 @@ extension ContextGitGetDefaultBranch on Context {
     return null;
   }
 
-  String? getDefaultBranch() {
+  Future<String?> getDefaultBranch() async {
     final configured = getConfiguredDefaultBranch();
     if (configured != null) return configured;
 
     if (defaultBranch != null) return defaultBranch;
     final complainAboutEmptyOnce = Once();
-    remotes = git.remote
-        .announce('Checking name of your remote.')
-        .runSync()
+    remotes = (await git.remote.announce('Checking name of your remote.').run())
         .printNotEmptyResultFields()
         .stdout
         .toString()
@@ -34,21 +32,25 @@ extension ContextGitGetDefaultBranch on Context {
           ),
         )
         .toList();
-    return defaultBranch = remotes
-        ?.map(
-          (remote) => (
-            remote: remote,
-            parts: git.revParseAbbrevRef
-                .arg('$remote/HEAD')
-                .announce("Checking default branch on '$remote' remote.")
-                .runSync()
-                .printNotEmptyResultFields()
-                .stdout
-                .toString()
-                .trim()
-                .split('/'),
-          ),
-        )
+
+    if (remotes == null) return null;
+
+    List<({String remote, List<String> parts})> results = [];
+    for (final remote in remotes!) {
+      final result =
+          (await git.revParseAbbrevRef
+                  .arg('$remote/HEAD')
+                  .announce("Checking default branch on '$remote' remote.")
+                  .run())
+              .printNotEmptyResultFields()
+              .stdout
+              .toString()
+              .trim()
+              .split('/');
+      results.add((remote: remote, parts: result));
+    }
+
+    return defaultBranch = results
         .where((e) => e.parts.length == 2)
         .where((e) => e.remote == e.parts[0])
         .map((e) => e.parts[1])
