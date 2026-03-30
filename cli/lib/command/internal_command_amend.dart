@@ -191,7 +191,7 @@ class InternalCommandAmend extends InternalCommand {
     }
 
     if (shouldDoRebase) {
-      rebaseUseCase.continueRebase();
+      await rebaseUseCase.continueRebase();
     }
   }
 }
