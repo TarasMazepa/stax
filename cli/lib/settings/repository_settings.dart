@@ -8,11 +8,8 @@ import 'package:stax/settings/key_value_store.dart';
 import 'package:stax/settings/settings.dart';
 
 class RepositorySettings extends KeyValueStore with BaseSettings {
-  static Future<RepositorySettings?> load(
-    Context context,
-    Settings settings,
-  ) async {
-    final root = await context.quietly().getRepositoryRoot();
+  static RepositorySettings? load(Context context, Settings settings) {
+    final root = context.quietly().getRepositoryRoot();
     if (root == null) return null;
     return RepositorySettings(
       path.join(

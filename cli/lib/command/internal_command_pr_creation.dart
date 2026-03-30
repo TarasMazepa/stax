@@ -41,7 +41,7 @@ class InternalCommandPrCreation extends InternalCommand {
       return;
     }
 
-    final prUrl = await context.getPullRequestUrl(baseBranch, currentBranch);
+    final prUrl = context.getPullRequestUrl(baseBranch, currentBranch);
     if (prUrl == null) {
       context.printToConsole("Can't generate PR URL.");
       return;

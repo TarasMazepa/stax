@@ -2,13 +2,13 @@ import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_default_remote.dart';
 
 extension ContextGetPullRequestUrl on Context {
-  Future<String?> getPullRequestUrl(
-    String baseBranch,
-    String currentBranch,
-  ) async {
-    final remote = await getPreferredRemote();
+  String? getPullRequestUrl(String baseBranch, String currentBranch) {
+    final remote = getPreferredRemote();
     if (remote == null) return null;
-    final remoteUrl = (await git.remoteGetUrl.arg(remote).run()).stdout
+    final remoteUrl = git.remoteGetUrl
+        .arg(remote)
+        .runSync()
+        .stdout
         .toString()
         .trim()
         .replaceFirstMapped(RegExp(r'git@(.*):'), (m) => 'https://${m[1]}/');

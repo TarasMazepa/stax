@@ -19,18 +19,12 @@ class Context {
 
   late final Git git = Git(this);
   late final Settings settings = Settings();
-  late RepositorySettings? repositorySettings;
-  late BaseSettings effectiveSettings;
-  late RebaseUseCase? rebaseUseCase;
-  bool _hasInitAsync = false;
-
-  Future<void> initAsync() async {
-    if (_hasInitAsync) return;
-    repositorySettings = await RepositorySettings.load(this, settings);
-    effectiveSettings = repositorySettings ?? settings;
-    rebaseUseCase = await RebaseUseCase.create(this);
-    _hasInitAsync = true;
-  }
+  late final RepositorySettings? repositorySettings = RepositorySettings.load(
+    this,
+    settings,
+  );
+  late final BaseSettings effectiveSettings = repositorySettings ?? settings;
+  late final RebaseUseCase? rebaseUseCase = RebaseUseCase.create(this);
 
   RebaseUseCase get assertRebaseUseCase => rebaseUseCase!;
 
@@ -50,102 +44,37 @@ class Context {
 
   Context withQuiet(bool quiet) {
     if (this.quiet == quiet) return this;
-    final context = Context(
-      quiet,
-      workingDirectory,
-      verbose,
-      acceptAll,
-      declineAll,
-    );
-    if (_hasInitAsync) {
-      context.repositorySettings = repositorySettings;
-      context.effectiveSettings = effectiveSettings;
-      context.rebaseUseCase = rebaseUseCase;
-      context._hasInitAsync = true;
-    }
-    return context;
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
   Context quietly() => withQuiet(true);
 
   Context withVerbose(bool verbose) {
     if (this.verbose == verbose) return this;
-    final context = Context(
-      quiet,
-      workingDirectory,
-      verbose,
-      acceptAll,
-      declineAll,
-    );
-    if (_hasInitAsync) {
-      context.repositorySettings = repositorySettings;
-      context.effectiveSettings = effectiveSettings;
-      context.rebaseUseCase = rebaseUseCase;
-      context._hasInitAsync = true;
-    }
-    return context;
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
   Context withWorkingDirectory(String? workingDirectory) {
     if (this.workingDirectory == workingDirectory) return this;
-    final context = Context(
-      quiet,
-      workingDirectory,
-      verbose,
-      acceptAll,
-      declineAll,
-    );
-    if (_hasInitAsync) {
-      context.repositorySettings = repositorySettings;
-      context.effectiveSettings = effectiveSettings;
-      context.rebaseUseCase = rebaseUseCase;
-      context._hasInitAsync = true;
-    }
-    return context;
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
   Context withScriptPathAsWorkingDirectory() {
     return withWorkingDirectory(Platform.script.toFilePathDir());
   }
 
-  Future<Context> withRepositoryRootAsWorkingDirectory() async {
-    return withWorkingDirectory(await getRepositoryRoot());
+  Context withRepositoryRootAsWorkingDirectory() {
+    return withWorkingDirectory(getRepositoryRoot());
   }
 
   Context withAcceptingAll(bool acceptAll) {
     if (this.acceptAll == acceptAll) return this;
-    final context = Context(
-      quiet,
-      workingDirectory,
-      verbose,
-      acceptAll,
-      declineAll,
-    );
-    if (_hasInitAsync) {
-      context.repositorySettings = repositorySettings;
-      context.effectiveSettings = effectiveSettings;
-      context.rebaseUseCase = rebaseUseCase;
-      context._hasInitAsync = true;
-    }
-    return context;
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
   Context withDecliningAll(bool declineAll) {
     if (this.declineAll == declineAll) return this;
-    final context = Context(
-      quiet,
-      workingDirectory,
-      verbose,
-      acceptAll,
-      declineAll,
-    );
-    if (_hasInitAsync) {
-      context.repositorySettings = repositorySettings;
-      context.effectiveSettings = effectiveSettings;
-      context.rebaseUseCase = rebaseUseCase;
-      context._hasInitAsync = true;
-    }
-    return context;
+    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
   }
 
   bool shouldBeQuiet() {

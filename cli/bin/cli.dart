@@ -11,7 +11,6 @@ Future<void> main(List<String> arguments) async {
   mainFunctionReference = main;
   arguments = arguments.toList();
   final context = Context.implicit().handleGlobalFlags(arguments);
-  await context.initAsync();
   final shouldLogAfterwards = context.hasLogFlag(arguments);
   switch (arguments) {
     case []:

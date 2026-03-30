@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:stax/context/context.dart';
 import 'package:stax/file/file_system_entity_delete_sync_quietly.dart';
 
 import '../../test_file_original_path.dart';
@@ -34,7 +35,7 @@ class CliTestSetup {
       path: '${repoRoot.path}/cli/.test/${randomValue()}',
     );
     final liveStax = repoRoot.replace(
-      path: "${repoRoot.path}/cli/bin/cli.dart",
+      path: "${repoRoot.path}/path/staxdev${Platform.isWindows ? ".bat" : ""}",
     );
     return CliTestSetup(
       fileName,
@@ -54,7 +55,7 @@ class CliTestSetup {
     tearDown();
     final bundle = bundleFile;
     if (bundle != null) {
-      Process.runSync('git', ['clone', bundle, testRepoPath]);
+      Context.implicit().git.clone.args([bundle, testRepoPath]).runSync();
     } else {
       Directory(testRepoPath).createSync(recursive: true);
     }
@@ -74,7 +75,7 @@ class CliTestSetup {
   }
 
   ProcessResult runLiveStaxSync([List<String>? args]) {
-    return runSync('dart', ['run', liveStaxPath, ...?args]);
+    return runSync(liveStaxPath, args);
   }
 
   Future<Process> start(String command, [List<String>? args]) {
@@ -82,7 +83,7 @@ class CliTestSetup {
   }
 
   Future<Process> startLiveStax([List<String>? args]) {
-    return start('dart', ['run', liveStaxPath, ...?args]);
+    return start(liveStaxPath, args);
   }
 
   @override
