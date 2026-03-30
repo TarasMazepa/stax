@@ -1,9 +1,11 @@
-/.idea
 **/node_modules
 .DS_Store
 .cache
+/.idea
+/guides/web/agents.html
+/guides/web/guides.html
 /guides/web/help.html
 /guides/web/index.html
 /guides/web/onboarding.html
-/guides/web/agents.html
+/guides/web/workflows.html
 /guides/web/pico.classless.zinc.min.css
