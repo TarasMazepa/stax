@@ -34,7 +34,7 @@ class CliTestSetup {
       path: '${repoRoot.path}/cli/.test/${randomValue()}',
     );
     final liveStax = repoRoot.replace(
-      path: "${repoRoot.path}/path/staxdev${Platform.isWindows ? ".bat" : ""}",
+      path: "${repoRoot.path}/cli/bin/cli.dart",
     );
     return CliTestSetup(
       fileName,
@@ -74,7 +74,7 @@ class CliTestSetup {
   }
 
   ProcessResult runLiveStaxSync([List<String>? args]) {
-    return runSync(liveStaxPath, args);
+    return runSync('dart', ['run', liveStaxPath, ...?args]);
   }
 
   Future<Process> start(String command, [List<String>? args]) {
@@ -82,7 +82,7 @@ class CliTestSetup {
   }
 
   Future<Process> startLiveStax([List<String>? args]) {
-    return start(liveStaxPath, args);
+    return start('dart', ['run', liveStaxPath, ...?args]);
   }
 
   @override

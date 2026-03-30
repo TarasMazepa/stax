@@ -22,11 +22,14 @@ class Context {
   late RepositorySettings? repositorySettings;
   late BaseSettings effectiveSettings;
   late RebaseUseCase? rebaseUseCase;
+  bool _hasInitAsync = false;
 
   Future<void> initAsync() async {
+    if (_hasInitAsync) return;
     repositorySettings = await RepositorySettings.load(this, settings);
     effectiveSettings = repositorySettings ?? settings;
     rebaseUseCase = await RebaseUseCase.create(this);
+    _hasInitAsync = true;
   }
 
   RebaseUseCase get assertRebaseUseCase => rebaseUseCase!;
@@ -47,19 +50,40 @@ class Context {
 
   Context withQuiet(bool quiet) {
     if (this.quiet == quiet) return this;
-    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
+    final context = Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
+    if (_hasInitAsync) {
+      context.repositorySettings = repositorySettings;
+      context.effectiveSettings = effectiveSettings;
+      context.rebaseUseCase = rebaseUseCase;
+      context._hasInitAsync = true;
+    }
+    return context;
   }
 
   Context quietly() => withQuiet(true);
 
   Context withVerbose(bool verbose) {
     if (this.verbose == verbose) return this;
-    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
+    final context = Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
+    if (_hasInitAsync) {
+      context.repositorySettings = repositorySettings;
+      context.effectiveSettings = effectiveSettings;
+      context.rebaseUseCase = rebaseUseCase;
+      context._hasInitAsync = true;
+    }
+    return context;
   }
 
   Context withWorkingDirectory(String? workingDirectory) {
     if (this.workingDirectory == workingDirectory) return this;
-    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
+    final context = Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
+    if (_hasInitAsync) {
+      context.repositorySettings = repositorySettings;
+      context.effectiveSettings = effectiveSettings;
+      context.rebaseUseCase = rebaseUseCase;
+      context._hasInitAsync = true;
+    }
+    return context;
   }
 
   Context withScriptPathAsWorkingDirectory() {
@@ -72,12 +96,26 @@ class Context {
 
   Context withAcceptingAll(bool acceptAll) {
     if (this.acceptAll == acceptAll) return this;
-    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
+    final context = Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
+    if (_hasInitAsync) {
+      context.repositorySettings = repositorySettings;
+      context.effectiveSettings = effectiveSettings;
+      context.rebaseUseCase = rebaseUseCase;
+      context._hasInitAsync = true;
+    }
+    return context;
   }
 
   Context withDecliningAll(bool declineAll) {
     if (this.declineAll == declineAll) return this;
-    return Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
+    final context = Context(quiet, workingDirectory, verbose, acceptAll, declineAll);
+    if (_hasInitAsync) {
+      context.repositorySettings = repositorySettings;
+      context.effectiveSettings = effectiveSettings;
+      context.rebaseUseCase = rebaseUseCase;
+      context._hasInitAsync = true;
+    }
+    return context;
   }
 
   bool shouldBeQuiet() {
