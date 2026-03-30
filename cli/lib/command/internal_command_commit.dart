@@ -205,9 +205,7 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
 
-    final pushExitCode = context.git.push
-        .announce('Pushing')
-        .runSync()
+    final pushExitCode = (await context.git.push.announce('Pushing').run())
         .printNotEmptyResultFields()
         .exitCode;
     if (pushExitCode != 0) {
