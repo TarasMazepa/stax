@@ -14,7 +14,7 @@ class InternalCommandPrCreation extends InternalCommand {
 
   @override
   Future<void> run(final List<String> args, final Context context) async {
-    if (context.handleNotInsideGitWorkingTree()) {
+    if (await context.handleNotInsideGitWorkingTree()) {
       return;
     }
 
@@ -41,7 +41,7 @@ class InternalCommandPrCreation extends InternalCommand {
       return;
     }
 
-    final prUrl = context.getPullRequestUrl(baseBranch, currentBranch);
+    final prUrl = await context.getPullRequestUrl(baseBranch, currentBranch);
     if (prUrl == null) {
       context.printToConsole("Can't generate PR URL.");
       return;

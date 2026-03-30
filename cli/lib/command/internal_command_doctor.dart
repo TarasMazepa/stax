@@ -37,7 +37,7 @@ class InternalCommandDoctor extends InternalCommand {
 
     String boolToCheckmark(bool value) => value ? 'V' : 'X';
 
-    final isInsideWorkTree = context.isInsideWorkTree();
+    final isInsideWorkTree = await context.isInsideWorkTree();
 
     Future<DoctorResult?> checkUserName() async {
       final userName =
@@ -98,7 +98,7 @@ class InternalCommandDoctor extends InternalCommand {
     Future<DoctorResult?> checkRemote() async {
       if (!isInsideWorkTree) return null;
 
-      final remote = context.getPreferredRemote();
+      final remote = await context.getPreferredRemote();
       final hasRemote = remote != null;
 
       return (

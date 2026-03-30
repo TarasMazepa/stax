@@ -84,7 +84,7 @@ class InternalCommandCommit extends InternalCommand {
 
   @override
   Future<void> run(final List<String> args, final Context context) async {
-    if (context.handleNotInsideGitWorkingTree()) {
+    if (await context.handleNotInsideGitWorkingTree()) {
       return;
     }
     await context.handleAddAllFlag(args);
@@ -167,8 +167,8 @@ class InternalCommandCommit extends InternalCommand {
       return;
     }
 
-    late final backupPrUrl = createPr
-        ? context.getPullRequestUrl(baseBranch!, prefixedBranchName)
+    final backupPrUrl = createPr
+        ? await context.getPullRequestUrl(baseBranch!, prefixedBranchName)
         : null;
     void informAboutPrUrlIfNeeded() {
       if (backupPrUrl != null) {

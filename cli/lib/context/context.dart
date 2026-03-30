@@ -19,12 +19,15 @@ class Context {
 
   late final Git git = Git(this);
   late final Settings settings = Settings();
-  late final RepositorySettings? repositorySettings = RepositorySettings.load(
-    this,
-    settings,
-  );
-  late final BaseSettings effectiveSettings = repositorySettings ?? settings;
-  late final RebaseUseCase? rebaseUseCase = RebaseUseCase.create(this);
+  late RepositorySettings? repositorySettings;
+  late BaseSettings effectiveSettings;
+  late RebaseUseCase? rebaseUseCase;
+
+  Future<void> initAsync() async {
+    repositorySettings = await RepositorySettings.load(this, settings);
+    effectiveSettings = repositorySettings ?? settings;
+    rebaseUseCase = await RebaseUseCase.create(this);
+  }
 
   RebaseUseCase get assertRebaseUseCase => rebaseUseCase!;
 
@@ -63,8 +66,8 @@ class Context {
     return withWorkingDirectory(Platform.script.toFilePathDir());
   }
 
-  Context withRepositoryRootAsWorkingDirectory() {
-    return withWorkingDirectory(getRepositoryRoot());
+  Future<Context> withRepositoryRootAsWorkingDirectory() async {
+    return withWorkingDirectory(await getRepositoryRoot());
   }
 
   Context withAcceptingAll(bool acceptAll) {

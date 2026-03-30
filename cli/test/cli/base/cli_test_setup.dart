@@ -55,7 +55,7 @@ class CliTestSetup {
     tearDown();
     final bundle = bundleFile;
     if (bundle != null) {
-      Context.implicit().git.clone.args([bundle, testRepoPath]).runSync();
+      Process.runSync('git', ['clone', bundle, testRepoPath]);
     } else {
       Directory(testRepoPath).createSync(recursive: true);
     }

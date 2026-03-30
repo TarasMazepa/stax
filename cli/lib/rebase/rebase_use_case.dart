@@ -20,8 +20,8 @@ class RebaseUseCase {
 
   RebaseData get assertRebaseData => _rebaseData!;
 
-  static RebaseUseCase? create(Context context) {
-    final repositoryRoot = context.quietly().getRepositoryRoot();
+  static Future<RebaseUseCase?> create(Context context) async {
+    final repositoryRoot = await context.quietly().getRepositoryRoot();
     if (repositoryRoot == null) return null;
     final file = File.fromUri(
       path.toUri(
