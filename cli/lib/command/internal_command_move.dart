@@ -175,27 +175,24 @@ class InternalCommandMove extends InternalCommand {
     final localBranchName = target.line.localBranchNames().firstOrNull;
     final remoteBranchName = target.line.remoteBranchNames().firstOrNull;
     if (localBranchName != null) {
-      context.git.switch0
-          .arg(localBranchName)
-          .announce()
-          .runSync()
+      (await context.git.switch0.arg(localBranchName).announce().run())
           .printNotEmptyResultFields();
     } else if (remoteBranchName != null) {
       final branchToRecreate = remoteBranchName.substring(
         remoteBranchName.indexOf('/') + 1,
       );
-      context.git.switch0
-          .arg('-C')
-          .arg(branchToRecreate)
-          .arg(target.line.commitHash)
-          .announce()
-          .runSync()
+      (await context.git.switch0
+              .arg('-C')
+              .arg(branchToRecreate)
+              .arg(target.line.commitHash)
+              .announce()
+              .run())
           .printNotEmptyResultFields();
     } else {
-      context.git.switchDetach
-          .arg(target.line.commitHash)
-          .announce()
-          .runSync()
+      (await context.git.switchDetach
+              .arg(target.line.commitHash)
+              .announce()
+              .run())
           .printNotEmptyResultFields();
     }
   }
