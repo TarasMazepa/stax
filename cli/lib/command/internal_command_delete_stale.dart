@@ -29,31 +29,32 @@ class InternalCommandDeleteStale extends InternalCommand {
     if (await context.handleNotInsideGitWorkingTree()) {
       return;
     }
-    context.git.fetchWithPrune
-        .announce('Fetching latest changes from remote.')
-        .runSync()
+    (await context.git.fetchWithPrune
+            .announce('Fetching latest changes from remote.')
+            .run())
         .printNotEmptyResultFields();
-    final branchesToDelete = context.git.branchVv
-        .announce('Checking if any remote branches are gone.')
-        .runSync()
-        .printNotEmptyResultFields()
-        .parseBranchInfo()
-        .where((e) => e.gone)
-        .map((e) => e.name)
-        .toList();
+    final branchesToDelete =
+        (await context.git.branchVv
+                .announce('Checking if any remote branches are gone.')
+                .run())
+            .printNotEmptyResultFields()
+            .parseBranchInfo()
+            .where((e) => e.gone)
+            .map((e) => e.name)
+            .toList();
     if (branchesToDelete.isEmpty) {
       context.printToConsole('No local branches with gone remotes.');
       return;
     }
-    context.git.branchDelete
-        .args(branchesToDelete)
-        .askContinueQuestion(
-          "Local branches with gone remotes that would be deleted:\n${branchesToDelete.map((e) => "   • $e").join("\n")}\n",
-          assumeYes: forceDeleteFlag.hasFlag(args),
-          assumeNo: skipDeleteFlag.hasFlag(args),
-        )
-        ?.announce('Deleting branches.')
-        .runSync()
-        .printNotEmptyResultFields();
+    (await context.git.branchDelete
+            .args(branchesToDelete)
+            .askContinueQuestion(
+              "Local branches with gone remotes that would be deleted:\n${branchesToDelete.map((e) => "   • $e").join("\n")}\n",
+              assumeYes: forceDeleteFlag.hasFlag(args),
+              assumeNo: skipDeleteFlag.hasFlag(args),
+            )
+            ?.announce('Deleting branches.')
+            .run())
+        ?.printNotEmptyResultFields();
   }
 }
