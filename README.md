@@ -4,6 +4,8 @@ stax for git - simplify your day to day git tasks, stacked PR ready
 
 [Are you new to Git? Check out our Stax Onboarding Guide for Beginners!](guides/onboarding.md)
 
+[Want to see what stax can do? Check out the Stax Workflows Guide!](guides/workflows.md)
+
 ## Installation
 
 ### MacOS
