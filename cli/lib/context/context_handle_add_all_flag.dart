@@ -34,28 +34,28 @@ extension ContextHandleAddAllFlag on Context {
           ? git.addEverything
           : (hasAddAll ? git.addAll : git.addUpdate);
       if (await areThereStagedChanges()) {
-        selectedAddAll
-            .askContinueQuestion(
-              'You already have some staged changes. Do you really want to proceed?',
-            )
-            ?.announce('Adding changes, as per your request.')
-            .runSync()
-            .printNotEmptyResultFields();
+        (await selectedAddAll
+                .askContinueQuestion(
+                  'You already have some staged changes. Do you really want to proceed?',
+                )
+                ?.announce('Adding changes, as per your request.')
+                .run())
+            ?.printNotEmptyResultFields();
       } else {
-        selectedAddAll
-            .announce('Adding changes, as per your request.')
-            .runSync()
+        (await selectedAddAll
+                .announce('Adding changes, as per your request.')
+                .run())
             .printNotEmptyResultFields();
       }
     } else {
       if (await areThereNoStagedChanges()) {
-        git.addEverything
-            .askContinueQuestion(
-              'You do not have any staged changes. Do you want to add all?',
-            )
-            ?.announce('Adding all the changes, as per your request.')
-            .runSync()
-            .printNotEmptyResultFields();
+        (await git.addEverything
+                .askContinueQuestion(
+                  'You do not have any staged changes. Do you want to add all?',
+                )
+                ?.announce('Adding all the changes, as per your request.')
+                .run())
+            ?.printNotEmptyResultFields();
       }
     }
   }
