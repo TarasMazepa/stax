@@ -135,10 +135,7 @@ class InternalCommandGet extends InternalCommand {
         hasRebaseFlag || hasRebaseTheirsFlag || hasRebaseOursFlag;
     if (shouldDoRebase) {
       final originalBranch = targetNode.line.branchNameOrCommitHash();
-      context.git.switch0
-          .arg(originalBranch)
-          .announce()
-          .runSync()
+      (await context.git.switch0.arg(originalBranch).announce().run())
           .printNotEmptyResultFields();
 
       final rebaseUseCase = context.assertRebaseUseCase;
