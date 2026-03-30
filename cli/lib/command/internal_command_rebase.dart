@@ -80,9 +80,8 @@ class InternalCommandRebase extends InternalCommand {
     }
 
     if (hasContinueFlag) {
-      context.assertRebaseUseCase
-        ..assertRebaseInProgress()
-        ..continueRebase();
+      context.assertRebaseUseCase.assertRebaseInProgress();
+      await context.assertRebaseUseCase.continueRebase();
       return;
     }
 
@@ -94,8 +93,11 @@ class InternalCommandRebase extends InternalCommand {
       return;
     }
 
-    context.assertRebaseUseCase
-      ..initiate(hasTheirsFlag, hasOursFlag, args.elementAtOrNull(0))
-      ..continueRebase();
+    context.assertRebaseUseCase.initiate(
+      hasTheirsFlag,
+      hasOursFlag,
+      args.elementAtOrNull(0),
+    );
+    await context.assertRebaseUseCase.continueRebase();
   }
 }

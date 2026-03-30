@@ -143,7 +143,7 @@ class InternalCommandGet extends InternalCommand {
 
       final rebaseUseCase = context.assertRebaseUseCase;
       rebaseUseCase.initiate(hasRebaseTheirsFlag, hasRebaseOursFlag, null);
-      rebaseUseCase.continueRebase();
+      await rebaseUseCase.continueRebase();
     }
   }
 }

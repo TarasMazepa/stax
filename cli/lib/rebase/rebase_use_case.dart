@@ -94,9 +94,9 @@ To continue: `stax rebase --continue`''');
     save();
   }
 
-  void continueRebase() {
+  Future<void> continueRebase() async {
     while (shouldContinueRebase()) {
-      executeNextRebaseStep();
+      await executeNextRebaseStep();
     }
   }
 
@@ -104,28 +104,30 @@ To continue: `stax rebase --continue`''');
     return _rebaseData != null;
   }
 
-  void executeNextRebaseStep() {
+  Future<void> executeNextRebaseStep() async {
     final rebaseData = assertRebaseData;
     try {
       final rebaseStep = rebaseData.currentStep;
-      final exitCode = context.git.rebase
-          .args([
-            if (rebaseData.hasTheirsFlag) ...['-X', 'theirs'],
-            if (rebaseData.hasOursFlag) ...['-X', 'ours'],
-            if (rebaseData.index == 0)
-              rebaseData.rebaseOnto
-            else
-              rebaseStep.parent!,
-            rebaseStep.node,
-          ])
-          .announce()
-          .runSync()
-          .printNotEmptyResultFields()
-          .exitCode;
+      final exitCode =
+          (await context.git.rebase
+                  .args([
+                    if (rebaseData.hasTheirsFlag) ...['-X', 'theirs'],
+                    if (rebaseData.hasOursFlag) ...['-X', 'ours'],
+                    if (rebaseData.index == 0)
+                      rebaseData.rebaseOnto
+                    else
+                      rebaseStep.parent!,
+                    rebaseStep.node,
+                  ])
+                  .announce()
+                  .run())
+              .printNotEmptyResultFields()
+              .exitCode;
       if (exitCode != 0) {
         throw Exception('Rebase failed');
       }
-      context.git.pushForce.announce().runSync().printNotEmptyResultFields();
+      (await context.git.pushForce.announce().run())
+          .printNotEmptyResultFields();
     } finally {
       rebaseData.index++;
       save();
