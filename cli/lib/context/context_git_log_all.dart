@@ -11,12 +11,11 @@ extension GitLogAllOnContext on Context {
   static GitLogAllNode? _gitLogAllLocal;
   static GitLogAllNode? _gitLogAllAll;
 
-  GitLogAllNode gitLogAll([bool showAllBranches = false]) {
+  Future<GitLogAllNode> gitLogAll([bool showAllBranches = false]) async {
     final listQueue = <GitLogAllNode>[];
-    GitLogAllNode produce() {
+    Future<GitLogAllNode> produce() async {
       GitLogAllNode? cache;
-      return quietly()
-              ._gitLogAllLimited()
+      return (await quietly()._gitLogAllLimited())
               .map((x) => x.ensureSingleParent(listQueue))
               .map((x) => x.collapse(showAllBranches))
               .nonNulls
@@ -32,28 +31,29 @@ extension GitLogAllOnContext on Context {
     }
 
     if (showAllBranches) {
-      return _gitLogAllAll ??= produce();
+      return _gitLogAllAll ??= await produce();
     }
-    return _gitLogAllLocal ??= produce();
+    return _gitLogAllLocal ??= await produce();
   }
 
-  Iterable<GitLogAllNode> _gitLogAllLimited() {
-    List<GitLogAllLine> lines = git.log
-        .args([
-          '--decorate=full',
-          '--format=%h %ct %p %d',
-          '--all',
-          '-n${100_000}',
-        ])
-        .announce()
-        .runSync()
-        .printNotEmptyResultFields()
-        .stdout
-        .toString()
-        .split('\n')
-        .where((x) => x.isNotEmpty)
-        .map((x) => GitLogAllLine.parse(x))
-        .toList();
+  Future<Iterable<GitLogAllNode>> _gitLogAllLimited() async {
+    List<GitLogAllLine> lines =
+        (await git.log
+                .args([
+                  '--decorate=full',
+                  '--format=%h %ct %p %d',
+                  '--all',
+                  '-n${100_000}',
+                ])
+                .announce()
+                .run())
+            .printNotEmptyResultFields()
+            .stdout
+            .toString()
+            .split('\n')
+            .where((x) => x.isNotEmpty)
+            .map((x) => GitLogAllLine.parse(x))
+            .toList();
     final nodes = <String, GitLogAllNode>{};
     GitLogAllNode newRoot(GitLogAllLine line) {
       final root = GitLogAllNode.fakeRoot(line);

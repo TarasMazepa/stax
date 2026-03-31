@@ -96,10 +96,9 @@ class InternalCommandGet extends InternalCommand {
             .run(onDemandPrint: true))
         .printNotEmptyResultFields();
 
-    final targetNode = context
-        .quietly()
-        .gitLogAll(true)
-        .findAnyRemoteRefThatEndsWith(targetRef);
+    final targetNode = (await context.quietly().gitLogAll(
+      true,
+    )).findAnyRemoteRefThatEndsWith(targetRef);
 
     if (targetNode == null) {
       context.printToConsole("Can't find target ref '$targetRef'");

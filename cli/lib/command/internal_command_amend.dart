@@ -115,7 +115,7 @@ class InternalCommandAmend extends InternalCommand {
       return;
     }
 
-    final current = context.gitLogAll().findCurrent();
+    final current = (await context.gitLogAll()).findCurrent();
 
     bool hasAnyRebaseFlag() =>
         hasRebaseFlag || hasRebaseTheirsFlag || hasRebaseOursFlag;
@@ -151,7 +151,7 @@ class InternalCommandAmend extends InternalCommand {
     final shouldDoRebase = hasAnyRebaseFlag();
 
     if (shouldDoRebase) {
-      rebaseUseCase.initiate(
+      await rebaseUseCase.initiate(
         hasRebaseTheirsFlag,
         hasRebaseOursFlag,
         current!.line.branchNameOrCommitHash(),
