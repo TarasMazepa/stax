@@ -51,11 +51,11 @@ class CliTestSetup {
     );
   }
 
-  void setUp() {
+  Future<void> setUp() async {
     tearDown();
     final bundle = bundleFile;
     if (bundle != null) {
-      Context.implicit().git.clone.args([bundle, testRepoPath]).runSync();
+      await Context.implicit().git.clone.args([bundle, testRepoPath]).run();
     } else {
       Directory(testRepoPath).createSync(recursive: true);
     }
@@ -65,8 +65,8 @@ class CliTestSetup {
     Directory(testRepoPath).deleteSyncQuietly(recursive: true);
   }
 
-  ProcessResult runSync(String command, [List<String>? args]) {
-    return Process.runSync(
+  Future<ProcessResult> run(String command, [List<String>? args]) async {
+    return Process.run(
       command,
       args ?? [],
       workingDirectory: testRepoPath,
@@ -74,8 +74,8 @@ class CliTestSetup {
     );
   }
 
-  ProcessResult runLiveStaxSync([List<String>? args]) {
-    return runSync(liveStaxPath, args);
+  Future<ProcessResult> runLiveStax([List<String>? args]) async {
+    return run(liveStaxPath, args);
   }
 
   Future<Process> start(String command, [List<String>? args]) {

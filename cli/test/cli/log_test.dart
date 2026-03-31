@@ -9,9 +9,9 @@ import 'base/cli_group.dart';
 
 void main() {
   cliGroup('log', (setup) {
-    test('empty', () {
-      setup.runSync('git', ['init']);
-      expect(setup.runLiveStaxSync(['log']).stdout, '');
+    test('empty', () async {
+      await setup.run('git', ['init']);
+      expect((await setup.runLiveStax(['log'])).stdout, '');
     });
     var commitTree = CommitTreeForTestCase();
     final random = Random();
@@ -21,14 +21,14 @@ void main() {
       final targetOutput = '${commitTree.getTargetOutput()}\n';
       final defaultBranch = commitTree.commitName(commitTree.mainId);
       final commitName = commitTree.commitName(0);
-      test(commitName, () {
-        setup.runLiveStaxSync(['extras', 'log-test-case', commitName]);
+      test(commitName, () async {
+        await setup.runLiveStax(['extras', 'log-test-case', commitName]);
         expect(
-          setup
-              .runLiveStaxSync(['log', '--default-branch', defaultBranch])
-              .stdout
-              .toString()
-              .cleanCarriageReturnOnWindows(),
+          (await setup.runLiveStax([
+            'log',
+            '--default-branch',
+            defaultBranch,
+          ])).stdout.toString().cleanCarriageReturnOnWindows(),
           targetOutput,
         );
       });
