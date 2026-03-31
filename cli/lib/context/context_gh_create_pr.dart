@@ -1,12 +1,12 @@
 import 'package:stax/context/context.dart';
 
 extension ContextGhCreatePr on Context {
-  String? createPrWithGhCli(
+  Future<String?> createPrWithGhCli(
     String baseBranch,
     String headBranch, {
     bool draft = false,
-  }) {
-    return command([
+  }) async {
+    return (await command([
           'gh',
           'pr',
           'create',
@@ -16,9 +16,7 @@ extension ContextGhCreatePr on Context {
           headBranch,
           '--fill',
           if (draft) '--draft',
-        ])
-        .announce('Creating PR using GitHub CLI')
-        .runSyncCatching()
+        ]).announce('Creating PR using GitHub CLI').runCatching())
         ?.printNotEmptyResultFields()
         .assertSuccessfulExitCode()
         ?.stdout
