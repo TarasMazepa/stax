@@ -223,7 +223,7 @@ class InternalCommandCommit extends InternalCommand {
     String? prUrl;
     if (createPr) {
       context.printToConsole('Creating PR using GitHub CLI');
-      prUrl = context.createPrWithGhCli(
+      prUrl = await context.createPrWithGhCli(
         baseBranch!,
         prefixedBranchName,
         draft: draftPr,

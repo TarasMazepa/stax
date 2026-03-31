@@ -135,6 +135,28 @@ class ExternalCommand {
     }
   }
 
+  Future<ExtendedProcessResult?> runCatching({
+    Map<String, String>? environment,
+    bool includeParentEnvironment = true,
+    bool runInShell = false,
+    Encoding stdoutEncoding = systemEncoding,
+    Encoding stderrEncoding = systemEncoding,
+    bool onDemandPrint = false,
+  }) async {
+    try {
+      return await run(
+        environment: environment,
+        includeParentEnvironment: includeParentEnvironment,
+        runInShell: runInShell,
+        stdoutEncoding: stdoutEncoding,
+        stderrEncoding: stderrEncoding,
+        onDemandPrint: onDemandPrint,
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
   @override
   String toString() {
     return _parts.map((e) => e.contains(' ') ? '"$e"' : e).join(' ');
