@@ -44,7 +44,7 @@ class InternalCommandLog extends InternalCommand {
 
     print(
       materializeDecoratedLogLines(
-        root: context.gitLogAll(showAllBranches),
+        root: await context.gitLogAll(showAllBranches),
         adapter: DecoratedLogLineProducerAdapterForGitLogAllNode(
           showAllBranches,
           defaultBranch,

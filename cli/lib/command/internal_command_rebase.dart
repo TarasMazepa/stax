@@ -93,7 +93,7 @@ class InternalCommandRebase extends InternalCommand {
       return;
     }
 
-    context.assertRebaseUseCase.initiate(
+    await context.assertRebaseUseCase.initiate(
       hasTheirsFlag,
       hasOursFlag,
       args.elementAtOrNull(0),
