@@ -157,7 +157,7 @@ class InternalCommandAmend extends InternalCommand {
         current!.line.branchNameOrCommitHash(),
       );
       rebaseUseCase.assertRebaseData.index++;
-      rebaseUseCase.save();
+      await rebaseUseCase.save();
     }
 
     final commitResult =
@@ -170,7 +170,7 @@ class InternalCommandAmend extends InternalCommand {
     if (commitResult == null) {
       context.printParagraph("Can't amend, commit wasn't successful.");
       if (shouldDoRebase) {
-        rebaseUseCase.abort();
+        await rebaseUseCase.abort();
       }
       return;
     }
@@ -185,7 +185,7 @@ class InternalCommandAmend extends InternalCommand {
     if (pushResult == null) {
       context.printParagraph("Can't rebase, amend wasn't successful.");
       if (shouldDoRebase) {
-        rebaseUseCase.abort();
+        await rebaseUseCase.abort();
       }
       return;
     }
