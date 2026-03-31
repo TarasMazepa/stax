@@ -8,7 +8,7 @@ import 'package:stax/context/context_git_get_repository_root.dart';
 import 'package:stax/context/context_git_log_all.dart';
 import 'package:stax/base/file_read_as_string_sync_with_retry.dart';
 import 'package:stax/file/file_system_entity_delete_sync_quietly.dart';
-import 'package:stax/base/file_write_as_string_sync_with_retry.dart';
+import 'package:stax/base/file_write_as_string_with_retry.dart';
 import 'package:stax/rebase/rebase_data.dart';
 
 class RebaseUseCase {
@@ -95,7 +95,7 @@ To continue: `stax rebase --continue`''');
       0,
     );
 
-    save();
+    await save();
   }
 
   Future<void> continueRebase() async {
@@ -134,11 +134,11 @@ To continue: `stax rebase --continue`''');
           .printNotEmptyResultFields();
     } finally {
       rebaseData.index++;
-      save();
+      await save();
     }
   }
 
-  void save() {
+  Future<void> save() async {
     RebaseData? rebaseData = _rebaseData;
     if (rebaseData?.index == rebaseData?.steps.length) {
       rebaseData = _rebaseData = null;
@@ -147,15 +147,15 @@ To continue: `stax rebase --continue`''');
       _file.deleteSyncQuietly();
       return;
     }
-    _file.writeAsStringSyncWithRetry(jsonEncode(rebaseData.toJson()));
+    await _file.writeAsStringWithRetry(jsonEncode(rebaseData.toJson()));
   }
 
   void assertRebaseInProgress() {
     if (_rebaseData == null) throw Exception('No rebase in progress.');
   }
 
-  void abort() {
+  Future<void> abort() async {
     _rebaseData = null;
-    save();
+    await save();
   }
 }
