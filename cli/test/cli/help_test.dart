@@ -8,11 +8,9 @@ void main() {
   cliGroup('help', (setup) {
     test('help', () async {
       expect(
-        setup
-            .runLiveStaxSync(['help'])
-            .stdout
-            .toString()
-            .cleanCarriageReturnOnWindows(),
+        (await setup.runLiveStax([
+          'help',
+        ])).stdout.toString().cleanCarriageReturnOnWindows(),
         """Global flags:
    --accept-all - Accept all the user prompts automatically.
    --decline-all - Decline all the user prompts automatically.
@@ -96,11 +94,10 @@ Note: you can type first letter or couple of first letters instead of full comma
 
     test('extras help', () async {
       expect(
-        setup
-            .runLiveStaxSync(['extras', 'help'])
-            .stdout
-            .toString()
-            .cleanCarriageReturnOnWindows(),
+        (await setup.runLiveStax([
+          'extras',
+          'help',
+        ])).stdout.toString().cleanCarriageReturnOnWindows(),
         """Global flags:
    --accept-all - Accept all the user prompts automatically.
    --decline-all - Decline all the user prompts automatically.
@@ -134,11 +131,10 @@ Note: you can type first letter or couple of first letters instead of full comma
 
     test('help command matching by prefix', () async {
       expect(
-        setup
-            .runLiveStaxSync(['help', 'c'])
-            .stdout
-            .toString()
-            .cleanCarriageReturnOnWindows(),
+        (await setup.runLiveStax([
+          'help',
+          'c',
+        ])).stdout.toString().cleanCarriageReturnOnWindows(),
         """Global flags:
    --accept-all - Accept all the user prompts automatically.
    --decline-all - Decline all the user prompts automatically.

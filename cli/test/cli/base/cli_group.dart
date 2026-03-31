@@ -25,8 +25,8 @@ void cliGroup(
     onPlatform: onPlatform,
     retry: retry,
     () {
-      setUp(() {
-        setup.setUp();
+      setUp(() async {
+        await setup.setUp();
       });
       tearDown(() {
         setup.tearDown();

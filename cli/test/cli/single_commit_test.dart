@@ -8,8 +8,8 @@ void main() {
   cliGroup('single_commit', bundle: true, (CliTestSetup setup) {
     test(
       'ls',
-      () {
-        expect(setup.runSync('ls').stdout, 'readme.md\n');
+      () async {
+        expect((await setup.run('ls')).stdout, 'readme.md\n');
       },
       onPlatform: {
         'windows': [Skip("ls doesn't work on windows")],
@@ -17,13 +17,11 @@ void main() {
     );
     test(
       'log',
-      () {
+      () async {
         expect(
-          setup
-              .runLiveStaxSync(['log'])
-              .stdout
-              .toString()
-              .cleanCarriageReturnOnWindows(),
+          (await setup.runLiveStax([
+            'log',
+          ])).stdout.toString().cleanCarriageReturnOnWindows(),
           'x origin/main, origin/HEAD, main\n',
         );
       },

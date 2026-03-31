@@ -6,13 +6,12 @@ import 'base/cli_group.dart';
 
 void main() {
   cliGroup('about', (setup) {
-    test('about', () {
+    test('about', () async {
       expect(
-        setup
-            .runLiveStaxSync(['extras', 'about'])
-            .stdout
-            .toString()
-            .cleanCarriageReturnOnWindows(),
+        (await setup.runLiveStax([
+          'extras',
+          'about',
+        ])).stdout.toString().cleanCarriageReturnOnWindows(),
         '''
 stax - manage git branches and stack PRs
 
