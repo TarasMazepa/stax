@@ -111,22 +111,14 @@ class InternalCommandGet extends InternalCommand {
         .toList();
 
     if (branches.isNotEmpty) {
-      context.git.switchDetach
-          .announce()
-          .runSyncCatching()
+      (await context.git.switchDetach.announce().runCatching())
           ?.printNotEmptyResultFields();
-      context.git.branchDelete
-          .args(branches)
-          .announce()
-          .runSyncCatching()
+      (await context.git.branchDelete.args(branches).announce().runCatching())
           ?.printNotEmptyResultFields();
     }
 
     for (String branch in branches) {
-      context.git.switch0
-          .arg(branch)
-          .announce()
-          .runSyncCatching()
+      (await context.git.switch0.arg(branch).announce().runCatching())
           ?.printNotEmptyResultFields();
     }
 
@@ -138,7 +130,11 @@ class InternalCommandGet extends InternalCommand {
           .printNotEmptyResultFields();
 
       final rebaseUseCase = context.assertRebaseUseCase;
-      rebaseUseCase.initiate(hasRebaseTheirsFlag, hasRebaseOursFlag, null);
+      await rebaseUseCase.initiate(
+        hasRebaseTheirsFlag,
+        hasRebaseOursFlag,
+        null,
+      );
       await rebaseUseCase.continueRebase();
     }
   }
