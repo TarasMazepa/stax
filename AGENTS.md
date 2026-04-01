@@ -12,3 +12,4 @@
 - I prefer conrete types over `var`. So define mutable variables using concrete type. final or const values we can have type skipped, as I think that final and const look nice on their own.
 - when writing scripts make sure that they could be invoked from any location and if they provide any commands - output those commands in a separate line
 - when naming dart extentions I prefer name of the extention to read same or similar to the type, so if extention is "on String" I would name it "OnString", this also applies to nested types like "OnListOfLists" or "OnNullableListOfStreamControllers"
+- `stdin.readLineSync()` doesn't have good async substitution and shouldn't be refactored to async API
