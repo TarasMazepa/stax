@@ -20,14 +20,14 @@ class KeyValueListSetting extends BaseListSetting<MapEntry<String, String>> {
         (entry) => '${entry.key}=${entry.value}',
       );
 
-  void addRaw(String value) {
+  Future<void> addRaw(String value) async {
     final parsed = itemFromString(value)!;
-    removeByKey(parsed.key);
-    add(parsed);
+    await removeByKey(parsed.key);
+    await add(parsed);
   }
 
-  void removeByKey(String key) {
-    value = value.where((entry) => entry.key != key).toList();
+  Future<void> removeByKey(String key) async {
+    await setValue(value.where((entry) => entry.key != key).toList());
   }
 
   String? getValue(String key) {

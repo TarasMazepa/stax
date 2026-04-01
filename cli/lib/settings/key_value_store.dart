@@ -5,6 +5,7 @@ import 'package:path/path.dart' as p;
 import 'package:stax/base/file_read_as_string_sync_with_retry.dart';
 import 'package:stax/file/file_system_entity_delete_sync_quietly.dart';
 import 'package:stax/base/file_write_as_string_sync_with_retry.dart';
+import 'package:stax/base/file_write_as_string_with_retry.dart';
 
 class KeyValueStore {
   final Map<String, dynamic> _settings;
@@ -47,7 +48,7 @@ class KeyValueStore {
     _settings[key] = value;
   }
 
-  void save() {
-    _file.writeAsStringSyncWithRetry(jsonEncode(_settings));
+  Future<void> save() async {
+    await _file.writeAsStringWithRetry(jsonEncode(_settings));
   }
 }
