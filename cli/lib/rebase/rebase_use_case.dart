@@ -7,6 +7,7 @@ import 'package:stax/context/context_git_get_default_branch.dart';
 import 'package:stax/context/context_git_get_repository_root.dart';
 import 'package:stax/context/context_git_log_all.dart';
 import 'package:stax/base/file_read_as_string_sync_with_retry.dart';
+import 'package:stax/file/file_system_entity_delete_quietly.dart';
 import 'package:stax/file/file_system_entity_delete_sync_quietly.dart';
 import 'package:stax/base/file_write_as_string_with_retry.dart';
 import 'package:stax/rebase/rebase_data.dart';
@@ -144,7 +145,7 @@ To continue: `stax rebase --continue`''');
       rebaseData = _rebaseData = null;
     }
     if (rebaseData == null) {
-      _file.deleteSyncQuietly();
+      await _file.deleteQuietly();
       return;
     }
     await _file.writeAsStringWithRetry(jsonEncode(rebaseData.toJson()));
