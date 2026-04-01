@@ -99,7 +99,8 @@ $object
 
   Future<String?> _readLineAsync() async {
     _stdinIterator ??= StreamIterator(
-        systemEncoding.decoder.bind(stdin).transform(const LineSplitter()));
+      systemEncoding.decoder.bind(stdin).transform(const LineSplitter()),
+    );
     if (await _stdinIterator!.moveNext()) {
       return _stdinIterator!.current;
     }

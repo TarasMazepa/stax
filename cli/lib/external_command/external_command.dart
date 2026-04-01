@@ -42,7 +42,9 @@ class ExternalCommand {
   }) async {
     if (assumeYes) return this;
     if (assumeNo) return null;
-    return (await context.commandLineContinueQuestion(questionContext)) ? this : null;
+    return (await context.commandLineContinueQuestion(questionContext))
+        ? this
+        : null;
   }
 
   ExternalCommand announce([String? announcement]) {
