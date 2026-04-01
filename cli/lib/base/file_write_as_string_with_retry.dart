@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:monolib_dart/monolib_dart.dart';
+
 extension FileWriteAsStringWithRetry on File {
   Future<void> writeAsStringWithRetry(
     String contents, {
@@ -9,21 +11,14 @@ extension FileWriteAsStringWithRetry on File {
     bool flush = true,
     int retry = 3,
   }) async {
-    dynamic toRethrow;
-    for (int i = 0; i < retry && retry > 0; i++) {
-      try {
-        await create(recursive: true);
-        await writeAsString(
-          contents,
-          mode: mode,
-          encoding: encoding,
-          flush: flush,
-        );
-        return;
-      } catch (e) {
-        toRethrow ??= e;
-      }
-    }
-    throw toRethrow;
+    await (() async {
+      await create(recursive: true);
+      await writeAsString(
+        contents,
+        mode: mode,
+        encoding: encoding,
+        flush: flush,
+      );
+    }).asyncCallWithRetryOnFailure(times: retry);
   }
 }
