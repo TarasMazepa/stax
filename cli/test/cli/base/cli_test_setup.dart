@@ -57,7 +57,7 @@ class CliTestSetup {
     if (bundle != null) {
       await Context.implicit().git.clone.args([bundle, testRepoPath]).run();
     } else {
-      Directory(testRepoPath).createSync(recursive: true);
+      await Directory(testRepoPath).create(recursive: true);
     }
   }
 
