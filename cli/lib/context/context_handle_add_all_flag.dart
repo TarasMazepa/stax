@@ -34,12 +34,9 @@ extension ContextHandleAddAllFlag on Context {
           ? git.addEverything
           : (hasAddAll ? git.addAll : git.addUpdate);
       if (await areThereStagedChanges()) {
-        (await (await selectedAddAll
-                .askContinueQuestion(
-                  'You already have some staged changes. Do you really want to proceed?',
-                ))
-                ?.announce('Adding changes, as per your request.')
-                .run())
+        (await (await selectedAddAll.askContinueQuestion(
+              'You already have some staged changes. Do you really want to proceed?',
+            ))?.announce('Adding changes, as per your request.').run())
             ?.printNotEmptyResultFields();
       } else {
         (await selectedAddAll
@@ -49,12 +46,9 @@ extension ContextHandleAddAllFlag on Context {
       }
     } else {
       if (await areThereNoStagedChanges()) {
-        (await (await git.addEverything
-                .askContinueQuestion(
-                  'You do not have any staged changes. Do you want to add all?',
-                ))
-                ?.announce('Adding all the changes, as per your request.')
-                .run())
+        (await (await git.addEverything.askContinueQuestion(
+              'You do not have any staged changes. Do you want to add all?',
+            ))?.announce('Adding all the changes, as per your request.').run())
             ?.printNotEmptyResultFields();
       }
     }

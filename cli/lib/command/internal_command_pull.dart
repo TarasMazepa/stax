@@ -111,12 +111,12 @@ class InternalCommandPull extends InternalCommand {
     } else {
       final result =
           (await (await context.git.branchDelete
-                  .args(branchesToDelete)
-                  .askContinueQuestion(
-                    "Local branches with gone remotes that would be deleted:\n${branchesToDelete.map((e) => "   • $e").join("\n")}\n",
-                    assumeYes: hasForceDeleteFlag,
-                    assumeNo: hasSkipDeleteFlag,
-                  ))
+                      .args(branchesToDelete)
+                      .askContinueQuestion(
+                        "Local branches with gone remotes that would be deleted:\n${branchesToDelete.map((e) => "   • $e").join("\n")}\n",
+                        assumeYes: hasForceDeleteFlag,
+                        assumeNo: hasSkipDeleteFlag,
+                      ))
                   ?.announce('Deleting branches.')
                   .run())
               ?.printNotEmptyResultFields()
