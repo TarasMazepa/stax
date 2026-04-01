@@ -147,7 +147,9 @@ $object
     }
 
     print('Your choice: ');
-    final response = (await Future.microtask(() => stdin.readLineSync()))?.trim();
+    final response = (await Future.microtask(
+      () => stdin.readLineSync(),
+    ))?.trim();
 
     if (response == null || response.isEmpty) {
       return null;
