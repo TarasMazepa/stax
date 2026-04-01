@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
@@ -93,6 +95,17 @@ $object
 ''');
   }
 
+  StreamIterator<String>? _stdinIterator;
+
+  Future<String?> _readLineAsync() async {
+    _stdinIterator ??= StreamIterator(
+        systemEncoding.decoder.bind(stdin).transform(const LineSplitter()));
+    if (await _stdinIterator!.moveNext()) {
+      return _stdinIterator!.current;
+    }
+    return null;
+  }
+
   Future<bool> commandLineContinueQuestion(String questionContext) async {
     if (declineAll) {
       printToConsole(
@@ -113,7 +126,7 @@ $object
 
     for (var i = 0; i < 3; i++) {
       print('${questionContext}Continue y/N? ');
-      final response = await Future.microtask(() => stdin.readLineSync());
+      final response = await _readLineAsync();
       switch (response) {
         case 'y' || 'Y':
           return true;
@@ -147,7 +160,7 @@ $object
     }
 
     print('Your choice: ');
-    final response = (await Future.microtask(() => stdin.readLineSync()))?.trim();
+    final response = (await _readLineAsync())?.trim();
 
     if (response == null || response.isEmpty) {
       return null;
