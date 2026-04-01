@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:stax/context/context.dart';
-import 'package:stax/file/file_system_entity_delete_sync_quietly.dart';
+import 'package:stax/file/file_system_entity_delete_quietly.dart';
 
 import '../../test_file_original_path.dart';
 
@@ -52,7 +52,7 @@ class CliTestSetup {
   }
 
   Future<void> setUp() async {
-    tearDown();
+    await tearDown();
     final bundle = bundleFile;
     if (bundle != null) {
       await Context.implicit().git.clone.args([bundle, testRepoPath]).run();
@@ -61,8 +61,8 @@ class CliTestSetup {
     }
   }
 
-  void tearDown() {
-    Directory(testRepoPath).deleteSyncQuietly(recursive: true);
+  Future<void> tearDown() async {
+    await Directory(testRepoPath).deleteQuietly(recursive: true);
   }
 
   Future<ProcessResult> run(String command, [List<String>? args]) async {

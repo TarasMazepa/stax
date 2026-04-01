@@ -28,8 +28,8 @@ void cliGroup(
       setUp(() async {
         await setup.setUp();
       });
-      tearDown(() {
-        setup.tearDown();
+      tearDown(() async {
+        await setup.tearDown();
       });
       body(setup);
     },
