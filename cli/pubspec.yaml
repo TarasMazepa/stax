@@ -13,7 +13,7 @@ dependencies:
   collection: ^1.19.1
   http: ^1.6.0
   characters: ^1.4.1
-  monolib_dart: ^0.0.15
+  monolib_dart: ^0.0.16
 
 dev_dependencies:
   lints: ^6.1.0
