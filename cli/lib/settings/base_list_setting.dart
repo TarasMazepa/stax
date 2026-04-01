@@ -34,11 +34,11 @@ abstract class BaseListSetting<T> extends Setting<List<T>> {
         description,
       );
 
-  void add(T item) {
-    value = [...value, item];
+  Future<void> add(T item) async {
+    await setValue([...value, item]);
   }
 
-  void remove(T item) {
-    value = value.where((e) => e != item).toList();
+  Future<void> remove(T item) async {
+    await setValue(value.where((e) => e != item).toList());
   }
 }

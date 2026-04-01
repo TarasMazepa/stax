@@ -74,7 +74,7 @@ ${setting.name} = '${setting.rawValue}'
       case ['show', ...]:
         context.printToConsole("'show' doesn't have arguments");
       case ['set', final name, final value] when isSettingAvailable(name):
-        getSettingByName(name).value = value;
+        await getSettingByName(name).setValue(value);
         context.printToConsole("Updated setting: $name = '$value'");
       case ['set', final name, _]:
         onUnknownSetting(name);
@@ -84,7 +84,7 @@ ${setting.name} = '${setting.rawValue}'
         );
       case ['clear', final name] when isSettingAvailable(name):
         final setting = getSettingByName(name);
-        setting.clear();
+        await setting.clear();
         context.printToConsole(
           'Cleared setting: ${setting.name} = ${setting.value}',
         );
@@ -95,12 +95,12 @@ ${setting.name} = '${setting.rawValue}'
       case ['add', final name, final value] when isSettingAvailable(name):
         switch (getSettingByName(name)) {
           case KeyValueListSetting s:
-            s.addRaw(value);
+            await s.addRaw(value);
             context.printToConsole(
               "Added key-value '$value' to setting: $name",
             );
           case BaseListSetting s:
-            s.add(value);
+            await s.add(value);
             context.printToConsole("Added value '$value' to setting: $name");
           default:
             context.printToConsole(
@@ -117,12 +117,12 @@ ${setting.name} = '${setting.rawValue}'
         switch (getSettingByName(name)) {
           case KeyValueListSetting s:
             final key = value.split('=').first;
-            s.removeByKey(key);
+            await s.removeByKey(key);
             context.printToConsole(
               "Removed key-value with key '$key' from setting: $name",
             );
           case BaseListSetting s:
-            s.remove(value);
+            await s.remove(value);
             context.printToConsole(
               "Removed value '$value' from setting: $name",
             );

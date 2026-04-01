@@ -27,13 +27,13 @@ class Setting<T> {
     final raw => _fromStringConverter(raw),
   };
 
-  set value(T newValue) {
+  Future<void> setValue(T newValue) async {
     _keyValueStore[name] = _toStringConverter(newValue);
-    _keyValueStore.save();
+    await _keyValueStore.save();
   }
 
-  void clear() {
+  Future<void> clear() async {
     _keyValueStore[name] = null;
-    _keyValueStore.save();
+    await _keyValueStore.save();
   }
 }
