@@ -93,7 +93,7 @@ $object
 ''');
   }
 
-  bool commandLineContinueQuestion(String questionContext) {
+  Future<bool> commandLineContinueQuestion(String questionContext) async {
     if (declineAll) {
       printToConsole(
         "Automatically declining '$questionContext' as per user request.",
@@ -113,7 +113,7 @@ $object
 
     for (var i = 0; i < 3; i++) {
       print('${questionContext}Continue y/N? ');
-      final response = stdin.readLineSync();
+      final response = await Future.microtask(() => stdin.readLineSync());
       switch (response) {
         case 'y' || 'Y':
           return true;
@@ -130,10 +130,10 @@ $object
     return false;
   }
 
-  String? commandLineMultipleOptionsQuestion(
+  Future<String?> commandLineMultipleOptionsQuestion(
     String questionContext,
     List<({String key, String description})> options,
-  ) {
+  ) async {
     if (declineAll) {
       printToConsole(
         "Automatically declining '$questionContext' as per user request.",
@@ -147,7 +147,7 @@ $object
     }
 
     print('Your choice: ');
-    final response = stdin.readLineSync()?.trim();
+    final response = (await Future.microtask(() => stdin.readLineSync()))?.trim();
 
     if (response == null || response.isEmpty) {
       return null;

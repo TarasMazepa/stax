@@ -35,14 +35,14 @@ class ExternalCommand {
     return args([extra]);
   }
 
-  ExternalCommand? askContinueQuestion(
+  Future<ExternalCommand?> askContinueQuestion(
     String questionContext, {
     bool assumeYes = false,
     bool assumeNo = false,
-  }) {
+  }) async {
     if (assumeYes) return this;
     if (assumeNo) return null;
-    return context.commandLineContinueQuestion(questionContext) ? this : null;
+    return (await context.commandLineContinueQuestion(questionContext)) ? this : null;
   }
 
   ExternalCommand announce([String? announcement]) {

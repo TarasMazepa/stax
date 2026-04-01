@@ -123,7 +123,7 @@ class InternalCommandAmend extends InternalCommand {
     if (!hasAnyRebaseFlag() &&
         !hasSkipRebaseFlag &&
         current?.children.isNotEmpty == true) {
-      switch (context.commandLineMultipleOptionsQuestion(
+      switch (await context.commandLineMultipleOptionsQuestion(
         'This branch has children. Would you like to rebase them?',
         [
           (key: 'r', description: 'Standard rebase'),
