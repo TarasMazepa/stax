@@ -94,8 +94,6 @@ $object
 ''');
   }
 
-  static Stream<List<int>>? _stdinBroadcast;
-
   Future<bool> commandLineContinueQuestion(String questionContext) async {
     if (declineAll) {
       printToConsole(
@@ -118,15 +116,14 @@ $object
       print('${questionContext}Continue y/N? ');
       String? response;
       try {
-        _stdinBroadcast ??= stdin.asBroadcastStream();
-        response = await _stdinBroadcast!.readLine();
+        response = await stdin.readLine();
       } catch (e) {
         return false;
       }
-      switch (response) {
+      switch (response as String?) {
         case 'y' || 'Y':
           return true;
-        case 'n' || 'N' || '':
+        case 'n' || 'N' || '' || null:
           return false;
         default:
           if (i < 2) {
