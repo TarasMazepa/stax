@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
+import 'package:monolib_dart/stream.dart';
 import 'package:stax/base/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_version.dart';
@@ -44,9 +43,8 @@ class InternalCommandChangelog extends InternalCommand {
         int entries = 0;
         final versionRegex = RegExp(r'\d+\.\d+\.\d+');
         await for (final chunk
-            in response.stream
-                .transform(utf8.decoder)
-                .transform(const LineSplitter())) {
+            in (response.stream as Stream<List<int>>)
+                .utf8DecodeAndLineSplit()) {
           if (versionRegex.matchAsPrefix(chunk) != null) {
             entries++;
             if (entries > limit) break;

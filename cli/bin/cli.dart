@@ -37,6 +37,6 @@ Future<void> main(List<String> arguments) async {
       await InternalCommandLog().run([], context);
     }
   } finally {
-    mainButcher.dispose();
+    await mainButcher.dispose();
   }
 }
