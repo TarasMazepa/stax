@@ -32,7 +32,7 @@ Keeping your local environment up to date with your team or downloading specific
 
 When you need to fix a typo or add a forgotten file to your current work, `stax amend` is your best friend.
 
-*   `stax a -ua` or `stax a -u -a`: **Amend Changes**
+*   `stax a -u` or `stax a -a`: **Amend Changes**
     *   Amends the current commit with updated (`-u`) or all (`-a`) files, then offers to rebase any child branches that depend on this one.
 *   `stax a -am`: **Amend and Rebase**
     *   Amends with all files (`-a`) and automatically performs a rebase of all child branches using the prefer-moving strategy (`-m`).
