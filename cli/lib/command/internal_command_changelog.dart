@@ -42,7 +42,9 @@ class InternalCommandChangelog extends InternalCommand {
         final currentVersion = InternalCommandVersion.version;
         int entries = 0;
         final versionRegex = RegExp(r'\d+\.\d+\.\d+');
-        await for (final chunk in (response.stream as Stream<List<int>>).utf8DecodeAndLineSplit()) {
+        await for (final chunk
+            in (response.stream as Stream<List<int>>)
+                .utf8DecodeAndLineSplit()) {
           if (versionRegex.matchAsPrefix(chunk) != null) {
             entries++;
             if (entries > limit) break;
