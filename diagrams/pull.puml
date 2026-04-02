@@ -1,7 +1,0 @@
-@startmindmap
-+ stax pull
-++ git checkout <remote>/HEAD
-++ git pull
-++ stax delete-stale
-++ git checkout <original branch>
-@endmindmap
