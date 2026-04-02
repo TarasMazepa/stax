@@ -5,6 +5,7 @@ import 'package:stax/context/context_git_get_repository_root.dart';
 import 'package:stax/external_command/external_command.dart';
 import 'package:stax/file/file_path_dir_on_uri.dart';
 import 'package:stax/git/git.dart';
+import 'package:monolib_dart/stream.dart';
 import 'package:stax/rebase/rebase_use_case.dart';
 import 'package:stax/settings/base_settings.dart';
 import 'package:stax/settings/repository_settings.dart';
@@ -93,7 +94,9 @@ $object
 ''');
   }
 
-  bool commandLineContinueQuestion(String questionContext) {
+  static Stream<List<int>>? _stdinBroadcast;
+
+  Future<bool> commandLineContinueQuestion(String questionContext) async {
     if (declineAll) {
       printToConsole(
         "Automatically declining '$questionContext' as per user request.",
@@ -113,11 +116,17 @@ $object
 
     for (var i = 0; i < 3; i++) {
       print('${questionContext}Continue y/N? ');
-      final response = stdin.readLineSync();
+      String? response;
+      try {
+        _stdinBroadcast ??= stdin.asBroadcastStream();
+        response = await _stdinBroadcast!.readLine();
+      } catch (e) {
+        return false;
+      }
       switch (response) {
         case 'y' || 'Y':
           return true;
-        case 'n' || 'N' || '' || null:
+        case 'n' || 'N' || '':
           return false;
         default:
           if (i < 2) {

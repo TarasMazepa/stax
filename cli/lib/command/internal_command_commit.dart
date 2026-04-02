@@ -133,9 +133,9 @@ class InternalCommandCommit extends InternalCommand {
         resultingBranchName;
 
     if (!acceptBranchName && originalBranchName != prefixedBranchName) {
-      if (!context.commandLineContinueQuestion(
+      if (!(await context.commandLineContinueQuestion(
         "Branch name was modified to '$prefixedBranchName'.",
-      )) {
+      ))) {
         return;
       }
     }
