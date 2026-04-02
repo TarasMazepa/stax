@@ -48,4 +48,4 @@ When you need to fix a typo or add a forgotten file to your current work, `stax 
 
 You can also combine directions or use indexes for the "up" command:
 *   `stax m h d r`: Jump to the `head` branch, then move one node down, then move to the right sibling.
-*   `stax m h 2`: Jump to the `head` branch, then move up into the 3rd child (index 2).
+*   `stax m h u 2`: Jump to the `head` branch, then move up into the 3rd child (index 2).
