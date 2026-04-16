@@ -3,7 +3,7 @@ FROM taras0mazepa/stax-guide-base:0.11.7
 RUN <<EOF
 touch tracked.txt
 git add tracked.txt
-git commit -m "add tracked"
+git commit -m "add tracked" || true
 
 echo "modified" > tracked.txt
 touch untracked.txt
