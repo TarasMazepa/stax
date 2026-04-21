@@ -9,7 +9,7 @@ environment:
 # Add regular dependencies here.
 dependencies:
   path: ^1.9.1
-  cli_util: ^0.4.2
+  cli_util: ^0.5.0
   collection: ^1.19.1
   http: ^1.6.0
   characters: ^1.4.1
