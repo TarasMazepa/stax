@@ -61,10 +61,10 @@ packages:
     dependency: "direct main"
     description:
       name: cli_util
-      sha256: ff6785f7e9e3c38ac98b2fb035701789de90154024a75b6cb926445e83197d1c
+      sha256: "53f32da4e0c381951938e2229e217f3568699e3113463daa382261e0c6fead9e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.2"
+    version: "0.5.0"
   collection:
     dependency: "direct main"
     description:
@@ -197,10 +197,10 @@ packages:
     dependency: "direct main"
     description:
       name: monolib_dart
-      sha256: c9f54cc847bf4aa8a0d2432807f5b07e5f4e634d21583aefd905e4f0062c0a76
+      sha256: "1e3876c97a60b479579166bf0b6af1c5cce7bcb8c85436f50b26db7718bcd1cb"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.18"
+    version: "0.0.19"
   node_preamble:
     dependency: transitive
     description:
