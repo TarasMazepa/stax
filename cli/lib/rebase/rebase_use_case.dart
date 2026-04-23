@@ -74,11 +74,21 @@ To continue: `stax rebase --continue`''');
     rebaseOnto ??= context.getConfiguredDefaultBranch();
 
     if (rebaseOnto != null) {
-      targetNode = root.findAnyRefThatEndsWith(rebaseOnto);
-      if (targetNode == null) {
+      final matchingNodes = root.findAllAnyRefThatEndsWith(rebaseOnto).toList();
+      if (matchingNodes.isEmpty) {
         throw Exception(
           "Can't find target branch which ends with user provided '$rebaseOnto'.",
         );
+      }
+      if (matchingNodes.length > 1) {
+        matchingNodes.sort(
+          (a, b) => a.line.branchNameOrCommitHash().length.compareTo(
+            b.line.branchNameOrCommitHash().length,
+          ),
+        );
+        targetNode = matchingNodes.first;
+      } else {
+        targetNode = matchingNodes.first;
       }
     } else {
       targetNode = root.findRemoteHead();
