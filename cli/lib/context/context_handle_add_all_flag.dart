@@ -5,16 +5,19 @@ import 'package:stax/context/context_git_are_there_staged_changes.dart';
 extension ContextHandleAddAllFlag on Context {
   static final Flag addEverythingFlag = Flag(
     short: '-A',
+    long: '--add-workspace',
     description:
         "Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.",
   );
   static final Flag addAllFlag = Flag(
     short: '-a',
+    long: '--add-current',
     description:
         "Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.",
   );
   static final Flag updateAllFlag = Flag(
     short: '-u',
+    long: '--update-tracked',
     description:
         "Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.",
   );
