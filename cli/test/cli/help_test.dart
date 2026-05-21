@@ -22,21 +22,21 @@ Here are available commands:
 Note: you can type first letter or couple of first letters instead of full command name. 'c' for 'commit' or 'am' for 'amend'.
  • amend, a - Amends and pushes changes.
       Flags:
-         -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
-         -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
+         -A, --add-everything - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
+         -a, --add-all - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
          -b, --rebase-prefer-base - Runs 'stax rebase --prefer-base' afterwards on all children branches.
          -g, --get-first - Runs 'git stash ; stax get --current ; git stash pop' before performing amend sequence.
          -m, --rebase-prefer-moving - Runs 'stax rebase --prefer-moving' afterwards on all children branches.
          -r, --rebase - Runs 'stax rebase' afterwards on all children branches.
          --skip-rebase - Skip asking for rebase entirely.
-         -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
+         -u, --update-all - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
  • commit - Creates a branch, commits, and pushes it to remote. First argument is mandatory commit message. Second argument is optional branch name, if not provided branch name would be generated from commit message.
       Positional arguments:
          arg1 - Required commit message, usually enclosed in double quotes like this: "Sample commit message".
          opt2 - Optional branch name, if not provided commit message would be converted to branch name.
       Flags:
-         -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
-         -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
+         -A, --add-everything - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
+         -a, --add-all - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
          -b, --branch-from-commit - Accepts branch name proposed by converting commit name to branch name.
          -c, --come-back - Moves back to the branch on which user was before running commit.
          -d, --draft - Creates a PR in draft mode using the GitHub CLI. Works only if you have GitHub as your remote.
@@ -44,7 +44,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -k, --cookie - Add an optional string to the branch name after the prefix.
          -n, --no-browser - Do not attempt to open the PR URL in the browser.
          -p, --pull-request - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
-         -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
+         -u, --update-all - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
  • delete-stale, d - Deletes local branches with gone remotes.
       Flags:
          -f, --force-delete - Force delete gone branches.
@@ -147,8 +147,8 @@ Note: you can type first letter or couple of first letters instead of full comma
          arg1 - Required commit message, usually enclosed in double quotes like this: "Sample commit message".
          opt2 - Optional branch name, if not provided commit message would be converted to branch name.
       Flags:
-         -A - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
-         -a - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
+         -A, --add-everything - Runs 'git add -A' before other actions. Which adds tracked and untracked files in whole working tree.
+         -a, --add-all - Runs 'git add .' before other actions. Which adds tracked and untracked files in current folder and subfolders.
          -b, --branch-from-commit - Accepts branch name proposed by converting commit name to branch name.
          -c, --come-back - Moves back to the branch on which user was before running commit.
          -d, --draft - Creates a PR in draft mode using the GitHub CLI. Works only if you have GitHub as your remote.
@@ -156,7 +156,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -k, --cookie - Add an optional string to the branch name after the prefix.
          -n, --no-browser - Do not attempt to open the PR URL in the browser.
          -p, --pull-request - Opens PR creation page on your remote. Works only if you have GitHub as your remote.
-         -u - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
+         -u, --update-all - Runs 'git add -u' before other actions. Which adds only tracked files in whole working tree.
 """,
       );
     });
