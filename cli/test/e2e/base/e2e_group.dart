@@ -7,10 +7,26 @@ import 'package:test/scaffolding.dart';
 
 import '../../test_file_original_path.dart';
 
+class E2eContainer {
+  final String id;
+
+  E2eContainer._(this.id);
+
+  /// Runs [cmd] inside the container and returns stdout/stderr/exitCode.
+  Future<ProcessResult> exec(List<String> cmd) {
+    return Process.run('docker', ['exec', id, ...cmd]);
+  }
+
+  /// Convenience wrapper that prepends 'stax' to [args].
+  Future<ProcessResult> stax(List<String> args) {
+    return exec(['stax', ...args]);
+  }
+}
+
 @isTestGroup
 void e2eGroup(
   Object? description,
-  dynamic Function(Process Function()) body, {
+  dynamic Function(E2eContainer Function()) body, {
   String? testOn,
   Timeout? timeout,
   Object? skip,
@@ -55,33 +71,26 @@ void e2eGroup(
         '.',
       ]);
       print('built $dockerTag');
-      List<Process> processHolder = [];
-      setUp(() async {
-        processHolder.add(
-          await Process.start(
-            'docker',
-            ['run', '--rm', '-it', dockerTag],
-            runInShell: true,
-          ).then((process) {
-            process.stdout.forEach((element) {
-              print('stdout:${String.fromCharCodes(element)}');
-            });
-            process.stderr.forEach((element) {
-              print('stderr:${String.fromCharCodes(element)}');
-            });
-            process.exitCode.then((value) {
-              print('exit code:$value');
-            });
-            return process;
-          }),
-        );
-        print('running $dockerTag');
+      final List<E2eContainer> containerHolder = [];
+      setUp(() {
+        final result = Process.runSync('docker', [
+          'run',
+          '--rm',
+          '--detach',
+          dockerTag,
+          'sleep',
+          'infinity',
+        ]);
+        final containerId = (result.stdout as String).trim();
+        containerHolder.add(E2eContainer._(containerId));
+        print('started container $containerId');
       });
       tearDown(() {
-        print('killing');
-        processHolder.removeLast().kill();
+        final container = containerHolder.removeLast();
+        Process.runSync('docker', ['rm', '--force', container.id]);
+        print('removed container ${container.id}');
       });
-      body(() => processHolder[0]);
+      body(() => containerHolder.last);
       test('teardown test', () {});
     },
   );
