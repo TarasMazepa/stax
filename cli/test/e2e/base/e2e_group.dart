@@ -58,11 +58,12 @@ void e2eGroup(
       List<Process> processHolder = [];
       setUp(() async {
         processHolder.add(
-          await Process.start(
-            'docker',
-            ['run', '--rm', '-it', dockerTag],
-            runInShell: true,
-          ).then((process) {
+          await Process.start('docker', [
+            'run',
+            '--rm',
+            '-it',
+            dockerTag,
+          ], runInShell: true).then((process) {
             process.stdout.forEach((element) {
               print('stdout:${String.fromCharCodes(element)}');
             });
