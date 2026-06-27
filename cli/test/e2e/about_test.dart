@@ -7,9 +7,7 @@ void main() {
     test('about', () async {
       final result = await containerGetter().stax(['extras', 'about']);
       expect(result.exitCode, 0);
-      expect(
-        result.stdout,
-        '''stax - manage git branches and stack PRs
+      expect(result.stdout, '''stax - manage git branches and stack PRs
 
 For more information, visit: https://staxforgit.com/
 
@@ -29,8 +27,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 https://github.com/TarasMazepa/stax/blob/main/LICENSE
-''',
-      );
+''');
     });
   });
 }
