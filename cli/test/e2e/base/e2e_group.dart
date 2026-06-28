@@ -89,7 +89,6 @@ void e2eGroup(
         print('removed container ${container.id}');
       });
       body(() => containerHolder.last);
-      test('teardown test', () {});
     },
   );
 }
