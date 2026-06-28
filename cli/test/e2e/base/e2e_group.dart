@@ -43,17 +43,15 @@ void e2eGroup(
     onPlatform: onPlatform,
     retry: retry,
     () {
-      final testFileName = assertTestFilePath();
-      final dockerFile = testFileName.replaceAll(
-        RegExp(r'\.dart$'),
-        '.dockerfile',
-      );
+      final testFileName = Uri.parse(assertTestFileUriString()).toFilePath();
+      final dockerFile =
+          '${testFileName.substring(0, testFileName.length - 4)}dockerfile';
       final repositoryRoot = Context.implicit()
           .withQuiet(true)
           .getRepositoryRoot()!;
       final dockerTag = testFileName
-          .replaceAll(RegExp(r'\W+'), '_')
-          .replaceFirst(RegExp(r'^_+'), '')
+          .replaceAll(RegExp(r'\W+'), '-')
+          .replaceFirst(RegExp(r'^-+'), '')
           .toLowerCase();
       Process.runSync('docker', [
         'build',

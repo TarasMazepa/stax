@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 import 'base/e2e_group.dart';
 
 void main() {
-  e2eGroup('about', skip: true, (containerGetter) {
+  e2eGroup('about', (containerGetter) {
     test('about', () async {
       final result = await containerGetter().stax(['extras', 'about']);
       expect(result.exitCode, 0);
