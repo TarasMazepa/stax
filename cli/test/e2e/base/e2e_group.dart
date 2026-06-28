@@ -53,23 +53,23 @@ void e2eGroup(
           .replaceAll(RegExp(r'\W+'), '-')
           .replaceFirst(RegExp(r'^-+'), '')
           .toLowerCase();
-      Process.runSync('docker', [
-        'build',
-        '--tag',
-        'stax-e2e-test:latest',
-        repositoryRoot,
-      ]);
-      print('built stax-e2e-test:latest');
-      Process.runSync('docker', [
-        'build',
-        '--file',
-        dockerFile,
-        '--tag',
-        dockerTag,
-        '.',
-      ]);
-      print('built $dockerTag');
       final List<E2eContainer> containerHolder = [];
+      setUpAll(() {
+        Process.runSync('docker', [
+          'build',
+          '--tag',
+          'stax-e2e-test:latest',
+          repositoryRoot,
+        ]);
+        Process.runSync('docker', [
+          'build',
+          '--file',
+          dockerFile,
+          '--tag',
+          dockerTag,
+          '.',
+        ]);
+      });
       setUp(() {
         final result = Process.runSync('docker', [
           'run',
