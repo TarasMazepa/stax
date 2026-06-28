@@ -27,7 +27,7 @@ class E2eContainer {
 void e2eGroup(
   Object? description,
   dynamic Function(E2eContainer Function()) body, {
-  String? testOn,
+  String? testOn = 'linux',
   Timeout? timeout,
   Object? skip,
   Object? tags,
