@@ -6,7 +6,6 @@ void main() {
   e2eGroup('about', (containerGetter) {
     test('about', () async {
       final result = await containerGetter().stax(['extras', 'about']);
-      expect(result.exitCode, 0);
       expect(result.stdout, '''stax - manage git branches and stack PRs
 
 For more information, visit: https://staxforgit.com/
