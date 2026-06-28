@@ -1,36 +1,33 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:test/test.dart';
 
 import 'base/e2e_group.dart';
 
-extension WriteAsyncOnIOSink on IOSink {
-  Future<IOSink> writeLineAndFlush([Object? object = '']) async {
-    writeln(object);
-    await flush();
-    return this;
-  }
-}
-
-extension WriteAsyncOnFutureIOSink on Future<IOSink> {
-  Future<IOSink> writeLineAndFlush([Object? object = '']) {
-    return then((ioSink) {
-      return ioSink.writeLineAndFlush(object);
-    });
-  }
-}
-
 void main() {
-  e2eGroup('about', skip: true, (processGetter) {
+  e2eGroup('about', skip: true, (containerGetter) {
     test('about', () async {
-      final process = processGetter();
-      process.stdin.writeln('stax about');
-      await process.stdin.flush();
-      sleep(Duration(seconds: 2));
-      process.stdin.writeln('stax about');
-      await process.stdin.flush();
-      sleep(Duration(seconds: 2));
+      final result = await containerGetter().stax(['extras', 'about']);
+      expect(result.exitCode, 0);
+      expect(result.stdout, '''stax - manage git branches and stack PRs
+
+For more information, visit: https://staxforgit.com/
+
+Copyright (C) ${DateTime.now().year}  Taras Mazepa
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+https://github.com/TarasMazepa/stax/blob/main/LICENSE
+''');
     });
   });
 }
