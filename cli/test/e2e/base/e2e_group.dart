@@ -1,26 +1,10 @@
-import 'dart:io';
-
 import 'package:meta/meta.dart';
 import 'package:test/scaffolding.dart';
 
-import '../../test_file_original_path.dart';
+import 'e2e_test_setup.dart';
 import 'is_docker_available.dart';
 
-class E2eContainer {
-  final String id;
-
-  E2eContainer(this.id);
-
-  /// Runs [cmd] inside the container and returns stdout/stderr/exitCode.
-  Future<ProcessResult> exec(List<String> cmd) {
-    return Process.run('docker', ['exec', id, ...cmd]);
-  }
-
-  /// Convenience wrapper that prepends 'stax' to [args].
-  Future<ProcessResult> stax(List<String> args) {
-    return exec(['stax', ...args]);
-  }
-}
+export 'e2e_test_setup.dart' show E2eContainer;
 
 @isTestGroup
 void e2eGroup(
@@ -35,6 +19,7 @@ void e2eGroup(
   },
   int? retry,
 }) {
+  final E2eTestSetup setup = E2eTestSetup.create();
   group(
     description,
     testOn: testOn,
@@ -46,61 +31,16 @@ void e2eGroup(
     onPlatform: onPlatform,
     retry: retry,
     () {
-      final uri = Uri.parse(assertTestFileUriString());
-      final testFileName = uri.toFilePath();
-      final repositoryRoot = uri
-          .replace(path: uri.path.substring(0, uri.path.indexOf('/cli/test/')))
-          .toFilePath();
-      final dockerFile = testFileName.replaceRange(
-        testFileName.length - 4,
-        testFileName.length,
-        'dockerfile',
-      );
-      final dockerTag = testFileName
-          .replaceAll(RegExp(r'\W+'), '-')
-          .replaceFirst(RegExp(r'^-+'), '')
-          .toLowerCase();
-      final List<E2eContainer> containerHolder = [];
       setUpAll(() async {
-        await Process.run('docker', [
-          'build',
-          '--tag',
-          'stax-e2e-test:latest',
-          repositoryRoot,
-        ]);
-        await Process.run('docker', [
-          'build',
-          '--file',
-          dockerFile,
-          '--tag',
-          dockerTag,
-          '.',
-        ]);
+        await setup.buildImages();
       });
       setUp(() async {
-        containerHolder.add(
-          E2eContainer(
-            ((await Process.run('docker', [
-                      'run',
-                      '--rm',
-                      '--detach',
-                      dockerTag,
-                      'sleep',
-                      'infinity',
-                    ])).stdout
-                    as String)
-                .trim(),
-          ),
-        );
+        await setup.setUp();
       });
       tearDown(() async {
-        await Process.run('docker', [
-          'rm',
-          '--force',
-          containerHolder.removeLast().id,
-        ]);
+        await setup.tearDown();
       });
-      body(() => containerHolder.last);
+      body(() => setup.container);
     },
   );
 }
