@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:test/scaffolding.dart';
 
 import 'e2e_test_setup.dart';
-import 'is_docker_available.dart';
+import '../../is_docker_available.dart';
 
 export 'e2e_test_setup.dart' show E2eContainer;
 
