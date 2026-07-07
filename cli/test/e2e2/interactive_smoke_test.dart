@@ -1,8 +1,9 @@
 import 'package:test/test.dart';
+
 import 'base/e2e2_group.dart';
 
 void main() {
-  e2e2Group('interactive session', onPlatform: const {}, (containerGetter) {
+  e2e2Group('interactive session', (containerGetter) {
     test('streams TTY output and accepts input while running', () async {
       final session = await containerGetter().execInteractive([
         'sh',
