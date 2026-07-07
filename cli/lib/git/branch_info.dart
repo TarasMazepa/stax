@@ -1,5 +1,5 @@
-import 'package:stax/external_command/extended_process_result.dart';
 import 'package:monolib_dart/monolib_dart.dart';
+import 'package:stax/external_command/extended_process_result.dart';
 
 extension ParseBranchInfoOnExtendedProcessResult on ExtendedProcessResult {
   List<BranchInfo> parseBranchInfo() {
