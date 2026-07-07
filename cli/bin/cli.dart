@@ -4,9 +4,9 @@ import 'package:stax/command/internal_command_help.dart';
 import 'package:stax/command/internal_command_log.dart';
 import 'package:stax/command/internal_commands.dart';
 import 'package:stax/command/main_function_reference.dart';
-import 'package:stax/main/butcher.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
+import 'package:stax/main/butcher.dart';
 
 Future<void> main(List<String> arguments) async {
   try {

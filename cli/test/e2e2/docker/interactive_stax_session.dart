@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'docker_api_client.dart';
-import 'docker_connection.dart';
 
 class InteractiveStaxSession {
   final DockerApiClient _client;
   final String execId;
-  final DockerConnection _connection;
+  final Socket _connection;
 
   final StreamController<String> _output = StreamController<String>.broadcast();
   final StringBuffer _accumulated = StringBuffer();
@@ -23,6 +23,7 @@ class InteractiveStaxSession {
     Stream<List<int>> rawStream,
   ) {
     _sub = rawStream
+        .cast<List<int>>()
         .transform(utf8.decoder)
         .listen(
           (chunk) {
@@ -98,7 +99,7 @@ class InteractiveStaxSession {
     _waiters.clear();
     await _sub.cancel();
     if (!_output.isClosed) await _output.close();
-    await _connection.close();
+    await _connection.closeSafely();
   }
 
   void _handleDone() {
