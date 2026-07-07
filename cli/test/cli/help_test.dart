@@ -8,7 +8,7 @@ void main() {
   cliGroup('help', (setup) {
     test('help', () async {
       expect(
-        (await setup.runLiveStax([
+        (await setup.runStax([
           'help',
         ])).stdout.toString().cleanCarriageReturnOnWindows(),
         """Global flags:
@@ -94,7 +94,7 @@ Note: you can type first letter or couple of first letters instead of full comma
 
     test('extras help', () async {
       expect(
-        (await setup.runLiveStax([
+        (await setup.runStax([
           'extras',
           'help',
         ])).stdout.toString().cleanCarriageReturnOnWindows(),
@@ -131,7 +131,7 @@ Note: you can type first letter or couple of first letters instead of full comma
 
     test('help command matching by prefix', () async {
       expect(
-        (await setup.runLiveStax([
+        (await setup.runStax([
           'help',
           'c',
         ])).stdout.toString().cleanCarriageReturnOnWindows(),

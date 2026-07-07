@@ -1,38 +1,37 @@
 import 'dart:io';
 
+import '../docker/docker_api_client.dart';
+import '../docker/interactive_stax_session.dart';
 import '../../test_file_original_path.dart';
 
-
-
-/// Builds the base `stax-e2e-test:latest` image at most once per test run.
-///
-/// The image is identical for every test group, so caching the build [Future]
-/// at the top level avoids rebuilding it once per group. A fresh `dart test`
-/// run starts a new process where this is null again, so rebuilds still happen
-/// between separate runs.
-Future<void>? _baseDockerBuildFuture;
-
-class E2eTestSetup {
+class E2eInteractiveTestSetup {
   final String repositoryRoot;
   final String dockerFile;
   final String dockerTag;
   final List<String> _containerIds = [];
+  final DockerApiClient _docker = DockerApiClient();
 
-  E2eTestSetup(this.repositoryRoot, this.dockerFile, this.dockerTag);
+  E2eInteractiveTestSetup(this.repositoryRoot, this.dockerFile, this.dockerTag);
 
   String get containerId => _containerIds.last;
 
-  /// Runs [cmd] inside the container and returns stdout/stderr/exitCode.
   Future<ProcessResult> run(String command, [List<String>? args]) {
     return Process.run('docker', ['exec', containerId, command, ...?args]);
   }
 
-  /// Convenience wrapper that prepends 'stax' to [args].
   Future<ProcessResult> runStax([List<String>? args]) {
     return run('stax', args);
   }
 
-  factory E2eTestSetup.create() {
+  Future<InteractiveStaxSession> startInteractive(String command, [List<String>? args]) async {
+    return _docker.startExec(await _docker.createExec(containerId, [command, ...?args]));
+  }
+
+  Future<InteractiveStaxSession> startStaxInteractive([List<String>? args]) {
+    return startInteractive('stax', args);
+  }
+
+  factory E2eInteractiveTestSetup.create() {
     final uri = Uri.parse(assertTestFileUriString());
     final testFileName = uri.toFilePath();
     final repositoryRoot = uri
@@ -47,16 +46,25 @@ class E2eTestSetup {
         .replaceAll(RegExp(r'\W+'), '-')
         .replaceFirst(RegExp(r'^-+'), '')
         .toLowerCase();
-    return E2eTestSetup(repositoryRoot, dockerFile, dockerTag);
+    return E2eInteractiveTestSetup(repositoryRoot, dockerFile, dockerTag);
   }
 
   Future<void> buildImages() async {
-    await (_baseDockerBuildFuture ??= Process.run('docker', [
+    final result = await Process.run('docker', [
       'build',
       '--tag',
       'stax-e2e-test:latest',
       repositoryRoot,
-    ]));
+    ]);
+
+    print('ExitCode: ${result.exitCode}');
+    print('STDOUT:\n${result.stdout}');
+    print('STDERR:\n${result.stderr}');
+
+    if (result.exitCode != 0) {
+      throw Exception('Docker build failed');
+    }
+
     await Process.run('docker', [
       'build',
       '--file',
@@ -83,10 +91,6 @@ class E2eTestSetup {
   }
 
   Future<void> tearDown() async {
-    await Process.run('docker', [
-      'rm',
-      '--force',
-      _containerIds.removeLast(),
-    ]);
+    await Process.run('docker', ['rm', '--force', _containerIds.removeLast()]);
   }
 }

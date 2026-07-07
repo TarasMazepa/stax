@@ -3,9 +3,9 @@ import 'package:test/test.dart';
 import 'base/e2e_group.dart';
 
 void main() {
-  e2eGroup('about', (containerGetter) {
+  e2eGroup('about', (setup) {
     test('about', () async {
-      final result = await containerGetter().stax(['extras', 'about']);
+      final result = await setup.runStax(['extras', 'about']);
       expect(result.stdout, '''stax - manage git branches and stack PRs
 
 For more information, visit: https://staxforgit.com/

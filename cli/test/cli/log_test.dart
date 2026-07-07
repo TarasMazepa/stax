@@ -11,7 +11,7 @@ void main() {
   cliGroup('log', (setup) {
     test('empty', () async {
       await setup.run('git', ['init']);
-      expect((await setup.runLiveStax(['log'])).stdout, '');
+      expect((await setup.runStax(['log'])).stdout, '');
     });
     var commitTree = CommitTreeForTestCase();
     final random = Random();
@@ -22,9 +22,9 @@ void main() {
       final defaultBranch = commitTree.commitName(commitTree.mainId);
       final commitName = commitTree.commitName(0);
       test(commitName, () async {
-        await setup.runLiveStax(['extras', 'log-test-case', commitName]);
+        await setup.runStax(['extras', 'log-test-case', commitName]);
         expect(
-          (await setup.runLiveStax([
+          (await setup.runStax([
             'log',
             '--default-branch',
             defaultBranch,
