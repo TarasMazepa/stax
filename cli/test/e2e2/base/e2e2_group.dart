@@ -1,13 +1,9 @@
 import 'package:meta/meta.dart';
 import 'package:test/scaffolding.dart';
 
+import 'e2e2_container.dart';
 import 'e2e2_test_setup.dart';
-import 'is_docker_available.dart';
-
-export '../../e2e2/docker/interactive_stax_session.dart'
-    show InteractiveStaxSession;
-
-export 'e2e2_test_setup.dart' show E2e2Container;
+import '../../is_docker_available.dart';
 
 @isTestGroup
 void e2e2Group(
@@ -18,7 +14,7 @@ void e2e2Group(
   Object? skip,
   Object? tags,
   Map<String, dynamic>? onPlatform = const {
-    'windows': Skip('fails on windows'),
+    'windows': Skip('Docker Engine API tests are Unix-only'),
   },
   int? retry,
 }) {

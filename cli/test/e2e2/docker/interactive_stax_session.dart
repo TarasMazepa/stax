@@ -139,5 +139,6 @@ class _Waiter {
   final Pattern pattern;
   final Completer<String> completer = Completer<String>();
   Timer? timer;
+
   _Waiter(this.pattern);
 }
