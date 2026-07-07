@@ -18,7 +18,7 @@ void e2e2Group(
   Object? skip,
   Object? tags,
   Map<String, dynamic>? onPlatform = const {
-    'windows': Skip('fails on windows'),
+    'windows': Skip('Docker Engine API tests are Unix-only'),
   },
   int? retry,
 }) {
