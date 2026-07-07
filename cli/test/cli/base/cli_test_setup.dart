@@ -74,7 +74,7 @@ class CliTestSetup {
     );
   }
 
-  Future<ProcessResult> runLiveStax([List<String>? args]) async {
+  Future<ProcessResult> runStax([List<String>? args]) async {
     return run(liveStaxPath, args);
   }
 
@@ -82,7 +82,7 @@ class CliTestSetup {
     return Process.start(command, args ?? [], workingDirectory: testRepoPath);
   }
 
-  Future<Process> startLiveStax([List<String>? args]) {
+  Future<Process> startStax([List<String>? args]) {
     return start(liveStaxPath, args);
   }
 
