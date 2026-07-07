@@ -2,9 +2,9 @@ import 'package:collection/collection.dart';
 import 'package:stax/base/flag.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_extras.dart';
+import 'package:stax/command/internal_command_finder.dart';
 import 'package:stax/command/internal_commands.dart';
 import 'package:stax/command/types_for_internal_command.dart';
-import 'package:stax/command/internal_command_finder.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_handle_global_flags.dart';
 
