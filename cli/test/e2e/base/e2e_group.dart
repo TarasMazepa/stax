@@ -1,15 +1,15 @@
 import 'package:meta/meta.dart';
 import 'package:test/scaffolding.dart';
 
+import '../../is_docker_available.dart';
 import 'e2e_test_setup.dart';
-import 'is_docker_available.dart';
 
-export 'e2e_test_setup.dart' show E2eContainer;
+export 'e2e_test_setup.dart' show E2eTestSetup;
 
 @isTestGroup
 void e2eGroup(
   Object? description,
-  dynamic Function(E2eContainer Function()) body, {
+  dynamic Function(E2eTestSetup setup) body, {
   String? testOn,
   Timeout? timeout,
   Object? skip,
@@ -40,7 +40,7 @@ void e2eGroup(
       tearDown(() async {
         await setup.tearDown();
       });
-      body(() => setup.container);
+      body(setup);
     },
   );
 }
