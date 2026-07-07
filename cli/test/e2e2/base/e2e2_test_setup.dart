@@ -1,16 +1,22 @@
 import 'dart:io';
 
-import '../../test_file_original_path.dart';
 import '../../e2e2/docker/docker_api_client.dart';
 import '../../e2e2/docker/interactive_stax_session.dart';
+import '../../test_file_original_path.dart';
 
-class E2e2Container {
-  final String id;
+class E2e2TestSetup {
+  final String repositoryRoot;
+  final String dockerFile;
+  final String dockerTag;
+  final List<String> _containerIds = [];
   final DockerApiClient _docker = DockerApiClient();
 
-  E2e2Container(this.id);
+  E2e2TestSetup(this.repositoryRoot, this.dockerFile, this.dockerTag);
+
+  String get containerId => _containerIds.last;
+
   Future<ProcessResult> exec(List<String> cmd) {
-    return Process.run('docker', ['exec', id, ...cmd]);
+    return Process.run('docker', ['exec', containerId, ...cmd]);
   }
 
   Future<ProcessResult> stax(List<String> args) {
@@ -18,26 +24,12 @@ class E2e2Container {
   }
 
   Future<InteractiveStaxSession> execInteractive(List<String> cmd) async {
-    final execId = await _docker.createExec(id, cmd);
-
-    final session = await _docker.startExec(execId);
-    return session;
+    return _docker.startExec(await _docker.createExec(containerId, cmd));
   }
 
   Future<InteractiveStaxSession> staxInteractive(List<String> args) {
     return execInteractive(['stax', ...args]);
   }
-}
-
-class E2e2TestSetup {
-  final String repositoryRoot;
-  final String dockerFile;
-  final String dockerTag;
-  final List<E2e2Container> _containerHolder = [];
-
-  E2e2TestSetup(this.repositoryRoot, this.dockerFile, this.dockerTag);
-
-  E2e2Container get container => _containerHolder.last;
 
   factory E2e2TestSetup.create() {
     final uri = Uri.parse(assertTestFileUriString());
@@ -84,27 +76,21 @@ class E2e2TestSetup {
   }
 
   Future<void> setUp() async {
-    _containerHolder.add(
-      E2e2Container(
-        ((await Process.run('docker', [
-                  'run',
-                  '--rm',
-                  '--detach',
-                  dockerTag,
-                  'sleep',
-                  'infinity',
-                ])).stdout
-                as String)
-            .trim(),
-      ),
+    _containerIds.add(
+      ((await Process.run('docker', [
+                'run',
+                '--rm',
+                '--detach',
+                dockerTag,
+                'sleep',
+                'infinity',
+              ])).stdout
+              as String)
+          .trim(),
     );
   }
 
   Future<void> tearDown() async {
-    await Process.run('docker', [
-      'rm',
-      '--force',
-      _containerHolder.removeLast().id,
-    ]);
+    await Process.run('docker', ['rm', '--force', _containerIds.removeLast()]);
   }
 }

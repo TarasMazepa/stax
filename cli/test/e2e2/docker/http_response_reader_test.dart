@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:test/test.dart';
 
-import 'docker_api_client.dart';
+import 'http_response_reader.dart';
 
 void main() {
   group('HttpResponseReader', () {
