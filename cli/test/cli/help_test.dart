@@ -56,7 +56,7 @@ Note: you can type first letter or couple of first letters instead of full comma
          -b, --rebase-prefer-base - Runs 'stax rebase --prefer-base' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.
          -c, --current - Force get current branch, skipping the confirmation prompt.
          -m, --rebase-prefer-moving - Runs 'stax rebase --prefer-moving' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.
-         -n, --nuke-first - Runs \'stax extras nuke\' before getting, resetting working directory and index to HEAD and cleaning all untracked files.
+         -n, --nuke-first - Runs 'stax extras nuke' before getting, resetting working directory and index to HEAD and cleaning all untracked files.
          -r, --rebase - Runs 'stax rebase' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.
  • help - List of available commands.
       Positional arguments:

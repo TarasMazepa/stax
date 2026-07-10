@@ -18,7 +18,7 @@ Future<String> status(E2e2Container container) async {
 }
 
 void main() {
-  e2e2Group('get --nuke-first', onPlatform: const {}, (containerGetter) {
+  e2e2Group('get --nuke-first', (containerGetter) {
     test('nukes dirty working directory before getting a branch', () async {
       final container = containerGetter();
       await dirtyRepository(container);
