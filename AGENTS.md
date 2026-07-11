@@ -13,3 +13,4 @@
 - when writing scripts make sure that they could be invoked from any location and if they provide any commands - output those commands in a separate line
 - when naming dart extentions I prefer name of the extention to read same or similar to the type, so if extention is "on String" I would name it "OnString", this also applies to nested types like "OnListOfLists" or "OnNullableListOfStreamControllers"
 - `stdin.readLineSync()` doesn't have good async substitution and shouldn't be refactored to async API
+- I like flat project folder structure. I do not like when folder is being nested.
