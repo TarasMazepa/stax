@@ -23,8 +23,13 @@ class E2eInteractiveTestSetup {
     return run('stax', args);
   }
 
-  Future<InteractiveStaxSession> startInteractive(String command, [List<String>? args]) async {
-    return _docker.startExec(await _docker.createExec(containerId, [command, ...?args]));
+  Future<InteractiveStaxSession> startInteractive(
+    String command, [
+    List<String>? args,
+  ]) async {
+    return _docker.startExec(
+      await _docker.createExec(containerId, [command, ...?args]),
+    );
   }
 
   Future<InteractiveStaxSession> startStaxInteractive([List<String>? args]) {
