@@ -54,14 +54,22 @@ class InteractiveStaxSession {
     _connection.add(bytes);
   }
 
-  Future<String> waitFor(Pattern pattern, {Duration timeout = const Duration(seconds: 30)}) async {
+  Future<String> waitFor(
+    Pattern pattern, {
+    Duration timeout = const Duration(seconds: 30),
+  }) async {
     final current = _accumulated.toString();
     if (current.contains(pattern)) return current;
-    if (_output.isClosed) throw StateError('Session closed before "$pattern" appeared.');
+    if (_output.isClosed)
+      throw StateError('Session closed before "$pattern" appeared.');
     return await _output.stream
         .map((_) => _accumulated.toString())
         .firstWhere((s) => s.contains(pattern))
-        .timeout(timeout, onTimeout: () => throw TimeoutException('Timed out waiting for "$pattern"'));
+        .timeout(
+          timeout,
+          onTimeout: () =>
+              throw TimeoutException('Timed out waiting for "$pattern"'),
+        );
   }
 
   Future<int?> exitCode() => _client.inspectExecExitCode(execId);
