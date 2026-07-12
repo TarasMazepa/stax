@@ -39,9 +39,7 @@ class DockerConnection {
       );
       return DockerConnection._(socket);
     } on SocketException catch (e) {
-      throw Exception(
-        'Failed to connect to $path: ${e.message}',
-      );
+      throw Exception('Failed to connect to $path: ${e.message}');
     }
   }
 }
