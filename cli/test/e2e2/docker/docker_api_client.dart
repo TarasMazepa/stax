@@ -56,9 +56,7 @@ class DockerApiClient {
         0,
       );
     } on SocketException catch (e) {
-      throw Exception(
-        'Failed to connect to $path: ${e.message}',
-      );
+      throw Exception('Failed to connect to $path: ${e.message}');
     }
   }
 
@@ -81,9 +79,7 @@ class DockerApiClient {
       final response = await request.close();
       final body = await response.transform(utf8.decoder).join();
       if (response.statusCode != 201) {
-        throw Exception(
-          'exec create failed (${response.statusCode}): $body',
-        );
+        throw Exception('exec create failed (${response.statusCode}): $body');
       }
       final json = jsonDecode(body) as Map<String, dynamic>;
       final id = json['Id'];
