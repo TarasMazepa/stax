@@ -37,7 +37,6 @@ class DockerApiClient {
       };
   }
 
-
   Future<String> createExec(String containerId, List<String> cmd) async {
     final client = _createDockerClient();
     try {
@@ -57,9 +56,7 @@ class DockerApiClient {
       final response = await request.close();
       final body = await response.transform(utf8.decoder).join();
       if (response.statusCode != 201) {
-        throw Exception(
-          'exec create failed (${response.statusCode}): $body',
-        );
+        throw Exception('exec create failed (${response.statusCode}): $body');
       }
       final json = jsonDecode(body) as Map<String, dynamic>;
       final id = json['Id'];
@@ -81,24 +78,15 @@ class DockerApiClient {
       request.headers.add('Connection', 'Upgrade');
       request.headers.add('Upgrade', 'tcp');
       request.headers.contentType = ContentType.json;
-      request.write(
-        jsonEncode({'Detach': false, 'Tty': true}),
-      );
+      request.write(jsonEncode({'Detach': false, 'Tty': true}));
       final response = await request.close();
 
       if (response.statusCode != 101 && response.statusCode != 200) {
         final body = await response.transform(utf8.decoder).join();
-        throw Exception(
-          'exec start failed (${response.statusCode}): $body',
-        );
+        throw Exception('exec start failed (${response.statusCode}): $body');
       }
       final socket = await response.detachSocket();
-      return InteractiveStaxSession(
-        this,
-        execId,
-        socket,
-        socket,
-      );
+      return InteractiveStaxSession(this, execId, socket, socket);
     } catch (_) {
       client.close();
       rethrow;
@@ -124,6 +112,4 @@ class DockerApiClient {
       client.close();
     }
   }
-
-
 }
