@@ -19,7 +19,7 @@ void main() {
       'log',
       () async {
         expect(
-          (await setup.runLiveStax([
+          (await setup.runStax([
             'log',
           ])).stdout.toString().cleanCarriageReturnOnWindows(),
           'x origin/main, origin/HEAD, main\n',
@@ -32,7 +32,7 @@ void main() {
     test(
       "commit 'commit message'",
       () async {
-        await setup.startLiveStax(['commit', 'commit message']).then((
+        await setup.startStax(['commit', 'commit message']).then((
           process,
         ) async {
           await process.stdout.forEach((element) async {

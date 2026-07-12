@@ -8,7 +8,7 @@ void main() {
   cliGroup('about', (setup) {
     test('about', () async {
       expect(
-        (await setup.runLiveStax([
+        (await setup.runStax([
           'extras',
           'about',
         ])).stdout.toString().cleanCarriageReturnOnWindows(),
