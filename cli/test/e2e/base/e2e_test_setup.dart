@@ -2,8 +2,6 @@ import 'dart:io';
 
 import '../../test_file_original_path.dart';
 
-
-
 /// Builds the base `stax-e2e-test:latest` image at most once per test run.
 ///
 /// The image is identical for every test group, so caching the build [Future]
@@ -83,10 +81,6 @@ class E2eTestSetup {
   }
 
   Future<void> tearDown() async {
-    await Process.run('docker', [
-      'rm',
-      '--force',
-      _containerIds.removeLast(),
-    ]);
+    await Process.run('docker', ['rm', '--force', _containerIds.removeLast()]);
   }
 }
