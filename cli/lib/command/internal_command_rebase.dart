@@ -89,7 +89,7 @@ class InternalCommandRebase extends InternalCommand {
       final rebaseUseCase = context.assertRebaseUseCase;
       rebaseUseCase.assertRebaseInProgress();
       await rebaseUseCase.abort();
-      context.printParagraph('Rebase successfully aborted.');
+      context.printParagraph('Rebase successfully abandoned.');
       return;
     }
 
