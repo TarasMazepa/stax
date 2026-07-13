@@ -1,3 +1,7 @@
+0.11.9
+
+* stax get - gets -n/--nuke-first to run `stax extras nuke` before "getting" new branch
+
 0.11.8
 
 * stax rebase --abandon - would confirm with 'Rebase successfully abandoned.' instead of 'Rebase successfully aborted.'

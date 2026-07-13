@@ -1,5 +1,6 @@
 import 'package:stax/base/flag.dart';
 import 'package:stax/command/internal_command.dart';
+import 'package:stax/command/internal_command_nuke.dart';
 import 'package:stax/command/internal_command_rebase.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_assert_no_conflicting_flags.dart';
@@ -32,6 +33,12 @@ class InternalCommandGet extends InternalCommand {
     description:
         "Runs 'stax rebase ${InternalCommandRebase.oursFlag.long}' afterwards starting from the branch which we originally requested, rebasing all the branches that depend on it.",
   );
+  static final nukeFirstFlag = Flag(
+    short: '-n',
+    long: '--nuke-first',
+    description:
+        "Runs 'stax extras nuke' before getting, resetting working directory and index to HEAD and cleaning all untracked files.",
+  );
 
   InternalCommandGet()
     : super(
@@ -40,7 +47,13 @@ class InternalCommandGet extends InternalCommand {
         arguments: {
           'opt1': 'Name of the remote ref. Will be matched as a suffix.',
         },
-        flags: [currentFlag, rebaseFlag, rebaseOursFlag, rebaseTheirsFlag],
+        flags: [
+          currentFlag,
+          rebaseFlag,
+          rebaseOursFlag,
+          rebaseTheirsFlag,
+          nukeFirstFlag,
+        ],
       );
 
   @override
@@ -53,6 +66,7 @@ class InternalCommandGet extends InternalCommand {
     bool hasRebaseFlag = rebaseFlag.hasFlag(args);
     bool hasRebaseTheirsFlag = rebaseTheirsFlag.hasFlag(args);
     bool hasRebaseOursFlag = rebaseOursFlag.hasFlag(args);
+    bool hasNukeFirstFlag = nukeFirstFlag.hasFlag(args);
 
     if (context.assertNoConflictingFlags([
       if (hasRebaseFlag) rebaseFlag,
@@ -80,6 +94,10 @@ class InternalCommandGet extends InternalCommand {
         context.printToConsole("Can't determine current branch");
         return;
       }
+    }
+
+    if (hasNukeFirstFlag) {
+      await InternalCommandNuke().run([], context);
     }
 
     final defaultBranch = await context.getDefaultBranch();
