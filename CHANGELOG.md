@@ -1,3 +1,8 @@
+0.11.8
+
+* stax rebase --abandon - would confirm with 'Rebase successfully abandoned.' instead of 'Rebase successfully aborted.'
+* stax rebase - would stop of push failed, before it would continue
+
 0.11.7
 
 * stax commit - adds -k/--cookie flag to add an optional string to the generated branch name

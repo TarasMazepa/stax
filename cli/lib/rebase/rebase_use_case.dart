@@ -113,7 +113,7 @@ To continue: `stax rebase --continue`''');
     final rebaseData = assertRebaseData;
     try {
       final rebaseStep = rebaseData.currentStep;
-      final exitCode =
+      int exitCode =
           (await context.git.rebase
                   .args([
                     if (rebaseData.hasTheirsFlag) ...['-X', 'theirs'],
@@ -131,8 +131,16 @@ To continue: `stax rebase --continue`''');
       if (exitCode != 0) {
         throw Exception('Rebase failed');
       }
-      (await context.git.pushForce.announce().run())
-          .printNotEmptyResultFields();
+      exitCode = (await context.git.pushForce.announce().run())
+          .printNotEmptyResultFields()
+          .exitCode;
+      if (exitCode != 0) {
+        throw Exception('''Push after rebase failed
+
+It would be best for you to force push this yourself and continue stax rebase using 'stax rebase --continue' 
+
+Otherwise it would be hard to recover''');
+      }
     } finally {
       rebaseData.index++;
       await save();

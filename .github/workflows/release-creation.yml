@@ -22,7 +22,7 @@ jobs:
               ref: 'refs/tags/${{ steps.get-version.outputs.version }}',
               sha: context.sha
             })
-      - run: gh release create $TAG
+      - run: gh release create $TAG --title "Stax cli v$TAG" --generate-notes
         env:
           GH_TOKEN: ${{ secrets.PAT }}
           TAG: ${{ steps.get-version.outputs.version }}
