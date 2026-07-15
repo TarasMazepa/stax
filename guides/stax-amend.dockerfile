@@ -1,4 +1,4 @@
-FROM taras0mazepa/stax-guide-base:0.11.8
+FROM taras0mazepa/stax-guide-base:0.11.9
 
 RUN <<EOF
 touch README.md
