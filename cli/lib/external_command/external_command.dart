@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:monolib_dart/monolib_dart.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/external_command/extended_process_result.dart';
 import 'package:stax/external_command/on_process_result.dart';
@@ -106,7 +105,7 @@ class ExternalCommand {
     ].wait;
     String Function(dynamic d) joinStringList = onDemandPrint
         ? (x) => ''
-        : (x) => x.join();
+        : (x) => (x as List<String>).join();
     return ProcessResult(
       process.pid,
       resultParts[0] as int,
@@ -160,5 +159,15 @@ class ExternalCommand {
   @override
   String toString() {
     return _parts.map((e) => e.contains(' ') ? '"$e"' : e).join(' ');
+  }
+}
+extension _RemoveEndingNewLine on String {
+  String removeEndingNewLine() {
+    if (endsWith('\r\n')) {
+      return substring(0, length - 2);
+    } else if (endsWith('\n')) {
+      return substring(0, length - 1);
+    }
+    return this;
   }
 }

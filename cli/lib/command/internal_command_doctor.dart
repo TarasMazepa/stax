@@ -225,7 +225,7 @@ class InternalCommandDoctor extends InternalCommand {
     }();
 
     if (isJson) {
-      await jsonEncodeAsync({
+      await jsonEncodeAsync(object: {
         'checks': checksStream.map(
           (result) => {
             'successful': result.successful,
@@ -235,7 +235,7 @@ class InternalCommandDoctor extends InternalCommand {
             'resolution': ?result.resolution,
           },
         ),
-      }, stdout);
+      }, sink: stdout);
       return;
     }
     await for (final result in checksStream) {

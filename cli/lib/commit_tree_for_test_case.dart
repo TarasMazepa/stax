@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:collection/collection.dart';
 import 'package:monolib_dart/monolib_dart.dart';
+import 'package:collection/collection.dart';
 import 'package:stax/log/decorated/decorated_log_line_producer.dart';
 
 class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
@@ -223,8 +223,8 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
     return _children(id).sorted(
       (a, b) =>
           isDefaultBranchOrHasDefaultBranchAsAChild(
-            a,
-          ).compareChainReverse(isDefaultBranchOrHasDefaultBranchAsAChild(b)) ??
+            b,
+          ).compareChain(isDefaultBranchOrHasDefaultBranchAsAChild(a)) ??
           branchName(b).compareTo(branchName(a)),
     );
   }
