@@ -161,6 +161,7 @@ class ExternalCommand {
     return _parts.map((e) => e.contains(' ') ? '"$e"' : e).join(' ');
   }
 }
+
 extension _RemoveEndingNewLine on String {
   String removeEndingNewLine() {
     if (endsWith('\r\n')) {
