@@ -22,6 +22,6 @@ class Preferences extends KeyValueStore {
 
   Preferences()
     : super.fromPath(
-        path.join(applicationConfigHome('stax'), '.stax_preferences'),
+        path.join(BaseDirectories('stax').configHome, '.stax_preferences'),
       );
 }

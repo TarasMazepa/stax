@@ -225,17 +225,20 @@ class InternalCommandDoctor extends InternalCommand {
     }();
 
     if (isJson) {
-      await jsonEncodeAsync({
-        'checks': checksStream.map(
-          (result) => {
-            'successful': result.successful,
-            'name': result.name,
-            'result': result.result,
-            'error': ?result.error,
-            'resolution': ?result.resolution,
-          },
-        ),
-      }, stdout);
+      await jsonEncodeAsync(
+        object: {
+          'checks': checksStream.map(
+            (result) => {
+              'successful': result.successful,
+              'name': result.name,
+              'result': result.result,
+              'error': ?result.error,
+              'resolution': ?result.resolution,
+            },
+          ),
+        },
+        sink: stdout,
+      );
       return;
     }
     await for (final result in checksStream) {

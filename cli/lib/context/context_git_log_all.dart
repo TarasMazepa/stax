@@ -153,7 +153,7 @@ class GitLogAllNode {
   ) {
     return children.sorted(
       (a, b) =>
-          isPartOfMainBranch(a).compareChainReverse(isPartOfMainBranch(b)) ??
+          isPartOfMainBranch(b).compareChain(isPartOfMainBranch(a)) ??
           b.line.branchNameOrCommitHash().compareChain(
             a.line.branchNameOrCommitHash(),
           ) ??

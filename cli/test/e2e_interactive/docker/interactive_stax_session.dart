@@ -60,9 +60,10 @@ class InteractiveStaxSession {
   }) async {
     final current = _accumulated.toString();
     if (current.contains(pattern)) return current;
-    if (_output.isClosed)
+    if (_output.isClosed) {
       throw StateError('Session closed before "$pattern" appeared.');
-    return await _output.stream
+    }
+    return _output.stream
         .map((_) => _accumulated.toString())
         .firstWhere((s) => s.contains(pattern))
         .timeout(
