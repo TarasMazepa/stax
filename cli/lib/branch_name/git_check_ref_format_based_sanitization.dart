@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:characters/characters.dart';
 import 'package:stax/branch_name/gits_ref_name_disposition.dart';
 
 final isUnicodeSeparatorOrControl = RegExp(r'\p{Z}|\p{Cc}', unicode: true);
+const maxBranchNameLengthInBytes = 244;
 
-String gitCheckRefFormatBasedSanitization(String input) {
+String gitCheckRefFormatBasedSanitization(
+  String input, {
+  int maxBytes = maxBranchNameLengthInBytes,
+}) {
   final buffer = StringBuffer();
   bool wasDash = false;
   bool wasDot = false;
@@ -50,7 +56,23 @@ String gitCheckRefFormatBasedSanitization(String input) {
         write(character);
     }
   }
-  Characters characters = buffer.toString().characters;
+
+  String truncated = buffer.toString();
+  if (utf8.encode(truncated).length > maxBytes) {
+    final truncBuffer = StringBuffer();
+    int currentBytes = 0;
+    for (final character in truncated.characters) {
+      final charBytes = utf8.encode(character).length;
+      if (currentBytes + charBytes > maxBytes) {
+        break;
+      }
+      truncBuffer.write(character);
+      currentBytes += charBytes;
+    }
+    truncated = truncBuffer.toString();
+  }
+
+  Characters characters = truncated.characters;
   CharacterRange iterator = characters.iteratorAtEnd;
   whileLoop:
   while (iterator.moveBack()) {
@@ -67,5 +89,5 @@ String gitCheckRefFormatBasedSanitization(String input) {
     result = result.substring(0, result.length - 1);
   }
   if (result == '@') return '';
-  return result.length > 250 ? result.substring(0, 250) : result;
+  return result;
 }
