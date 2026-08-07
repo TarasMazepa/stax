@@ -35,4 +35,19 @@ void main() {
   test('_0_0_0', () {
     expect(sanitizeBranchName('_0_0_0'), '_0_0_0');
   });
+  test(
+    'long commit message converted to branch name fits GitHub 255 byte ref limit',
+    () {
+      final commitMessage =
+          'Add CSV parsing error reporting to models and relocate StreamWithOnCompleteCallback. Add logger error reporting to fromCsv in IdNameAndDescription, IdAndWeight, and ItemCriteriaScore. Move StreamWithOnCompleteCallback from lib/tracer to lib/stream. Add logger error reporting to fromCsv in IdNameAndDescription, IdAndWeight, and ItemCriteriaScore';
+      final branchName = sanitizeBranchName(commitMessage);
+      final ref = 'refs/heads/$branchName';
+      expect(branchName.length, lessThanOrEqualTo(244));
+      expect(ref.length, lessThanOrEqualTo(255));
+      expect(
+        branchName,
+        'Add-CSV-parsing-error-reporting-to-models-and-relocate-StreamWithOnCompleteCallback.-Add-logger-error-reporting-to-fromCsv-in-IdNameAndDescription-IdAndWeight-and-ItemCriteriaScore.-Move-StreamWithOnCompleteCallback-from-lib/tracer-to-lib/strea',
+      );
+    },
+  );
 }

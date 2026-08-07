@@ -223,8 +223,8 @@ class CommitTreeForTestCase implements DecoratedLogLineProducerAdapter<int> {
     return _children(id).sorted(
       (a, b) =>
           isDefaultBranchOrHasDefaultBranchAsAChild(
-            a,
-          ).compareChainReverse(isDefaultBranchOrHasDefaultBranchAsAChild(b)) ??
+            b,
+          ).compareChain(isDefaultBranchOrHasDefaultBranchAsAChild(a)) ??
           branchName(b).compareTo(branchName(a)),
     );
   }
