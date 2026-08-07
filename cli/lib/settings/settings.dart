@@ -5,5 +5,7 @@ import 'package:stax/settings/key_value_store.dart';
 
 class Settings extends KeyValueStore with BaseSettings {
   Settings()
-    : super.fromPath(path.join(BaseDirectories('stax').configHome, '.stax_config'));
+    : super.fromPath(
+        path.join(BaseDirectories('stax').configHome, '.stax_config'),
+      );
 }
