@@ -1,3 +1,7 @@
+0.11.10
+
+* branch sanitization - limits branch name to 244 bytes to prevent GitHub ref limit (>255 bytes for refs/heads/) error GH005
+
 0.11.9
 
 * stax get - gets -n/--nuke-first to run `stax extras nuke` before "getting" new branch

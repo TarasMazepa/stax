@@ -1036,16 +1036,34 @@ void main() {
   });
 
   // Boundary behavior
-  test('254 character component', () {
+  test('244 byte maximum branch name component', () {
     final longComponent = 'a' * 250;
-    expect(gitCheckRefFormatBasedSanitization(longComponent), longComponent);
+    expect(gitCheckRefFormatBasedSanitization(longComponent), 'a' * 244);
   });
 
-  test('multiple 100 char components', () {
+  test('multiple 100 char components truncated to 244 bytes', () {
     final comp = 'a' * 100;
     expect(
       gitCheckRefFormatBasedSanitization('$comp/$comp/$comp'),
-      '$comp/$comp/${'a' * 48}',
+      '$comp/$comp/${'a' * 42}',
+    );
+  });
+
+  test('truncation strips trailing delimiters after cutting off', () {
+    final longWithDashAtCutoff = '${'a' * 243}-extra-words';
+    expect(gitCheckRefFormatBasedSanitization(longWithDashAtCutoff), 'a' * 243);
+  });
+
+  test('ref length with refs/heads/ does not exceed 255 bytes (GitHub GH005)', () {
+    final longRefCandidate =
+        'Add-CSV-parsing-error-reporting-to-models-and-relocate-StreamWithOnCompleteCallback-Add-logger-error-reporting-to-fromCsv-in-IdNameAndDescription-IdAndWeight-and-ItemCriteriaScore.-Move-StreamWithOnCompleteCallback-from-lib/tracer-to-lib/stream.-Add-logger-error-reporting-to-fromCsv';
+    final sanitized = gitCheckRefFormatBasedSanitization(longRefCandidate);
+    final fullRef = 'refs/heads/$sanitized';
+    expect(sanitized.length, lessThanOrEqualTo(244));
+    expect(fullRef.length, lessThanOrEqualTo(255));
+    expect(
+      sanitized,
+      'Add-CSV-parsing-error-reporting-to-models-and-relocate-StreamWithOnCompleteCallback-Add-logger-error-reporting-to-fromCsv-in-IdNameAndDescription-IdAndWeight-and-ItemCriteriaScore.-Move-StreamWithOnCompleteCallback-from-lib/tracer-to-lib/stream',
     );
   });
 
