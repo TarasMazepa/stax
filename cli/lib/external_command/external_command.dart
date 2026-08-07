@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:monolib_dart/monolib_dart.dart';
+import 'package:stax/base/on_string.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/external_command/extended_process_result.dart';
 import 'package:stax/external_command/on_process_result.dart';
