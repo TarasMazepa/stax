@@ -205,10 +205,10 @@ packages:
     dependency: "direct main"
     description:
       name: monolib_dart
-      sha256: "580be8ca5c9f4c32af56ac4094f438665db814e6f35af1dedf6791c2a7643b69"
+      sha256: "9fc30f8849ae910fff740e908634a2ffc9a854c312776985aa92a3f6b81f2bb7"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.48"
+    version: "0.0.50"
   node_preamble:
     dependency: transitive
     description:
