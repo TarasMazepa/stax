@@ -205,10 +205,10 @@ packages:
     dependency: "direct main"
     description:
       name: monolib_dart
-      sha256: d5803113116404e2c12659cf1036284b22905ad276713183eb1f9785bd155855
+      sha256: ccb7282f676c5cdf96b2a47d5d8e08514330fb8752bff48818a58e2231391bea
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.54"
+    version: "0.0.55"
   node_preamble:
     dependency: transitive
     description:
@@ -373,10 +373,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: "0016aef94fc66495ac78af5859181e3f3bf2026bd8eecc72b9565601e19ab360"
+      sha256: "5f37239c4851efcef929cea7824e76df7f2f0970aef85d66bbc430afa40e72f0"
       url: "https://pub.dev"
     source: hosted
-    version: "15.2.0"
+    version: "15.3.0"
   watcher:
     dependency: transitive
     description:
