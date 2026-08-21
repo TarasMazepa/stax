@@ -244,6 +244,12 @@ class GitLogAllNode {
     return find((x) => x.line.parts.any((element) => element.endsWith(suffix)));
   }
 
+  Iterable<GitLogAllNode> findAllAnyRefThatEndsWith(String suffix) {
+    return findAll(
+      (x) => x.line.parts.any((element) => element.endsWith(suffix)),
+    );
+  }
+
   GitLogAllNode? findAnyRemoteRefThatEndsWith(String suffix) {
     return find(
       (x) => x.line.parts.any(
@@ -256,6 +262,15 @@ class GitLogAllNode {
   GitLogAllNode? find(bool Function(GitLogAllNode) predicate) {
     if (predicate(this)) return this;
     return children.map((x) => x.find(predicate)).nonNulls.firstOrNull;
+  }
+
+  Iterable<GitLogAllNode> findAll(
+    bool Function(GitLogAllNode) predicate,
+  ) sync* {
+    if (predicate(this)) yield this;
+    for (final child in children) {
+      yield* child.findAll(predicate);
+    }
   }
 
   GitLogAllNode? findNoRecursion(bool Function(GitLogAllNode) predicate) {
