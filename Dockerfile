@@ -1,4 +1,4 @@
-FROM taras0mazepa/dart-fastlane:3.13.1 AS build
+FROM taras0mazepa/dart-fastlane:3.13.2 AS build
 
 WORKDIR /stax
 COPY cli .
