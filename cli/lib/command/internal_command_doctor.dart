@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:monolib_dart/json_encode_async.dart';
 import 'package:monolib_dart/monolib_dart.dart';
-import 'package:stax/base/flag.dart';
+import 'package:monolib_dart/cli.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/context/context.dart';
 import 'package:stax/context/context_git_get_default_branch.dart';
