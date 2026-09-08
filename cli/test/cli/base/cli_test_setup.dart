@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:stax/context/context.dart';
-import 'package:stax/file/file_system_entity_delete_quietly.dart';
+import 'package:monolib_dart/io.dart';
 
 import '../../test_file_original_path.dart';
 

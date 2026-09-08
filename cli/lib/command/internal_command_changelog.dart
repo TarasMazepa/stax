@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:monolib_dart/stream.dart';
-import 'package:stax/base/flag.dart';
+import 'package:monolib_dart/cli.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_version.dart';
 import 'package:stax/context/context.dart';

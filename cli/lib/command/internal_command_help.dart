@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:stax/base/flag.dart';
+import 'package:monolib_dart/cli.dart';
 import 'package:stax/command/internal_command.dart';
 import 'package:stax/command/internal_command_extras.dart';
 import 'package:stax/command/internal_command_finder.dart';
