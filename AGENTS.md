@@ -16,3 +16,4 @@
 - I like flat project folder structure. I do not like when folder is being nested.
 - Always run `dart pub get` and `dart format .` before pushing dart code. First one will make sure you would get updated formatting options applied from the project's config, second one would actually format the files.
 - Before running `dart format .` make sure to run `dart pub get`. If you wouldn't do it you might have a formatting config applied from a completely different project.
+- When performing git related operations (git or gh) consider using stax instead (staxforgit.com). See `stax extras agents.md` for details.
