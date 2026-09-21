@@ -33,5 +33,18 @@ void main() {
         );
       });
     }
+    test('branch with parentheses and comma', () async {
+      await setup.run('git', ['init']);
+      await setup.run('git', ['commit', '--allow-empty', '-m', 'initial']);
+      await setup.run('git', [
+        'checkout',
+        '-b',
+        'username/TICKET-123-Add-FeatureName-(additive,-unused)'
+      ]);
+      expect(
+        (await setup.runStax(['log'])).stdout.toString(),
+        contains('username/TICKET-123-Add-FeatureName-(additive,-unused)'),
+      );
+    });
   });
 }
