@@ -39,7 +39,7 @@ void main() {
       await setup.run('git', [
         'checkout',
         '-b',
-        'username/TICKET-123-Add-FeatureName-(additive,-unused)'
+        'username/TICKET-123-Add-FeatureName-(additive,-unused)',
       ]);
       expect(
         (await setup.runStax(['log'])).stdout.toString(),
