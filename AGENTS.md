@@ -8,10 +8,10 @@
 - We do not need `interface` used on classes, it doesn't add any value.
 - Do not refactor functions that return Future<void> to return void
 - In GitHub workflow files, skip name if action is named action or a one line run command
-- GitHub workflow files naming: filename, and name of workflow should be the same. Example: `dart-format.yml` (filename) `name: dart-format.yml` first line in the file, and job name should be the same but without extention: `dart-format`
-- I prefer conrete types over `var`. So define mutable variables using concrete type. final or const values we can have type skipped, as I think that final and const look nice on their own.
+- GitHub workflow files naming: filename, and name of workflow should be the same. Example: `dart-format.yml` (filename) `name: dart-format.yml` first line in the file, and job name should be the same but without extension: `dart-format`
+- I prefer concrete types over `var`. So define mutable variables using concrete type. final or const values we can have type skipped, as I think that final and const look nice on their own.
 - when writing scripts make sure that they could be invoked from any location and if they provide any commands - output those commands in a separate line
-- when naming dart extentions I prefer name of the extention to read same or similar to the type, so if extention is "on String" I would name it "OnString", this also applies to nested types like "OnListOfLists" or "OnNullableListOfStreamControllers"
+- when naming dart extensions I prefer name of the extension to read same or similar to the type, so if extension is "on String" I would name it "OnString", this also applies to nested types like "OnListOfLists" or "OnNullableListOfStreamControllers"
 - `stdin.readLineSync()` doesn't have good async substitution and shouldn't be refactored to async API
 - I like flat project folder structure. I do not like when folder is being nested.
 - Always run `dart pub get` and `dart format .` before pushing dart code. First one will make sure you would get updated formatting options applied from the project's config, second one would actually format the files.
