@@ -73,6 +73,7 @@ class InternalCommandGet extends InternalCommand {
     bool hasRebaseTheirsFlag = rebaseTheirsFlag.hasFlag(args);
     bool hasRebaseOursFlag = rebaseOursFlag.hasFlag(args);
     bool hasNukeFirstFlag = nukeFirstFlag.hasFlag(args);
+    bool shoulSkipPull = skipPullFlag.hasFlag(args);
 
     if (context.assertNoConflictingFlags([
       if (hasRebaseFlag) rebaseFlag,
@@ -115,7 +116,7 @@ class InternalCommandGet extends InternalCommand {
           .printNotEmptyResultFields();
     }
 
-    if (!skipPullFlag.hasFlag(args)) {
+    if (!shoulSkipPull) {
       (await context.git.pullPrune
               .announce('Pulling new changes.')
               .run(onDemandPrint: true))
