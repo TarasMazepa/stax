@@ -1,3 +1,7 @@
+0.11.12
+
+* stax get - fixes -s/--skip-pull would be considered as target ref if placed in front of first argument
+
 0.11.11
 
 * stax get - adds -s/--skip-pull to skip pull before getting new branch
