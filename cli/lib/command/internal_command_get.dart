@@ -39,6 +39,11 @@ class InternalCommandGet extends InternalCommand {
     description:
         "Runs 'stax extras nuke' before getting, resetting working directory and index to HEAD and cleaning all untracked files.",
   );
+  static final skipPullFlag = Flag(
+    short: '-s',
+    long: '--skip-pull',
+    description: 'Skip pulling new changes before getting.',
+  );
 
   InternalCommandGet()
     : super(
@@ -53,6 +58,7 @@ class InternalCommandGet extends InternalCommand {
           rebaseOursFlag,
           rebaseTheirsFlag,
           nukeFirstFlag,
+          skipPullFlag,
         ],
       );
 
@@ -109,10 +115,12 @@ class InternalCommandGet extends InternalCommand {
           .printNotEmptyResultFields();
     }
 
-    (await context.git.pullPrune
-            .announce('Pulling new changes.')
-            .run(onDemandPrint: true))
-        .printNotEmptyResultFields();
+    if (!skipPullFlag.hasFlag(args)) {
+      (await context.git.pullPrune
+              .announce('Pulling new changes.')
+              .run(onDemandPrint: true))
+          .printNotEmptyResultFields();
+    }
 
     final targetNode = (await context.quietly().gitLogAll(
       true,
