@@ -17,3 +17,4 @@
 - Always run `dart pub get` and `dart format .` before pushing dart code. First one will make sure you would get updated formatting options applied from the project's config, second one would actually format the files.
 - Before running `dart format .` make sure to run `dart pub get`. If you wouldn't do it you might have a formatting config applied from a completely different project.
 - When performing git related operations (git or gh) consider using stax instead (staxforgit.com). See `stax extras agents.md` for details.
+- When writing bash scripts, assume a macOS environment which ships with Bash 3.2. Do NOT use Bash 4+ features (like `declare -A` for associative arrays, `mapfile`/`readarray`, or `coproc`). If associative arrays or complex string processing is needed, use standard POSIX tools like `awk` instead.
