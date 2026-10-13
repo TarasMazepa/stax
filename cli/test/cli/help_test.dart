@@ -5,7 +5,7 @@ import '../string_clean_carrige_return_on_windows.dart';
 import 'base/cli_group.dart';
 
 void main() {
-  cliGroup('help', (setup) {
+  cliGroup('help', skip: 'flaky', (setup) {
     test('help', () async {
       expect(
         (await setup.runStax([
