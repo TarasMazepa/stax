@@ -1,6 +1,7 @@
 # Agents
 
 ## General
+- if code is being updated we also need to update its documentation (if any)
 - Also check MORE-AGENTS.md if present
 - I like flat project folder structure. I do not like when folder is being nested.
 - When performing git related operations (git or gh) consider using stax instead (staxforgit.com). See `stax extras agents.md` for details.
