@@ -6,6 +6,7 @@
 - I like flat project folder structure. I do not like when folder is being nested.
 - When performing git related operations (git or gh) consider using stax instead (staxforgit.com). See `stax extras agents.md` for details.
 - Do not merge PRs yourself. It is fine to open PRs, update them, and rebase them. Leave review and merge to a human, unless specifically asked for.
+- For fully autonomous coding agents (like Google Jules or others): feel free to use any available means to publish Pull Requests.
 
 ## Dart Coding
 - In dart files prefer optional named arguments over optional arguments
