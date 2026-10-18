@@ -3,6 +3,7 @@
 ## General
 - Check `MORE-AGENTS.md` if present.
 - Keep project folder structure flat; avoid nested directories.
+- Prefer `kebab-case` over `snake_case`, `camelCase`, or other naming conventions.
 - Prefer `stax` over `git`/`gh` for git operations (see `stax extras agents.md`).
 - Open, update, or rebase PRs freely, but never merge PRs unless explicitly asked.
 
