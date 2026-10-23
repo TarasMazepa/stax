@@ -9,7 +9,7 @@ jobs:
   chocolatey-test:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - run: ./.github/scripts/prepare-chocolatey.ps1
         shell: pwsh
