@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install container2wasm
         run: |
           VERSION="v0.8.3"
@@ -42,11 +42,11 @@ jobs:
       - run: .github/scripts/build_guide_docker_to_wasm rebase
       - run: .github/scripts/build_guide_docker_to_wasm settings
 
-      - uses: google-github-actions/auth@v2
+      - uses: google-github-actions/auth@v3
         with:
           service_account: brainfucksheetsgithubdeploy@youtube-355604.iam.gserviceaccount.com
           workload_identity_provider: projects/1074574117695/locations/global/workloadIdentityPools/brainfucksheet/providers/brainfucksheets
-      - uses: google-github-actions/upload-cloud-storage@v2
+      - uses: google-github-actions/upload-cloud-storage@v3
         with:
           path: 'guides/web'
           destination: 'staxforgit.com'

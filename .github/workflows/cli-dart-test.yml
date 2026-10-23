@@ -13,7 +13,7 @@ jobs:
         os: [ ubuntu-latest, macos-latest, windows-latest ]
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: TarasMazepa/github-action-cat@main
         id: get-dart-version
         with:
@@ -27,7 +27,7 @@ jobs:
         id: format-check
         working-directory: cli
         continue-on-error: true
-      - uses: peter-evans/repository-dispatch@v3
+      - uses: peter-evans/repository-dispatch@v4
         if: steps.format-check.outcome == 'failure'
         with:
           token: ${{ secrets.PAT }}
