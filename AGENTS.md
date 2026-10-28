@@ -5,6 +5,7 @@
 - Keep project folder structure flat; avoid nested directories.
 - Prefer `kebab-case` over `snake_case`, `camelCase`, or other naming conventions.
 - Use `~` or `$HOME` (or relative paths) instead of hardcoded `/Users/<username>` paths (`tm` vs `tarasmazepa`).
+- Reference and link source documents in documentation.
 - Prefer `stax` over `git`/`gh` for git operations (see `stax extras agents.md`).
 - Open, update, or rebase PRs freely, but never merge PRs unless explicitly asked.
 
