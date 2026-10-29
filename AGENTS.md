@@ -4,8 +4,8 @@
 - Check `MORE-AGENTS.md` if present.
 - Keep project folder structure flat; avoid nested directories.
 - Prefer `kebab-case` over `snake_case`, `camelCase`, or other naming conventions.
-- Use `~` or `$HOME` (or relative paths) instead of hardcoded `/Users/<username>` paths (`tm` vs `tarasmazepa`).
-- Reference and link source documents in documentation.
+- Only use paths relative to home (`~` or `$HOME`) or relative to the project instead of hardcoded `/Users/<username>` paths.
+- Reference and link source documents in documentation using only paths relative to the project or relative to home.
 - Prefer `stax` over `git`/`gh` for git operations (see `stax extras agents.md`).
 - Open, update, or rebase PRs freely, but never merge PRs unless explicitly asked.
 
