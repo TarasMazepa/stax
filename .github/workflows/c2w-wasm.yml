@@ -5,7 +5,7 @@ on:
     - cron: '0 0 * * 0'
 
 jobs:
-  c2w:
+  c2w-wasm:
     permissions:
       contents: 'read'
       id-token: 'write'
