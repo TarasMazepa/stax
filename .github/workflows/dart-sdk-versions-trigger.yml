@@ -8,7 +8,7 @@ on:
       - DART_SDK_VERSION
 
 jobs:
-  dart-sdk-version-trigger:
+  dart-sdk-versions-trigger:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:

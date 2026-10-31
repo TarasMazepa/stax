@@ -1,4 +1,4 @@
-name: browser-extension-build
+name: browser-extension-build.yml
 on:
   pull_request:
   workflow_dispatch:

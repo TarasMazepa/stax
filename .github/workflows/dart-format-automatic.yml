@@ -5,7 +5,7 @@ on:
       - format-dart-code
 
 jobs:
-  dart-format:
+  dart-format-automatic:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
