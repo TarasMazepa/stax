@@ -1,7 +1,7 @@
 # Agents
 
 ## General
-- Check [more-agents.md](more-agents.md) if present.
+- Check [MORE-AGENTS.md](MORE-AGENTS.md) if present.
 - Keep project folder structure flat; avoid nested directories.
 - Prefer `kebab-case` over `snake_case`, `camelCase`, or other naming conventions.
 - Only use paths relative to home (`~` or `$HOME`) or relative to the project instead of hardcoded `/Users/<username>` paths.
