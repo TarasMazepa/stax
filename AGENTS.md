@@ -12,6 +12,7 @@
 ## Dart
 - One class per file when possible; do not use `interface class`.
 - Prefer optional named arguments over positional optional arguments.
+- Prefer `FutureOr<T>` (e.g., `FutureOr<void>`) when possible so client code can avoid `await` on the result.
 - Use concrete types for mutable variables (no `var`); omit types on `final` and `const`.
 - `toJson()` methods must return `dynamic`.
 - Name extensions `On<Type>` matching the target type (e.g., `OnString`, `OnListOfLists`).
