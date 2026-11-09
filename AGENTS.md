@@ -2,12 +2,19 @@
 
 ## General
 - Check [MORE-AGENTS.md](MORE-AGENTS.md) if present.
+- Check [TOLOOKS.md](TOLOOKS.md) if present.
 - Keep project folder structure flat; avoid nested directories.
 - Prefer `kebab-case` over `snake_case`, `camelCase`, or other naming conventions.
 - Only use paths relative to home (`~` or `$HOME`) or relative to the project instead of hardcoded `/Users/<username>` paths.
 - Reference and link source documents in documentation using only paths relative to the project or relative to home.
 - Prefer `stax` over `git`/`gh` for git operations. Stax is available through brew `brew install TarasMazepa/stax/stax` on Linux and macOS and as `choco install stax` on Windows; run the bash command `stax extras agents.md` for details.
 - Open, update, or rebase PRs freely, but never merge PRs unless explicitly asked.
+
+## ToLooks
+- Maintain [TOLOOKS.md](TOLOOKS.md) as an exploratory scratchpad for backlog ideas, investigative spikes, architectural inquiries, and future refactors.
+- Record emerging ideas, potential optimizations, and discovered edge cases immediately in [TOLOOKS.md](TOLOOKS.md) to prevent scope creep during active tasks.
+- Structure items with `Idea`, `Context`, and `Investigation` (or checklist).
+- When resolving an item, mark it `[x]` and document a concise `Resolution` summary so [TOLOOKS.md](TOLOOKS.md) acts as a lightweight architectural decision history.
 
 ## Dart
 - One class per file when possible; do not use `interface class`.
