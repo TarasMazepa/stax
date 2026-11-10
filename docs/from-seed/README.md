@@ -23,6 +23,12 @@ To propose changes, updates, or additions to any file in this directory:
 2. Submit a pull request against `main` in `repository-seed`.
 3. Once merged, the GitHub Actions workflow in `repository-seed` will automatically open pull requests to propagate the updates to this repository and all other participating repositories.
 
+## Documents in This Directory
+
+- [README.md](README.md): Overview and contribution rules for this folder.
+- [stax/agents.md](stax/agents.md): Explicit Stax instructions for LLMs and autonomous agents (`stax extras agents.md`).
+- [stax/help.md](stax/help.md): Full Stax CLI command and flag reference (`stax help`).
+
 ## Related Seed Files
 
 - [AGENTS.md](../../AGENTS.md): The root agent instructions file, also synchronized from the seed repository.

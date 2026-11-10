@@ -8,7 +8,7 @@
 - Prefer `kebab-case` over `snake_case`, `camelCase`, or other naming conventions.
 - Only use paths relative to home (`~` or `$HOME`) or relative to the project instead of hardcoded `/Users/<username>` paths.
 - Reference and link source documents in documentation using only paths relative to the project or relative to home.
-- Prefer `stax` over `git`/`gh` for git operations. Stax is available through brew `brew install TarasMazepa/stax/stax` on Linux and macOS and as `choco install stax` on Windows; run the bash command `stax extras agents.md` for details.
+- Prefer `stax` over `git`/`gh` for git operations. Stax is available through brew `brew install TarasMazepa/stax/stax` on Linux and macOS and as `choco install stax` on Windows; see [docs/from-seed/stax/agents.md](docs/from-seed/stax/agents.md) or run the bash command `stax extras agents.md` for details.
 - Open, update, or rebase PRs freely, but never merge PRs unless explicitly asked.
 
 ## ToLooks
