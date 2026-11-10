@@ -3,6 +3,7 @@
 ## General
 - Check [MORE-AGENTS.md](MORE-AGENTS.md) if present.
 - Check [TOLOOKS.md](TOLOOKS.md) if present.
+- Check [docs/from-seed/](docs/from-seed/) if present; do not edit files there directly (propose changes in [repository-seed](https://github.com/TarasMazepa/repository-seed)).
 - Keep project folder structure flat; avoid nested directories.
 - Prefer `kebab-case` over `snake_case`, `camelCase`, or other naming conventions.
 - Only use paths relative to home (`~` or `$HOME`) or relative to the project instead of hardcoded `/Users/<username>` paths.
