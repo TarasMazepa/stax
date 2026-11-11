@@ -12,7 +12,7 @@
 - Open, update, or rebase PRs freely, but never merge PRs unless explicitly asked.
 
 ## ToLooks
-- Maintain [TOLOOKS.md](TOLOOKS.md) as an exploratory scratchpad for backlog ideas, investigative spikes, architectural inquiries, and future refactors.
+- Maintain [TOLOOKS.md](TOLOOKS.md) as an exploratory scratchpad for backlog ideas, investigative spikes, architectural inquiries, and future refactors; see [docs/from-seed/tolooks/README.md](docs/from-seed/tolooks/README.md) for details.
 - Record emerging ideas, potential optimizations, and discovered edge cases immediately in [TOLOOKS.md](TOLOOKS.md) to prevent scope creep during active tasks.
 - Structure items with `Idea`, `Context`, and `Investigation` (or checklist).
 - When resolving an item, mark it `[x]` and document a concise `Resolution` summary so [TOLOOKS.md](TOLOOKS.md) acts as a lightweight architectural decision history.

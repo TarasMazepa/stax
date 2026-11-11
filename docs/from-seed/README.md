@@ -28,6 +28,8 @@ To propose changes, updates, or additions to any file in this directory:
 - [README.md](README.md): Overview and contribution rules for this folder.
 - [stax/agents.md](stax/agents.md): Explicit Stax instructions for LLMs and autonomous agents (`stax extras agents.md`).
 - [stax/help.md](stax/help.md): Full Stax CLI command and flag reference (`stax help`).
+- [tolooks/README.md](tolooks/README.md): The "ToLooks" concept, exploratory scratchpad philosophy, and lifecycle guide.
+- [tolooks/template.md](tolooks/template.md): Starter boilerplate template for initializing `TOLOOKS.md` in any repository.
 
 ## Related Seed Files
 
