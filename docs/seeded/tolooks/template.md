@@ -36,4 +36,4 @@ Exploratory scratchpad for backlog ideas, investigative spikes, architectural in
 ## Related Documentation
 
 - [AGENTS.md](AGENTS.md) — Agent guidelines and ToLooks rules.
-- [docs/from-seed/tolooks/README.md](docs/from-seed/tolooks/README.md) — ToLooks concept and lifecycle guide.
+- [docs/seeded/tolooks/README.md](docs/seeded/tolooks/README.md) — ToLooks concept and lifecycle guide.
