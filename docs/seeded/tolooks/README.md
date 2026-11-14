@@ -148,8 +148,23 @@ To introduce ToLooks to a repository:
 
 ---
 
+## 7. Shelving Pull Requests as ToLooks (The "Fresh Eyes" Pattern)
+
+Older or exploratory pull requests often accumulate merge conflicts, touch deprecated patterns, or lose momentum. Leaving them open creates clutter and noise; closing them outright destroys valuable research, discussions, and prototype code.
+
+Use the [`pr-to-tolook`](pr-to-tolook/SKILL.md) skill to safely shelve a pull request:
+1. **Analyze Intent**: Extract the core capability or problem statement stripped of stale implementation details.
+2. **Preserve Artifacts**: Link directly to the PR URL, branch name, commit history, and key modified files.
+3. **Capture Lessons Learned**: Note why the PR stalled and highlight candidate approaches (e.g. fresh redesign vs. salvaging components).
+4. **Clean PR Closure**: Post a traceability comment on GitHub and close the PR.
+
+When ready to revisit, the developer or autonomous agent approaches the problem with fresh eyes, guided by the context preserved in `TOLOOKS.md`.
+
+---
+
 ## Related Seed Files
 
 - [template.md](template.md): Clean starter template for `TOLOOKS.md`.
+- [pr-to-tolook/SKILL.md](pr-to-tolook/SKILL.md): Skill guide for distilling pull requests into ToLooks.
 - [../README.md](../README.md): Seed folder overview and propagation rules.
 - [../../AGENTS.md](../../AGENTS.md): Root repository agent guidelines and ToLooks rules.
