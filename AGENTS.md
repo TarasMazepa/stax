@@ -16,6 +16,7 @@
 - Record emerging ideas, potential optimizations, and discovered edge cases immediately in [TOLOOKS.md](TOLOOKS.md) to prevent scope creep during active tasks.
 - Structure items with `Idea`, `Context`, and `Investigation` (or checklist).
 - When resolving an item, mark it `[x]` and document a concise `Resolution` summary so [TOLOOKS.md](TOLOOKS.md) acts as a lightweight architectural decision history.
+- Convert stalled or exploratory pull requests into ToLooks using [docs/seeded/tolooks/pr-to-tolook/SKILL.md](docs/seeded/tolooks/pr-to-tolook/SKILL.md) to preserve insights before closing.
 
 ## Dart
 - One class per file when possible; do not use `interface class`.
