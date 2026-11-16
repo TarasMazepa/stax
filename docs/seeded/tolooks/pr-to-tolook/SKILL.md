@@ -1,12 +1,12 @@
 ---
 name: pr-to-tolook
 description: >-
-  Extracts architectural inquiries, backlog ideas, and implementation spikes from a GitHub pull request and converts it into a structured ToLook in TOLOOKS.md. Use when the user asks to shelve, convert, or close an older or exploratory PR to revisit later with fresh eyes.
+  Extracts architectural inquiries, backlog ideas, and implementation spikes from a GitHub pull request and converts it into a structured ToLook in tolooks.md. Use when the user asks to shelve, convert, or close an older or exploratory PR to revisit later with fresh eyes.
 ---
 
 # PR to ToLook
 
-This skill guides the agent in analyzing an existing GitHub pull request—especially older, stalled, prototype, or paused PRs—extracting its core intent, context, and prototype insights, converting it into a structured entry in `TOLOOKS.md`, and cleanly closing the PR so the work can be revisited later with fresh eyes.
+This skill guides the agent in analyzing an existing GitHub pull request—especially older, stalled, prototype, or paused PRs—extracting its core intent, context, and prototype insights, converting it into a structured entry in `tolooks.md`, and cleanly closing the PR so the work can be revisited later with fresh eyes.
 
 ## Why Convert a PR to a ToLook?
 
@@ -45,11 +45,11 @@ Analyze the PR critically:
     - *Option B (Salvage Spike)*: Rebase and cherry-pick specific files or algorithms from the prototype branch.
   - **Phased Action Checklist**: Concrete exploration items for when this ToLook is picked up.
 
-### 3. Record in `TOLOOKS.md` & Open a New PR
-1. Locate `TOLOOKS.md` in the repository root. If absent, initialize it from [template.md](../template.md).
+### 3. Record in `tolooks.md` & Open a New PR
+1. Locate `tolooks.md` in the repository root. If absent, initialize it from [template.md](../template.md).
 2. Determine the next sequential item number under `## Active ToLooks`.
 3. Append or insert the synthesized ToLook block.
-4. Open a new PR capturing the `TOLOOKS.md` addition (e.g., `stax commit -Abdn "Add ToLook for PR #<PR>" --accept-all`).
+4. Open a new PR capturing the `tolooks.md` addition (e.g., `stax commit -Abdn "Add ToLook for PR #<PR>" --accept-all`).
 
 #### Recommended ToLook Schema
 ```markdown
@@ -68,12 +68,12 @@ Analyze the PR critically:
 
 ### 4. Close the Original PR Cleanly (Bidirectional Traceability)
 > [!IMPORTANT]
-> Wait until the new ToLook PR is reviewed/approved (or merged) and you are happy with how the idea is captured in `TOLOOKS.md`. Always ask the user for confirmation before closing the original PR.
+> Wait until the new ToLook PR is reviewed/approved (or merged) and you are happy with how the idea is captured in `tolooks.md`. Always ask the user for confirmation before closing the original PR.
 
 Once the new PR is ready and the user confirms:
-1. Post a comment on the original PR referencing both the new PR and `TOLOOKS.md`:
+1. Post a comment on the original PR referencing both the new PR and `tolooks.md`:
    ```bash
-   gh pr comment <PR> --body "Converted into ToLook in \`TOLOOKS.md\` via #<NEW_PR> to preserve context and allow a fresh approach. Closing PR."
+   gh pr comment <PR> --body "Converted into ToLook in \`tolooks.md\` via #<NEW_PR> to preserve context and allow a fresh approach. Closing PR."
    ```
 2. Close the original PR:
    ```bash
