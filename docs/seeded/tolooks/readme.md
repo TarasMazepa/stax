@@ -10,11 +10,11 @@ The term **ToLooks** is a deliberate wordplay on **ToDos**:
 - A **ToDo** is an actionable, committed, scheduled task ready for immediate or near-term execution.
 - A **ToLook** is an exploratory inquiry, investigative spike, architectural question, or newly discovered edge case—something to *look into* rather than immediately implement.
 
-A repository's `TOLOOKS.md` serves as a dedicated, version-controlled scratchpad living directly at the root of the project. It bridges the gap between ephemeral conversational ideas and concrete task execution.
+A repository's `tolooks.md` serves as a dedicated, version-controlled scratchpad living directly at the root of the project. It bridges the gap between ephemeral conversational ideas and concrete task execution.
 
 ```mermaid
 flowchart LR
-    A["💡 Discovery / Friction / Idea"] --> B["📝 Log in TOLOOKS.md<br/>(Scope Creep Firewall)"]
+    A["💡 Discovery / Friction / Idea"] --> B["📝 Log in tolooks.md<br/>(Scope Creep Firewall)"]
     B --> C["🔬 Investigation & Spike<br/>(Context, Options, Trade-offs)"]
     C --> D["⚡ Action & Implementation<br/>(Tasks, Scripts, PRs)"]
     D --> E["✅ Resolution Summary<br/>(Lightweight ADR History)"]
@@ -29,7 +29,7 @@ During active development or pairing sessions with autonomous agents, developers
 
 Derailing the active task to pursue these side quests introduces regression risk and inflates pull requests. Ignoring them causes valuable insights to be lost forever. 
 
-**Rule:** When a tangential idea or edge case surfaces during an active task, do not code it immediately. Record it in `TOLOOKS.md` with its trigger context and return to the primary objective.
+**Rule:** When a tangential idea or edge case surfaces during an active task, do not code it immediately. Record it in `tolooks.md` with its trigger context and return to the primary objective.
 
 ### 🔬 Investigate Before Committing
 Complex architectural decisions require research before execution. A ToLook provides a designated space to:
@@ -43,13 +43,13 @@ Traditional ADRs often languish in siloed folders, disconnected from the daily e
 2. Add a concise `Resolution` summary linking to the implemented scripts, PRs, or commits.
 3. Keep the completed entry in place.
 
-Over time, `TOLOOKS.md` naturally becomes a chronological, lightweight architectural decision history explaining *why* the codebase evolved the way it did.
+Over time, `tolooks.md` naturally becomes a chronological, lightweight architectural decision history explaining *why* the codebase evolved the way it did.
 
 ---
 
 ## 3. Anatomy of a ToLook
 
-Every item in `TOLOOKS.md` follows a structured template:
+Every item in `tolooks.md` follows a structured template:
 
 ### Active Item (Unresolved)
 ```markdown
@@ -117,33 +117,33 @@ When evaluating a significant architectural shift (e.g., standardizing toolchain
       - [ ] Phase 3: Roll out to downstream projects.
 ```
 
-In a higher-level milestone tracker (such as `todo.md` or an issue tracker), the scheduled task remains concise and links directly to `TOLOOKS.md` for the technical context:
+In a higher-level milestone tracker (such as `todo.md` or an issue tracker), the scheduled task remains concise and links directly to `tolooks.md` for the technical context:
 
 ```markdown
 - [ ] **Standardize Toolchain Version Management**
-  - Context & Architecture Blueprint: [TOLOOKS.md](TOLOOKS.md)
+  - Context & Architecture Blueprint: [tolooks.md](tolooks.md)
 ```
 
 ---
 
 ## 5. Working with Autonomous Agents
 
-For autonomous coding agents (such as Antigravity, Claude Code, or Jules), `TOLOOKS.md` provides crucial guardrails:
+For autonomous coding agents (such as Antigravity, Claude Code, or Jules), `tolooks.md` provides crucial guardrails:
 
 | Agent Behavior | Without ToLooks | With ToLooks |
 | :--- | :--- | :--- |
-| **Encountering unexpected edge case** | Haphazardly modifies existing code outside task scope, risking breakage. | Records the edge case in `TOLOOKS.md` with context; stays focused on active task. |
+| **Encountering unexpected edge case** | Haphazardly modifies existing code outside task scope, risking breakage. | Records the edge case in `tolooks.md` with context; stays focused on active task. |
 | **Spotting refactoring opportunities** | Begins premature refactoring, expanding PR diffs and stalling delivery. | Notes refactor idea under a new ToLook; keeps PR small and cohesive. |
-| **Session resumption & handoff** | Loses train of thought between turns or after context resets. | Reads `TOLOOKS.md` to instantly regain context on in-flight investigations. |
+| **Session resumption & handoff** | Loses train of thought between turns or after context resets. | Reads `tolooks.md` to instantly regain context on in-flight investigations. |
 | **Completing an investigation** | Commits code without capturing the rationale for architectural choices. | Marks item `[x]` with a concise `Resolution` explaining the decision. |
 
 ---
 
-## 6. Starting a `TOLOOKS.md` in Your Project
+## 6. Starting a `tolooks.md` in Your Project
 
 To introduce ToLooks to a repository:
-1. Copy the starter template from [template.md](template.md) to your repository root as `TOLOOKS.md`.
-2. Reference `TOLOOKS.md` in your project's root `AGENTS.md` and `README.md`.
+1. Copy the starter template from [template.md](template.md) to your repository root as `tolooks.md`.
+2. Reference `tolooks.md` in your project's root `agents.md` and `readme.md`.
 3. Add ideas, edge cases, and architectural spikes as they arise.
 
 ---
@@ -158,13 +158,13 @@ Use the [`pr-to-tolook`](pr-to-tolook/SKILL.md) skill to safely shelve a pull re
 3. **Capture Lessons Learned**: Note why the PR stalled and highlight candidate approaches (e.g. fresh redesign vs. salvaging components).
 4. **Clean PR Closure**: Post a traceability comment on GitHub and close the PR.
 
-When ready to revisit, the developer or autonomous agent approaches the problem with fresh eyes, guided by the context preserved in `TOLOOKS.md`.
+When ready to revisit, the developer or autonomous agent approaches the problem with fresh eyes, guided by the context preserved in `tolooks.md`.
 
 ---
 
 ## Related Seed Files
 
-- [template.md](template.md): Clean starter template for `TOLOOKS.md`.
+- [template.md](template.md): Clean starter template for `tolooks.md`.
 - [pr-to-tolook/SKILL.md](pr-to-tolook/SKILL.md): Skill guide for distilling pull requests into ToLooks.
-- [../README.md](../README.md): Seed folder overview and propagation rules.
-- [../../AGENTS.md](../../AGENTS.md): Root repository agent guidelines and ToLooks rules.
+- [../readme.md](../readme.md): Seed folder overview and propagation rules.
+- [../../agents.md](../../agents.md): Root repository agent guidelines and ToLooks rules.

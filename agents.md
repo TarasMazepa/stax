@@ -1,21 +1,21 @@
 # Agents
 
 ## General
-- Check [MORE-AGENTS.md](MORE-AGENTS.md) if present.
-- Check [TOLOOKS.md](TOLOOKS.md) if present.
+- Check [more-agents.md](more-agents.md) if present.
+- Check [tolooks.md](tolooks.md) if present.
 - Check [docs/seeded/](docs/seeded/) if present; do not edit files there directly (propose changes in [repository-seed](https://github.com/TarasMazepa/repository-seed)).
 - Keep project folder structure flat; avoid nested directories.
-- Prefer `kebab-case` over `snake_case`, `camelCase`, or other naming conventions.
+- Use pure `kebab-case` for all file and directory names (including markdown files like `readme.md`, `agents.md`, `more-agents.md`, `tolooks.md`) over `snake_case`, `camelCase`, or uppercase naming.
 - Only use paths relative to home (`~` or `$HOME`) or relative to the project instead of hardcoded `/Users/<username>` paths.
 - Reference and link source documents in documentation using only paths relative to the project or relative to home.
 - Prefer `stax` over `git`/`gh` for git operations. Stax is available through brew `brew install TarasMazepa/stax/stax` on Linux and macOS and as `choco install stax` on Windows; see [docs/seeded/stax/agents.md](docs/seeded/stax/agents.md) or run the bash command `stax extras agents.md` for details.
 - Open, update, or rebase PRs freely, but never merge PRs unless explicitly asked.
 
 ## ToLooks
-- Maintain [TOLOOKS.md](TOLOOKS.md) as an exploratory scratchpad for backlog ideas, investigative spikes, architectural inquiries, and future refactors; see [docs/seeded/tolooks/README.md](docs/seeded/tolooks/README.md) for details.
-- Record emerging ideas, potential optimizations, and discovered edge cases immediately in [TOLOOKS.md](TOLOOKS.md) to prevent scope creep during active tasks.
+- Maintain [tolooks.md](tolooks.md) as an exploratory scratchpad for backlog ideas, investigative spikes, architectural inquiries, and future refactors; see [docs/seeded/tolooks/readme.md](docs/seeded/tolooks/readme.md) for details.
+- Record emerging ideas, potential optimizations, and discovered edge cases immediately in [tolooks.md](tolooks.md) to prevent scope creep during active tasks.
 - Structure items with `Idea`, `Context`, and `Investigation` (or checklist).
-- When resolving an item, mark it `[x]` and document a concise `Resolution` summary so [TOLOOKS.md](TOLOOKS.md) acts as a lightweight architectural decision history.
+- When resolving an item, mark it `[x]` and document a concise `Resolution` summary so [tolooks.md](tolooks.md) acts as a lightweight architectural decision history.
 - Convert stalled or exploratory pull requests into ToLooks using [docs/seeded/tolooks/pr-to-tolook/SKILL.md](docs/seeded/tolooks/pr-to-tolook/SKILL.md) to preserve insights before closing.
 
 ## Dart

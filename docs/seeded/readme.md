@@ -10,7 +10,7 @@ Files in `docs/seeded/` represent these centrally maintained documents.
 
 ## Why This File Exists
 
-This `README.md` explains why the `docs/seeded/` directory exists and documents the operational and contribution rules for developers and automated coding agents working in this repository.
+This `readme.md` explains why the `docs/seeded/` directory exists and documents the operational and contribution rules for developers and automated coding agents working in this repository.
 
 ## Contribution Guidelines
 
@@ -25,12 +25,12 @@ To propose changes, updates, or additions to any file in this directory:
 
 ## Documents in This Directory
 
-- [README.md](README.md): Overview and contribution rules for this folder.
+- [readme.md](readme.md): Overview and contribution rules for this folder.
 - [stax/agents.md](stax/agents.md): Explicit Stax instructions for LLMs and autonomous agents (`stax extras agents.md`).
 - [stax/help.md](stax/help.md): Full Stax CLI command and flag reference (`stax help`).
-- [tolooks/README.md](tolooks/README.md): The "ToLooks" concept, exploratory scratchpad philosophy, and lifecycle guide.
-- [tolooks/template.md](tolooks/template.md): Starter boilerplate template for initializing `TOLOOKS.md` in any repository.
+- [tolooks/readme.md](tolooks/readme.md): The "ToLooks" concept, exploratory scratchpad philosophy, and lifecycle guide.
+- [tolooks/template.md](tolooks/template.md): Starter boilerplate template for initializing `tolooks.md` in any repository.
 
 ## Related Seed Files
 
-- [AGENTS.md](../../AGENTS.md): The root agent instructions file, also synchronized from the seed repository.
+- [agents.md](../../agents.md): The root agent instructions file, also synchronized from the seed repository.
