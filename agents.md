@@ -2,6 +2,7 @@
 
 ## General
 - Check [more-agents.md](more-agents.md) if present.
+- Check [local-more-agents.md](local-more-agents.md) if present (overrides [agents.md](agents.md) and [more-agents.md](more-agents.md)).
 - Check [tolooks.md](tolooks.md) if present.
 - Check [docs/seeded/](docs/seeded/) if present; do not edit files there directly (propose changes in [repository-seed](https://github.com/TarasMazepa/repository-seed)).
 - Keep project folder structure flat; avoid nested directories.
