@@ -17,7 +17,8 @@ flowchart LR
     A["💡 Discovery / Friction / Idea"] --> B["📝 Log in tolooks.md<br/>(Scope Creep Firewall)"]
     B --> C["🔬 Investigation & Spike<br/>(Context, Options, Trade-offs)"]
     C --> D["⚡ Action & Implementation<br/>(Tasks, Scripts, PRs)"]
-    D --> E["✅ Resolution Summary<br/>(Lightweight ADR History)"]
+    D --> E["✅ Resolution Summary"]
+    E --> F["🧹 Prune tolooks.md<br/>(Delete Trivial / Archive to looked-at.md)"]
 ```
 
 ---
@@ -41,9 +42,9 @@ Complex architectural decisions require research before execution. A ToLook prov
 Traditional ADRs often languish in siloed folders, disconnected from the daily engineering loop. When a ToLook is resolved:
 1. Mark the checkbox `[x]`.
 2. Add a concise `Resolution` summary linking to the implemented scripts, PRs, or commits.
-3. Keep the completed entry in place.
+3. Prune completed entries from `tolooks.md` (immediately or periodically) so it stays focused on active work: **delete** trivial/self-explanatory items, or **move** ADR-worthy decisions to `looked-at.md` (see [Section 8](#8-pruning--archiving-completed-tolooks)).
 
-Over time, `tolooks.md` naturally becomes a chronological, lightweight architectural decision history explaining *why* the codebase evolved the way it did.
+Over time, `looked-at.md` naturally becomes a chronological, lightweight architectural decision history explaining *why* the codebase evolved the way it did, without bloating `tolooks.md`.
 
 ---
 
@@ -135,7 +136,7 @@ For autonomous coding agents (such as Antigravity, Claude Code, or Jules), `tolo
 | **Encountering unexpected edge case** | Haphazardly modifies existing code outside task scope, risking breakage. | Records the edge case in `tolooks.md` with context; stays focused on active task. |
 | **Spotting refactoring opportunities** | Begins premature refactoring, expanding PR diffs and stalling delivery. | Notes refactor idea under a new ToLook; keeps PR small and cohesive. |
 | **Session resumption & handoff** | Loses train of thought between turns or after context resets. | Reads `tolooks.md` to instantly regain context on in-flight investigations. |
-| **Completing an investigation** | Commits code without capturing the rationale for architectural choices. | Marks item `[x]` with a concise `Resolution` explaining the decision. |
+| **Completing an investigation** | Commits code without capturing the rationale for architectural choices. | Marks item `[x]` with a concise `Resolution`; deletes trivial items or moves ADR-worthy ones to `looked-at.md`. |
 
 ---
 
@@ -159,6 +160,26 @@ Use the [`pr-to-tolook`](pr-to-tolook/SKILL.md) skill to safely shelve a pull re
 4. **Clean PR Closure**: Post a traceability comment on GitHub and close the PR.
 
 When ready to revisit, the developer or autonomous agent approaches the problem with fresh eyes, guided by the context preserved in `tolooks.md`.
+
+---
+
+## 8. Pruning & Archiving Completed ToLooks
+
+As a repository matures, keeping resolved items inside `tolooks.md` creates context bloat: autonomous agents and developers read `tolooks.md` to find active work, and a growing archive buries open inquiries and wastes context tokens.
+
+Use a **hybrid pruning strategy** when resolving a ToLook (or periodically when cleaning up `tolooks.md`):
+
+- **Delete the entry from `tolooks.md`** when the outcome is trivial or self-explanatory:
+  - Small bug fixes, edge-case patches, or straightforward refactors where the code, comments, or PR/commit history already tell the whole story.
+  - Superseded or obsolete ideas that are no longer relevant (git history still preserves them if ever needed).
+- **Compact and move the entry to `looked-at.md`** (at the repository root) when the investigation produced lasting architectural value:
+  - Non-obvious design trade-offs or rationale that future contributors might otherwise question.
+  - Rejected alternatives, dead ends, or benchmark findings—so the team and agents do not re-litigate or re-attempt the same approaches later.
+  - Subtle domain rules or cross-repository constraints discovered during the spike.
+  - **Compact before archiving**: Strip out stale investigation checklists, intermediate scratch notes, and verbose exploration logs, keeping only the title, `Status` (files/PRs), and a crisp `Resolution` summary so `looked-at.md` stays scannable and high-signal.
+
+> [!TIP]
+> **Agent Context Hygiene:** Agents should read `tolooks.md` by default at the start of a task, and only consult `looked-at.md` when researching past decisions or checking whether an approach was previously evaluated.
 
 ---
 

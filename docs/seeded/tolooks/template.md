@@ -25,6 +25,8 @@ Exploratory scratchpad for backlog ideas, investigative spikes, architectural in
 
 ## Resolved Architectural Decisions
 
+> Keep `tolooks.md` focused on active work. Once resolved, delete trivial/self-explanatory entries, or compact ADR-worthy decisions (title, `Status`, and concise `Resolution` without stale exploration checklists) and move them to `looked-at.md`.
+
 - [x] **0. <Example Resolved Item Title>**
   - **Status**: Implemented in [`path/to/file`](path/to/file) or PR #XX.
   - **Resolution**:

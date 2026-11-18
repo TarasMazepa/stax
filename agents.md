@@ -16,7 +16,7 @@
 - Maintain [tolooks.md](tolooks.md) as an exploratory scratchpad for backlog ideas, investigative spikes, architectural inquiries, and future refactors; see [docs/seeded/tolooks/readme.md](docs/seeded/tolooks/readme.md) for details.
 - Record emerging ideas, potential optimizations, and discovered edge cases immediately in [tolooks.md](tolooks.md) to prevent scope creep during active tasks.
 - Structure items with `Idea`, `Context`, and `Investigation` (or checklist).
-- When resolving an item, mark it `[x]` and document a concise `Resolution` summary so [tolooks.md](tolooks.md) acts as a lightweight architectural decision history.
+- When resolving an item, mark it `[x]` with a concise `Resolution` summary, then prune [tolooks.md](tolooks.md) to keep it focused on active work: delete trivial or self-explanatory entries, and compact non-obvious architectural decisions or rejected alternatives (stripping stale investigation checklists) before moving them to `looked-at.md` (consult `looked-at.md` only when researching past decisions).
 - Convert stalled or exploratory pull requests into ToLooks using [docs/seeded/tolooks/pr-to-tolook/SKILL.md](docs/seeded/tolooks/pr-to-tolook/SKILL.md) to preserve insights before closing.
 
 ## Dart
