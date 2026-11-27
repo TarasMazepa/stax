@@ -17,7 +17,7 @@
 - Record emerging ideas, potential optimizations, and discovered edge cases immediately in [tolooks.md](tolooks.md) to prevent scope creep during active tasks.
 - Structure items with `Idea`, `Context`, and `Investigation` (or checklist).
 - When resolving an item, mark it `[x]` with a concise `Resolution` summary, then prune [tolooks.md](tolooks.md) to keep it focused on active work: delete trivial or self-explanatory entries, and compact non-obvious architectural decisions or rejected alternatives (stripping stale investigation checklists) before moving them to `looked-at.md` (consult `looked-at.md` only when researching past decisions).
-- Convert stalled or exploratory pull requests into ToLooks using [docs/seeded/tolooks/pr-to-tolook/SKILL.md](docs/seeded/tolooks/pr-to-tolook/SKILL.md) to preserve insights before closing.
+- Convert stalled or exploratory pull requests into ToLooks using [docs/seeded/tolooks/pr-to-tolook/skill.md](docs/seeded/tolooks/pr-to-tolook/skill.md) to preserve insights before closing.
 
 ## Dart
 - One class per file when possible; do not use `interface class`.

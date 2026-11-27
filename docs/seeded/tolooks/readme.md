@@ -153,7 +153,7 @@ To introduce ToLooks to a repository:
 
 Older or exploratory pull requests often accumulate merge conflicts, touch deprecated patterns, or lose momentum. Leaving them open creates clutter and noise; closing them outright destroys valuable research, discussions, and prototype code.
 
-Use the [`pr-to-tolook`](pr-to-tolook/SKILL.md) skill to safely shelve a pull request:
+Use the [`pr-to-tolook`](pr-to-tolook/skill.md) skill to safely shelve a pull request:
 1. **Analyze Intent**: Extract the core capability or problem statement stripped of stale implementation details.
 2. **Preserve Artifacts**: Link directly to the PR URL, branch name, commit history, and key modified files.
 3. **Capture Lessons Learned**: Note why the PR stalled and highlight candidate approaches (e.g. fresh redesign vs. salvaging components).
@@ -186,6 +186,6 @@ Use a **hybrid pruning strategy** when resolving a ToLook (or periodically when 
 ## Related Seed Files
 
 - [template.md](template.md): Clean starter template for `tolooks.md`.
-- [pr-to-tolook/SKILL.md](pr-to-tolook/SKILL.md): Skill guide for distilling pull requests into ToLooks.
+- [pr-to-tolook/skill.md](pr-to-tolook/skill.md): Skill guide for distilling pull requests into ToLooks.
 - [../readme.md](../readme.md): Seed folder overview and propagation rules.
 - [../../agents.md](../../agents.md): Root repository agent guidelines and ToLooks rules.
