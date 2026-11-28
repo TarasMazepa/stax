@@ -83,7 +83,7 @@ echo "Generated guides/web/help.html"
 echo "Generating guides/web/index.html..."
 
 # Generate the content using showdown
-CONTENT=$(npx -y showdown@2.1.0 makehtml -i README.md)
+CONTENT=$(npx -y showdown@2.1.0 makehtml -i readme.md)
 CONTENT="${CONTENT//guides\/onboarding.md/onboarding.html}"
 CONTENT="${CONTENT//guides\/workflows.md/workflows.html}"
 

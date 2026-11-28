@@ -7,7 +7,7 @@ Exploratory scratchpad for backlog ideas, investigative spikes, architectural in
 ## Active ToLooks
 
 - [ ] **1. Convert Stale PRs (>3 Months) Using `pr-to-tolook` Skill**
-  - **Idea**: Review and convert open pull requests older than 3 months into structured ToLooks in `TOLOOKS.md` using the `pr-to-tolook` skill, then cleanly close the stale PRs after confirmation.
+  - **Idea**: Review and convert open pull requests older than 3 months into structured ToLooks in `tolooks.md` using the `pr-to-tolook` skill, then cleanly close the stale PRs after confirmation.
   - **Context**: As of 2026-11-14, 9 open PRs in `stax` have been hanging for more than 3 months (created before 2026-08-14), adding noise to health audits and accumulating merge drift.
   - **Investigation**:
     - [ ] [#1365](https://github.com/TarasMazepa/stax/pull/1365) [2026-07-24] *Add e2e benchmark for repositories with many merge commits*
@@ -31,18 +31,6 @@ Exploratory scratchpad for backlog ideas, investigative spikes, architectural in
     - [ ] Inspect and fix the assertion mismatch in `test/cli/about_test.dart`.
     - [ ] Resolve the 2 `flutter analyze` issues in the UI package for Flutter 3.50.0 / Dart 3.14.0.
 
----
-
-- [ ] **3. Migrate Non-Kebab-Case Markdown Files to `kebab-case`**
-  - **Idea**: Rename remaining uppercase/underscore markdown files to pure `kebab-case` per `agents.md` and update any internal or workflow references to them.
-  - **Context**: `repository-seed` standardized markdown naming to pure `kebab-case` (`agents.md`, `readme.md`, `tolooks.md`, `more-agents.md`).
-  - **Investigation**:
-    - [ ] Rename `CHANGELOG.md` → `changelog.md` and update references
-    - [ ] Rename `MORE-AGENTS.md` → `more-agents.md` and update references
-    - [ ] Rename `README.md` → `readme.md` and update references
-    - [ ] Rename `TOLOOKS.md` → `tolooks.md` and update references
-    - [ ] Rename `ui/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md` → `ui/ios/Runner/Assets.xcassets/LaunchImage.imageset/readme.md` and update references
-
 ## Resolved Architectural Decisions
 
 *(No resolved architectural decisions recorded yet.)*
@@ -51,5 +39,5 @@ Exploratory scratchpad for backlog ideas, investigative spikes, architectural in
 
 ## Related Documentation
 
-- [AGENTS.md](AGENTS.md) — Agent guidelines and ToLooks rules.
-- [docs/seeded/tolooks/README.md](docs/seeded/tolooks/README.md) — ToLooks concept and lifecycle guide.
+- [agents.md](agents.md) — Agent guidelines and ToLooks rules.
+- [docs/seeded/tolooks/readme.md](docs/seeded/tolooks/readme.md) — ToLooks concept and lifecycle guide.
