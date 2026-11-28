@@ -7,7 +7,7 @@ import 'package:stax/context/context.dart';
 
 class InternalCommandChangelog extends InternalCommand {
   static const String changelogUrl =
-      'https://raw.githubusercontent.com/TarasMazepa/stax/refs/heads/main/CHANGELOG.md';
+      'https://raw.githubusercontent.com/TarasMazepa/stax/refs/heads/main/changelog.md';
 
   static final Flag versionsFlag = Flag(
     short: '-s',

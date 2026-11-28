@@ -1,3 +1,7 @@
+0.11.13
+
+* stax extras changelog - fetches changelog from renamed `changelog.md`
+
 0.11.12
 
 * stax get - fixes -s/--skip-pull would be considered as target ref if placed in front of first argument
